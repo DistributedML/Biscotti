@@ -4,6 +4,8 @@ import(
 	"fmt"
 	"bufio"
 	"os"
+	"strconv"
+	// "encoding/csv"
 	// "encoding/csv"
 	// "kniren/gota"
 	// "io"
@@ -13,7 +15,9 @@ import(
 )
 
 var(
-	filePath string
+	datasetPath string
+	datasetName string
+
 	numberOfNodes int
 	epsilon 	float64
 	numFeatures int
@@ -67,19 +71,49 @@ func init() {
 
 func main() {
 
+	// Generating an SGD for a particular dataset using Go-Python
+	
+	// Take the dataset and divide it into appropriate number of csv files for go-python
 
-	// epsilon = 1.0
+	datasetPath = "../ML/data/"
+	datasetName = "creditcard"
+	numberOfNodes = 4
+	epsilon = 1.0
+
+	// Take the dataset and divide it into appropriate number of csv files for go-python
+
+	data := getData(datasetPath+datasetName+".csv")	
+	dividedData := divideData(data, numberOfNodes)
+
+	for i := 0; i < numberOfNodes; i++ {
+		createCSVs(dividedData, datasetName, i)
+		pyInit(datasetName+strconv.Itoa(i))		
+		
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
 	// pyInit("credit")
 
-	// filePath = "data/credittrain.csv"
-	// numberOfNodes = 4
+
 	
-	// data := getData(filePath)
+	
 
 	// // y := data[0:100]
 	// // fmt.Printf("Length of Node: %d", y.Nrow())
 
-	// dividedData := divideData(data, numberOfNodes)
+	
 
 
 	// // Testing divided Data 
@@ -109,21 +143,21 @@ func main() {
 	// dividedData = divideData(data,numberOfNodes)
 	// computeSGD(dividedData, nodeID)
 
-	bc := NewBlockchain()
+	// bc := NewBlockchain()
 
 
-	bData1 := BlockData{1, 3.0,[]Update{Update{1,3.0}} }
-	bData2 := BlockData{2, 9.0,[]Update{Update{1,3.0},Update{2,6.0}} }
+	// bData1 := BlockData{1, 3.0,[]Update{Update{1,3.0}} }
+	// bData2 := BlockData{2, 9.0,[]Update{Update{1,3.0},Update{2,6.0}} }
 
-	bc.AddBlock(bData1)
-	bc.AddBlock(bData2)
+	// bc.AddBlock(bData1)
+	// bc.AddBlock(bData2)
 
-	for _, block := range bc.blocks {
-		fmt.Printf("Prev. hash: %x\n", block.PrevBlockHash)
-		fmt.Printf("Data: %s\n", block.data.String())
-		fmt.Printf("Hash: %x\n", block.Hash)
-		fmt.Println()
-	}
+	// for _, block := range bc.blocks {
+	// 	fmt.Printf("Prev. hash: %x\n", block.PrevBlockHash)
+	// 	fmt.Printf("Data: %s\n", block.data.String())
+	// 	fmt.Printf("Hash: %x\n", block.Hash)
+	// 	fmt.Println()
+	// }
 }
 
 func getData(filePath string) dataframe.DataFrame{
@@ -141,49 +175,59 @@ func check(e error) {
 }
 
 
-// func divideData(data dataframe.DataFrame,numberOfNodes int) []dataframe.DataFrame{
+func divideData(data dataframe.DataFrame,numberOfNodes int) []dataframe.DataFrame{
 
-// 	var dividedData []dataframe.DataFrame
-// 	indexes := make([]int, 0)
+	var dividedData []dataframe.DataFrame
+	indexes := make([]int, 0)
 
-// 	var stepsize int
-// 	start:= 0
-// 	end :=  0
+	var stepsize int
+	start:= 0
+	end :=  0
 	
-// 	stepsize = data.Nrow()/numberOfNodes
-// 	fmt.Printf("Number of rows:%d",end)
-// 	fmt.Printf("Stepsize:%d",stepsize)
+	stepsize = data.Nrow()/numberOfNodes
+	fmt.Printf("Stepsize:%d",stepsize)
 
-// 	for i := 0; i < numberOfNodes; i++ {
+	for i := 0; i < numberOfNodes; i++ {
 		
-// 		if(i==numberOfNodes-1){
-// 			end = data.Nrow()
-// 		}else{
-// 			end = start+stepsize
-// 		}
+		if(i==numberOfNodes-1){
+			end = data.Nrow()
+		}else{
+			end = start+stepsize
+		}
 
 
-// 		for j := 0; j < (end - start); j++ {
-// 			if(i==0){
-// 				indexes = append(indexes, start+j)
-// 			}else{
+		for j := 0; j < (end - start); j++ {
+			if(i==0){
+				indexes = append(indexes, start+j)
+			}else{
 
-// 				if(j < len(indexes)){
-// 					indexes[j] = start + j			
-// 				}else{
-// 					indexes = append(indexes, start+j)
-// 				}
-// 			}
+				if(j < len(indexes)){
+					indexes[j] = start + j			
+				}else{
+					indexes = append(indexes, start+j)
+				}
+			}
 
-// 		}
-// 		dividedData = append(dividedData, data.Subset(indexes))
-// 		start = start + stepsize
+		}
+		dividedData = append(dividedData, data.Subset(indexes))
+		start = start + stepsize
 		
-// 	}
+	}
 
-// 	return dividedData
+	return dividedData
 
-// }
+}
+
+func createCSVs(dividedData []dataframe.DataFrame, datasetName string, nodeID int){	
+
+	nodeData := dividedData[nodeID]
+	filename :=  datasetName + strconv.Itoa(nodeID) + ".csv"
+	file, err := os.Create(datasetPath + filename)
+	check(err)
+	nodeData.WriteCSV(bufio.NewWriter(file))
+}
+
+
 
 // func computeSGD{nodeData dataframe.DataFrame){
 
@@ -193,44 +237,23 @@ func check(e error) {
 
 // } 
 
-// func pyInit(datasetName string) {
+func pyInit(datasetName string) {
 
-
-// 	sysPath := python.PySys_GetObject("path")
-// 	python.PyList_Insert(sysPath, 0, python.PyString_FromString("./"))
-// 	python.PyList_Insert(sysPath, 0, python.PyString_FromString("../ML/code"))
+	sysPath := python.PySys_GetObject("path")
+	python.PyList_Insert(sysPath, 0, python.PyString_FromString("./"))
+	python.PyList_Insert(sysPath, 0, python.PyString_FromString("../ML/code"))
 	
-// 	pyLogModule = python.PyImport_ImportModule("logistic_model")
-// 	pyLogInitFunc = pyLogModule.GetAttrString("init")
-// 	pyLogPrivFunc = pyLogModule.GetAttrString("privateFun")
-// 	pyNumFeatures = pyLogInitFunc.CallFunction(python.PyString_FromString(datasetName), python.PyFloat_FromDouble(epsilon))
+	pyLogModule = python.PyImport_ImportModule("logistic_model")
+	pyLogInitFunc = pyLogModule.GetAttrString("init")
+	pyLogPrivFunc = pyLogModule.GetAttrString("privateFun")
+	pyNumFeatures = pyLogInitFunc.CallFunction(python.PyString_FromString(datasetName), python.PyFloat_FromDouble(epsilon))
 	
 
-//   	numFeatures = python.PyInt_AsLong(pyNumFeatures)
-//   	minClients = 5
-//   	pulledGradient = make([]float64, numFeatures)
+  	numFeatures = python.PyInt_AsLong(pyNumFeatures)
+  	fmt.Printf("Sucessfully pulled dataset. Features: %d\n", numFeatures)
+  	minClients = 5
+  	pulledGradient = make([]float64, numFeatures)
 
-//   	fmt.Printf("Sucessfully pulled dataset. Features: %d\n", numFeatures)
   	
-// }
-
-// package main
-
-// import "fmt"
-// import "github.com/sbinet/go-python"
-
-// func init() {
-//    err := python.Initialize()
-//    if err != nil {
-//           panic(err.Error())
-//    } 
-// }
-
-// func main() {
-//  	 gostr := "foo" 
-// 	 pystr := python.PyString_FromString(gostr)
-// 	 str := python.PyString_AsString(pystr)
-// 	 fmt.Println("hello [", str, "]")
-// }
-
-// export PATH="/home/shayan/anaconda3/bin:$PATH"
+  	
+}
