@@ -5,6 +5,8 @@ import(
 	"bufio"
 	"os"
 	"strconv"
+	"encoding/binary"
+	"math"
 	// "encoding/csv"
 	// "encoding/csv"
 	// "kniren/gota"
@@ -23,6 +25,7 @@ var(
 	numFeatures int
 	minClients	int
 	pulledGradient []float64
+	deltas []float64
 	// DataFrame dataframe.DataFrame
 	// thisRecord []string
 	pyLogModule       *python.PyObject
@@ -37,37 +40,6 @@ func init() {
 		panic(err.Error())
 	}
 }
-
-// func oneGradientStep(globalW []float64) ([]float64, error) {
-	
-// 	argArray := python.PyList_New(len(globalW))
-
-// 	for i := 0; i < len(globalW); i++ {
-// 		python.PyList_SetItem(argArray, i, python.PyFloat_FromDouble(globalW[i]))
-// 	}
-
-// 	// Either use full GD or SGD here
-// 	result := pyLogPrivFunc.CallFunction(python.PyInt_FromLong(1), argArray,
-// 		python.PyInt_FromLong(10))
-	
-// 	// Convert the resulting array to a go byte array
-// 	pyByteArray := python.PyByteArray_FromObject(result)
-// 	goByteArray := python.PyByteArray_AsBytes(pyByteArray)
-
-// 	var goFloatArray []float64
-// 	size := len(goByteArray) / 8
-
-// 	for i := 0; i < size; i++ {
-// 		currIndex := i * 8
-// 		bits := binary.LittleEndian.Uint64(goByteArray[currIndex : currIndex+8])
-// 		aFloat := math.Float64frombits(bits)
-// 		goFloatArray = append(goFloatArray, aFloat)
-// 	}
-	
-// 	return goFloatArray, nil
-// }
-
-
 
 func main() {
 
@@ -87,22 +59,12 @@ func main() {
 
 	for i := 0; i < numberOfNodes; i++ {
 		createCSVs(dividedData, datasetName, i)
-		pyInit(datasetName+strconv.Itoa(i))		
-		
+		pyInit(datasetName+strconv.Itoa(i))
+		deltas, err := oneGradientStep(pulledGradient)	
+		check(err)
+		fmt.Println(len(deltas))
+
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 	
 	// pyInit("credit")
 
@@ -249,11 +211,42 @@ func pyInit(datasetName string) {
 	pyNumFeatures = pyLogInitFunc.CallFunction(python.PyString_FromString(datasetName), python.PyFloat_FromDouble(epsilon))
 	
 
-  	numFeatures = python.PyInt_AsLong(pyNumFeatures)
-  	fmt.Printf("Sucessfully pulled dataset. Features: %d\n", numFeatures)
+  	numFeatures = python.PyInt_AsLong(pyNumFeatures)  	
   	minClients = 5
   	pulledGradient = make([]float64, numFeatures)
+  	deltas = make([]float64, numFeatures)
+
+  	fmt.Printf("Sucessfully pulled dataset. Features: %d\n", numFeatures)
 
   	
   	
+}
+
+func oneGradientStep(globalW []float64) ([]float64, error) {
+	
+	argArray := python.PyList_New(len(globalW))
+
+	for i := 0; i < len(globalW); i++ {
+		python.PyList_SetItem(argArray, i, python.PyFloat_FromDouble(globalW[i]))
+	}
+
+	// Either use full GD or SGD here
+	result := pyLogPrivFunc.CallFunction(python.PyInt_FromLong(1), argArray,
+		python.PyInt_FromLong(10))
+	
+	// Convert the resulting array to a go byte array
+	pyByteArray := python.PyByteArray_FromObject(result)
+	goByteArray := python.PyByteArray_AsBytes(pyByteArray)
+
+	var goFloatArray []float64
+	size := len(goByteArray) / 8
+
+	for i := 0; i < size; i++ {
+		currIndex := i * 8
+		bits := binary.LittleEndian.Uint64(goByteArray[currIndex : currIndex+8])
+		aFloat := math.Float64frombits(bits)
+		goFloatArray = append(goFloatArray, aFloat)
+	}
+	
+	return goFloatArray, nil
 }
