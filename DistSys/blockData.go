@@ -9,21 +9,21 @@ import(
 
 type BlockData struct {
 	Iteration   int
-	Aggregation float64
-	Updates     []Update
+	globalW 	[]float64
+	deltas  	[]Update
 }
 
 //create nw BlockData
 
-func NewBlockData(iteration int, aggregation float64) *BlockData {
-	blockData := &BlockData{iteration, aggregation, []Update{}}
+func NewBlockData(iteration int, globalW []float64, deltas []Update) *BlockData {
+	blockData := &BlockData{iteration, globalW, deltas}
 	// block.SetHash()
 	return blockData
 }
 
 func (blockdata BlockData) String() string {
-	return fmt.Sprintf("Iteration: %d, Aggregation: %f, Updates: %v",
-		blockdata.Iteration, blockdata.Aggregation, blockdata.Updates)
+	return fmt.Sprintf("Iteration: %d, GlobalW: %s, deltas: %s",
+		blockdata.Iteration, arrayToString(blockdata.globalW,","), arrayToStringUpdate(blockdata.deltas,","))
 }
 
 //converts blockData to an array of bytes
@@ -52,6 +52,20 @@ func (blockdata BlockData) ToByte() []byte {
 
 } 
 
+func arrayToStringUpdate(a []Update, delim string) string{
+    
+    updates := "["
+    numUpdates:= len(a)
+    for i := 0; i < numUpdates; i++ {
+        updates += a[i].String()
+        if(i != numUpdates - 1){
+            updates += " "+delim
+        }
+    }
+    updates += "]"
+    // return strings.Trim(strings.Replace(fmt.Sprint(a.String), " ", delim, -1), "[]")
+    return updates
+}
 
 // A more difficult version of byte conversion. Doesn't work
 // but I dont want to throw it away

@@ -10,10 +10,10 @@ func (bc *Blockchain) AddBlock(data BlockData) {
 	bc.blocks = append(bc.blocks, newBlock)
 }
 
-func NewGenesisBlock() *Block {
-	return GenesisBlock()
+func NewGenesisBlock(numFeatures int) *Block {
+	return GenesisBlock(numFeatures)
 }
 
-func NewBlockchain() *Blockchain {
-	return &Blockchain{[]*Block{NewGenesisBlock()}}
+func NewBlockchain(numFeatures int) *Blockchain {
+	return &Blockchain{[]*Block{NewGenesisBlock(numFeatures)}}
 }

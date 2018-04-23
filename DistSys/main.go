@@ -43,83 +43,48 @@ func init() {
 
 func main() {
 
-	// Generating an SGD for a particular dataset using Go-Python
+	// some declarations
 	
-	// Take the dataset and divide it into appropriate number of csv files for go-python
-
 	datasetPath = "../ML/data/"
 	datasetName = "creditcard"
 	numberOfNodes = 4
 	epsilon = 1.0
 
 	// Take the dataset and divide it into appropriate number of csv files for go-python
+	// Once divided, compute SGD using go-python
 
 	data := getData(datasetPath+datasetName+".csv")	
-	dividedData := divideData(data, numberOfNodes)
+	bc := NewBlockchain(data.Ncol())
+
+	dividedData := divideData(data, numberOfNodes)	
 
 	for i := 0; i < numberOfNodes; i++ {
+
 		createCSVs(dividedData, datasetName, i)
 		pyInit(datasetName+strconv.Itoa(i))
 		deltas, err := oneGradientStep(pulledGradient)	
+		bData := BlockData{i, pulledGradient,[]Update{Update{deltas}} } // globalW do this
 		check(err)
-		fmt.Println(len(deltas))
-
+		bc.AddBlock(bData)
+		fmt.Println(len(deltas))	
 	}
-	
-	// pyInit("credit")
 
-
-	
-	
-
-	// // y := data[0:100]
-	// // fmt.Printf("Length of Node: %d", y.Nrow())
-
-	
-
-
-	// // Testing divided Data 
-
-	// // fmt.Printf("Length of dividedData: %d", len(dividedData))
-
-	// // for i := 0; i < numberOfNodes ; i++ {
-	// // 	fmt.Printf("Length of Node: %d", dividedData[i].Nrow())
-	// // 	fmt.Println(dividedData[i].Subset([]int{3}))
-	// // }
-
-	// for i := 0; i < numberOfNodes; i++ {
-	// 	computeSGD(dividedData, nodeID)	
-	// }
-
-	
-
-
-
-
+	for _, block := range bc.blocks {
+		fmt.Printf("Prev. hash: %x\n", block.PrevBlockHash)
+		fmt.Printf("Data: %s\n", block.data.String())
+		fmt.Printf("Hash: %x\n", block.Hash)
+		fmt.Println()
+	}
 
 
 	
 
-	
-	// allData, _ := data.ReadAll()
-	// dividedData = divideData(data,numberOfNodes)
-	// computeSGD(dividedData, nodeID)
 
-	// bc := NewBlockchain()
-
-
-	// bData1 := BlockData{1, 3.0,[]Update{Update{1,3.0}} }
 	// bData2 := BlockData{2, 9.0,[]Update{Update{1,3.0},Update{2,6.0}} }
 
-	// bc.AddBlock(bData1)
-	// bc.AddBlock(bData2)
 
-	// for _, block := range bc.blocks {
-	// 	fmt.Printf("Prev. hash: %x\n", block.PrevBlockHash)
-	// 	fmt.Printf("Data: %s\n", block.data.String())
-	// 	fmt.Printf("Hash: %x\n", block.Hash)
-	// 	fmt.Println()
-	// }
+
+
 }
 
 func getData(filePath string) dataframe.DataFrame{
@@ -190,14 +155,6 @@ func createCSVs(dividedData []dataframe.DataFrame, datasetName string, nodeID in
 }
 
 
-
-// func computeSGD{nodeData dataframe.DataFrame){
-
-// 	pyInit(nodeData)
-
-	
-
-// } 
 
 func pyInit(datasetName string) {
 

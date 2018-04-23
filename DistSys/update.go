@@ -2,18 +2,24 @@ package main
 
 import(
 	"fmt"
+	"strings"
 	// "encoding/binary"
 	// "bytes"
 )
 
 // Update - data object representing a single update
 type Update struct {
-	Iteration int
-	Value     float64
+	delta     []float64
 }
 
 func (update Update) String() string {
-	return fmt.Sprintf("(I: %d, V: %f)", update.Iteration, update.Value)
+	return fmt.Sprintf(arrayToString(update.delta, ","))
+}
+
+func arrayToString(a []float64, delim string) string{
+	str := "[" + strings.Trim(strings.Replace(fmt.Sprint(a), " ", delim, -1), "[]") + "]"
+	return str
+
 }
 
 // func (update Update) ToByte() []byte {

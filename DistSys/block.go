@@ -34,10 +34,12 @@ func NewBlock(data BlockData,  prevBlockHash []byte) *Block {
 	return block
 }
 
-func GenesisBlock() *Block{
-	genesisBlockData := BlockData{0, 0.0,[]Update{} }	
+func GenesisBlock(numFeatures int) *Block{
+
+	genesisBlockData := BlockData{0, make([]float64, numFeatures),[]Update{} } // create a globalWW with the appropriate number of features	
 	block := &Block{time.Now().Unix(), genesisBlockData, []byte{},[]byte{}}
 	block.SetHash()
 	return block
+
 }
 
