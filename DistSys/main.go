@@ -14,11 +14,14 @@ import(
 	// "container/list"
 	"github.com/kniren/gota/dataframe"
 	"github.com/sbinet/go-python"
+	"gonum.org/v1/gonum/mat"
+
 )
 
 var(
 	datasetPath string
 	datasetName string
+	batch_size	int
 
 	numberOfNodes int
 	epsilon 	float64
@@ -49,11 +52,17 @@ func main() {
 	datasetName = "creditcard"
 	numberOfNodes = 4
 	epsilon = 1.0
+	batch_size = 10
 
 	// Take the dataset and divide it into appropriate number of csv files for go-python
 	// Once divided, compute SGD using go-python
 
-	data := getData(datasetPath+datasetName+".csv")	
+	data := getData(datasetPath+datasetName+".csv")
+  	deltas = make([]float64, data.Ncol())
+  	pulledGradient = make([]float64, data.Ncol())
+	pulledGradientM := mat.NewDense(1, data.Ncol(), pulledGradient)
+	deltaM := mat.NewDense(1,data.Ncol(), deltas)
+
 	bc := NewBlockchain(data.Ncol())
 
 	dividedData := divideData(data, numberOfNodes)	
@@ -62,7 +71,10 @@ func main() {
 
 		createCSVs(dividedData, datasetName, i)
 		pyInit(datasetName+strconv.Itoa(i))
-		deltas, err := oneGradientStep(pulledGradient)	
+		deltas, err := oneGradientStep(pulledGradient)
+		deltaM = mat.NewDense(1, data.Ncol(), deltas)		 		
+		pulledGradientM.Add(pulledGradientM,deltaM)
+		mat.Row(pulledGradient,0,pulledGradientM)
 		bData := BlockData{i, pulledGradient,[]Update{Update{deltas}} } // globalW do this
 		check(err)
 		bc.AddBlock(bData)
@@ -76,14 +88,8 @@ func main() {
 		fmt.Println()
 	}
 
-
-	
-
-
 	// bData2 := BlockData{2, 9.0,[]Update{Update{1,3.0},Update{2,6.0}} }
-
-
-
+	// pushing it as a block update
 
 }
 
@@ -166,11 +172,9 @@ func pyInit(datasetName string) {
 	pyLogInitFunc = pyLogModule.GetAttrString("init")
 	pyLogPrivFunc = pyLogModule.GetAttrString("privateFun")
 	pyNumFeatures = pyLogInitFunc.CallFunction(python.PyString_FromString(datasetName), python.PyFloat_FromDouble(epsilon))
-	
-
-  	numFeatures = python.PyInt_AsLong(pyNumFeatures)  	
+	numFeatures = python.PyInt_AsLong(pyNumFeatures)  	
   	minClients = 5
-  	pulledGradient = make([]float64, numFeatures)
+  	
   	deltas = make([]float64, numFeatures)
 
   	fmt.Printf("Sucessfully pulled dataset. Features: %d\n", numFeatures)
@@ -189,7 +193,7 @@ func oneGradientStep(globalW []float64) ([]float64, error) {
 
 	// Either use full GD or SGD here
 	result := pyLogPrivFunc.CallFunction(python.PyInt_FromLong(1), argArray,
-		python.PyInt_FromLong(10))
+		python.PyInt_FromLong(batch_size))
 	
 	// Convert the resulting array to a go byte array
 	pyByteArray := python.PyByteArray_FromObject(result)
