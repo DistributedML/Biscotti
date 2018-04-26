@@ -59,7 +59,7 @@ func init() {
 
 func main() {
 
-	// some declarations
+	
 
 	nodeNum, err := strconv.Atoi(os.Args[1])
 	if err != nil {
@@ -67,7 +67,7 @@ func main() {
 		return
 	}
 
-	nodeTotal, err := strconv.Atoi(os.Args[2])
+	numberOfNodes, err := strconv.Atoi(os.Args[2])
 	if err != nil {
 		fmt.Println("Second argument should be the total number of nodes")
 		return
@@ -79,40 +79,57 @@ func main() {
 		return
 	}
 
-	fmt.Println(nodeNum)
-	fmt.Println(nodeTotal)
-	fmt.Println(datasetName)
-
-
-	
-	datasetName = "creditcard"
-	numberOfNodes = 4
+	// MS: Might need to make these two constants or input args
 	epsilon = 1.0
 	batch_size = 10
 
-	// Take the dataset and divide it into appropriate number of csv files for go-python
-	// Once divided, compute SGD using go-python
+	logger = govec.InitGoVector(os.Args[1], os.Args[1])	
 
-	logger = govec.InitGoVector(os.Args[1], os.Args[1])
+	//Load my part of the dataset  
+	data := getData(datasetPath+datasetName+".csv")
+	dividedData := divideData(data, numberOfNodes)
+	createCSVs(dividedData, datasetName, nodeNum)
+
+	//create gradient vectors and load genesis into blockchain
+	deltas = make([]float64, data.Ncol())
+  	pulledGradient = make([]float64, data.Ncol())
+	pulledGradientM := mat.NewDense(1, data.Ncol(), pulledGradient)
+	deltaM := mat.NewDense(1,data.Ncol(), deltas)
+	bc := NewBlockchain(data.Ncol())	
+
+	//figure out ports of other clients
 	myPort = strconv.Itoa(nodeNum + basePort)
-	for i := 0; i < nodeTotal; i++ {
+	for i := 0; i < numberOfNodes; i++ {
 		if strconv.Itoa(basePort+i) == myPort {
 			continue
 		}
 		clusterPorts = append(clusterPorts, strconv.Itoa(basePort+i))
 	}
+
+	//initialize honest client
 	client = Honest{id: nodeNum}
 
 
-	data := getData(datasetPath+datasetName+".csv")
-  	deltas = make([]float64, data.Ncol())
-  	pulledGradient = make([]float64, data.Ncol())
-	pulledGradientM := mat.NewDense(1, data.Ncol(), pulledGradient)
-	deltaM := mat.NewDense(1,data.Ncol(), deltas)
 
-	bc := NewBlockchain(data.Ncol())
 
-	dividedData := divideData(data, numberOfNodes)	
+
+
+	
+
+
+
+
+	// Take the dataset and divide it into appropriate number of csv files for go-python
+	// Once divided, compute SGD using go-python
+
+	
+	
+
+
+	
+  	
+
+
 
 	for i := 0; i < numberOfNodes; i++ {
 
