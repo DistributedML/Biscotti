@@ -15,13 +15,24 @@ import(
 	"github.com/kniren/gota/dataframe"
 	"github.com/sbinet/go-python"
 	"gonum.org/v1/gonum/mat"
+	"github.com/DistributedClocks/GoVector/govec"
 
 )
 
+const (
+	basePort	int 	= 8000
+	myIP		string 	= "127.0.0.1"
+)
+
 var(
-	datasetPath = "../ML/data/"
-	datasetName string
-	batch_size	int
+	datasetPath 	= "../ML/data/"
+	datasetName 	string
+	batch_size		int
+
+	myPort			string
+	portsToConnect  []string
+	clusterPorts    []string
+	client 			Honest
 
 	numberOfNodes int
 	epsilon 	float64
@@ -35,6 +46,8 @@ var(
 	pyLogInitFunc     *python.PyObject
 	pyLogPrivFunc     *python.PyObject
 	pyNumFeatures 	  *python.PyObject
+
+	logger          *govec.GoLog
 )
 
 func init() {
@@ -62,7 +75,7 @@ func main() {
 	
 	datasetName := os.Args[3]
 	if err != nil {
-		fmt.Println("Second argument should be the total number of nodes")
+		fmt.Println("Third argument should be dataset name")
 		return
 	}
 
@@ -70,7 +83,7 @@ func main() {
 	fmt.Println(nodeTotal)
 	fmt.Println(datasetName)
 
-	
+
 	
 	datasetName = "creditcard"
 	numberOfNodes = 4
@@ -79,6 +92,17 @@ func main() {
 
 	// Take the dataset and divide it into appropriate number of csv files for go-python
 	// Once divided, compute SGD using go-python
+
+	logger = govec.InitGoVector(os.Args[1], os.Args[1])
+	myPort = strconv.Itoa(nodeNum + basePort)
+	for i := 0; i < nodeTotal; i++ {
+		if strconv.Itoa(basePort+i) == myPort {
+			continue
+		}
+		clusterPorts = append(clusterPorts, strconv.Itoa(basePort+i))
+	}
+	client = Honest{id: nodeNum}
+
 
 	data := getData(datasetPath+datasetName+".csv")
   	deltas = make([]float64, data.Ncol())
