@@ -1,28 +1,28 @@
 package main
 
-// import (
-// 	"math/rand"
-// )
+import (
+	"math/rand"
+)
 
-// const (
-// 	samples         = 10 // L
-// 	sampleDeviation = 0.1
-// )
+const (
+	samples         = 10 // L
+	sampleDeviation = 0.1
+)
 
-// // Honest Client
-// type Honest struct {
-// 	id        int
-// 	localData []float64
-// 	update    Update
-// }
+// Honest Client
+type Honest struct {
+	id        int
+	localData []float64
+	update    Update
+}
 
-// func (honest *Honest) sampleData() {
-// 	// Sample data, use id as mean
-// 	honest.localData = make([]float64, samples)
-// 	for i := range honest.localData {
-// 		honest.localData[i] = rand.NormFloat64()*sampleDeviation + float64(honest.id)
-// 	}
-// }
+func (honest *Honest) sampleData() {
+	// Sample data, use id as mean
+	honest.localData = make([]float64, samples)
+	for i := range honest.localData {
+		honest.localData[i] = rand.NormFloat64()*sampleDeviation + float64(honest.id)
+	}
+}
 
 // func (honest *Honest) computeUpdate(iterationCount int) {
 // 	sum := 0.0

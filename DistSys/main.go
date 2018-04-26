@@ -19,7 +19,7 @@ import(
 )
 
 var(
-	datasetPath string
+	datasetPath = "../ML/data/"
 	datasetName string
 	batch_size	int
 
@@ -47,8 +47,31 @@ func init() {
 func main() {
 
 	// some declarations
+
+	nodeNum, err := strconv.Atoi(os.Args[1])
+	if err != nil {
+		fmt.Println("First argument should be index of node")
+		return
+	}
+
+	nodeTotal, err := strconv.Atoi(os.Args[2])
+	if err != nil {
+		fmt.Println("Second argument should be the total number of nodes")
+		return
+	}
 	
-	datasetPath = "../ML/data/"
+	datasetName := os.Args[3]
+	if err != nil {
+		fmt.Println("Second argument should be the total number of nodes")
+		return
+	}
+
+	fmt.Println(nodeNum)
+	fmt.Println(nodeTotal)
+	fmt.Println(datasetName)
+
+	
+	
 	datasetName = "creditcard"
 	numberOfNodes = 4
 	epsilon = 1.0
