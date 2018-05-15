@@ -10,20 +10,18 @@ import(
 	"time"
 	"crypto/sha256"
 	// "github.com/sbinet/go-python"
-
-
 )
 
 type Block struct {
 	Timestamp     int64
-	data          BlockData
+	Data          BlockData
 	PrevBlockHash []byte
 	Hash          []byte
 }
 
 func (b *Block) SetHash() {
 	timestamp := []byte(strconv.FormatInt(b.Timestamp, 10))
-	headers := bytes.Join([][]byte{b.PrevBlockHash, b.data.ToByte(), timestamp}, []byte{})	
+	headers := bytes.Join([][]byte{b.PrevBlockHash, b.Data.ToByte(), timestamp}, []byte{})	
 	hash := sha256.Sum256(headers)
 	b.Hash = hash[:]
 }
@@ -37,7 +35,7 @@ func NewBlock(data BlockData,  prevBlockHash []byte) *Block {
 func GenesisBlock(numFeatures int) *Block{
 
 	genesisBlockData := BlockData{0, make([]float64, numFeatures),[]Update{} } // create a globalWW with the appropriate number of features	
-	block := &Block{time.Now().Unix(), genesisBlockData, []byte{},[]byte{}}
+	block := &Block{0, genesisBlockData, []byte{},[]byte{}}
 	block.SetHash()
 	return block
 

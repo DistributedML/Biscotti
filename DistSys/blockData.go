@@ -9,8 +9,8 @@ import(
 
 type BlockData struct {
 	Iteration   int
-	globalW 	[]float64
-	deltas  	[]Update
+	GlobalW 	[]float64
+	Deltas  	[]Update
 }
 
 //create nw BlockData
@@ -23,7 +23,7 @@ func NewBlockData(iteration int, globalW []float64, deltas []Update) *BlockData 
 
 func (blockdata BlockData) String() string {
 	return fmt.Sprintf("Iteration: %d, GlobalW: %s, deltas: %s",
-		blockdata.Iteration, arrayToString(blockdata.globalW,","), arrayToStringUpdate(blockdata.deltas,","))
+		blockdata.Iteration, arrayToString(blockdata.GlobalW,","), arrayToStringUpdate(blockdata.Deltas,","))
 }
 
 //converts blockData to an array of bytes

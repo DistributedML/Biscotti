@@ -85,9 +85,9 @@ def load_dataset(dataset_name):
                 "Xvalid": Xvalid,
                 "yvalid": yvalid}
 
-    elif dataset_name == "credit":
+    elif "creditcard" in dataset_name:
 
-        df = pd.read_csv(os.path.join('../ML', "data", 'creditcard.csv'))
+        df = pd.read_csv(os.path.join('../ML', "data", dataset_name+".csv"))
         nn, dd = df.shape
 
         # Need to remove the first column and first row

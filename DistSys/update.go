@@ -3,17 +3,19 @@ package main
 import(
 	"fmt"
 	"strings"
+	"strconv"
 	// "encoding/binary"
 	// "bytes"
 )
 
 // Update - data object representing a single update
 type Update struct {
-	delta     []float64
+	Iteration int
+	Delta     []float64
 }
 
 func (update Update) String() string {
-	return fmt.Sprintf(arrayToString(update.delta, ","))
+	return fmt.Sprintf("{Iteration:" + strconv.Itoa(update.Iteration) + ", "+ "Deltas:" + arrayToString(update.Delta, ",") +"}")
 }
 
 func arrayToString(a []float64, delim string) string{
