@@ -4,7 +4,7 @@ In the DistSys Directory run the following commands:
 
 1. go install
 
-2. sudo $GOPATH/bin/DistSys <node_id> <total_nodes> <dataset> 
+2. sudo $GOPATH/bin/DistSys node_id total_nodes dataset 
 
   E.g sudo $GOPATH/bin/DistSys 0 4 creditcard
   
