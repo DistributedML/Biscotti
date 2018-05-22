@@ -17,6 +17,10 @@ var(
 	pyLogInitFunc     *python.PyObject
 	pyLogPrivFunc     *python.PyObject
 	pyNumFeatures 	  *python.PyObject
+	pyTestModule  	  *python.PyObject
+	pyTestFunc    	  *python.PyObject
+	pyTrainFunc   	  *python.PyObject
+
 )
 
 const (
@@ -26,6 +30,7 @@ const (
 	epsilon			= 1.0
 	datasetPath 	=  "../ML/data/"
 	codePath		=  "../ML/code"
+	convThreshold	= 0.05
 )
 
 // Honest Client
@@ -54,6 +59,16 @@ func (honest *Honest) initializeData(datasetName string, numberOfNodes int) {
 
 }
 
+func (honest *Honest) checkConvergence() bool {
+
+	trainError, _ := testModel(honest.bc.getLatestGradient(), "global")
+	fmt.Printf("Train Error: %d\n",trainError)
+	if (trainError<convThreshold){
+		return true
+	}
+	return false
+}
+
 func (honest *Honest) computeUpdate(iterationCount int,datasetName string){
 	prevGradient := honest.bc.getLatestGradient()
 	deltas, err := oneGradientStep(prevGradient)
@@ -69,14 +84,24 @@ func pyInit(datasetName string) {
 	python.PyList_Insert(sysPath, 0, python.PyString_FromString(codePath))
 	
 	pyLogModule = python.PyImport_ImportModule("logistic_model")
+	pyTestModule = python.PyImport_ImportModule("logistic_model_test")
+	fmt.Println(pyTestModule)
+
 	pyLogInitFunc = pyLogModule.GetAttrString("init")
 	pyLogPrivFunc = pyLogModule.GetAttrString("privateFun")
+	fmt.Println(pyLogPrivFunc)
+	pyTrainFunc = pyTestModule.GetAttrString("train_error")
+	fmt.Println(pyTrainFunc)
+	pyTestFunc = pyTestModule.GetAttrString("test_error")
+	fmt.Println(pyTestFunc)
+
+
 	pyNumFeatures = pyLogInitFunc.CallFunction(python.PyString_FromString(datasetName), python.PyFloat_FromDouble(epsilon))
 	numFeatures = python.PyInt_AsLong(pyNumFeatures)  	
   	minClients = 5  	
   	// deltas = make([]float64, numFeatures)
 
-  	fmt.Printf("Sucessfully pulled dataset. Features: %d\n", numFeatures)  	
+  	fmt.Printf("Sucessfully pulled dataset. Features: %d\n", numFeatures)
   	
 }
 
@@ -155,6 +180,24 @@ func (honest *Honest) flushUpdates(numberOfNodes int) {
 	// }else{
 		honest.blockUpdates = honest.blockUpdates[:0]		
 	// }
+}
+
+func testModel(weights []float64, node string) (float64, float64) {
+
+	argArray := python.PyList_New(len(weights))
+
+	for i := 0; i < len(weights); i++ {
+		python.PyList_SetItem(argArray, i, python.PyFloat_FromDouble(weights[i]))
+	}
+
+    pyTrainResult := pyTrainFunc.CallFunction(argArray)
+    trainErr := python.PyFloat_AsDouble(pyTrainResult)
+
+	pyTestResult := pyTestFunc.CallFunction(argArray)
+	testErr := python.PyFloat_AsDouble(pyTestResult)
+	
+	return trainErr, testErr
+
 }
 
 

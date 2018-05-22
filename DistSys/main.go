@@ -69,6 +69,7 @@ var(
 	deltas 			[]float64
 	updates			[]Update
 	updateSent		bool
+	converged		bool
 	// DataFrame dataframe.DataFrame
 	// thisRecord []string
 	// pyLogModule       *python.PyObject
@@ -154,7 +155,7 @@ func main() {
 	// fmt.Println("ClientID:%d", client.id)	
 	client.initializeData(datasetName, numberOfNodes)
 
-	// verifier = false
+	converged = false
 
 	updateLock = sync.Mutex{}
 	blockLock = sync.Mutex{}
@@ -201,7 +202,7 @@ func prepareForNextIteration() {
 	iterationCount++
 	verifier = amVerifier(client.id)	
 
-	if(iterationCount>10){
+	if(converged){
 		client.bc.PrintChain()
 		os.Exit(1)
 	}
@@ -368,6 +369,8 @@ func packetListener(conn net.Conn) {
 
 
 			fmt.Println(numberOfUpdates) 
+			
+
 			if(numberOfUpdates == (numberOfNodes - 1)){
 				// fmt.Println("here")
 				blockToSend := client.createBlock(iterationCount)
@@ -393,6 +396,8 @@ func packetListener(conn net.Conn) {
 						os.Exit(1)
 					}						
 				}
+
+				converged = client.checkConvergence()
 				// client.bc.PrintChain()
 				prepareForNextIteration()
 			}
@@ -416,6 +421,8 @@ func packetListener(conn net.Conn) {
 
 			// client.bc.PrintChain()		
 			// fmt.Println("Iteration done")
+
+			converged = client.checkConvergence()
 
 			prepareForNextIteration()
 
