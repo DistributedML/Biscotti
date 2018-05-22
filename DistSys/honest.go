@@ -36,7 +36,7 @@ const (
 // Honest Client
 type Honest struct {
 	id        		int
-	data 			dataframe.DataFrame // TODO: Update this to dataframe
+	data 			dataframe.DataFrame 
 	update    		Update
 	blockUpdates	[]Update 
 	bc 				*Blockchain

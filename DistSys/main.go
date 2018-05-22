@@ -70,12 +70,6 @@ var(
 	updates			[]Update
 	updateSent		bool
 	converged		bool
-	// DataFrame dataframe.DataFrame
-	// thisRecord []string
-	// pyLogModule       *python.PyObject
-	// pyLogInitFunc     *python.PyObject
-	// pyLogPrivFunc     *python.PyObject
-	// pyNumFeatures 	  *python.PyObject
 
 	numberOfNodes 	int
 
@@ -103,20 +97,7 @@ func amVerifier(nodeNum int) bool{
 
 func main() {
 
-	// Goal:
-
-	// if am verifier node, don't generate update
-	// just listen for incoming connections in this iteration
-	// when I get a connection put them together in a block and send to everybody (if you have atleast one update you do that)
-	// else
-	// generateUpdate using my dataset and send to verifier node
-
-	// What if a client joins in a later iteration? How does he know which iteration it is and
-	// which// just wait for the next block
-	
-	//send to verifier node
-	//verifier code 
-
+	//Parsing arguments nodeIndex, numberOfNodes, datasetname
 
 	nodeNum, err := strconv.Atoi(os.Args[1])
 	if err != nil {
@@ -132,14 +113,10 @@ func main() {
 	
 	datasetName := os.Args[3]
 
-	// Logging to see if arguments parsed correctly
-	// fmt.Println(nodeNum)
-	// fmt.Println(numberOfNodes)
-	// fmt.Println(datasetName)
-
 	logger = govec.InitGoVector(os.Args[1], os.Args[1])	
 
-	//figure out ports of other clients
+
+	// getports of all other clients in the system
 	myPort = strconv.Itoa(nodeNum + basePort)
 	for i := 0; i < numberOfNodes; i++ {
 		if strconv.Itoa(basePort+i) == myPort {
@@ -148,11 +125,12 @@ func main() {
 		clusterPorts = append(clusterPorts, strconv.Itoa(basePort+i))
 	}
 
-	//initialize honest client and lock for updates
-
+	//Initialize a honest client
 	client = Honest{id: nodeNum, blockUpdates: make([]Update, 0, 5)}
+	
+	
+	// reading data and other housekeeping before the 
 
-	// fmt.Println("ClientID:%d", client.id)	
 	client.initializeData(datasetName, numberOfNodes)
 
 	converged = false
@@ -160,39 +138,20 @@ func main() {
 	updateLock = sync.Mutex{}
 	blockLock = sync.Mutex{}
 	boolLock = sync.Mutex{}
-	// fmt.Println(nodeNum)
 	
 	prepareForNextIteration()
 
+	// start listening for updates and sending them at the same time
 	go messageListener(myPort)
 	go messageSender(clusterPorts)
 
-
-	//load data -- done
-	// start listening for messages -- 
-
-	// Clients irrespective need to Listen and send. This If should go inside the functions
-
-
-	// if (verifier){		
-	// 	// fmt.Printf("Am verifier\n")
-	// 	updateLock.Lock() 
-	// 	updates = []Update{} 
-	// 	updateLock.Unlock()	
-	// 	go messageListener(myPort)	
-	
-	// }else{
-	
-	// }
 
 	select{}
 }
 
 func prepareForNextIteration() {
 	
-		
-	// boolLock.Lock()
-	// fmt.Println("IterationCHange: Lock Acquired")
+	// reinitialize shared stuff and check if you are the verifier going into the next iteration
 
 	if(verifier){
 		updateLock.Lock()
@@ -200,7 +159,9 @@ func prepareForNextIteration() {
 		updateLock.Unlock()
 	}
 	iterationCount++
-	verifier = amVerifier(client.id)	
+	verifier = amVerifier(client.id)
+
+	// exit if converged
 
 	if(converged){
 		client.bc.PrintChain()
@@ -213,26 +174,14 @@ func prepareForNextIteration() {
 		updateSent = false
 	}
 
-	// fmt.Println("IterationCHange: Lock Released")
-
-
-	// boolLock.Unlock()
-
-
-
-
-		
-
-	
-
-
-	// TODO: Run a VRF here.
 	portsToConnect = make([]string, len(clusterPorts))
 
 	copy(portsToConnect, clusterPorts)
 }
 
 func getData(filePath string) dataframe.DataFrame{
+
+	// read data into the dataframe from the given filepath
 
 	f, err:= os.Open(filePath)
 	check(err)
@@ -249,6 +198,8 @@ func check(e error) {
 
 func divideData(data dataframe.DataFrame,numberOfNodes int) []dataframe.DataFrame{
 
+	// divide the dataset equally among the number of nodes
+
 	var dividedData []dataframe.DataFrame
 	indexes := make([]int, 0)
 
@@ -257,7 +208,6 @@ func divideData(data dataframe.DataFrame,numberOfNodes int) []dataframe.DataFram
 	end :=  0
 	
 	stepsize = data.Nrow()/numberOfNodes
-	// fmt.Printf("Stepsize:%d\n",stepsize)
 
 	for i := 0; i < numberOfNodes; i++ {
 		
@@ -290,9 +240,9 @@ func divideData(data dataframe.DataFrame,numberOfNodes int) []dataframe.DataFram
 
 }
 
-func createCSVs(nodeData dataframe.DataFrame, datasetName string, nodeID int){	
-
-	// nodeData := dividedData[nodeID]
+func createCSVs(nodeData dataframe.DataFrame, datasetName string, nodeID int){
+	
+	// create a CSV for your part of the dataset
 	filename :=  datasetName + strconv.Itoa(nodeID) + ".csv"
 	file, err := os.Create(datasetPath + filename)
 	check(err)
@@ -300,7 +250,9 @@ func createCSVs(nodeData dataframe.DataFrame, datasetName string, nodeID int){
 }
 
 func messageListener(port string) {
-	// Listen on port
+	
+	// Listen for messages
+
 	fmt.Printf("Listening on %s\n", port)
 
 	myaddr, err := net.ResolveTCPAddr("tcp", myIP+port)
@@ -331,12 +283,13 @@ func messageListener(port string) {
 
 func packetListener(conn net.Conn) {
 
+	// handle messages based on whether they are updates or blocks
+
 
 	inBuf := make([]byte, 2048)
 
 	outBuf := make([]byte, 2048)
 
-	// handleConnection (conn)
 
 	n, err := conn.Read(inBuf)
 	if err != nil {
@@ -352,7 +305,6 @@ func packetListener(conn net.Conn) {
 
 		case "update":
 
-			// fmt.Println(message.UpdateData)
 			fmt.Printf("Got update message %d bytes, iteration %d\n", n, message.UpdateData.Iteration)
 
 			updateLock.Lock() 
@@ -372,9 +324,7 @@ func packetListener(conn net.Conn) {
 			
 
 			if(numberOfUpdates == (numberOfNodes - 1)){
-				// fmt.Println("here")
 				blockToSend := client.createBlock(iterationCount)
-				// fmt.Println(blockToSend)
 				blockMsg := Message{Type: "block", Block: blockToSend}
 				outBuf = logger.PrepareSend("Sending block to all other nodes", blockMsg)
 				
@@ -385,11 +335,9 @@ func packetListener(conn net.Conn) {
 					conn, err := net.Dial("tcp", verifierIP+port)
 					if err != nil {
 						fmt.Printf("Could not connect to %s\n", port)
-						// portsToRetry = append(portsToRetry, port)
 						continue
 					}
 					n, err := conn.Write(outBuf)
-					// fmt.Println(n)
 					if err != nil {
 						fmt.Println("Got a conn write failure writing %d bytes.", n)
 						conn.Close()
@@ -398,16 +346,13 @@ func packetListener(conn net.Conn) {
 				}
 
 				converged = client.checkConvergence()
-				// client.bc.PrintChain()
+				
 				prepareForNextIteration()
 			}
 
 		case "block":
-
-			// fmt.Println(message.Block)			
 			fmt.Printf("Got block message %d bytes, iteration %d\n", n, message.Block.Data.Iteration)
 
-			// blockLock.Lock() 
 
 			for message.Block.Data.Iteration > iterationCount {
 				// A crappy way to block until our iteration matches
@@ -417,10 +362,6 @@ func packetListener(conn net.Conn) {
 
 			client.bc.AddBlockMsg(message.Block)			
 
-			// blockLock.Unlock()
-
-			// client.bc.PrintChain()		
-			// fmt.Println("Iteration done")
 
 			converged = client.checkConvergence()
 
@@ -428,54 +369,6 @@ func packetListener(conn net.Conn) {
 
 	}
 
-
-
-	// switch message.Type {
-
-	// case "update":
-
-	// 	fmt.Printf("Got update message %d bytes, iteration %d\n", n, message.UpdateData.Iteration)
-	// 	updateLock.Lock() 
-	// 	fmt.Println(message.UpdateData)
-	// 	numberOfUpdates := client.addBlockUpdate(message.UpdateData) 
-	// 	updateLock.Unlock()
-	// 	fmt.Println(numberOfNodes -  1) // why the fuck is thois -1? I'll be back
-	// 	if(numberOfUpdates == (numberOfNodes - 1)){
-	// 		fmt.Println("here")
-	// 		client.createBlock(iterationCount)
-	// 		//send Block
-	// 	}
-
-
-	// Get a request. If the iteration count is correct, reply with your gradient.
-	// case "request":
-
-
-	// 	outMessage := Message{Type: "update", UpdateData: client.update}
-	// 	outBuf = logger.PrepareSend("Sending update", outMessage)
-	// 	fmt.Printf("Sending update %d\n", iterationCount)
-
-	// CF: This whole section is confusing, I change it. But should it easy to integrate.
-	// case "block":
-	// 	fmt.Printf("Got block message %d bytes, iteration %d\n", n, message.Block.Data.Iteration)
-	// 	// CF: You will need to do "first block wins" semantics here
-	// 	for message.RequestData.Iteration > iterationCount {
-	// 		// A crappy way to block until our iteration matches
-	// 		fmt.Printf("Blocking. Got block for %d, I am at %d\n", message.RequestData.Iteration, iterationCount)
-	// 		time.Sleep(1000 * time.Millisecond)
-	// 	}
-
-	// 	if message.Block.Data.Iteration == iterationCount {
-	// 		if verifyBlock(message.Block) {
-	// 			didReceiveBlock = true
-	// 			receivedBlock = message.Block
-	// 			bc.AppendBlock(&receivedBlock)
-	// 		} else {
-	// 			fmt.Printf("Bad block. Hash was incorrect\n")
-	// 		}
-	// 	} else {
-	// 		fmt.Printf("Bad block. Got %d but iteration is on %d \n", message.RequestData.Iteration, iterationCount)
-	// 	}
 
 	// 	outMessage := Message{Type: "ack", AckData: Ack{Iteration: iterationCount}}
 	// 	outBuf = logger.PrepareSend("Sending ack", outMessage)
@@ -498,16 +391,15 @@ func packetListener(conn net.Conn) {
 
 func messageSender(ports []string) {
 	
+	//Continous for loop that checks if an update to be sent
+
 	outBuf := make([]byte, 2048)
 
 	for {
 
-		// fmt.Printf("Starting at iteration %d\n", iterationCount)
-		// boolLock.Lock()
 
 		if(verifier){
 
-			// boolLock.Unlock()
 			continue;
 		}
 
@@ -515,17 +407,13 @@ func messageSender(ports []string) {
 			
 			fmt.Printf("Computing Update\n")
 
-			// blockLock.Lock()
 			client.computeUpdate(iterationCount, datasetName)
-			// blockLock.Unlock()
 
 			portsToConnect = VRF(iterationCount)
 
-			// CF: In future, portsToConnect will change every iteration, as the VRF is run.
 			portsToRetry := []string{}
 			for _, port := range portsToConnect {
 
-				// First, establish a connection.
 				conn, err := net.Dial("tcp", verifierIP+port)
 
 				if err != nil {
@@ -545,7 +433,6 @@ func messageSender(ports []string) {
 
 				fmt.Printf("Update sent %d bytes, Iteration: %d\n " , n, msg.UpdateData.Iteration)
 
-				// fmt.Println(n)
 				if err != nil {
 					fmt.Println("Got a conn write failure writing %d bytes.", n)
 					conn.Close()
@@ -556,99 +443,7 @@ func messageSender(ports []string) {
 			updateSent = true		
 			
 		}
-		// boolLock.Unlock()
 
-
-			// fmt.Printf("Sent request %d byte, iteration %d\n", n, iterationCount)
-
-			// // Get the response from the connection
-			// inBuf := make([]byte, 1024)
-			// n, err = conn.Read(inBuf)
-			// if err != nil {
-			// 	fmt.Printf("Got a reply read failure reading %d bytes.\n", n)
-			// 	conn.Close()
-			// 	os.Exit(1)
-			// }
-
-		// 	updateMessage := &Message{}
-		// 	logger.UnpackReceive("received message", inBuf[0:n], &replyMessage)
-
-		// 	fmt.Printf("Got update message %d bytes, iteration %d\n", n, replyMessage.UpdateData.Iteration)
-		// 	updateLock.Lock()
-		// 	updates = append(updates, replyMessage.UpdateData)
-		// 	updateLock.Unlock()
-		// 	fmt.Printf("Stored update %d\n", replyMessage.UpdateData.Iteration)
-
-		// }
-
-		// // Once received all updates start generating block
-	// 	if len(updates) == len(clusterPorts)+1 {
-
-	// 		block, err := generateBlock()
-	// 		if err == nil {
-	// 			fmt.Printf("Prev. hash: %x\n", block.PrevBlockHash)
-	// 			fmt.Printf("Data: %s\n", block.Data.String())
-	// 			fmt.Printf("Hash: %x\n", block.Hash)
-	// 			ackCount := 0
-	// 			portsToRetry2 := []string{}
-	// 			for _, port := range portsToConnect {
-
-	// 				// First, establish a connection.
-	// 				conn, err := net.Dial("tcp", localHost+port)
-
-	// 				if err != nil {
-	// 					fmt.Printf("Could not connect to %s\n", port)
-	// 					portsToRetry2 = append(portsToRetry2, port)
-	// 					continue
-	// 				}
-	// 				var n int
-	// 				// Send block
-	// 				message := Message{Type: "block", Block: block}
-	// 				outBuf := logger.PrepareSend("Sending block", message)
-	// 				n, err = conn.Write(outBuf)
-	// 				if err != nil {
-	// 					fmt.Println("Got a conn write failure.")
-	// 				}
-
-	// 				// Get the response from the connection
-	// 				inBuf := make([]byte, 1024)
-	// 				n, err = conn.Read(inBuf)
-	// 				if err != nil {
-	// 					fmt.Printf("Got a reply read failure reading %d bytes.\n", n)
-	// 					conn.Close()
-	// 					os.Exit(1)
-	// 				}
-
-	// 				replyMessage := &Message{}
-	// 				logger.UnpackReceive("received message", inBuf[0:n], &replyMessage)
-
-	// 				fmt.Printf("Got update message %d bytes, iteration %d\n", n, replyMessage.AckData.Iteration)
-	// 				ackCount++
-	// 				fmt.Printf("Counted ack %d\n", replyMessage.AckData.Iteration)
-	// 			}
-
-	// 			if ackCount == len(clusterPorts)+1 {
-
-	// 			} else {
-	// 				portsToConnect = portsToRetry
-	// 				time.Sleep(retryDuration * time.Millisecond)
-	// 			}
-	// 		} else {
-	// 			// CF: I don't understand why this is here?
-	// 			fmt.Printf("Prev. hash: %x\n", receivedBlock.PrevBlockHash)
-	// 			fmt.Printf("Received Data: %s\n", receivedBlock.Data.String())
-	// 			fmt.Printf("Hash: %x\n", receivedBlock.Hash)
-	// 		}
-
-	// 		prepareForNextIteration()
-	// 		msg := "Updating iteration count to " + strconv.Itoa(iterationCount)
-	// 		fmt.Println(msg)
-	// 		logger.LogLocalEvent(msg)
-
-	// 	} else {
-	// 		portsToConnect = portsToRetry
-	// 		time.Sleep(retryDuration * time.Millisecond)
-	// 	}
 	}
 }
 
@@ -660,6 +455,8 @@ func VRF(iterationCount int) []string{
 	return verifiers	
 }
 
+// Some redundant code. This doesn't get used
+
 func (msg Message) ToByte() []byte {
 
 	var msgBytes bytes.Buffer 
@@ -669,7 +466,6 @@ func (msg Message) ToByte() []byte {
         fmt.Println("encode error:", err)
     }
 
-    // fmt.Println(blockDataBytes.Bytes())
     return msgBytes.Bytes()
 
     // How to decode this thing. I will leave it here for future ref.
