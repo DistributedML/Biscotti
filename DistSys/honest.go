@@ -61,8 +61,9 @@ func (honest *Honest) initializeData(datasetName string, numberOfNodes int) {
 
 func (honest *Honest) checkConvergence() bool {
 
+	fmt.Println("Going into Python")
 	trainError, _ := testModel(honest.bc.getLatestGradient(), "global")
-	fmt.Printf("Train Error: %d\n",trainError)
+	fmt.Printf("Train Error is %d in Iteration %d",trainError,honest.bc.blocks[len(honest.bc.blocks)-1].Data.Iteration)
 	if (trainError<convThreshold){
 		return true
 	}
@@ -184,18 +185,36 @@ func (honest *Honest) flushUpdates(numberOfNodes int) {
 
 func testModel(weights []float64, node string) (float64, float64) {
 
+	
+	fmt.Println("Creating arg array")
 	argArray := python.PyList_New(len(weights))
+	fmt.Println("Arg array created")
 
 	for i := 0; i < len(weights); i++ {
 		python.PyList_SetItem(argArray, i, python.PyFloat_FromDouble(weights[i]))
 	}
 
-    pyTrainResult := pyTrainFunc.CallFunction(argArray)
+	fmt.Println("Calling PyTrain")
+
+    pyTrainResult := pyTrainFunc.CallFunction(argArray) // sometimes this never returns. I have no clue what to do about this
+	
+	fmt.Println("PyTrain called")
+	fmt.Println(pyTrainResult)
+
     trainErr := python.PyFloat_AsDouble(pyTrainResult)
 
+
+
+
+
 	pyTestResult := pyTestFunc.CallFunction(argArray)
+	
+	fmt.Println("PyTest called")
+	fmt.Println(pyTestResult)
+
 	testErr := python.PyFloat_AsDouble(pyTestResult)
 	
+	fmt.Println("Returning")
 	return trainErr, testErr
 
 }
