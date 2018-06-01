@@ -9,6 +9,9 @@ import (
 	"gonum.org/v1/gonum/mat"
 	"math"
 	"strconv"
+	"os"
+	"bufio"
+	
 )
 
 var (
@@ -285,6 +288,7 @@ func getData(filePath string) dataframe.DataFrame {
 	return df
 
 }
+
 
 // Error - checking
 
