@@ -1,16 +1,16 @@
 package main
 
-import(
+import (
 	"fmt"
 	// "encoding/binary"
-	  "encoding/gob"
 	"bytes"
+	"encoding/gob"
 )
 
 type BlockData struct {
-	Iteration   int
-	GlobalW 	[]float64
-	Deltas  	[]Update
+	Iteration int
+	GlobalW   []float64
+	Deltas    []Update
 }
 
 //create nw BlockData
@@ -23,48 +23,48 @@ func NewBlockData(iteration int, globalW []float64, deltas []Update) *BlockData 
 
 func (blockdata BlockData) String() string {
 	return fmt.Sprintf("Iteration: %d, GlobalW: %s, deltas: %s",
-		blockdata.Iteration, arrayToString(blockdata.GlobalW,","), arrayToStringUpdate(blockdata.Deltas,","))
+		blockdata.Iteration, arrayToString(blockdata.GlobalW, ","), arrayToStringUpdate(blockdata.Deltas, ","))
 }
 
 //converts blockData to an array of bytes
 
 func (blockdata BlockData) ToByte() []byte {
 
-	var blockDataBytes bytes.Buffer 
-	enc:= gob.NewEncoder(&blockDataBytes)       
-    err := enc.Encode(blockdata)
-    if err != nil {
-        fmt.Println("encode error:", err)
-    }
+	var blockDataBytes bytes.Buffer
+	enc := gob.NewEncoder(&blockDataBytes)
+	err := enc.Encode(blockdata)
+	if err != nil {
+		fmt.Println("encode error:", err)
+	}
 
-    // fmt.Println(blockDataBytes.Bytes())
-    return blockDataBytes.Bytes()
+	// fmt.Println(blockDataBytes.Bytes())
+	return blockDataBytes.Bytes()
 
-    // How to decode this thing. I will leave it here for future ref.
+	// How to decode this thing. I will leave it here for future ref.
 
-    // var q Q
-    // err = dec.Decode(&q)
-    // if err != nil {
-    // Decode (receive) the value.
-    //     log.Fatal("decode error:", err)
-    // }
-    // fmt.Printf("%q: {%d,%d}\n", q.Name, *q.X, *q.Y)
+	// var q Q
+	// err = dec.Decode(&q)
+	// if err != nil {
+	// Decode (receive) the value.
+	//     log.Fatal("decode error:", err)
+	// }
+	// fmt.Printf("%q: {%d,%d}\n", q.Name, *q.X, *q.Y)
 
-} 
+}
 
-func arrayToStringUpdate(a []Update, delim string) string{
-    
-    updates := "["
-    numUpdates:= len(a)
-    for i := 0; i < numUpdates; i++ {
-        updates += a[i].String()
-        if(i != numUpdates - 1){
-            updates += " "+delim
-        }
-    }
-    updates += "]"
-    // return strings.Trim(strings.Replace(fmt.Sprint(a.String), " ", delim, -1), "[]")
-    return updates
+func arrayToStringUpdate(a []Update, delim string) string {
+
+	updates := "["
+	numUpdates := len(a)
+	for i := 0; i < numUpdates; i++ {
+		updates += a[i].String()
+		if i != numUpdates-1 {
+			updates += " " + delim
+		}
+	}
+	updates += "]"
+	// return strings.Trim(strings.Replace(fmt.Sprint(a.String), " ", delim, -1), "[]")
+	return updates
 }
 
 // A more difficult version of byte conversion. Doesn't work
@@ -73,10 +73,10 @@ func arrayToStringUpdate(a []Update, delim string) string{
 // func (blockdata BlockData) ToByte() []byte {
 // 	var blockDataBytes []byte
 
-// 	iterationBytes:= make([]byte,4) 
+// 	iterationBytes:= make([]byte,4)
 // 	binary.LittleEndian.Putint32(iterationBytes, blockdata.Iteration)
 // 	fmt.Println(iterationBytes)
-// 	// err := binary.Write(iterationBytes, binary.LittleEndian, blockdata.Iteration)	
+// 	// err := binary.Write(iterationBytes, binary.LittleEndian, blockdata.Iteration)
 // 	// if err != nil {
 // 	// 	fmt.Println("Iteration:%d", blockdata.Iteration)
 // 	// 	fmt.Println("got here 1")
@@ -90,8 +90,8 @@ func arrayToStringUpdate(a []Update, delim string) string{
 // 		fmt.Println("got here 2")
 //         fmt.Println("binary.Write failed:", err)
 //     }
-// 	blockDataBytes = append(blockDataBytes, aggregationBytes.Bytes()...)	
-	
+// 	blockDataBytes = append(blockDataBytes, aggregationBytes.Bytes()...)
+
 // 	var updateBytes[]byte
 // 	for _, update := range blockdata.Updates {
 // 		updateBytes = append(updateBytes, update.ToByte()...)
@@ -99,13 +99,4 @@ func arrayToStringUpdate(a []Update, delim string) string{
 
 // 	blockDataBytes = append(blockDataBytes,updateBytes...)
 // 	return blockDataBytes
-// } 
-
-
-
-
-
-
-
-
-
+// }

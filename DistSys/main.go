@@ -1,94 +1,62 @@
 package main
 
-import(
-	"fmt"
+import (
 	"bufio"
-	"os"
-	"strconv"
-	"net"
-	"net/rpc"	
-	"bytes"
-	"encoding/gob"
-	"time"
-	"log"
-	// "encoding/binary"
-	// "math"
-	"sync"
 	"errors"
-	// "encoding/csv"
-	// "encoding/csv"
-	// "kniren/gota"
-	// "io"
-	// "container/list"
+	"fmt"
+	"github.com/DistributedClocks/GoVector/govec"
 	"github.com/kniren/gota/dataframe"
 	"github.com/sbinet/go-python"
-	// "gonum.org/v1/gonum/mat"
-	"github.com/DistributedClocks/GoVector/govec"
-
+	"log"
+	"net"
+	"net/rpc"
+	"os"
+	"strconv"
+	"sync"
+	"time"
 )
-
-// RPC doesn't return. Thats the problem.
-
-type Message struct {
-	Type        string
-	UpdateData  Update
-	Block       Block
-	// RequestData Request
-	// AckData     Ack
-}
-
-type Ack struct {
-	Iteration int
-}
-
-type Peer int
-
-
-
 
 const (
-	basePort	int 			= 8000
-	myIP		string 			= "127.0.0.1:"
-	verifierIP	string  		= "127.0.0.1:"
-	timeoutNS 	time.Duration 	= 10000000000
+	basePort     int           = 8000
+	myIP         string        = "127.0.0.1:"
+	verifierIP   string        = "127.0.0.1:"
+	timeoutNS    time.Duration = 10000000000
+	numVerifiers int           = 1
 )
 
-var(
-	
-	datasetName 	string
-	verifier 		bool
-	ensureRPC  		chan error
-	myPort			string
-	portsToConnect  []string
-	clusterPorts    []string
-	client 			Honest
-	iterationCount  = -1
-	updateLock 		sync.Mutex
-	blockLock		sync.Mutex
-	boolLock		sync.Mutex
-	convergedLock	sync.Mutex
-	verifierLock 	sync.Mutex
+var (
 
-	numFeatures 	int
-	minClients		int
-	pulledGradient 	[]float64
-	deltas 			[]float64
-	updates			[]Update
-	updateSent		bool
-	converged		bool
+	//Input arguments
+	datasetName   string
+	numberOfNodes int
 
-	numberOfNodes 	int
+	client Honest
 
+	ensureRPC      chan error
+	portsToConnect []string
+	clusterPorts   []string
 
-	errLog          *log.Logger = log.New(os.Stderr, "[err] ", log.Lshortfile|log.LUTC|log.Lmicroseconds)
-	outLog          *log.Logger = log.New(os.Stderr, "[peer] ", log.Lshortfile|log.LUTC|log.Lmicroseconds)
+	//Locks
+	updateLock    sync.Mutex
+	boolLock      sync.Mutex
+	convergedLock sync.Mutex
 
+	// global shared variables
+	updateSent     bool
+	converged      bool
+	verifier       bool
+	iterationCount = -1
 
-	logger          *govec.GoLog
-	didReceiveBlock  bool
-	staleUpdateError error = errors.New("Stale Update")
+	//Logging
+	errLog *log.Logger = log.New(os.Stderr, "[err] ", log.Lshortfile|log.LUTC|log.Lmicroseconds)
+	outLog *log.Logger = log.New(os.Stderr, "[peer] ", log.Lshortfile|log.LUTC|log.Lmicroseconds)
+	logger *govec.GoLog
+
+	//Errors
+	staleError error = errors.New("Stale Update/Block")
 )
 
+// Python init function for go-python
 func init() {
 	err := python.Initialize()
 	if err != nil {
@@ -96,43 +64,131 @@ func init() {
 	}
 }
 
-func amVerifier(nodeNum int) bool{
+// RPC CALLS
 
-	//THIS WILL CHANGE AS OUR VRF APPROACH MATURES
-	if((iterationCount%numberOfNodes) == client.id){
+type Peer int
+
+// The peer receives an update from another peer if its a verifier in that round.
+// The verifier peer takes in the update and returns immediately.
+// It calls a separate go-routine for collecting updates and sending updates when all updates have been collected
+// Returns:
+// - StaleError if its an update for a preceding round.
+
+func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
+
+	fmt.Printf("Got update message, iteration %d\n", update.Iteration)
+
+	if update.Iteration < iterationCount {
+		handleErrorFatal("Update of previous iteration received", staleError)
+		return staleError
+	}
+
+	for update.Iteration > iterationCount {
+		fmt.Printf("Blocking. Got update for %d, I am at %d\n", update.Iteration, iterationCount)
+		time.Sleep(1000 * time.Millisecond)
+	}
+
+	go processUpdate(update)
+
+	return nil
+
+}
+
+// The peer receives a block from the verifier of that round.
+// It takes in the block and returns immediately.
+// It calls a separate go-routine for appending the block as part of its chain
+// Returns:
+// - staleError if its an block for a preceding round.
+
+func (s *Peer) RegisterBlock(block Block, _ignored *bool) error {
+
+	fmt.Printf("Got block message, iteration %d\n", block.Data.Iteration)
+
+	if block.Data.Iteration < iterationCount {
+		handleErrorFatal("Block of previous iteration received", staleError)
+		return staleError
+	}
+
+	for block.Data.Iteration > iterationCount {
+		fmt.Printf("Blocking. Got block for %d, I am at %d\n", block.Data.Iteration, iterationCount)
+		time.Sleep(1000 * time.Millisecond)
+	}
+
+	go addBlockToChain(block)
+
+	return nil
+
+}
+
+// Basic check to see if you are the verifier in the next round
+
+func amVerifier(nodeNum int) bool {
+
+	//TODO: THIS WILL CHANGE AS OUR VRF APPROACH MATURES.
+	if (iterationCount % numberOfNodes) == client.id {
 		return true
-	}else{
+	} else {
 		return false
 	}
 
 }
+
+// Dummy placeholder VRF function
+
+func VRF(iterationCount int) []string {
+
+	// TODO: THIS WILL CHANGE AS THE VRF IMPLEMENTATION CHANGES
+	verifiers := make([]string, numVerifiers)
+	verifiers[0] = strconv.Itoa(basePort + (iterationCount % numberOfNodes))
+	return verifiers
+
+}
+
+// Error handling
+
+func handleErrorFatal(msg string, e error) {
+
+	if e != nil {
+		errLog.Fatalf("%s, err = %s\n", msg, e.Error())
+	}
+
+}
+
+func exitOnError(prefix string, err error) {
+
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s, err = %s\n", prefix, err.Error())
+		os.Exit(1)
+	}
+}
+
+// Parse args, read dataset and initialize separate threads for listening for updates/blocks and sending updates
 
 func main() {
 
 	//Parsing arguments nodeIndex, numberOfNodes, datasetname
 	//TODO: CLean this up a little Use flags used in the peer to peer blockchain tutorial
 
-	//Known Issues: RPC's doesn't get called on the other side.Why? God Why?
-
 	nodeNum, err := strconv.Atoi(os.Args[1])
+
 	if err != nil {
 		fmt.Println("First argument should be index of node")
 		return
 	}
+
 	numberOfNodes, err = strconv.Atoi(os.Args[2])
+
 	if err != nil {
 		fmt.Println("Second argument should be the total number of nodes")
 		return
-	}	
+	}
+
 	datasetName := os.Args[3]
 
-
-	logger = govec.InitGoVector(os.Args[1], os.Args[1])	
-	gob.Register(&net.TCPAddr{})
-
+	logger = govec.InitGoVector(os.Args[1], os.Args[1])
 
 	// getports of all other clients in the system
-	myPort = strconv.Itoa(nodeNum + basePort)
+	myPort := strconv.Itoa(nodeNum + basePort)
 	for i := 0; i < numberOfNodes; i++ {
 		if strconv.Itoa(basePort+i) == myPort {
 			continue
@@ -140,167 +196,83 @@ func main() {
 		clusterPorts = append(clusterPorts, strconv.Itoa(basePort+i))
 	}
 
-	//Initialize a honest client	
+	//Initialize a honest client
 	client = Honest{id: nodeNum, blockUpdates: make([]Update, 0, 5)}
-	
-	
-	// Reading data and decalring some global locks to be used later 
+
+	// Reading data and declaring some global locks to be used later
 	client.initializeData(datasetName, numberOfNodes)
 	converged = false
 	verifier = false
 
 	updateLock = sync.Mutex{}
-	blockLock = sync.Mutex{}
 	boolLock = sync.Mutex{}
 	convergedLock = sync.Mutex{}
-	verifierLock = sync.Mutex{}
-	ensureRPC = make(chan error)
 
+	ensureRPC = make(chan error)
 
 	// Initializing RPC Server
 	peer := new(Peer)
 	peerServer := rpc.NewServer()
-	peerServer.Register(peer) 
+	peerServer.Register(peer)
 
+	prepareForNextIteration()
 
-	prepareForNextIteration()		
-
-	
-	// Send Updates and Serve incoming messages at the same time
 	go messageListener(peerServer, myPort)
 	messageSender(clusterPorts)
 
-
-
 }
 
-func prepareForNextIteration() {
-	
-	// End if converged
+// At the start of each iteration, this function is called to reset shared global variables
+// based on whether you are a verifier or not.
 
-	fmt.Println("RPC 11")
+func prepareForNextIteration() {
+
 	convergedLock.Lock()
-	if(converged){
-		
-		convergedLock.Unlock()		
-		time.Sleep(1000 * time.Millisecond)	
+
+	if converged {
+
+		convergedLock.Unlock()
+		time.Sleep(1000 * time.Millisecond)
 		client.bc.PrintChain()
 		os.Exit(1)
 	}
-	convergedLock.Unlock()
-	fmt.Println("RPC 12")
 
-	// If you were the verifier, empty update buffer
+	convergedLock.Unlock()
+
 	boolLock.Lock()
 
-	fmt.Println("RPC 13")
-
-	if(verifier){
+	if verifier {
 		updateLock.Lock()
 		client.flushUpdates(numberOfNodes)
 		updateLock.Unlock()
 	}
 
-	fmt.Println("RPC 14")
 	iterationCount++
+
 	verifier = amVerifier(client.id)
-	fmt.Println("RPC 15")
-	if(verifier){
+
+	if verifier {
 		fmt.Println("I am verifier")
-		updateSent = true	
-	}else{		
+		updateSent = true
+	} else {
 		fmt.Println("I am not verifier")
 		updateSent = false
-	}	
+	}
 
 	boolLock.Unlock()
-	fmt.Println("RPC 16")
-
-
-
-
 
 	portsToConnect = make([]string, len(clusterPorts))
 	copy(portsToConnect, clusterPorts)
-}
-
-func getData(filePath string) dataframe.DataFrame{
-
-	// Read data into the dataframe from the given filepath
-	f, err:= os.Open(filePath)
-	check(err)
-	df := dataframe.ReadCSV(bufio.NewReader(f))
-	return df
 
 }
 
-func check(e error) {
-    if e != nil {
-        panic(e)
-    }
-}
-
-
-func divideData(data dataframe.DataFrame,numberOfNodes int) []dataframe.DataFrame{
-
-	// Divide the dataset equally among the number of nodes
-
-	var dividedData []dataframe.DataFrame
-	indexes := make([]int, 0)
-
-	var stepsize int
-	start:= 0
-	end :=  0
-	
-	stepsize = data.Nrow()/numberOfNodes
-
-	for i := 0; i < numberOfNodes; i++ {
-		
-		if(i==numberOfNodes-1){
-			end = data.Nrow()
-		}else{
-			end = start+stepsize
-		}
-
-
-		for j := 0; j < (end - start); j++ {
-			if(i==0){
-				indexes = append(indexes, start+j)
-			}else{
-
-				if(j < len(indexes)){
-					indexes[j] = start + j			
-				}else{
-					indexes = append(indexes, start+j)
-				}
-			}
-
-		}
-		dividedData = append(dividedData, data.Subset(indexes))
-		start = start + stepsize
-		
-	}
-
-	return dividedData
-
-}
-
-func createCSVs(nodeData dataframe.DataFrame, datasetName string, nodeID int){
-	
-	// create a CSV for your part of the dataset
-	filename :=  datasetName + strconv.Itoa(nodeID) + ".csv"
-	file, err := os.Create(datasetPath + filename)
-	check(err)
-	nodeData.WriteCSV(bufio.NewWriter(file))
-}
+// Thread that listens for incoming RPC Calls
 
 func messageListener(peerServer *rpc.Server, port string) {
-	
-	// Listen for incoming connections and serve them
 
 	l, e := net.Listen("tcp", myIP+port)
 	handleErrorFatal("listen error", e)
-	
+
 	outLog.Printf("Peer started. Receiving on %s\n", port)
 
 	for {
@@ -311,174 +283,103 @@ func messageListener(peerServer *rpc.Server, port string) {
 
 }
 
-func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
+// go routine to process the update received by non verifying nodes
 
-	
-	fmt.Printf("Got update message, iteration %d\n", update.Iteration)
+func processUpdate(update Update) {
 
-	// boolLock.Lock()
-
-	if update.Iteration < iterationCount {
-		handleErrorFatal("Update of previous iteration received", staleUpdateError)
-		return staleUpdateError
-	}		
-
-	for update.Iteration > iterationCount {
-		// A crappy way to block until our iteration matches
-		fmt.Printf("Blocking. Got update for %d, I am at %d\n", update.Iteration, iterationCount)
-		time.Sleep(1000 * time.Millisecond)
-	}
-
-	go processUpdate(update)
-
-	// fmt.Println("RPC: 3")
-
-
-	// fmt.Println("RPC: 7")
-
-	
-	// fmt.Println("RPC: 8")
-
-	return nil
-
-}
-
-func processUpdate(update Update){
-
-	updateLock.Lock() 
-	fmt.Println("RPC: 41")
-	numberOfUpdates := client.addBlockUpdate(update) 
+	updateLock.Lock()
+	numberOfUpdates := client.addBlockUpdate(update)
 	updateLock.Unlock()
 
-	fmt.Println(numberOfUpdates) 		
-
-	// Sometimes runs until here and then stops. Its either not going inside the 
-	
-	fmt.Println("RPC: 41")
+	fmt.Println(numberOfUpdates)
 
 
-	if(numberOfUpdates == (numberOfNodes - 1)){
-
-		// sometimes blocks on this
-		fmt.Println("RPC: 42")
+	if numberOfUpdates == (numberOfNodes - 1) {
 
 		blockToSend := client.createBlock(iterationCount)
-		
-		fmt.Println("RPC: 43")
-
-		// updateLock.Unlock()		
-		// If iteration ends, GoRourtine to make the relevant rpc calls for registering block	
 		sendBlock(blockToSend)
 
-		fmt.Println("RPC: 44")
-
 	}
-
-	fmt.Println("RPC: 45")
-
 
 
 }
 
-func sendBlock(block Block){
+// Verifier broadcasts the block of this iteration to all peers
 
-	// Send a Block to each individual client in the network
+func sendBlock(block Block) {	
 
 	fmt.Printf("Sending block. Iteration: %d\n", block.Data.Iteration)
 
-
-	// create a thread for separate 
-	for _, port := range clusterPorts {
-		
-		fmt.Println(port)
-		go callRegisterBlockRPC(block, port)								
-		fmt.Println("RPC: 4")
-		
-	}
-
-	//check for convergence and move to the new iteration	
-
-	fmt.Println("RPC: 5")
+	// create a thread for separate calling
 	
-	convergedLock.Lock()	
-	fmt.Println("RPC: 6")
+	for _, port := range clusterPorts {
 
-	converged = client.checkConvergence()	
+		fmt.Println(port)
+		go callRegisterBlockRPC(block, port)
+
+	}
+	
+	//check for convergence, wait for RPC calls to return and move to the new iteration
+
+	convergedLock.Lock()
+	converged = client.checkConvergence()
 	convergedLock.Unlock()
-	fmt.Println("RPC: 7")
-
 
 	ensureRPCCallsReturn()
 	prepareForNextIteration()
 
 }
 
-func ensureRPCCallsReturn(){
-	
-	for i := 0; i < (numberOfNodes-1); i++ {
-		<- ensureRPC
-		fmt.Println("RPC done: %i\n")
+// output from channel to ensure all RPC calls to broadcast block are successful
+
+func ensureRPCCallsReturn() {
+
+	for i := 0; i < (numberOfNodes - 1); i++ {
+		<-ensureRPC
 	}
+
 }
 
-func callRegisterBlockRPC( block Block, port string){
+// RPC call to send block to one peer
 
-	// var ign bool 	
-	// err := conn.Call("Peer.RegisterBlock", block ,&ign)
-	// handleErrorFatal("Sending Block failed", err)
-	// conn.Close()
+func callRegisterBlockRPC(block Block, port string) {
 
-	var ign bool	
+	var ign bool
 	c := make(chan error)
-	fmt.Println("RPC: 1")
-	conn, er := rpc.Dial("tcp", myIP+port) // sometimes gets stuck on this.Unexpected EOF cause
-	fmt.Println("RPC: 2")		
-	exitOnError("rpc Dial",er)	
+
+	conn, er := rpc.Dial("tcp", myIP+port) 
+	exitOnError("rpc Dial", er)
 	defer conn.Close()
-	fmt.Println("RPC: 3")		
-	
-	go func() { c <- conn.Call("Peer.RegisterBlock", block ,&ign) } ()
+
+	go func() { c <- conn.Call("Peer.RegisterBlock", block, &ign) }()
 	select {
-	  case err := <-c:
+	case err := <-c:
 
-		fmt.Println("RPC successful")		
-		handleErrorFatal("Error in sending update",err)		
-		ensureRPC <- err		
-		
-	    // use err and result
-	  case <-time.After(timeoutNS):
+		fmt.Println("RPC successful")
+		handleErrorFatal("Error in sending update", err)
+		ensureRPC <- err
 
-	  	fmt.Println("Timed out")
-	    callRegisterBlockRPC(block,port)
+		// use err and result
+	case <-time.After(timeoutNS):
+
+		fmt.Println("Timed out")
+		callRegisterBlockRPC(block, port)
 	}
 
 }
 
+// go-routine to process a block received and add to chain. 
+// Move to next iteration when done
 
-func (s *Peer) RegisterBlock(block Block, _ignored *bool) error {
+func addBlockToChain(block Block) {
 
-	fmt.Printf("Got block message, iteration %d\n",  block.Data.Iteration)
-	for block.Data.Iteration > iterationCount {
-		// A crappy way to block until our iteration matches
-		fmt.Printf("Blocking. Got block for %d, I am at %d\n", block.Data.Iteration, iterationCount)
-		time.Sleep(1000 * time.Millisecond)
-	}
-	go addBlockToChain(block)	// can make this a goroutine
-	return nil
+	client.bc.AddBlockMsg(block)
 
-}
-
-func addBlockToChain(block Block){
-
-	client.bc.AddBlockMsg(block)		
-	
-	//This might cause more problems than solutions
-	if(block.Data.Iteration == iterationCount){
+	if block.Data.Iteration == iterationCount {
 		boolLock.Lock()
 		updateSent = true
 		boolLock.Unlock()
 	}
-	
 
 	convergedLock.Lock()
 	converged = client.checkConvergence()
@@ -487,31 +388,24 @@ func addBlockToChain(block Block){
 
 }
 
+// Main sending thread. Checks if you are a non-verifier in the current itearation 
+// Sends update if thats the case.
+// TODO: Replace with channels for cleanliness
 
 func messageSender(ports []string) {
-	
-	//Continous for loop checking if update needs to be sent.
-	// If update needs to be sent, compute update and make RPC call
 
-	// replace this with channels if possible
+	for {
 
-	for{
+		if verifier {
 
-
-
-
-
-		if(verifier){
-			
 			time.Sleep(100 * time.Millisecond)
-			continue;
+			continue
 		}
 
 		boolLock.Lock()
-		
-		if(!updateSent){
 
-			
+		if !updateSent {
+
 			fmt.Printf("Computing Update\n")
 
 			client.computeUpdate(iterationCount, datasetName)
@@ -521,16 +415,16 @@ func messageSender(ports []string) {
 			portsToConnect = VRF(iterationCount)
 
 			fmt.Printf("Computed Verifier\n")
-			
-			for _, port := range portsToConnect {	
+
+			for _, port := range portsToConnect {
 
 				go sendUpdateToVerifier(port)
-				
+
 				fmt.Printf("RPC Called\n")
-				
-				if(iterationCount == client.update.Iteration){
+
+				if iterationCount == client.update.Iteration {
 					updateSent = true
-				}					
+				}
 
 			}
 
@@ -538,294 +432,40 @@ func messageSender(ports []string) {
 
 			boolLock.Unlock()
 
-
-			
-		}else{
+		} else {
 
 			boolLock.Unlock()
-			fmt.Println("Yielding from sending thread")
 			time.Sleep(100 * time.Millisecond)
-		
+
 		}
 
-
-
-
-
 	}
-
 
 }
 
-func sendUpdateToVerifier( port string){
+// Make RPC call to send update to verifier
 
-	var ign bool	
+func sendUpdateToVerifier(port string) {
+
+	var ign bool
 	c := make(chan error)
 
-	conn, err := rpc.Dial("tcp", verifierIP + port)
+	conn, err := rpc.Dial("tcp", verifierIP+port)
 	defer conn.Close()
-
-	handleErrorFatal("Unable to connect to verifier",err)
+	handleErrorFatal("Unable to connect to verifier", err)
 	fmt.Printf("Connected to Verifier. Sending Update, Iteration:%d\n", client.update.Iteration)
-	
-	go func() { c <- conn.Call("Peer.VerifyUpdate", client.update, &ign) } ()
+
+	go func() { c <- conn.Call("Peer.VerifyUpdate", client.update, &ign) }()
 	select {
-	  case err := <-c:
+	case err := <-c:
 		fmt.Println("RPC successful")
-		handleErrorFatal("Error in sending update",err)		
-	    // use err and result
-	  case <-time.After(timeoutNS):
+		handleErrorFatal("Error in sending update", err)
+		// use err and result
+	case <-time.After(timeoutNS):
 
-	  	conn.Close()
-	  	fmt.Println("Timed out")
-	    sendUpdateToVerifier(port)
+		conn.Close()
+		fmt.Println("Timed out")
+		sendUpdateToVerifier(port)
 	}
 
 }
-
-func VRF(iterationCount int) []string{
-
-	// THIS WILL CHANGE AS THE VRF IMPLEMENTATION CHANGES
-	verifiers := make([]string, 1)
-	verifiers[0] = strconv.Itoa(basePort + (iterationCount % numberOfNodes))
-	return verifiers	
-}
-
-func handleErrorFatal(msg string, e error) {
-	if e != nil {
-		errLog.Fatalf("%s, err = %s\n", msg, e.Error())
-	}
-}
-
-func exitOnError(prefix string, err error) {
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%s, err = %s\n", prefix, err.Error())
-		os.Exit(1)
-	}
-}
-
-
-// Some redundant code. This doesn't get used
-
-func (msg Message) ToByte() []byte {
-
-	var msgBytes bytes.Buffer 
-	enc:= gob.NewEncoder(&msgBytes)       
-    err := enc.Encode(msg)
-    if err != nil {
-        fmt.Println("encode error:", err)
-    }
-
-    return msgBytes.Bytes()
-
-    // How to decode this thing. I will leave it here for future ref.
-
-    // var q Q
-    // err = dec.Decode(&q)
-    // if err != nil {
-    // Decode (receive) the value.
-    //     log.Fatal("decode error:", err)
-    // }
-    // fmt.Printf("%q: {%d,%d}\n", q.Name, *q.X, *q.Y)
-
-} 
-
-func byteToMessage(buf []byte) *Message {
-
-	// fmt.Println(buf)
-	msg := Message{}
-	msgBytes := bytes.NewBuffer(buf)
-	dec := gob.NewDecoder(msgBytes)    
-    err := dec.Decode(&msg)
-    
-    if err != nil {
-    	fmt.Println("Decode failed")
-    }
-    
-    fmt.Println(msg)
-
-    // fmt.Printf(msg.UpdateData.String())
-
-    return &msg
-}
-
-
-
-
-// func packetListener(conn net.Conn) {
-
-// 	// handle messages based on whether they are updates or blocks
-
-
-// 	inBuf := make([]byte, 2048)
-
-// 	outBuf := make([]byte, 2048)
-
-
-// 	n, err := conn.Read(inBuf)
-// 	if err != nil {
-// 		fmt.Printf("Got a reply read failure reading %d bytes.\n", n)
-// 		conn.Close()
-// 		os.Exit(1)
-// 	}
-
-// 	var message Message;
-// 	logger.UnpackReceive("received message", inBuf[0:n], &message)
-
-// 	switch message.Type {
-
-// 		case "update":
-
-// 			fmt.Printf("Got update message %d bytes, iteration %d\n", n, message.UpdateData.Iteration)
-
-			
-
-// 			for message.UpdateData.Iteration > iterationCount {
-// 				// A crappy way to block until our iteration matches
-// 				fmt.Printf("Blocking. Got update for %d, I am at %d\n", message.UpdateData.Iteration, iterationCount)
-// 				time.Sleep(1000 * time.Millisecond)
-// 			}
-
-// 			updateLock.Lock() 
-// 			numberOfUpdates := client.addBlockUpdate(message.UpdateData) 
-
-
-// 			fmt.Println(numberOfUpdates) 
-			
-
-// 			if(numberOfUpdates == (numberOfNodes - 1)){
-// 				blockToSend := client.createBlock(iterationCount)
-// 				blockMsg := Message{Type: "block", Block: blockToSend}
-// 				outBuf = logger.PrepareSend("Sending block to all other nodes", blockMsg)
-				
-				
-// 				fmt.Printf("Sending block. Iteration: %d\n", blockMsg.Block.Data.Iteration)
-// 				for _, port := range clusterPorts {
-
-// 					fmt.Println(port)
-// 					conn, err := net.Dial("tcp", verifierIP+port)
-// 					if err != nil {
-// 						fmt.Printf("Could not connect to %s\n", port)
-// 						continue
-// 					}
-// 					n, err := conn.Write(outBuf)
-// 					if err != nil {
-// 						fmt.Println("Got a conn write failure writing %d bytes.", n)
-// 						conn.Close()
-// 						os.Exit(1)
-// 					}
-// 					conn.Close()						
-// 				}
-
-// 				converged = client.checkConvergence()
-				
-// 				prepareForNextIteration()
-// 			}
-// 			updateLock.Unlock()
-
-
-// 		case "block":
-// 			fmt.Printf("Got block message %d bytes, iteration %d\n", n, message.Block.Data.Iteration)
-
-
-// 			for message.Block.Data.Iteration > iterationCount {
-// 				// A crappy way to block until our iteration matches
-// 				fmt.Printf("Blocking. Got block for %d, I am at %d\n", message.Block.Data.Iteration, iterationCount)
-// 				time.Sleep(1000 * time.Millisecond)
-// 			}
-
-// 			client.bc.AddBlockMsg(message.Block)			
-
-
-// 			converged = client.checkConvergence()
-
-// 			prepareForNextIteration()
-
-// 	}
-
-// 	conn.Close()
-// }
-
-
-	// outBuf := make([]byte, 2048)
-
-	// for {
-
-
-	// 	if(verifier){
-
-	// 		continue;
-	// 	}
-
-	// 	if(!updateSent){
-			
-	// 		boolLock.Lock()
-	// 		fmt.Printf("Computing Update\n")
-
-	// 		client.computeUpdate(iterationCount, datasetName)
-
-	// 		portsToConnect = VRF(iterationCount)
-
-	// 		portsToRetry := []string{}
-	// 		for _, port := range portsToConnect {
-
-	// 			conn, err := net.Dial("tcp", verifierIP+port)
-
-	// 			if err != nil {
-	// 				fmt.Printf("Could not connect to %s\n", port)
-	// 				portsToRetry = append(portsToRetry, port)
-	// 				continue
-	// 			}
-
-	// 			var msg Message
-
-	// 			msg.Type = "update"
-	// 			msg.UpdateData = client.update
-
-	// 			outBuf = logger.PrepareSend("Sending update to verifier", msg)
-
-	// 			n, err := conn.Write(outBuf)
-
-	// 			fmt.Printf("Update sent %d bytes, Iteration: %d\n " , n, msg.UpdateData.Iteration)
-	// 			conn.Close()
-
-	// 			if err != nil {
-	// 				fmt.Println("Got a conn write failure writing %d bytes.", n)
-	// 				conn.Close()
-	// 				os.Exit(1)
-	// 			}
-				
-	// 		}
-	// 		updateSent = true
-	// 		boolLock.Unlock()		
-			
-	// 	}
-
-	// }
-
-	//Deprecated Listening code
-	// myaddr, err := net.ResolveTCPAddr("tcp", myIP+port)
-	// if err != nil {
-	// 	fmt.Println("LISTEN ERROR")
-	// }
-
-	// ln, err := net.ListenTCP("tcp", myaddr)
-	// if err != nil {
-	// 	fmt.Println("Could not listen for messages")
-	// }
-
-	// // Reponse to messages. Is this the right way t
-	// for {
-	// 	fmt.Println("Waiting for a message...")
-
-	// 	conn, err := ln.Accept()
-	// 	if err != nil {
-	// 		fmt.Println("Could not accept connection on port")
-	// 	}
-
-	// 	fmt.Println("Got a ping.")
-	// 	go packetListener(conn)
-		
-	// }
-
-

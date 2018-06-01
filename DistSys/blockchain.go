@@ -1,6 +1,6 @@
 package main
 
-import(
+import (
 	"fmt"
 )
 
@@ -23,15 +23,14 @@ func NewBlockchain(numFeatures int) *Blockchain {
 }
 
 func (bc *Blockchain) getLatestGradient() []float64 {
-	
-	prevBlock := bc.blocks[len(bc.blocks) - 1]
+
+	prevBlock := bc.blocks[len(bc.blocks)-1]
 	gradient := make([]float64, len(prevBlock.Data.GlobalW))
 	copy(gradient, prevBlock.Data.GlobalW)
 	return gradient
 }
 
-
-func (bc * Blockchain) PrintChain(){
+func (bc *Blockchain) PrintChain() {
 
 	for _, block := range bc.blocks {
 		fmt.Printf("Prev. hash: %x\n", block.PrevBlockHash)
@@ -42,13 +41,13 @@ func (bc * Blockchain) PrintChain(){
 
 }
 
-func (bc * Blockchain) verifyBlock(block Block) bool{
+func (bc *Blockchain) verifyBlock(block Block) bool {
 
-	return true;
+	return true
 }
 
 func (bc *Blockchain) AddBlockMsg(newBlock Block) {
-	
-	appendBlock := &Block{Timestamp:newBlock.Timestamp, Data: newBlock.Data, PrevBlockHash:newBlock.PrevBlockHash,Hash:newBlock.Hash}	
+
+	appendBlock := &Block{Timestamp: newBlock.Timestamp, Data: newBlock.Data, PrevBlockHash: newBlock.PrevBlockHash, Hash: newBlock.Hash}
 	bc.blocks = append(bc.blocks, appendBlock)
 }
