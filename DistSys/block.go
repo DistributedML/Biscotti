@@ -9,7 +9,6 @@ import (
 	"crypto/sha256"
 	"strconv"
 	"time"
-	// "github.com/sbinet/go-python"
 )
 
 type Block struct {

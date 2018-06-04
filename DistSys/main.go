@@ -76,7 +76,7 @@ type Peer int
 
 func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
 
-	fmt.Printf("Got update message, iteration %d\n", update.Iteration)
+	outLog.Printf("Got update message, iteration %d\n", update.Iteration)
 
 	if update.Iteration < iterationCount {
 		handleErrorFatal("Update of previous iteration received", staleError)
@@ -84,7 +84,7 @@ func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
 	}
 
 	for update.Iteration > iterationCount {
-		fmt.Printf("Blocking. Got update for %d, I am at %d\n", update.Iteration, iterationCount)
+		outLog.Printf("Blocking. Got update for %d, I am at %d\n", update.Iteration, iterationCount)
 		time.Sleep(1000 * time.Millisecond)
 	}
 
@@ -102,7 +102,7 @@ func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
 
 func (s *Peer) RegisterBlock(block Block, _ignored *bool) error {
 
-	fmt.Printf("Got block message, iteration %d\n", block.Data.Iteration)
+	outLog.Printf("Got block message, iteration %d\n", block.Data.Iteration)
 
 	if block.Data.Iteration < iterationCount {
 		handleErrorFatal("Block of previous iteration received", staleError)
@@ -110,7 +110,7 @@ func (s *Peer) RegisterBlock(block Block, _ignored *bool) error {
 	}
 
 	for block.Data.Iteration > iterationCount {
-		fmt.Printf("Blocking. Got block for %d, I am at %d\n", block.Data.Iteration, iterationCount)
+		outLog.Printf("Blocking. Got block for %d, I am at %d\n", block.Data.Iteration, iterationCount)
 		time.Sleep(1000 * time.Millisecond)
 	}
 
@@ -254,10 +254,10 @@ func prepareForNextIteration() {
 	verifier = amVerifier(client.id)
 
 	if verifier {
-		fmt.Println("I am verifier")
+		outLog.Printf("I am verifier. IterationCount:%d", iterationCount)
 		updateSent = true
 	} else {
-		fmt.Println("I am not verifier")
+		outLog.Printf("I am not verifier IterationCount:%d", iterationCount)
 		updateSent = false
 	}
 
@@ -293,14 +293,9 @@ func processUpdate(update Update) {
 	numberOfUpdates := client.addBlockUpdate(update)
 	updateLock.Unlock()
 
-	fmt.Println(numberOfUpdates)
-
-
 	if numberOfUpdates == (numberOfNodes - 1) {
-
 		blockToSend := client.createBlock(iterationCount)
 		sendBlock(blockToSend)
-
 	}
 
 
@@ -310,15 +305,12 @@ func processUpdate(update Update) {
 
 func sendBlock(block Block) {	
 
-	fmt.Printf("Sending block. Iteration: %d\n", block.Data.Iteration)
+	outLog.Printf("Sending block. Iteration: %d\n", block.Data.Iteration)
 
 	// create a thread for separate calling
 	
 	for _, port := range clusterPorts {
-
-		fmt.Println(port)
 		go callRegisterBlockRPC(block, port)
-
 	}
 	
 	//check for convergence, wait for RPC calls to return and move to the new iteration
@@ -357,14 +349,14 @@ func callRegisterBlockRPC(block Block, port string) {
 	select {
 	case err := <-c:
 
-		fmt.Println("RPC successful")
+		outLog.Printf("Block sent to verifiee successful")
 		handleErrorFatal("Error in sending update", err)
 		ensureRPC <- err
 
 		// use err and result
 	case <-time.After(timeoutNS):
 
-		fmt.Println("Timed out")
+		fmt.Println("Timeout. Sending Block. Retrying...")
 		callRegisterBlockRPC(block, port)
 	}
 
@@ -408,29 +400,18 @@ func messageSender(ports []string) {
 
 		if !updateSent {
 
-			fmt.Printf("Computing Update\n")
+			outLog.Printf("Computing Update\n")
 
 			client.computeUpdate(iterationCount, datasetName)
 
-			fmt.Printf("Computed Update\n")
-
 			portsToConnect = VRF(iterationCount)
 
-			fmt.Printf("Computed Verifier\n")
-
 			for _, port := range portsToConnect {
-
 				go sendUpdateToVerifier(port)
-
-				fmt.Printf("RPC Called\n")
-
 				if iterationCount == client.update.Iteration {
 					updateSent = true
 				}
-
 			}
-
-			fmt.Printf("Outside Loop\n")
 
 			boolLock.Unlock()
 
@@ -455,18 +436,18 @@ func sendUpdateToVerifier(port string) {
 	conn, err := rpc.Dial("tcp", verifierIP+port)
 	defer conn.Close()
 	handleErrorFatal("Unable to connect to verifier", err)
-	fmt.Printf("Connected to Verifier. Sending Update, Iteration:%d\n", client.update.Iteration)
+	outLog.Printf("Making RPC Call to Verifier. Sending Update, Iteration:%d\n", client.update.Iteration)
 
 	go func() { c <- conn.Call("Peer.VerifyUpdate", client.update, &ign) }()
 	select {
 	case err := <-c:
-		fmt.Println("RPC successful")
+		outLog.Printf("Update sent successfully")
 		handleErrorFatal("Error in sending update", err)
 		// use err and result
 	case <-time.After(timeoutNS):
 
 		conn.Close()
-		fmt.Println("Timed out")
+		outLog.Printf("Timeout. Sending Update. Retrying...")
 		sendUpdateToVerifier(port)
 	}
 

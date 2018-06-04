@@ -3,7 +3,6 @@ package main
 import (
 	// "math/rand"
 	"encoding/binary"
-	"fmt"
 	"github.com/kniren/gota/dataframe"
 	"github.com/sbinet/go-python"
 	"gonum.org/v1/gonum/mat"
@@ -70,11 +69,9 @@ func (honest *Honest) initializeData(datasetName string, numberOfNodes int) {
 
 func (honest *Honest) checkConvergence() bool {
 
-	fmt.Println("Going into Python")
-
 	trainError, _ := testModel(honest.bc.getLatestGradient(), "global")
 
-	fmt.Printf("Train Error is %d in Iteration %d", trainError, honest.bc.blocks[len(honest.bc.blocks)-1].Data.Iteration)
+	outLog.Printf("Train Error is %d in Iteration %d", trainError, honest.bc.blocks[len(honest.bc.blocks)-1].Data.Iteration)
 
 	if trainError < convThreshold {
 		return true
@@ -90,7 +87,6 @@ func (honest *Honest) computeUpdate(iterationCount int, datasetName string) {
 	deltas, err := oneGradientStep(prevGradient)
 	check(err)
 	honest.update = Update{Iteration: iterationCount, Delta: deltas}
-	// fmt.Println(honest.update)
 }
 
 // Initialize the python stuff using go-python
@@ -103,20 +99,16 @@ func pyInit(datasetName string) {
 
 	pyLogModule = python.PyImport_ImportModule("logistic_model")
 	pyTestModule = python.PyImport_ImportModule("logistic_model_test")
-	fmt.Println(pyTestModule)
 
 	pyLogInitFunc = pyLogModule.GetAttrString("init")
 	pyLogPrivFunc = pyLogModule.GetAttrString("privateFun")
-	fmt.Println(pyLogPrivFunc)
 	pyTrainFunc = pyTestModule.GetAttrString("train_error")
-	fmt.Println(pyTrainFunc)
 	pyTestFunc = pyTestModule.GetAttrString("test_error")
-	fmt.Println(pyTestFunc)
 
 	pyNumFeatures = pyLogInitFunc.CallFunction(python.PyString_FromString(datasetName), python.PyFloat_FromDouble(epsilon))
 	numFeatures := python.PyInt_AsLong(pyNumFeatures)
 
-	fmt.Printf("Sucessfully pulled dataset. Features: %d\n", numFeatures)
+	outLog.Printf("Sucessfully pulled dataset. Features: %d\n", numFeatures)
 
 }
 
@@ -205,16 +197,11 @@ func testModel(weights []float64, node string) (float64, float64) {
 		python.PyList_SetItem(argArray, i, python.PyFloat_FromDouble(weights[i]))
 	}
 
-
 	pyTrainResult := pyTrainFunc.CallFunction(argArray)
-
-	fmt.Println(pyTrainResult)
 
 	trainErr := python.PyFloat_AsDouble(pyTrainResult)
 
 	pyTestResult := pyTestFunc.CallFunction(argArray)
-
-	fmt.Println(pyTestResult)
 
 	testErr := python.PyFloat_AsDouble(pyTestResult)
 
@@ -270,7 +257,6 @@ func divideData(data dataframe.DataFrame, numberOfNodes int) []dataframe.DataFra
 
 func createCSVs(nodeData dataframe.DataFrame, datasetName string, nodeID int) {
 
-	// create a CSV for your part of the dataset
 	filename := datasetName + strconv.Itoa(nodeID) + ".csv"
 	file, err := os.Create(datasetPath + filename)
 	check(err)
