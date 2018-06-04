@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"os"
 	"bufio"
-	
+
 )
 
 var (
@@ -283,7 +283,7 @@ func createCSVs(nodeData dataframe.DataFrame, datasetName string, nodeID int) {
 func getData(filePath string) dataframe.DataFrame {
 
 	f, err := os.Open(filePath)
-	check(err)
+	handleErrorFatal("Dataset not found",err)
 	df := dataframe.ReadCSV(bufio.NewReader(f))
 	return df
 

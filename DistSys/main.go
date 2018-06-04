@@ -12,6 +12,8 @@ import (
 	"sync"
 	"time"
 	"os"
+	"flag"
+
 )
 
 const (
@@ -165,28 +167,29 @@ func exitOnError(prefix string, err error) {
 func main() {
 
 	//Parsing arguments nodeIndex, numberOfNodes, datasetname
-	//TODO: CLean this up a little Use flags used in the peer to peer blockchain tutorial
+	numberOfNodesPtr := flag.Int("t", 0 , "The total number of nodes in the network")
 
-	nodeNum, err := strconv.Atoi(os.Args[1])
+	nodeNumPtr := flag.Int("i", -1 ,"The node's index in the total. Has to be greater than 0")
 
-	if err != nil {
-		fmt.Println("First argument should be index of node")
-		return
+	datasetNamePtr := flag.String("d", "" , "The name of the dataset to be used")
+
+	flag.Parse()
+
+	nodeNum := *nodeNumPtr
+	numberOfNodes = *numberOfNodesPtr
+	datasetName = *datasetNamePtr
+
+	if(numberOfNodes <= 0 || nodeNum < 0 || datasetName == ""){
+		flag.PrintDefaults()
+		os.Exit(1)	
 	}
-
-	numberOfNodes, err = strconv.Atoi(os.Args[2])
-
-	if err != nil {
-		fmt.Println("Second argument should be the total number of nodes")
-		return
-	}
-
-	datasetName := os.Args[3]
 
 	logger = govec.InitGoVector(os.Args[1], os.Args[1])
 
+
 	// getports of all other clients in the system
 	myPort := strconv.Itoa(nodeNum + basePort)
+
 	for i := 0; i < numberOfNodes; i++ {
 		if strconv.Itoa(basePort+i) == myPort {
 			continue
@@ -194,19 +197,20 @@ func main() {
 		clusterPorts = append(clusterPorts, strconv.Itoa(basePort+i))
 	}
 
+	
 	//Initialize a honest client
 	client = Honest{id: nodeNum, blockUpdates: make([]Update, 0, 5)}
 
+	
 	// Reading data and declaring some global locks to be used later
 	client.initializeData(datasetName, numberOfNodes)
 	converged = false
-	verifier = false
-
+	verifier = false	
 	updateLock = sync.Mutex{}
 	boolLock = sync.Mutex{}
 	convergedLock = sync.Mutex{}
-
 	ensureRPC = make(chan error)
+
 
 	// Initializing RPC Server
 	peer := new(Peer)
