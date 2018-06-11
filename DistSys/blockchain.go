@@ -51,3 +51,9 @@ func (bc *Blockchain) AddBlockMsg(newBlock Block) {
 	appendBlock := &Block{Timestamp: newBlock.Timestamp, Data: newBlock.Data, PrevBlockHash: newBlock.PrevBlockHash, Hash: newBlock.Hash}
 	bc.blocks = append(bc.blocks, appendBlock)
 }
+
+func (bc *Blockchain) getBlock(iterationCount int) *Block {
+
+	return bc.blocks[iterationCount+1]
+
+}

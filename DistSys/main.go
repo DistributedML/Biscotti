@@ -48,6 +48,7 @@ var (
 	boolLock      		sync.Mutex
 	convergedLock 		sync.Mutex
 	peerLock			sync.Mutex
+	blockChainLock		sync.Mutex
 
 	// global shared variables
 	updateSent     		bool
@@ -105,19 +106,50 @@ func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
 // Returns:
 // - staleError if its an block for a preceding round.
 
-func (s *Peer) RegisterBlock(block Block, _ignored *bool) error {
+func (s *Peer) RegisterBlock(block Block, returnBlock *Block) error {
 
 	outLog.Printf("Got block message, iteration %d\n", block.Data.Iteration)
 
-	if block.Data.Iteration < iterationCount {
-		handleErrorFatal("Block of previous iteration received", staleError)
-		return staleError
-	}
+	*returnBlock = block
 
 	for block.Data.Iteration > iterationCount {
 		outLog.Printf("Blocking. Got block for %d, I am at %d\n", block.Data.Iteration, iterationCount)
 		time.Sleep(1000 * time.Millisecond)
 	}
+
+	boolLock.Lock()
+	
+	if block.Data.Iteration != len(client.bc.blocks) - 1 {
+		
+		better := client.evaluateBlockQuality(block) // check equality and some measure of 	
+		boolLock.Unlock()	
+
+		if(better){
+			
+			// TODO: If I receive a better block than my current one. Then I replace my block with this one.
+			// I request for all the next blocks. I will also need to advertise new block or not?
+			// go callRequestChainRPC(same conn) // returns whole chain. Is it longer than mine?
+			// go evaluateReceivedChain() // if chain longer than mine and checks out replace mine with his
+			
+			if(block.Data.Iteration == len(client.bc.blocks) - 2){
+				client.replaceBlock(block, block.Data.Iteration)
+				outLog.Printf("Received better  block")
+				return nil
+			}
+
+		
+		}else{
+			
+			returnBlock = client.bc.getBlock(block.Data.Iteration)						
+			outLog.Printf("Equal block")
+			return staleError
+		
+		}
+
+		// handleErrorFatal("Block of previous iteration received", staleError)
+	}
+
+	boolLock.Unlock()
 
 	go addBlockToChain(block)
 
@@ -429,15 +461,21 @@ func sendBlock(block Block) {
 	
 	//check for convergence, wait for RPC calls to return and move to the new iteration
 
-	convergedLock.Lock()
-	converged = client.checkConvergence()
-	convergedLock.Unlock()
+
 
 	ensureRPCCallsReturn()
 	peerLock.Unlock()
 
+	if(block.Data.Iteration == iterationCount){
 
-	prepareForNextIteration()
+		convergedLock.Lock()
+		converged = client.checkConvergence()
+		convergedLock.Unlock()
+
+		prepareForNextIteration()
+
+	}
+		
 
 }
 
@@ -455,7 +493,7 @@ func ensureRPCCallsReturn() {
 
 func callRegisterBlockRPC(block Block, peerAddress net.TCPAddr) {
 
-	var ign bool
+	var returnBlock Block
 	c := make(chan error)
 
 	conn, er := rpc.Dial("tcp", peerAddress.String()) 
@@ -464,12 +502,12 @@ func callRegisterBlockRPC(block Block, peerAddress net.TCPAddr) {
 	if(er==nil){
 
 		defer conn.Close()
-		go func() { c <- conn.Call("Peer.RegisterBlock", block, &ign) }()
+		go func() { c <- conn.Call("Peer.RegisterBlock", block, &returnBlock) }()
 		select {
 		case err := <-c:
 
-			outLog.Printf("Block sent to verifiee successful")
-			handleErrorFatal("Error in sending update", err)
+			outLog.Printf("Block sent to peer successful")
+			printError("Error in sending block", err)
 			ensureRPC <- true
 
 			// use err and result
@@ -498,8 +536,11 @@ func callRegisterBlockRPC(block Block, peerAddress net.TCPAddr) {
 
 func addBlockToChain(block Block) {
 
+	blockChainLock.Lock()
 	client.bc.AddBlockMsg(block)
+	blockChainLock.Unlock()
 
+	// TODO: check if this is required
 	if block.Data.Iteration == iterationCount {
 		boolLock.Lock()
 		updateSent = true
@@ -509,6 +550,7 @@ func addBlockToChain(block Block) {
 	convergedLock.Lock()
 	converged = client.checkConvergence()
 	convergedLock.Unlock()
+	go sendBlock(block)	
 	prepareForNextIteration()
 
 }
@@ -558,7 +600,9 @@ func messageSender(ports []string) {
 }
 
 // Make RPC call to send update to verifier
-// If you cant connect to verifier or verifier
+// If you cant connect to verifier or verifier fails midway RPC, then append an empty block and move on
+// TODO: Some clients are unable to connect to their verifier in the original system. They will propose an empty block. The general public should
+// reject their block because they have better blocks from other verifiers
 
 func sendUpdateToVerifier(port string) {
 
@@ -566,25 +610,37 @@ func sendUpdateToVerifier(port string) {
 	c := make(chan error)
 
 	conn, err := rpc.Dial("tcp", verifierIP+port)
-	defer conn.Close()
-	handleErrorFatal("Unable to connect to verifier", err)
+	printError("Unable to connect to verifier", err)
 	outLog.Printf("Making RPC Call to Verifier. Sending Update, Iteration:%d\n", client.update.Iteration)
 
-	go func() { c <- conn.Call("Peer.VerifyUpdate", client.update, &ign) }()
-	select {
-	case err := <-c:
+	if(err == nil){
 		
-		handleErrorFatal("Error in sending update", err)
-		if(err!=nil){
-			outLog.Printf("Update sent successfully")
-		}
-		// use err and result
-	case <-time.After(timeoutRPC):
+		defer conn.Close()
+		go func() { c <- conn.Call("Peer.VerifyUpdate", client.update, &ign) }()
+		select {
+		case err := <-c:
+			
+			handleErrorFatal("Error in sending update", err)
+			if(err!=nil){
+				outLog.Printf("Update sent successfully")
+			}
+			// use err and result
+		case <-time.After(timeoutRPC):
 
-		conn.Close()
-		outLog.Printf("Timeout. Sending Update. Retrying...")
-		sendUpdateToVerifier(port)
+			// create Empty Block and Send
+			outLog.Printf("Timeout. Sending Update. Retrying...")
+			sendUpdateToVerifier(port)
+			blockToSend := client.createBlock(iterationCount)
+			sendBlock(blockToSend)
+		}
+	
+	}else{
+
+		blockToSend := client.createBlock(iterationCount)
+		sendBlock(blockToSend)
+		// create Empty Block and Send
 	}
+	
 
 }
 

@@ -142,6 +142,9 @@ func oneGradientStep(globalW []float64) ([]float64, error) {
 	return goFloatArray, nil
 }
 
+// getIterationBlock
+
+
 // add an update to the record of updates received for the current iteration
 
 func (honest *Honest) addBlockUpdate(update Update) int {
@@ -185,6 +188,33 @@ func (honest *Honest) createBlock(iterationCount int) Block {
 func (honest *Honest) flushUpdates(numberOfNodes int) {
 
 	honest.blockUpdates = honest.blockUpdates[:0]
+}
+
+func (honest *Honest) evaluateBlockQuality(block Block) bool{
+
+	//TODO: This is just a simple equality check comparing the hashes. 
+	myBlock := honest.bc.getBlock(block.Data.Iteration)
+	
+	// check equality
+	if(string(block.PrevBlockHash[:]) == string(myBlock.PrevBlockHash[:]) && string(block.Hash[:]) == string(myBlock.Hash[:])) {
+		return false
+	}else{
+		
+		if (len(block.Data.Deltas) == 0){
+
+			return false
+		}
+	
+	}
+
+	return true
+	
+}
+
+func (honest *Honest) replaceBlock(block Block, iterationCount int){
+
+	*honest.bc.blocks[iterationCount] = block
+
 }
 
 //Test the current global model. Determine training and test error to see if model has converged 
@@ -252,6 +282,7 @@ func divideData(data dataframe.DataFrame, numberOfNodes int) []dataframe.DataFra
 	return dividedData
 
 }
+
 
 // creates a CSV for your part of the data
 
