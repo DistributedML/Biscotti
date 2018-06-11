@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/DistributedClocks/GoVector/govec"
 	"github.com/sbinet/go-python"
 	"log"
 	"net"
@@ -13,44 +12,52 @@ import (
 	"time"
 	"os"
 	"flag"
+	"encoding/gob"
 
 )
 
 const (
-	basePort     int           = 8000
-	myIP         string        = "127.0.0.1:"
-	verifierIP   string        = "127.0.0.1:"
-	timeoutNS    time.Duration = 10000000000
-	numVerifiers int           = 1
+	basePort     	int           = 8000
+	myIP         	string        = "127.0.0.1:"
+	verifierIP   	string        = "127.0.0.1:"
+	timeoutRPC    	time.Duration = 10000000000
+	numVerifiers 	int           = 1
+	timeoutUpdate 	time.Duration = 10000000000  // will need experimenting to figure out best possible timeout
 )
+
+type Peer int
 
 var (
 
 	//Input arguments
-	datasetName   string
-	numberOfNodes int
+	datasetName   		string
+	numberOfNodes 		int
+	myPort				string
 
-	client Honest
+	client 				Honest
 
-	ensureRPC      chan error
-	portsToConnect []string
-	clusterPorts   []string
+	ensureRPC      		chan bool
+	allUpdatesReceived	chan bool
+	networkBootstrapped	chan bool
+	portsToConnect 		[]string
+	peerPorts   		[]string
+	peerAddresses		map[string]net.TCPAddr
 
 	//Locks
-	updateLock    sync.Mutex
-	boolLock      sync.Mutex
-	convergedLock sync.Mutex
+	updateLock    		sync.Mutex
+	boolLock      		sync.Mutex
+	convergedLock 		sync.Mutex
+	peerLock			sync.Mutex
 
 	// global shared variables
-	updateSent     bool
-	converged      bool
-	verifier       bool
-	iterationCount = -1
+	updateSent     		bool
+	converged      		bool
+	verifier       		bool
+	iterationCount 		= -1
 
 	//Logging
 	errLog *log.Logger = log.New(os.Stderr, "[err] ", log.Lshortfile|log.LUTC|log.Lmicroseconds)
 	outLog *log.Logger = log.New(os.Stderr, "[peer] ", log.Lshortfile|log.LUTC|log.Lmicroseconds)
-	logger *govec.GoLog
 
 	//Errors
 	staleError error = errors.New("Stale Update/Block")
@@ -65,8 +72,6 @@ func init() {
 }
 
 // RPC CALLS
-
-type Peer int
 
 // The peer receives an update from another peer if its a verifier in that round.
 // The verifier peer takes in the update and returns immediately.
@@ -120,6 +125,23 @@ func (s *Peer) RegisterBlock(block Block, _ignored *bool) error {
 
 }
 
+// Register a fellow node as a peer.
+// Returns:
+// 	-nil if peer added
+
+func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, _ignored *bool) error {
+
+	outLog.Printf("Registering peer:" + peerAddress.String())
+	peerLock.Lock()
+	peerAddresses[peerAddress.String()] = peerAddress
+	peerLock.Unlock()
+	if(myPort == strconv.Itoa(basePort)){
+		networkBootstrapped <- true
+	}
+	return nil
+}
+
+
 // Basic check to see if you are the verifier in the next round
 
 func amVerifier(nodeNum int) bool {
@@ -154,6 +176,15 @@ func handleErrorFatal(msg string, e error) {
 
 }
 
+func printError(msg string, e error) {
+
+	if e != nil {
+		errLog.Printf("%s, err = %s\n", msg, e.Error())
+	}
+
+}
+
+
 func exitOnError(prefix string, err error) {
 
 	if err != nil {
@@ -166,6 +197,8 @@ func exitOnError(prefix string, err error) {
 
 func main() {
 
+	gob.Register(&net.TCPAddr{})
+	
 	//Parsing arguments nodeIndex, numberOfNodes, datasetname
 	numberOfNodesPtr := flag.Int("t", 0 , "The total number of nodes in the network")
 
@@ -184,20 +217,24 @@ func main() {
 		os.Exit(1)	
 	}
 
-	logger = govec.InitGoVector(os.Args[1], os.Args[1])
-
+	
 
 	// getports of all other clients in the system
-	myPort := strconv.Itoa(nodeNum + basePort)
+	myPort = strconv.Itoa(nodeNum + basePort)
+	potentialPeerList := make([]net.TCPAddr, 0, numberOfNodes-1)
 
 	for i := 0; i < numberOfNodes; i++ {
 		if strconv.Itoa(basePort+i) == myPort {
 			continue
 		}
-		clusterPorts = append(clusterPorts, strconv.Itoa(basePort+i))
+		peerPort := strconv.Itoa(basePort+i)
+		peerPorts = append(peerPorts, peerPort)
+		peerAddress, err := net.ResolveTCPAddr("tcp", fmt.Sprintf(myIP + peerPort))
+		handleErrorFatal("Unable to resolve a potentail peer address", err)
+		potentialPeerList = append(potentialPeerList, *peerAddress)
 	}
+	peerAddresses = make(map[string]net.TCPAddr)
 
-	
 	//Initialize a honest client
 	client = Honest{id: nodeNum, blockUpdates: make([]Update, 0, 5)}
 
@@ -209,18 +246,94 @@ func main() {
 	updateLock = sync.Mutex{}
 	boolLock = sync.Mutex{}
 	convergedLock = sync.Mutex{}
-	ensureRPC = make(chan error)
+	peerLock = sync.Mutex{}
+
+	ensureRPC = make(chan bool)
+	allUpdatesReceived = make (chan bool)
+	networkBootstrapped = make (chan bool)
 
 
 	// Initializing RPC Server
 	peer := new(Peer)
 	peerServer := rpc.NewServer()
 	peerServer.Register(peer)
-
-	prepareForNextIteration()
+	
 
 	go messageListener(peerServer, myPort)
-	messageSender(clusterPorts)
+
+	// announce yourself to above calculated peers. The first node in the network doesn't need to do this. He waits for an incoming peer instead. 	
+	if(myPort != strconv.Itoa(basePort)){
+		announceToNetwork(potentialPeerList)
+	}else{
+		<- networkBootstrapped
+	}
+
+	prepareForNextIteration()
+	
+	messageSender(peerPorts)
+
+}
+
+
+
+// peers announce themselves to all other nodes when they come into the system 
+// This helps them maintain a list of peers to which they can send blocks
+
+// checking heartbeat of each peer periodically. If down, add to list of unresponsive peers.
+// Use list of responsive peers when sending block.
+
+//OR
+
+// The only problem is the rpc dial for now. If rpc dial doesn't happen. Ignore and move on
+
+func announceToNetwork(peerList []net.TCPAddr){
+
+	// change from everything from ports to net.TCPAddr
+	outLog.Printf("Announcing myself to network")
+	myAddress, err := net.ResolveTCPAddr("tcp", fmt.Sprintf(myIP + myPort))
+	exitOnError("Resolve own address", err)
+
+	for _, address := range peerList{
+		callRegisterPeerRPC(*myAddress, address)		
+	}
+
+}
+
+func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
+
+	var ign bool
+	c := make(chan error)
+
+	conn, err := rpc.Dial("tcp", peerAddress.String()) 
+	printError("Peer offline.Couldn't connect to peer: " + peerAddress.String(), err)
+	
+
+	if(err == nil){
+
+		defer conn.Close()	
+		outLog.Printf("Calling RPC:"+ peerAddress.String())
+		go func() { c <- conn.Call("Peer.RegisterPeer", myAddress, &ign) }()
+		outLog.Printf("RPC called"+ peerAddress.String())
+		select {
+
+		case err = <-c:
+
+			handleErrorFatal("Error in registering peer", err)
+			
+			if(err == nil){
+				outLog.Printf("Announced myself to a fellow peer at port")
+				peerLock.Lock()
+				peerAddresses[peerAddress.String()] = peerAddress
+				peerLock.Unlock()
+			}
+
+
+			// use err and result
+		case <-time.After(timeoutRPC):
+
+			outLog.Printf("Couldn't get response from peer: "+ peerAddress.String())
+		}
+	}	
 
 }
 
@@ -255,6 +368,7 @@ func prepareForNextIteration() {
 
 	if verifier {
 		outLog.Printf("I am verifier. IterationCount:%d", iterationCount)
+		go startUpdateDeadlineTimer() //start timer for receiving updates
 		updateSent = true
 	} else {
 		outLog.Printf("I am not verifier IterationCount:%d", iterationCount)
@@ -263,8 +377,8 @@ func prepareForNextIteration() {
 
 	boolLock.Unlock()
 
-	portsToConnect = make([]string, len(clusterPorts))
-	copy(portsToConnect, clusterPorts)
+	portsToConnect = make([]string, len(peerPorts))
+	copy(portsToConnect, peerPorts)
 
 }
 
@@ -293,9 +407,9 @@ func processUpdate(update Update) {
 	numberOfUpdates := client.addBlockUpdate(update)
 	updateLock.Unlock()
 
-	if numberOfUpdates == (numberOfNodes - 1) {
-		blockToSend := client.createBlock(iterationCount)
-		sendBlock(blockToSend)
+	//send signal to start sending Block if all updates Received
+	if numberOfUpdates == (numberOfNodes - 1) {			
+		allUpdatesReceived <- true 		 
 	}
 
 
@@ -308,9 +422,9 @@ func sendBlock(block Block) {
 	outLog.Printf("Sending block. Iteration: %d\n", block.Data.Iteration)
 
 	// create a thread for separate calling
-	
-	for _, port := range clusterPorts {
-		go callRegisterBlockRPC(block, port)
+	peerLock.Lock()
+	for _, address := range peerAddresses {
+		go callRegisterBlockRPC(block, address)
 	}
 	
 	//check for convergence, wait for RPC calls to return and move to the new iteration
@@ -320,6 +434,9 @@ func sendBlock(block Block) {
 	convergedLock.Unlock()
 
 	ensureRPCCallsReturn()
+	peerLock.Unlock()
+
+
 	prepareForNextIteration()
 
 }
@@ -328,7 +445,7 @@ func sendBlock(block Block) {
 
 func ensureRPCCallsReturn() {
 
-	for i := 0; i < (numberOfNodes - 1); i++ {
+	for i := 0; i < len(peerAddresses); i++ {
 		<-ensureRPC
 	}
 
@@ -336,31 +453,45 @@ func ensureRPCCallsReturn() {
 
 // RPC call to send block to one peer
 
-func callRegisterBlockRPC(block Block, port string) {
+func callRegisterBlockRPC(block Block, peerAddress net.TCPAddr) {
 
 	var ign bool
 	c := make(chan error)
 
-	conn, er := rpc.Dial("tcp", myIP+port) 
-	exitOnError("rpc Dial", er)
-	defer conn.Close()
+	conn, er := rpc.Dial("tcp", peerAddress.String()) 
+	printError("rpc Dial", er)
 
-	go func() { c <- conn.Call("Peer.RegisterBlock", block, &ign) }()
-	select {
-	case err := <-c:
+	if(er==nil){
 
-		outLog.Printf("Block sent to verifiee successful")
-		handleErrorFatal("Error in sending update", err)
-		ensureRPC <- err
+		defer conn.Close()
+		go func() { c <- conn.Call("Peer.RegisterBlock", block, &ign) }()
+		select {
+		case err := <-c:
 
-		// use err and result
-	case <-time.After(timeoutNS):
+			outLog.Printf("Block sent to verifiee successful")
+			handleErrorFatal("Error in sending update", err)
+			ensureRPC <- true
 
-		fmt.Println("Timeout. Sending Block. Retrying...")
-		callRegisterBlockRPC(block, port)
+			// use err and result
+		case <-time.After(timeoutRPC):
+
+			// On timeout delete peer because its unresponsive
+			fmt.Println("Timeout. Sending Block. Retrying...")
+			delete(peerAddresses, peerAddress.String())
+			ensureRPC <- true
+		}
+
+	}else{
+
+		delete(peerAddresses, peerAddress.String())
+		ensureRPC <- true
+		outLog.Printf("Peer Unresponsive. Removed Peer:" + peerAddress.String())
+
 	}
+	
 
 }
+
 
 // go-routine to process a block received and add to chain. 
 // Move to next iteration when done
@@ -427,6 +558,7 @@ func messageSender(ports []string) {
 }
 
 // Make RPC call to send update to verifier
+// If you cant connect to verifier or verifier
 
 func sendUpdateToVerifier(port string) {
 
@@ -441,10 +573,13 @@ func sendUpdateToVerifier(port string) {
 	go func() { c <- conn.Call("Peer.VerifyUpdate", client.update, &ign) }()
 	select {
 	case err := <-c:
-		outLog.Printf("Update sent successfully")
+		
 		handleErrorFatal("Error in sending update", err)
+		if(err!=nil){
+			outLog.Printf("Update sent successfully")
+		}
 		// use err and result
-	case <-time.After(timeoutNS):
+	case <-time.After(timeoutRPC):
 
 		conn.Close()
 		outLog.Printf("Timeout. Sending Update. Retrying...")
@@ -452,3 +587,32 @@ func sendUpdateToVerifier(port string) {
 	}
 
 }
+
+func startUpdateDeadlineTimer(){
+
+	
+
+	select{
+		
+		case <- allUpdatesReceived:
+			outLog.Printf("All Updates Received. Preparing to send block..")
+
+		case <-time.After(timeoutUpdate):
+			outLog.Printf("Timeout. Didn't receive expected number of updates. Preparing to send block..")
+	
+	}
+
+	updateLock.Lock()
+	if(len(client.blockUpdates) > 0){
+		blockToSend := client.createBlock(iterationCount)
+		updateLock.Unlock()
+		sendBlock(blockToSend)
+	}else{
+		updateLock.Unlock()
+		outLog.Printf("Received no updates from peers. I WILL DIE")
+		os.Exit(1)
+	}
+
+}
+
+

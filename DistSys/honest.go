@@ -112,7 +112,7 @@ func pyInit(datasetName string) {
 
 }
 
-// calculate the next update using the latest global model on the chain inovking python
+// calculate the next update using the latest global model on the chain invoking python
 
 func oneGradientStep(globalW []float64) ([]float64, error) {
 
