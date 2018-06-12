@@ -466,7 +466,9 @@ func sendBlock(block Block) {
 	ensureRPCCallsReturn()
 	peerLock.Unlock()
 
-	if(block.Data.Iteration == iterationCount){
+	// You can only move to the next iteration by sending a block if you were the verifier for that iteration
+	
+	if(block.Data.Iteration == iterationCount && verifier){
 
 		convergedLock.Lock()
 		converged = client.checkConvergence()
