@@ -1,10 +1,16 @@
+# Setting up env
+
+In the DistSys Directory, run bash install.sh to download all the required packages.
+Next, set your $GOPATH to include the DistSys directory:
+
+1. DistSys/install.sh
+2. export GOPATH=$PWD
+
 # simpleBlockChain
 
-In the DistSys Directory run the following commands:
+In the DistSys Directory run the following:
 
-1. go install
-
-2. sudo $GOPATH/bin/DistSys node_id total_nodes dataset 
+1. sudo $GOPATH/bin/DistSys node_id total_nodes dataset 
 
   E.g sudo $GOPATH/bin/DistSys 0 4 creditcard
   
