@@ -279,6 +279,7 @@ func main() {
 	boolLock = sync.Mutex{}
 	convergedLock = sync.Mutex{}
 	peerLock = sync.Mutex{}
+	blockChainLock = sync.Mutex{}
 
 	ensureRPC = make(chan bool)
 	allUpdatesReceived = make (chan bool)
@@ -309,14 +310,6 @@ func main() {
 
 
 // peers announce themselves to all other nodes when they come into the system 
-// This helps them maintain a list of peers to which they can send blocks
-
-// checking heartbeat of each peer periodically. If down, add to list of unresponsive peers.
-// Use list of responsive peers when sending block.
-
-//OR
-
-// The only problem is the rpc dial for now. If rpc dial doesn't happen. Ignore and move on
 
 func announceToNetwork(peerList []net.TCPAddr){
 
@@ -461,14 +454,12 @@ func sendBlock(block Block) {
 	
 	//check for convergence, wait for RPC calls to return and move to the new iteration
 
-
-
 	ensureRPCCallsReturn()
 	peerLock.Unlock()
 
-	// You can only move to the next iteration by sending a block if you were the verifier for that iteration
-	
-	if(block.Data.Iteration == iterationCount && verifier){
+	// You can only move to the next iteration by sending a block if you were the verifier for that iteration or if you are proposing an empty block
+
+	if(block.Data.Iteration == iterationCount && (verifier || len(block.Data.Deltas) == 0 )){
 
 		convergedLock.Lock()
 		converged = client.checkConvergence()
@@ -527,8 +518,7 @@ func callRegisterBlockRPC(block Block, peerAddress net.TCPAddr) {
 		ensureRPC <- true
 		outLog.Printf("Peer Unresponsive. Removed Peer:" + peerAddress.String())
 
-	}
-	
+	}	
 
 }
 
@@ -603,8 +593,6 @@ func messageSender(ports []string) {
 
 // Make RPC call to send update to verifier
 // If you cant connect to verifier or verifier fails midway RPC, then append an empty block and move on
-// TODO: Some clients are unable to connect to their verifier in the original system. They will propose an empty block. The general public should
-// reject their block because they have better blocks from other verifiers
 
 func sendUpdateToVerifier(port string) {
 
@@ -613,11 +601,11 @@ func sendUpdateToVerifier(port string) {
 
 	conn, err := rpc.Dial("tcp", verifierIP+port)
 	printError("Unable to connect to verifier", err)
-	outLog.Printf("Making RPC Call to Verifier. Sending Update, Iteration:%d\n", client.update.Iteration)
-
+	
 	if(err == nil){
 		
 		defer conn.Close()
+		outLog.Printf("Making RPC Call to Verifier. Sending Update, Iteration:%d\n", client.update.Iteration)
 		go func() { c <- conn.Call("Peer.VerifyUpdate", client.update, &ign) }()
 		select {
 		case err := <-c:
@@ -632,23 +620,33 @@ func sendUpdateToVerifier(port string) {
 			// create Empty Block and Send
 			outLog.Printf("Timeout. Sending Update. Retrying...")
 			sendUpdateToVerifier(port)
-			blockToSend := client.createBlock(iterationCount)
-			sendBlock(blockToSend)
+			blockChainLock.Lock()
+			blockToSend, err := client.createBlock(iterationCount)
+			blockChainLock.Unlock()
+			printError("Iteration: " + strconv.Itoa(iterationCount), err)
+			if(err == nil){
+				sendBlock(*blockToSend)
+			}
 		}
 	
 	}else{
 
-		blockToSend := client.createBlock(iterationCount)
-		sendBlock(blockToSend)
+		blockChainLock.Lock()
+		blockToSend, err := client.createBlock(iterationCount)
+		blockChainLock.Unlock()		
+		printError("Iteration: " + strconv.Itoa(iterationCount), err)
+		if(err==nil){
+			sendBlock(*blockToSend)
+		}
 		// create Empty Block and Send
 	}
 	
 
 }
 
-func startUpdateDeadlineTimer(){
+// Timer started by the verifier to set a deadline until which he will receive updates
 
-	
+func startUpdateDeadlineTimer(){
 
 	select{
 		
@@ -660,13 +658,18 @@ func startUpdateDeadlineTimer(){
 	
 	}
 
-	updateLock.Lock()
+	
 	if(len(client.blockUpdates) > 0){
-		blockToSend := client.createBlock(iterationCount)
-		updateLock.Unlock()
-		sendBlock(blockToSend)
+		outLog.Printf("Acquiring chain lock")
+		blockChainLock.Lock()
+		outLog.Printf("chain lock acquired")
+		blockToSend, err := client.createBlock(iterationCount)
+		blockChainLock.Unlock()		
+		printError("Iteration: " + strconv.Itoa(iterationCount), err)
+		if(err==nil){
+			sendBlock(*blockToSend)
+		}		
 	}else{
-		updateLock.Unlock()
 		outLog.Printf("Received no updates from peers. I WILL DIE")
 		os.Exit(1)
 	}

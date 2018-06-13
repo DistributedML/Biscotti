@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"os"
 	"bufio"
+	"errors"
 
 )
 
@@ -21,6 +22,9 @@ var (
 	pyTestModule  *python.PyObject
 	pyTestFunc    *python.PyObject
 	pyTrainFunc   *python.PyObject
+
+	//Errors
+	 blockExistsError = errors.New("Forbidden overwrite of block foiled")
 )
 
 const (
@@ -155,7 +159,13 @@ func (honest *Honest) addBlockUpdate(update Update) int {
 
 // creates a block from all the updates recorded.
 
-func (honest *Honest) createBlock(iterationCount int) Block {
+func (honest *Honest) createBlock(iterationCount int) (*Block,error) {
+
+	// Has block already been appended from advertisements by other client?
+	if(honest.bc.getBlock(iterationCount) != nil){
+		return nil, blockExistsError
+	}
+
 
 	pulledGradient := make([]float64, honest.data.Ncol())
 	pulledGradient = honest.bc.getLatestGradient()
@@ -174,10 +184,9 @@ func (honest *Honest) createBlock(iterationCount int) Block {
 	bData := BlockData{iterationCount, updatedGradient, honest.blockUpdates}
 	honest.bc.AddBlock(bData) 
 
-	var newBlock Block
-	newBlock = *(honest.bc.blocks[len(honest.bc.blocks)-1])
+	newBlock := honest.bc.blocks[len(honest.bc.blocks)-1]
 
-	return newBlock
+	return newBlock,nil
 
 
 }

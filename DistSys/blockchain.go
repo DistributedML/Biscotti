@@ -52,8 +52,13 @@ func (bc *Blockchain) AddBlockMsg(newBlock Block) {
 	bc.blocks = append(bc.blocks, appendBlock)
 }
 
-func (bc *Blockchain) getBlock(iterationCount int) *Block {
+func (bc *Blockchain) getBlock(iterationCount int) (*Block) {
 
-	return bc.blocks[iterationCount+1]
+	if((iterationCount + 1) <= len(bc.blocks) - 1){
+		return bc.blocks[iterationCount+1]
+	}else{
+		return nil 
+	}
+	
 
 }
