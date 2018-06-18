@@ -182,7 +182,7 @@ func (s *Peer) RegisterBlock(block Block, returnBlock *Block) error {
 // Returns:
 // 	-nil if peer added
 
-func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, _ignored *bool) Blockchain {
+func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, _ignored *bool) error {
 
 	outLog.Printf("Registering peer:" + peerAddress.String())
 	peerLock.Lock()
@@ -191,7 +191,7 @@ func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, _ignored *bool) Blockchain 
 	if(myPort == strconv.Itoa(basePort)){
 		networkBootstrapped <- true
 	}
-	return nil //TODO:return the blockchain
+	return nil //TODO: Return the blockchain
 }
 
 
