@@ -99,11 +99,6 @@ func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
 		return staleError
 	}
 
-	for update.Iteration > iterationCount {
-		outLog.Printf("Blocking. Got update for %d, I am at %d\n", update.Iteration, iterationCount)
-		time.Sleep(5000 * time.Millisecond)
-	}
-
 	go processUpdate(update)
 
 	return nil
@@ -122,11 +117,6 @@ func (s *Peer) RegisterBlock(block Block, returnBlock *Block) error {
 
 	*returnBlock = block
 
-	for block.Data.Iteration > iterationCount {
-		outLog.Printf("Blocking. Got block for %d, I am at %d\n", block.Data.Iteration, iterationCount)
-		time.Sleep(1000 * time.Millisecond)
-	}
-
 	// boolLock.Lock()
 
 	// Lock to ensure that iteration count doesn't change until I have appended block
@@ -134,7 +124,7 @@ func (s *Peer) RegisterBlock(block Block, returnBlock *Block) error {
 	boolLock.Lock()
 	outLog.Printf("Acquired bool lock")
 
-	if (block.Data.Iteration != len(client.bc.Blocks) - 1) {
+	if (block.Data.Iteration < iterationCount) {
 		
 		boolLock.Unlock()
 		outLog.Printf("Bool lock released")		
@@ -169,7 +159,7 @@ func (s *Peer) RegisterBlock(block Block, returnBlock *Block) error {
 
 	outLog.Printf("Sending to channel")
 	// if not empty send signal to channel
-	if(len(block.Data.Deltas) != 0) {
+	if(len(block.Data.Deltas) != 0 && !verifier) {
 		blockReceived <- true
 	}
 
@@ -480,6 +470,11 @@ func messageListener(peerServer *rpc.Server, port string) {
 
 func processUpdate(update Update) {
 
+	for update.Iteration > iterationCount {
+		outLog.Printf("Blocking. Got update for %d, I am at %d\n", update.Iteration, iterationCount)
+		time.Sleep(5000 * time.Millisecond)
+	}
+
 	updateLock.Lock()
 	numberOfUpdates := client.addBlockUpdate(update)
 	updateLock.Unlock()
@@ -590,6 +585,11 @@ func callRegisterBlockRPC(block Block, peerAddress net.TCPAddr) {
 
 func addBlockToChain(block Block) {
 
+	for block.Data.Iteration > iterationCount {
+		outLog.Printf("Blocking. Got block for %d, I am at %d\n", block.Data.Iteration, iterationCount)
+		time.Sleep(1000 * time.Millisecond)
+	}
+
 	outLog.Printf("Adding block to chain")	
 	blockChainLock.Lock()
 	err := client.addBlock(block)
@@ -646,7 +646,7 @@ func messageSender(ports []string) {
 
 			for _, port := range portsToConnect {
 				
-				go sendUpdateToVerifier(port) // This has to be a go-routine. Can't keep the lock and wait for RPC to return. No matter what the result of the update RPC call.
+				sendUpdateToVerifier(port) // This has to be a go-routine. Can't keep the lock and wait for RPC to return. No matter what the result of the update RPC call. Lets dare to make it a non-go routine
 				if iterationCount == client.update.Iteration {
 					updateSent = true
 				}
