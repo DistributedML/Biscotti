@@ -76,7 +76,7 @@ func (honest *Honest) checkConvergence() bool {
 
 	trainError, _ := testModel(honest.bc.getLatestGradient(), "global")
 
-	outLog.Printf("Train Error is %d in Iteration %d", trainError, honest.bc.blocks[len(honest.bc.blocks)-1].Data.Iteration)
+	outLog.Printf("Train Error is %d in Iteration %d", trainError, honest.bc.Blocks[len(honest.bc.Blocks)-1].Data.Iteration)
 
 	if trainError < convThreshold {
 		return true
@@ -190,7 +190,7 @@ func (honest *Honest) createBlock(iterationCount int) (*Block,error) {
 	bData := BlockData{iterationCount, updatedGradient, honest.blockUpdates}
 	honest.bc.AddBlock(bData) 
 
-	newBlock := honest.bc.blocks[len(honest.bc.blocks)-1]
+	newBlock := honest.bc.Blocks[len(honest.bc.Blocks)-1]
 
 	return newBlock,nil
 
@@ -248,7 +248,7 @@ func (honest *Honest) evaluateBlockQuality(block Block) bool{
 
 func (honest *Honest) replaceBlock(block Block, iterationCount int){
 
-	*honest.bc.blocks[iterationCount] = block
+	*honest.bc.Blocks[iterationCount] = block
 
 }
 
@@ -278,6 +278,13 @@ func testModel(weights []float64, node string) (float64, float64) {
 
 	return trainErr, testErr
 
+}
+
+// replace the current chain with the one input
+
+func (honest *Honest) replaceChain(chain Blockchain) {
+	
+	*honest.bc = chain
 }
 
 // Divide the dataset equally among the number of nodes

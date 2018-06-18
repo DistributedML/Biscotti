@@ -5,13 +5,13 @@ import (
 )
 
 type Blockchain struct {
-	blocks []*Block
+	Blocks []*Block
 }
 
 func (bc *Blockchain) AddBlock(data BlockData) {
-	prevBlock := bc.blocks[len(bc.blocks)-1]
+	prevBlock := bc.Blocks[len(bc.Blocks)-1]
 	newBlock := NewBlock(data, prevBlock.Hash)
-	bc.blocks = append(bc.blocks, newBlock)
+	bc.Blocks = append(bc.Blocks, newBlock)
 }
 
 func NewGenesisBlock(numFeatures int) *Block {
@@ -24,7 +24,7 @@ func NewBlockchain(numFeatures int) *Blockchain {
 
 func (bc *Blockchain) getLatestGradient() []float64 {
 
-	prevBlock := bc.blocks[len(bc.blocks)-1]
+	prevBlock := bc.Blocks[len(bc.Blocks)-1]
 	gradient := make([]float64, len(prevBlock.Data.GlobalW))
 	copy(gradient, prevBlock.Data.GlobalW)
 	return gradient
@@ -32,7 +32,7 @@ func (bc *Blockchain) getLatestGradient() []float64 {
 
 func (bc *Blockchain) PrintChain() {
 
-	for _, block := range bc.blocks {
+	for _, block := range bc.Blocks {
 		fmt.Printf("Prev. hash: %x\n", block.PrevBlockHash)
 		fmt.Printf("Data: %s\n", block.Data.String())
 		fmt.Printf("Hash: %x\n", block.Hash)
@@ -49,13 +49,13 @@ func (bc *Blockchain) verifyBlock(block Block) bool {
 func (bc *Blockchain) AddBlockMsg(newBlock Block) {
 
 	appendBlock := &Block{Timestamp: newBlock.Timestamp, Data: newBlock.Data, PrevBlockHash: newBlock.PrevBlockHash, Hash: newBlock.Hash}
-	bc.blocks = append(bc.blocks, appendBlock)
+	bc.Blocks = append(bc.Blocks, appendBlock)
 }
 
 func (bc *Blockchain) getBlock(iterationCount int) (*Block) {
 
-	if((iterationCount + 1) <= len(bc.blocks) - 1){
-		return bc.blocks[iterationCount+1]
+	if((iterationCount + 1) <= len(bc.Blocks) - 1){
+		return bc.Blocks[iterationCount+1]
 	}else{
 		return nil 
 	}

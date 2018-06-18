@@ -125,7 +125,7 @@ func (s *Peer) RegisterBlock(block Block, returnBlock *Block) error {
 	boolLock.Lock()
 	outLog.Printf("Acquired bool lock")
 
-	if (block.Data.Iteration != len(client.bc.blocks) - 1) {
+	if (block.Data.Iteration != len(client.bc.Blocks) - 1) {
 		
 		boolLock.Unlock()
 		outLog.Printf("Bool lock released")		
@@ -135,11 +135,11 @@ func (s *Peer) RegisterBlock(block Block, returnBlock *Block) error {
 		if(better){
 			
 			// TODO: If I receive a better block than my current one. Then I replace my block with this one.
-			// I request for all the next blocks. I will also need to advertise new block or not?
+			// I request for all the next Blocks. I will also need to advertise new block or not?
 			// go callRequestChainRPC(same conn) // returns whole chain. Is it longer than mine?
 			// go evaluateReceivedChain() // if chain longer than mine and checks out replace mine with his
 			
-			if(block.Data.Iteration == len(client.bc.blocks) - 2){
+			if(block.Data.Iteration == len(client.bc.Blocks) - 2){
 				client.replaceBlock(block, block.Data.Iteration)
 				outLog.Printf("Received better  block")
 				return nil
@@ -182,7 +182,7 @@ func (s *Peer) RegisterBlock(block Block, returnBlock *Block) error {
 // Returns:
 // 	-nil if peer added
 
-func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, _ignored *bool) error {
+func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, chain *Blockchain) error {
 
 	outLog.Printf("Registering peer:" + peerAddress.String())
 	peerLock.Lock()
@@ -191,7 +191,8 @@ func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, _ignored *bool) error {
 	if(myPort == strconv.Itoa(basePort)){
 		networkBootstrapped <- true
 	}
-	return nil //TODO: Return the blockchain
+	chain = client.bc
+	return  nil 
 }
 
 
@@ -229,7 +230,7 @@ func handleErrorFatal(msg string, e error) {
 
 }
 
-	func printError(msg string, e error) {
+func printError(msg string, e error) {
 
 	if e != nil {
 		errLog.Printf("%s, err = %s\n", msg, e.Error())
@@ -246,11 +247,12 @@ func exitOnError(prefix string, err error) {
 	}
 }
 
-// Parse args, read dataset and initialize separate threads for listening for updates/blocks and sending updates
+// Parse args, read dataset and initialize separate threads for listening for updates/Blocks and sending updates
 
 func main() {
 
 	gob.Register(&net.TCPAddr{})
+	gob.Register(&Blockchain{})
 	
 	//Parsing arguments nodeIndex, numberOfNodes, datasetname
 	numberOfNodesPtr := flag.Int("t", 0 , "The total number of nodes in the network")
@@ -335,7 +337,6 @@ func main() {
 	python.PyEval_RestoreThread(state)
 
 
-
 }
 
 
@@ -357,7 +358,7 @@ func announceToNetwork(peerList []net.TCPAddr){
 
 func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
 
-	var ign bool
+	var chain Blockchain
 	c := make(chan error)
 
 	conn, err := rpc.Dial("tcp", peerAddress.String()) 
@@ -369,19 +370,26 @@ func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
 
 		defer conn.Close()	
 		outLog.Printf("Calling RPC:"+ peerAddress.String())
-		go func() { c <- conn.Call("Peer.RegisterPeer", myAddress, &ign) }()
+		go func() { c <- conn.Call("Peer.RegisterPeer", myAddress, &chain) }()
 		outLog.Printf("RPC called"+ peerAddress.String())
 		select {
 
 		case err = <-c:
 
-			handleErrorFatal("Error in registering peer", err)
-			
 			if(err == nil){
-				outLog.Printf("Announced myself to a fellow peer at port")
+				
+				outLog.Printf("Announced myself to a fellow peer at port. Got lastest chain")
+				
+				//Add peer
 				peerLock.Lock()
 				peerAddresses[peerAddress.String()] = peerAddress
 				peerLock.Unlock()
+
+				//Check the chain and see if its the longest one. If longer replace it with mine
+				if(len(chain.Blocks) > len(client.bc.Blocks)){
+					client.replaceChain(chain)
+				}
+
 			}
 
 
