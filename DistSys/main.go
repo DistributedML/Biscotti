@@ -15,14 +15,21 @@ import (
 	"encoding/gob"
 )
 
+// TODO: Figure out best values of timeouts to prevent unnecessary delays. Timeout for RegisterPeer< timeout for other two RPC's
+// Register Peer RPC is in and out so it must be equal to some times the RTT. TimeoutRPC for the other 2 remains the same
+// verifyUpdate, registerBlock might block client due to being behind in another iteration therefore its significantly larger.
+// timeoutBlock larger than timmeout update because verifier has to collect updates from everyone before sending out block so the block might come later
+// than the . Do the values need to be this large? Remains open to debate.
+
 const (
 	basePort     	int           = 8000
 	myIP         	string        = "127.0.0.1:"
 	verifierIP   	string        = "127.0.0.1:"
 	timeoutRPC    	time.Duration = 10000000000
 	numVerifiers 	int           = 1
-	timeoutUpdate 	time.Duration = 15000000000  // will need experimenting to figure out best possible timeout
-	timeoutBlock 	time.Duration = 16000000000  // will need experimenting to figure out best possible timeout
+	timeoutUpdate 	time.Duration = 15000000000  
+	timeoutBlock 	time.Duration = 16000000000  
+	timeoutPeer 	time.Duration = 1000000000
 )
 
 type Peer int
@@ -36,7 +43,7 @@ var (
 
 	client 				Honest
 
-	ensureRPC      		chan bool
+	
 	allUpdatesReceived	chan bool
 	networkBootstrapped	chan bool
 	blockReceived 		chan bool
@@ -50,6 +57,8 @@ var (
 	convergedLock 		sync.Mutex
 	peerLock			sync.Mutex
 	blockChainLock		sync.Mutex
+
+	ensureRPC      		sync.WaitGroup
 
 	// global shared variables
 	updateSent     		bool
@@ -306,7 +315,7 @@ func main() {
 	peerLock = sync.Mutex{}
 	blockChainLock = sync.Mutex{}
 
-	ensureRPC = make(chan bool)
+	ensureRPC = sync.WaitGroup{}
 	allUpdatesReceived = make (chan bool)
 	networkBootstrapped = make (chan bool)
 	blockReceived = make (chan bool)
@@ -394,7 +403,7 @@ func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
 
 
 			// use err and result
-		case <-time.After(timeoutRPC):
+		case <-time.After(timeoutPeer):
 
 			outLog.Printf("Couldn't get response from peer: "+ peerAddress.String())
 		}
@@ -491,13 +500,18 @@ func sendBlock(block Block) {
 
 	// create a thread for separate calling
 	peerLock.Lock()
+
+	ensureRPC.Add(len(peerAddresses))
+	
 	for _, address := range peerAddresses {
 		go callRegisterBlockRPC(block, address)
 	}
 	
 	//check for convergence, wait for RPC calls to return and move to the new iteration
 
-	ensureRPCCallsReturn()
+	ensureRPC.Wait()
+
+	// ensureRPCCallsReturn()
 	peerLock.Unlock()
 
 	// You can only move to the next iteration by sending a block if you were the verifier for that iteration or if you are proposing an empty block
@@ -521,18 +535,19 @@ func sendBlock(block Block) {
 
 // output from channel to ensure all RPC calls to broadcast block are successful
 
-func ensureRPCCallsReturn() {
+// func ensureRPCCallsReturn() {
 
-	for i := 0; i < len(peerAddresses); i++ {
-		<-ensureRPC
-	}
+// 	for i := 0; i < len(peerAddresses); i++ {
+// 		<-ensureRPC
+// 	}
 
-}
+// }
 
 // RPC call to send block to one peer
 
 func callRegisterBlockRPC(block Block, peerAddress net.TCPAddr) {
 
+	defer ensureRPC.Done()
 	var returnBlock Block
 	c := make(chan error)
 
@@ -548,7 +563,7 @@ func callRegisterBlockRPC(block Block, peerAddress net.TCPAddr) {
 
 			outLog.Printf("Block sent to peer successful")
 			printError("Error in sending block", err)
-			ensureRPC <- true
+			// ensureRPC <- true
 
 			// use err and result
 		case <-time.After(timeoutRPC):
@@ -556,13 +571,13 @@ func callRegisterBlockRPC(block Block, peerAddress net.TCPAddr) {
 			// On timeout delete peer because its unresponsive
 			fmt.Println("Timeout. Sending Block. Retrying...")
 			delete(peerAddresses, peerAddress.String())
-			ensureRPC <- true
+			// ensureRPC <- true
 		}
 
 	}else{
 
 		delete(peerAddresses, peerAddress.String())
-		ensureRPC <- true
+		// ensureRPC <- true
 		outLog.Printf("Peer Unresponsive. Removed Peer:" + peerAddress.String())
 
 	}	
@@ -631,7 +646,7 @@ func messageSender(ports []string) {
 
 			for _, port := range portsToConnect {
 				
-				sendUpdateToVerifier(port)
+				go sendUpdateToVerifier(port) // This has to be a go-routine. Can't keep the lock and wait for RPC to return. No matter what the result of the update RPC call.
 				if iterationCount == client.update.Iteration {
 					updateSent = true
 				}

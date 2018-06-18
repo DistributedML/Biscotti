@@ -258,13 +258,14 @@ func testModel(weights []float64, node string) (float64, float64) {
 
 	runtime.LockOSThread()
 
+	_gstate := python.PyGILState_Ensure()
+
 	argArray := python.PyList_New(len(weights))
 
 	for i := 0; i < len(weights); i++ {
 		python.PyList_SetItem(argArray, i, python.PyFloat_FromDouble(weights[i]))
 	}
 
-	_gstate := python.PyGILState_Ensure()
 
 	pyTrainResult := pyTrainFunc.CallFunction(argArray)
 
@@ -272,9 +273,9 @@ func testModel(weights []float64, node string) (float64, float64) {
 
 	pyTestResult := pyTestFunc.CallFunction(argArray)
 
-	python.PyGILState_Release(_gstate)
-
 	testErr := python.PyFloat_AsDouble(pyTestResult)
+
+	python.PyGILState_Release(_gstate)	
 
 	return trainErr, testErr
 
