@@ -11,6 +11,7 @@ import (
 	"os"
 	"bufio"
 	"errors"
+	"runtime"
 
 )
 
@@ -120,19 +121,24 @@ func pyInit(datasetName string) {
 
 func oneGradientStep(globalW []float64) ([]float64, error) {
 
+	runtime.LockOSThread()
+
+	_gstate := python.PyGILState_Ensure()
+
 	argArray := python.PyList_New(len(globalW))
 
 	for i := 0; i < len(globalW); i++ {
 		python.PyList_SetItem(argArray, i, python.PyFloat_FromDouble(globalW[i]))
 	}
-
+	
 	// Either use full GD or SGD here
-	result := pyLogPrivFunc.CallFunction(python.PyInt_FromLong(1), argArray,
-		python.PyInt_FromLong(batch_size))
+	result := pyLogPrivFunc.CallFunction(python.PyInt_FromLong(1), argArray, python.PyInt_FromLong(batch_size))
 
 	// Convert the resulting array to a go byte array
 	pyByteArray := python.PyByteArray_FromObject(result)
 	goByteArray := python.PyByteArray_AsBytes(pyByteArray)
+
+	python.PyGILState_Release(_gstate)
 
 	var goFloatArray []float64
 	size := len(goByteArray) / 8
@@ -191,6 +197,26 @@ func (honest *Honest) createBlock(iterationCount int) (*Block,error) {
 
 }
 
+func (honest *Honest) addBlock(newBlock Block) error {
+
+	// if already exists don't create/replace it
+	if(honest.bc.getBlock(iterationCount) != nil){
+		
+		better := honest.evaluateBlockQuality(newBlock)
+		if(!better){
+			return blockExistsError
+		}else{
+			honest.replaceBlock(newBlock, newBlock.Data.Iteration) // this thing doesn't need the second argument I think
+			return nil
+		}
+	
+	}else{
+	
+		client.bc.AddBlockMsg(newBlock)
+		return nil
+
+	}
+}
 
 // Empty the updates recorded at the start of each iteration
 
@@ -203,7 +229,7 @@ func (honest *Honest) evaluateBlockQuality(block Block) bool{
 
 	//TODO: This is just a simple equality check comparing the hashes. 
 	myBlock := honest.bc.getBlock(block.Data.Iteration)
-	
+
 	// check equality
 	if(string(block.PrevBlockHash[:]) == string(myBlock.PrevBlockHash[:]) && string(block.Hash[:]) == string(myBlock.Hash[:])) {
 		return false
@@ -230,17 +256,23 @@ func (honest *Honest) replaceBlock(block Block, iterationCount int){
 
 func testModel(weights []float64, node string) (float64, float64) {
 
+	runtime.LockOSThread()
+
 	argArray := python.PyList_New(len(weights))
 
 	for i := 0; i < len(weights); i++ {
 		python.PyList_SetItem(argArray, i, python.PyFloat_FromDouble(weights[i]))
 	}
 
+	_gstate := python.PyGILState_Ensure()
+
 	pyTrainResult := pyTrainFunc.CallFunction(argArray)
 
 	trainErr := python.PyFloat_AsDouble(pyTrainResult)
 
 	pyTestResult := pyTestFunc.CallFunction(argArray)
+
+	python.PyGILState_Release(_gstate)
 
 	testErr := python.PyFloat_AsDouble(pyTestResult)
 

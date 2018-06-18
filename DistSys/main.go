@@ -13,7 +13,6 @@ import (
 	"os"
 	"flag"
 	"encoding/gob"
-
 )
 
 const (
@@ -22,7 +21,8 @@ const (
 	verifierIP   	string        = "127.0.0.1:"
 	timeoutRPC    	time.Duration = 10000000000
 	numVerifiers 	int           = 1
-	timeoutUpdate 	time.Duration = 10000000000  // will need experimenting to figure out best possible timeout
+	timeoutUpdate 	time.Duration = 15000000000  // will need experimenting to figure out best possible timeout
+	timeoutBlock 	time.Duration = 16000000000  // will need experimenting to figure out best possible timeout
 )
 
 type Peer int
@@ -39,6 +39,7 @@ var (
 	ensureRPC      		chan bool
 	allUpdatesReceived	chan bool
 	networkBootstrapped	chan bool
+	blockReceived 		chan bool
 	portsToConnect 		[]string
 	peerPorts   		[]string
 	peerAddresses		map[string]net.TCPAddr
@@ -91,7 +92,7 @@ func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
 
 	for update.Iteration > iterationCount {
 		outLog.Printf("Blocking. Got update for %d, I am at %d\n", update.Iteration, iterationCount)
-		time.Sleep(1000 * time.Millisecond)
+		time.Sleep(5000 * time.Millisecond)
 	}
 
 	go processUpdate(update)
@@ -117,12 +118,19 @@ func (s *Peer) RegisterBlock(block Block, returnBlock *Block) error {
 		time.Sleep(1000 * time.Millisecond)
 	}
 
+	// boolLock.Lock()
+
+	// Lock to ensure that iteration count doesn't change until I have appended block
+	outLog.Printf("Acquiring bool lock")
 	boolLock.Lock()
-	
-	if block.Data.Iteration != len(client.bc.blocks) - 1 {
+	outLog.Printf("Acquired bool lock")
+
+	if (block.Data.Iteration != len(client.bc.blocks) - 1) {
 		
+		boolLock.Unlock()
+		outLog.Printf("Bool lock released")		
+
 		better := client.evaluateBlockQuality(block) // check equality and some measure of 	
-		boolLock.Unlock()	
 
 		if(better){
 			
@@ -149,19 +157,32 @@ func (s *Peer) RegisterBlock(block Block, returnBlock *Block) error {
 		// handleErrorFatal("Block of previous iteration received", staleError)
 	}
 
-	boolLock.Unlock()
 
+	outLog.Printf("Sending to channel")
+	// if not empty send signal to channel
+	if(len(block.Data.Deltas) != 0) {
+		blockReceived <- true
+	}
+
+	outLog.Printf("Sent to channel")
 	go addBlockToChain(block)
+	outLog.Printf("Returning")
+
 
 	return nil
 
 }
 
+// when peer calls does register block.
+// When register block returns, return chain.
+// Get chain from all peers. Accept the longest one.
+// Set iteration count based on that
+
 // Register a fellow node as a peer.
 // Returns:
 // 	-nil if peer added
 
-func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, _ignored *bool) error {
+func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, _ignored *bool) Blockchain {
 
 	outLog.Printf("Registering peer:" + peerAddress.String())
 	peerLock.Lock()
@@ -170,7 +191,7 @@ func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, _ignored *bool) error {
 	if(myPort == strconv.Itoa(basePort)){
 		networkBootstrapped <- true
 	}
-	return nil
+	return nil //TODO:return the blockchain
 }
 
 
@@ -208,7 +229,7 @@ func handleErrorFatal(msg string, e error) {
 
 }
 
-func printError(msg string, e error) {
+	func printError(msg string, e error) {
 
 	if e != nil {
 		errLog.Printf("%s, err = %s\n", msg, e.Error())
@@ -273,6 +294,8 @@ func main() {
 	
 	// Reading data and declaring some global locks to be used later
 	client.initializeData(datasetName, numberOfNodes)
+	
+
 	converged = false
 	verifier = false	
 	updateLock = sync.Mutex{}
@@ -284,12 +307,16 @@ func main() {
 	ensureRPC = make(chan bool)
 	allUpdatesReceived = make (chan bool)
 	networkBootstrapped = make (chan bool)
+	blockReceived = make (chan bool)
+
 
 
 	// Initializing RPC Server
 	peer := new(Peer)
 	peerServer := rpc.NewServer()
 	peerServer.Register(peer)
+
+	state := python.PyEval_SaveThread()
 	
 
 	go messageListener(peerServer, myPort)
@@ -304,6 +331,10 @@ func main() {
 	prepareForNextIteration()
 	
 	messageSender(peerPorts)
+
+	python.PyEval_RestoreThread(state)
+
+
 
 }
 
@@ -332,6 +363,7 @@ func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
 	conn, err := rpc.Dial("tcp", peerAddress.String()) 
 	printError("Peer offline.Couldn't connect to peer: " + peerAddress.String(), err)
 	
+	// will need to change this to receive the chain
 
 	if(err == nil){
 
@@ -379,7 +411,9 @@ func prepareForNextIteration() {
 
 	convergedLock.Unlock()
 
+	outLog.Printf("Acquiring bool lock")
 	boolLock.Lock()
+	outLog.Printf("Acquired bool lock")
 
 	if verifier {
 		updateLock.Lock()
@@ -401,6 +435,7 @@ func prepareForNextIteration() {
 	}
 
 	boolLock.Unlock()
+	outLog.Printf("Bool lock released")
 
 	portsToConnect = make([]string, len(peerPorts))
 	copy(portsToConnect, peerPorts)
@@ -459,15 +494,19 @@ func sendBlock(block Block) {
 
 	// You can only move to the next iteration by sending a block if you were the verifier for that iteration or if you are proposing an empty block
 
-	if(block.Data.Iteration == iterationCount && (verifier || len(block.Data.Deltas) == 0 )){
+	outLog.Printf("RPC calls successfully returned. Iteration: %d", iterationCount)
 
-		convergedLock.Lock()
-		converged = client.checkConvergence()
-		convergedLock.Unlock()
+	// if(block.Data.Iteration == iterationCount && (verifier || len(block.Data.Deltas) == 0 )){
 
-		prepareForNextIteration()
+	convergedLock.Lock()
+	converged = client.checkConvergence()
+	convergedLock.Unlock()
 
-	}
+	outLog.Printf("Preparing for next Iteration. Current Iteration: %d", iterationCount)
+
+	prepareForNextIteration()
+
+	// }
 		
 
 }
@@ -528,22 +567,32 @@ func callRegisterBlockRPC(block Block, peerAddress net.TCPAddr) {
 
 func addBlockToChain(block Block) {
 
+	outLog.Printf("Adding block to chain")	
 	blockChainLock.Lock()
-	client.bc.AddBlockMsg(block)
+	err := client.addBlock(block)
 	blockChainLock.Unlock()
-
+	outLog.Printf("Adding block to chain")
 	// TODO: check if this is required
-	if block.Data.Iteration == iterationCount {
-		boolLock.Lock()
-		updateSent = true
+	// boolLock.Lock()
+	// boolLock Unlocked after lock in previous function
+
+	if ((block.Data.Iteration == iterationCount) && (err ==nil)){
+		outLog.Printf("Checking convergence")
+		convergedLock.Lock()
+		converged = client.checkConvergence()
+		outLog.Printf("Convergence checked")
+		convergedLock.Unlock()
 		boolLock.Unlock()
+		outLog.Printf("Bool lock released")				
+		go sendBlock(block)	
+	}else{
+	
+		boolLock.Unlock()
+		outLog.Printf("Bool lock released")	
+	
 	}
 
-	convergedLock.Lock()
-	converged = client.checkConvergence()
-	convergedLock.Unlock()
-	go sendBlock(block)	
-	prepareForNextIteration()
+
 
 }
 
@@ -561,6 +610,7 @@ func messageSender(ports []string) {
 			continue
 		}
 
+		outLog.Printf("Acquiring bool lock")
 		boolLock.Lock()
 
 		if !updateSent {
@@ -572,17 +622,21 @@ func messageSender(ports []string) {
 			portsToConnect = VRF(iterationCount)
 
 			for _, port := range portsToConnect {
-				go sendUpdateToVerifier(port)
+				
+				sendUpdateToVerifier(port)
 				if iterationCount == client.update.Iteration {
 					updateSent = true
 				}
 			}
 
 			boolLock.Unlock()
+			outLog.Printf("Bool lock released")
+
 
 		} else {
 
 			boolLock.Unlock()
+			outLog.Printf("Bool lock released")
 			time.Sleep(100 * time.Millisecond)
 
 		}
@@ -593,6 +647,7 @@ func messageSender(ports []string) {
 
 // Make RPC call to send update to verifier
 // If you cant connect to verifier or verifier fails midway RPC, then append an empty block and move on
+// Start timer for receiving registering block
 
 func sendUpdateToVerifier(port string) {
 
@@ -614,6 +669,8 @@ func sendUpdateToVerifier(port string) {
 			if(err!=nil){
 				outLog.Printf("Update sent successfully")
 			}
+			go startBlockDeadlineTimer()
+
 			// use err and result
 		case <-time.After(timeoutRPC):
 
@@ -625,36 +682,39 @@ func sendUpdateToVerifier(port string) {
 			blockChainLock.Unlock()
 			printError("Iteration: " + strconv.Itoa(iterationCount), err)
 			if(err == nil){
-				sendBlock(*blockToSend)
+				go sendBlock(*blockToSend)
 			}
 		}
 	
 	}else{
 
+		outLog.Printf("Will try and create an empty block")
 		blockChainLock.Lock()
 		blockToSend, err := client.createBlock(iterationCount)
 		blockChainLock.Unlock()		
 		printError("Iteration: " + strconv.Itoa(iterationCount), err)
 		if(err==nil){
-			sendBlock(*blockToSend)
+			// outLog.Printf("T")
+			outLog.Printf("Will try and create an empty block")
+			go sendBlock(*blockToSend)
 		}
 		// create Empty Block and Send
 	}
-	
-
 }
 
 // Timer started by the verifier to set a deadline until which he will receive updates
 
 func startUpdateDeadlineTimer(){
 
+	outLog.Printf("Starting Update Deadline Timer. Iteration: %d", iterationCount)
+	
 	select{
 		
 		case <- allUpdatesReceived:
 			outLog.Printf("All Updates Received. Preparing to send block..")
 
 		case <-time.After(timeoutUpdate):
-			outLog.Printf("Timeout. Didn't receive expected number of updates. Preparing to send block..")
+			outLog.Printf("Timeout. Didn't receive expected number of updates. Preparing to send block. Iteration: %d..", iterationCount)
 	
 	}
 
@@ -672,6 +732,29 @@ func startUpdateDeadlineTimer(){
 	}else{
 		outLog.Printf("Received no updates from peers. I WILL DIE")
 		os.Exit(1)
+	}
+
+}
+
+func startBlockDeadlineTimer(){
+
+	
+	select{
+		
+		case <- blockReceived:
+			outLog.Printf("Block Received. Appending to chain and moving on to the next iteration..")
+
+		case <-time.After(timeoutBlock):
+			
+			outLog.Printf("Timeout. Didn't receive block. Appending empty block. Iteration: ..")			
+			blockChainLock.Lock()
+			outLog.Printf("chain lock acquired")
+			blockToSend, err := client.createBlock(iterationCount)
+			blockChainLock.Unlock()		
+			printError("Iteration: " + strconv.Itoa(iterationCount), err)
+			if(err==nil){
+				sendBlock(*blockToSend)
+			}	
 	}
 
 }
