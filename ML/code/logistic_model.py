@@ -15,7 +15,7 @@ d = 0
 hist_grad = 0
 epsilon = 0
 
-scale = True
+scale = False
 diffpriv = False
 
 
