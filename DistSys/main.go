@@ -31,7 +31,7 @@ const (
 	numVerifiers 	int           = 1
 	timeoutUpdate 	time.Duration = 15000000000  
 	timeoutBlock 	time.Duration = 16000000000  
-	timeoutPeer 	time.Duration = 1000000000
+	timeoutPeer 	time.Duration = 5000000000
 )
 
 type Peer int
@@ -158,10 +158,9 @@ func (s *Peer) RegisterBlock(block Block, returnBlock *Block) error {
 		// handleErrorFatal("Block of previous iteration received", staleError)
 	}
 
-
 	outLog.Printf("Sending to channel")
-	// if not empty send signal to channel
-	if(len(block.Data.Deltas) != 0 && !verifier) {
+	// if not empty and not verifier send signal to channel. Not verifier required because you are not waiting for a block if you are the verifier and if you receive an empty block and if you are currently busy bootstrapping yourself. 
+	if(len(block.Data.Deltas) != 0 && !verifier && iterationCount > 0) {
 		blockReceived <- true
 	}
 
@@ -192,7 +191,7 @@ func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, chain *Blockchain) error {
 	if(myPort == strconv.Itoa(basePort)){
 		networkBootstrapped <- true
 	}
-	chain = client.bc
+	*chain = *client.bc
 	return  nil 
 }
 
@@ -324,12 +323,16 @@ func main() {
 
 	go messageListener(peerServer, myPort)
 
+
+
 	// announce yourself to above calculated peers. The first node in the network doesn't need to do this. He waits for an incoming peer instead. 	
+	// whatever node you are you can't move on until you have announced yourself to your peers
 	if(myPort != strconv.Itoa(basePort)){
-		announceToNetwork(potentialPeerList)
-	}else{
-		<- networkBootstrapped
+		go announceToNetwork(potentialPeerList)
 	}
+	
+	<- networkBootstrapped
+
 
 	prepareForNextIteration()
 	
@@ -354,6 +357,8 @@ func announceToNetwork(peerList []net.TCPAddr){
 	for _, address := range peerList{
 		callRegisterPeerRPC(*myAddress, address)		
 	}
+
+	networkBootstrapped <- true
 
 }
 
@@ -386,9 +391,15 @@ func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
 				peerAddresses[peerAddress.String()] = peerAddress
 				peerLock.Unlock()
 
+				fmt.Println(len(chain.Blocks))
+				fmt.Println(len(client.bc.Blocks))
+
 				//Check the chain and see if its the longest one. If longer replace it with mine
 				if(len(chain.Blocks) > len(client.bc.Blocks)){
-					client.replaceChain(chain)
+					boolLock.Lock()
+					iterationCount = client.replaceChain(chain)
+					fmt.Println("Iteration Count")
+					boolLock.Unlock()
 				}
 
 			}

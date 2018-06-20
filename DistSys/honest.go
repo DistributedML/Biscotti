@@ -292,11 +292,12 @@ func testModel(weights []float64, node string) (float64, float64) {
 
 }
 
-// replace the current chain with the one input
+// replace the current chain with the one input and return the latest iteration count
 
-func (honest *Honest) replaceChain(chain Blockchain) {
+func (honest *Honest) replaceChain(chain Blockchain) int {
 	
 	*honest.bc = chain
+	return chain.Blocks[len(chain.Blocks) - 1].Data.Iteration
 }
 
 // Divide the dataset equally among the number of nodes
