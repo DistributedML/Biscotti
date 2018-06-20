@@ -18,8 +18,8 @@ echo "#export go path" >> .profile
 echo "export PATH=$PATH:/usr/local/go/bin" >> .profile
 
 #make root directory and set GOPATH
-mkdir go
-export GOPATH=$HOME/go
+mkdir gopath
+export GOPATH=$HOME/gopath
 echo "" >> .profile
 echo "#set GOPATH" >> .profile
 echo "export GOPATH=$HOME/go" >> .profile
@@ -36,7 +36,7 @@ echo "Installing Biscotti"
 go get github.com/m-shayanshafi/simpleBlockChain
 
 # I don't really like this requirement.... TODO fix it.
-export GOPATH=$HOME/go/src/github.com/m-shayanshafi/simpleBlockChain/DistSys
+# export GOPATH=$HOME/go/src/github.com/m-shayanshafi/simpleBlockChain/DistSys
 
 #Install dependencies
 echo "Installing Dependencies"
@@ -58,5 +58,5 @@ pip install emcee
 echo "utils"
 pip install utils
 
-cd $GOPATH
+cd $HOME/gopath/src/github.com/m-shayanshafi/simpleBlockChain/DistSys 
 go install
