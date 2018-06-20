@@ -76,7 +76,7 @@ func (honest *Honest) checkConvergence() bool {
 
 	trainError, _ := testModel(honest.bc.getLatestGradient(), "global")
 
-	outLog.Printf("Train Error is %.5f in Iteration %d", trainError, honest.bc.blocks[len(honest.bc.blocks)-1].Data.Iteration)
+	outLog.Printf("Train Error is %.5f in Iteration %d", trainError, honest.bc.Blocks[len(honest.bc.Blocks)-1].Data.Iteration)
 
 	if trainError < convThreshold {
 		return true
@@ -101,6 +101,8 @@ func pyInit(datasetName string) {
 	sysPath := python.PySys_GetObject("path")
 	python.PyList_Insert(sysPath, 0, python.PyString_FromString("./"))
 	python.PyList_Insert(sysPath, 0, python.PyString_FromString(codePath))
+
+    outLog.Printf("Importing modules...")
 
 	pyLogModule = python.PyImport_ImportModule("logistic_model")
 	pyTestModule = python.PyImport_ImportModule("logistic_model_test")
