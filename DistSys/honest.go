@@ -197,6 +197,17 @@ func (honest *Honest) createBlock(iterationCount int) (*Block,error) {
 
 }
 
+// function to check if you have a block with the same iteration
+func (honest *Honest) hasBlock(iterationCount int) bool {
+	
+	if(honest.bc.getBlock(iterationCount) != nil){
+		return true;
+	}else{
+		return false;
+	}
+
+}
+
 func (honest *Honest) addBlock(newBlock Block) error {
 
 	// if already exists don't create/replace it

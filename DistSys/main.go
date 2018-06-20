@@ -17,9 +17,11 @@ import (
 
 // TODO: Figure out best values of timeouts to prevent unnecessary delays. Timeout for RegisterPeer< timeout for other two RPC's
 // Register Peer RPC is in and out so it must be equal to some times the RTT. TimeoutRPC for the other 2 remains the same
-// verifyUpdate, registerBlock might block client due to being behind in another iteration therefore its significantly larger.
+// verifyUpdate, registerBlock might block client due to being behind in another iteration therefore its significantly larger. This is no longer true so can experiment with lower timeouts
 // timeoutBlock larger than timmeout update because verifier has to collect updates from everyone before sending out block so the block might come later
 // than the . Do the values need to be this large? Remains open to debate.
+
+//Assumption: Requires node 0 to be online first. Need to move away from this
 
 const (
 	basePort     	int           = 8000
@@ -124,7 +126,7 @@ func (s *Peer) RegisterBlock(block Block, returnBlock *Block) error {
 	boolLock.Lock()
 	outLog.Printf("Acquired bool lock")
 
-	if (block.Data.Iteration < iterationCount) {
+	if ((block.Data.Iteration < iterationCount) || client.hasBlock(block.Data.Iteration)) {
 		
 		boolLock.Unlock()
 		outLog.Printf("Bool lock released")		
