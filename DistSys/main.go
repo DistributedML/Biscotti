@@ -465,6 +465,7 @@ func messageListener(peerServer *rpc.Server, port string) {
 
 	l, e := net.Listen("tcp", myIP+port)
 	exitOnError("listen error", e)
+	defer l.Close()
 
 	outLog.Printf("Peer started. Receiving on %s\n", port)
 
