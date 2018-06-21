@@ -188,8 +188,11 @@ func (honest *Honest) createBlock(iterationCount int) (*Block,error) {
 	}
 	mat.Row(updatedGradient, 0, pulledGradientM)
 
+	updatesGathered := make([]Update, len(honest.blockUpdates))
+	copy(updatesGathered, honest.blockUpdates)
+
 	// TODO: Insert RONI
-	bData := BlockData{iterationCount, updatedGradient, honest.blockUpdates}
+	bData := BlockData{iterationCount, updatedGradient, updatesGathered}
 	honest.bc.AddBlock(bData) 
 
 	newBlock := honest.bc.Blocks[len(honest.bc.Blocks)-1]

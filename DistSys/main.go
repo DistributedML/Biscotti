@@ -391,9 +391,6 @@ func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
 				peerAddresses[peerAddress.String()] = peerAddress
 				peerLock.Unlock()
 
-				fmt.Println(len(chain.Blocks))
-				fmt.Println(len(client.bc.Blocks))
-
 				//Check the chain and see if its the longest one. If longer replace it with mine
 				if(len(chain.Blocks) > len(client.bc.Blocks)){
 					boolLock.Lock()
@@ -467,7 +464,7 @@ func prepareForNextIteration() {
 func messageListener(peerServer *rpc.Server, port string) {
 
 	l, e := net.Listen("tcp", myIP+port)
-	handleErrorFatal("listen error", e)
+	exitOnError("listen error", e)
 
 	outLog.Printf("Peer started. Receiving on %s\n", port)
 
