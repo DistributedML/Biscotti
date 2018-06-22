@@ -1,12 +1,14 @@
 package main
 
 import (
-	"errors"
+	"bufio"
+    "errors"
 	"fmt"
 	"github.com/sbinet/go-python"
 	"log"
 	"net"
 	"net/rpc"
+    "strings"
 	"strconv"
 	"sync"
 	"time"
@@ -24,8 +26,7 @@ import (
 //Assumption: Requires node 0 to be online first. Need to move away from this
 
 const (
-	basePort     	int           = 8000
-	myIP         	string        = "127.0.0.1:"
+	basePort        int           = 8000
 	verifierIP   	string        = "127.0.0.1:"
 	timeoutRPC    	time.Duration = 10000000000
 	numVerifiers 	int           = 1
@@ -41,17 +42,19 @@ var (
 	//Input arguments
 	datasetName   		string
 	numberOfNodes 		int
-	myPort				string
+	myIP                string
+    myPort				string
+    peersFileName       string
 
 	client 				Honest
-
 	
 	allUpdatesReceived	chan bool
 	networkBootstrapped	chan bool
 	blockReceived 		chan bool
 	portsToConnect 		[]string
 	peerPorts   		[]string
-	peerAddresses		map[string]net.TCPAddr
+    peerLookup          map[string]int
+	peerAddresses		map[int]net.TCPAddr
 
 	//Locks
 	updateLock    		sync.Mutex
@@ -63,7 +66,7 @@ var (
 	ensureRPC      		sync.WaitGroup
 
 	// global shared variables
-	updateSent     		bool
+    updateSent     		bool
 	converged      		bool
 	verifier       		bool
 	iterationCount 		= -1
@@ -186,7 +189,7 @@ func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, chain *Blockchain) error {
 
 	outLog.Printf("Registering peer:" + peerAddress.String())
 	peerLock.Lock()
-	peerAddresses[peerAddress.String()] = peerAddress
+	peerAddresses[peerLookup[peerAddress.String()]] = peerAddress
 	peerLock.Unlock()
 	if(myPort == strconv.Itoa(basePort)){
 		networkBootstrapped <- true
@@ -215,7 +218,20 @@ func VRF(iterationCount int) []string {
 
 	// TODO: THIS WILL CHANGE AS THE VRF IMPLEMENTATION CHANGES
 	verifiers := make([]string, numVerifiers)
-	verifiers[0] = strconv.Itoa(basePort + (iterationCount % numberOfNodes))
+	verifierID := iterationCount % numberOfNodes
+    
+    // Find the address corresponding to the ID.
+    // TODO: Make fault tolerant
+    // TODO: Maybe implement inverted index
+    outLog.Printf("Looking for ID %d", verifierID)
+    outLog.Println(peerLookup)
+    for address, ID := range peerLookup {
+        if verifierID == ID {
+            verifiers[0] = address
+        }
+    }
+
+    outLog.Printf("Verifier %s returned.", verifiers[0])
 	return verifiers
 
 }
@@ -261,34 +277,96 @@ func main() {
 
 	datasetNamePtr := flag.String("d", "" , "The name of the dataset to be used")
 
+    peersFileNamePtr := flag.String("f", "", "File that contains list of IP:port pairs")
+
+    myIPPtr := flag.String("a", "", " If not local, this node's IP")
+
+    myPortPtr := flag.String("p", "", " If not local, this node's port")
+
 	flag.Parse()
 
 	nodeNum := *nodeNumPtr
 	numberOfNodes = *numberOfNodesPtr
 	datasetName = *datasetNamePtr
+    datasetName = *datasetNamePtr
+    peersFileName = *peersFileNamePtr
+    myIP = *myIPPtr
+    myPort = *myPortPtr
 
 	if(numberOfNodes <= 0 || nodeNum < 0 || datasetName == ""){
 		flag.PrintDefaults()
 		os.Exit(1)	
 	}
 
-	
+    // getports of all other clients in the system
+    peerLookup = make(map[string]int)
+    potentialPeerList := make([]net.TCPAddr, 0, numberOfNodes-1)
 
-	// getports of all other clients in the system
-	myPort = strconv.Itoa(nodeNum + basePort)
-	potentialPeerList := make([]net.TCPAddr, 0, numberOfNodes-1)
+    // Running locally
+    if (peersFileName == "") {
 
-	for i := 0; i < numberOfNodes; i++ {
-		if strconv.Itoa(basePort+i) == myPort {
-			continue
-		}
-		peerPort := strconv.Itoa(basePort+i)
-		peerPorts = append(peerPorts, peerPort)
-		peerAddress, err := net.ResolveTCPAddr("tcp", fmt.Sprintf(myIP + peerPort))
-		handleErrorFatal("Unable to resolve a potentail peer address", err)
-		potentialPeerList = append(potentialPeerList, *peerAddress)
-	}
-	peerAddresses = make(map[string]net.TCPAddr)
+        myIP = "127.0.0.1:"
+        myPort = strconv.Itoa(nodeNum + basePort)
+
+        for i := 0; i < numberOfNodes; i++ {
+                
+            peerPort := strconv.Itoa(basePort+i)
+
+            if peerPort == myPort {
+                peerLookup[fmt.Sprintf(myIP + peerPort)] = i
+                continue
+            }
+            
+            peerPorts = append(peerPorts, peerPort)
+            peerAddress, err := net.ResolveTCPAddr("tcp", fmt.Sprintf(myIP + peerPort))
+            handleErrorFatal("Unable to resolve a potentail peer address", err)
+            potentialPeerList = append(potentialPeerList, *peerAddress)
+            peerLookup[fmt.Sprintf(myIP + peerPort)] = i
+        }
+        
+        peerAddresses = make(map[int]net.TCPAddr)
+
+    } else if (myIP == "" || myPort == "") {
+    
+        flag.PrintDefaults()
+        os.Exit(1)
+    
+    } else {
+
+        file, err := os.Open(peersFileName)
+        handleErrorFatal("Error opening peers file", err)
+        defer file.Close()
+
+        scanner := bufio.NewScanner(file)
+        nodeInList := false
+
+        i := -1
+
+        for scanner.Scan() {
+            i++
+            peerAddressStr := scanner.Text()
+
+            if strings.Contains(peerAddressStr, myIP) && 
+               strings.Contains(peerAddressStr, myPort) {
+                nodeInList = true
+                peerLookup[peerAddressStr] = i
+                continue
+            }
+
+            peerAddress, err := net.ResolveTCPAddr("tcp", peerAddressStr)
+            handleErrorFatal("Unable to resolve a potential peer address", err)
+            potentialPeerList = append(potentialPeerList, *peerAddress)
+            peerLookup[peerAddressStr] = i
+        }
+
+        if !nodeInList {
+            handleErrorFatal("Node is not in peer list", errors.New(""))
+        }
+
+    }
+
+    // init peer addresses list
+    peerAddresses = make(map[int]net.TCPAddr)
 
 	//Initialize a honest client
 	client = Honest{id: nodeNum, blockUpdates: make([]Update, 0, 5)}
@@ -354,7 +432,8 @@ func announceToNetwork(peerList []net.TCPAddr){
 	myAddress, err := net.ResolveTCPAddr("tcp", fmt.Sprintf(myIP + myPort))
 	exitOnError("Resolve own address", err)
 
-	for _, address := range peerList{
+	for _, address := range peerList {
+        outLog.Printf("Calling %s", address)
 		callRegisterPeerRPC(*myAddress, address)		
 	}
 
@@ -388,7 +467,7 @@ func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
 				
 				//Add peer
 				peerLock.Lock()
-				peerAddresses[peerAddress.String()] = peerAddress
+				peerAddresses[peerLookup[peerAddress.String()]] = peerAddress
 				peerLock.Unlock()
 
 				//Check the chain and see if its the longest one. If longer replace it with mine
@@ -576,13 +655,16 @@ func callRegisterBlockRPC(block Block, peerAddress net.TCPAddr) {
 
 			// On timeout delete peer because its unresponsive
 			fmt.Println("Timeout. Sending Block. Retrying...")
-			delete(peerAddresses, peerAddress.String())
+			delete(peerAddresses, peerLookup[peerAddress.String()])
+            delete(peerLookup, peerAddress.String())
 			// ensureRPC <- true
 		}
 
 	}else{
 
-		delete(peerAddresses, peerAddress.String())
+		delete(peerAddresses, peerLookup[peerAddress.String()])
+        delete(peerLookup, peerAddress.String())
+
 		// ensureRPC <- true
 		outLog.Printf("Peer Unresponsive. Removed Peer:" + peerAddress.String())
 
@@ -683,12 +765,12 @@ func messageSender(ports []string) {
 // If you cant connect to verifier or verifier fails midway RPC, then append an empty block and move on
 // Start timer for receiving registering block
 
-func sendUpdateToVerifier(port string) {
+func sendUpdateToVerifier(address string) {
 
 	var ign bool
 	c := make(chan error)
 
-	conn, err := rpc.Dial("tcp", verifierIP+port)
+	conn, err := rpc.Dial("tcp", address)
 	printError("Unable to connect to verifier", err)
 	
 	if(err == nil){
@@ -710,7 +792,7 @@ func sendUpdateToVerifier(port string) {
 
 			// create Empty Block and Send
 			outLog.Printf("Timeout. Sending Update. Retrying...")
-			sendUpdateToVerifier(port)
+			sendUpdateToVerifier(address)
 			blockChainLock.Lock()
 			blockToSend, err := client.createBlock(iterationCount)
 			blockChainLock.Unlock()
