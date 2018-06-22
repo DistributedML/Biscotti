@@ -160,7 +160,7 @@ func (s *Peer) RegisterBlock(block Block, returnBlock *Block) error {
 
 	outLog.Printf("Sending to channel")
 	// if not empty and not verifier send signal to channel. Not verifier required because you are not waiting for a block if you are the verifier and if you receive an empty block and if you are currently busy bootstrapping yourself. 
-	if(len(block.Data.Deltas) != 0 && !verifier && iterationCount > 0) {
+	if(len(block.Data.Deltas) != 0 && !verifier && iterationCount >= 0) {
 		blockReceived <- true
 	}
 
@@ -700,7 +700,7 @@ func sendUpdateToVerifier(port string) {
 		case err := <-c:
 			
 			handleErrorFatal("Error in sending update", err)
-			if(err!=nil){
+			if(err==nil){
 				outLog.Printf("Update sent successfully")
 			}
 			go startBlockDeadlineTimer()
