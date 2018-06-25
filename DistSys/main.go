@@ -43,6 +43,7 @@ var (
 	datasetName   		string
 	numberOfNodes 		int
 	myIP                string
+    myPrivateIP         string
     myPort				string
     peersFileName       string
 
@@ -195,7 +196,7 @@ func (s *Peer) RegisterBlock(block Block, returnBlock *Block) error {
 
 func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, chain *Blockchain) error {
 
-	outLog.Printf(strconv.Itoa(client.id)+":Registering peer:" + peerAddress.String())
+	outLog.Printf(strconv.Itoa(client.id) + ":Registering peer:" + peerAddress.String())
 	peerLock.Lock()
 	peerAddresses[peerLookup[peerAddress.String()]] = peerAddress
 	peerLock.Unlock()
@@ -289,6 +290,8 @@ func main() {
 
     myIPPtr := flag.String("a", "", " If not local, this node's IP")
 
+    myPrivateIPPtr := flag.String("pa", "", " If not local, this node's private IP")
+
     myPortPtr := flag.String("p", "", " If not local, this node's port")
 
 	flag.Parse()
@@ -298,6 +301,7 @@ func main() {
 	datasetName = *datasetNamePtr
     datasetName = *datasetNamePtr
     peersFileName = *peersFileNamePtr
+    myPrivateIP = *myPrivateIPPtr
     myIP = *myIPPtr
     myPort = *myPortPtr
 
@@ -334,7 +338,7 @@ func main() {
         
         peerAddresses = make(map[int]net.TCPAddr)
 
-    } else if (myIP == "" || myPort == "") {
+    } else if (myIP == "" || myPort == "" || myPrivateIP == "") {
     
         flag.PrintDefaults()
         os.Exit(1)
@@ -553,7 +557,7 @@ func prepareForNextIteration() {
 
 func messageListener(peerServer *rpc.Server, port string) {
 
-	l, e := net.Listen("tcp", myIP+port)
+	l, e := net.Listen("tcp", myPrivateIP + port)
 	exitOnError("listen error", e)
 	defer l.Close()
 
