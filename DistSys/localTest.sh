@@ -1,14 +1,14 @@
 #!/bin/sh
 
-# clear
+clear
 
-# PID=`pgrep DistSys`
-# while sudo kill $PID > /dev/null
-# do
-# 	sudo kill -9 $PID
+PID=`pgrep DistSys`
+while sudo kill $PID > /dev/null
+do
+	sudo kill -9 $PID
 
-# 	break
-# done
+	break
+done
 
 
 # go install
@@ -38,7 +38,7 @@
 # 	for (( outernode = 0; outernode < totalnodes; outernode++ )); do	
 # 		outerLogFile=test1_$outernode\_$totalnodes.log
 # 		for (( innernode = 0; innernode < totalnodes; innernode++ )); do
-# 			innerLogFile=test1_$outernode\_$totalnodes.log			
+# 			innerLogFile=test1_$innernode\_$totalnodes.log			
 # 			if [ $innerLogFile=$outerLogFile ]; then
 # 				continue
 # 			fi
@@ -77,7 +77,7 @@
 # 	for (( outernode = 0; outernode < totalnodes - 1; outernode++ )); do	
 # 		outerLogFile=test2_$outernode\_$totalnodes.log
 # 		for (( innernode = 0; innernode < totalnodes - 1; innernode++ )); do
-# 			innerLogFile=test2_$outernode\_$totalnodes.log			
+# 			innerLogFile=test2_$innernode\_$totalnodes.log			
 # 			if [ $innerLogFile=$outerLogFile ]; then
 # 				continue
 # 			fi
@@ -118,7 +118,7 @@
 # 	for (( outernode = 0; outernode < totalnodes; outernode++ )); do	
 # 		outerLogFile=test3_$outernode\_$totalnodes.log
 # 		for (( innernode = 0; innernode < totalnodes ; innernode++ )); do
-# 			innerLogFile=test3_$outernode\_$totalnodes.log			
+# 			innerLogFile=test3_$innernode\_$totalnodes.log			
 # 			if [ $innerLogFile=$outerLogFile ]; then
 # 				continue
 # 			fi
@@ -132,9 +132,10 @@
 
 # done
 
-#---------------------------------------------------Test 4: Nodes fail and come online---------------------------------------------------------------------------
+#---------------------------------------------------Test 4: Nodes fail and stay failed---------------------------------------------------------------------------
 
 echo "Running tests: Node joins, and then fails midway"
+
 
 for (( totalnodes = 3; totalnodes < 5; totalnodes++ )); do
 	
@@ -145,8 +146,8 @@ for (( totalnodes = 3; totalnodes < 5; totalnodes++ )); do
 		thisLogFile=test4_$index\_$totalnodes.log
 		
 		# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile & 
-		sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile 2> /dev/null &
-		sleep 10
+		sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile &
+		sleep 5
 
 	done
 
@@ -162,16 +163,18 @@ for (( totalnodes = 3; totalnodes < 5; totalnodes++ )); do
 
 	sleep 15
 
+	wait
+
 	sudo iptables -F INPUT
 	sudo iptables -F OUTPUT
 
-	wait
+
 	echo "Running with " $totalnodes "nodes complete. Testing similarity of blockchain"
 	
 	for (( outernode = 0; outernode < totalnodes; outernode++ )); do	
 		outerLogFile=test4_$outernode\_$totalnodes.log
 		for (( innernode = 0; innernode < totalnodes ; innernode++ )); do
-			innerLogFile=test4_$outernode\_$totalnodes.log			
+			innerLogFile=test4_$innernode\_$totalnodes.log			
 			if [ $innerLogFile=$outerLogFile ]; then
 				continue
 			fi

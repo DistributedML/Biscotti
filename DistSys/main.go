@@ -445,7 +445,8 @@ func announceToNetwork(peerList []net.TCPAddr){
 		callRegisterPeerRPC(*myAddress, address)		
 	}
 
-	if(len(peerList) == 0){
+	// if havent been able to find a peer then I WILL DIE
+	if(len(peerAddresses) == 0){
 		outLog.Printf("No peers to connect to. I WILL DIE")
 		os.Exit(1)
 	}
@@ -461,8 +462,6 @@ func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
 	conn, err := rpc.Dial("tcp", peerAddress.String()) 
 	printError("Peer offline.Couldn't connect to peer: " + peerAddress.String(), err)
 	
-	// will need to change this to receive the chain
-
 	if(err == nil){
 
 		defer conn.Close()	
@@ -804,8 +803,6 @@ func sendUpdateToVerifier(address string) {
 
 			// create Empty Block and Send
 			outLog.Printf("Timeout. Sending Update. Retrying...")
-			sendUpdateToVerifier(address)
-// >>>>>>> 8426775caef43c7d0c5dabc2522862872f23a5c0
 			blockChainLock.Lock()
 			blockToSend, err := client.createBlock(iterationCount)
 			blockChainLock.Unlock()
