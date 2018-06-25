@@ -18,6 +18,7 @@ echo "#export go path" >> .profile
 echo "export PATH=$PATH:/usr/local/go/bin" >> .profile
 
 #make root directory and set GOPATH
+rm -rf gopath
 mkdir -p gopath/src
 export GOPATH=$HOME/gopath
 echo "" >> .profile
