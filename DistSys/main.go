@@ -200,7 +200,8 @@ func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, chain *Blockchain) error {
 	peerLock.Lock()
 	peerAddresses[peerLookup[peerAddress.String()]] = peerAddress
 	peerLock.Unlock()
-	if(myPort == strconv.Itoa(basePort)){
+	// if I am first node (index:0) and I am waiting for a peer to join (iterationCount < 0) then send signal that I have atleast one peer.
+	if(myPort == strconv.Itoa(basePort) && iterationCount < 0){
 		networkBootstrapped <- true
 	}
 	*chain = *client.bc
@@ -232,7 +233,7 @@ func VRF(iterationCount int) []string {
     // Find the address corresponding to the ID.
     // TODO: Make fault tolerant
     // TODO: Maybe implement inverted index
-    outLog.Printf("Looking for ID %d", verifierID)
+    outLog.Printf(strconv.Itoa(client.id)+":Looking for ID %d", verifierID)
     outLog.Println(peerLookup)
     for address, ID := range peerLookup {
         if verifierID == ID {
@@ -240,7 +241,7 @@ func VRF(iterationCount int) []string {
         }
     }
 
-    outLog.Printf("Verifier %s returned.", verifiers[0])
+    outLog.Printf(strconv.Itoa(client.id)+":Verifier %s returned.", verifiers[0])
 	return verifiers
 
 }
@@ -445,28 +446,36 @@ func announceToNetwork(peerList []net.TCPAddr){
 	exitOnError("Resolve own address", err)
 
 	for _, address := range peerList {
-        outLog.Printf("Calling %s", address)
+        outLog.Printf(strconv.Itoa(client.id)+":Calling %s", address)
 		callRegisterPeerRPC(*myAddress, address)		
 	}
 
 	// if havent been able to find a peer then I WILL DIE
 	if(len(peerAddresses) == 0){
-		outLog.Printf("No peers to connect to. I WILL DIE")
+		outLog.Printf(strconv.Itoa(client.id)+":No peers to connect to. I WILL DIE")
 		os.Exit(1)
 	}
+    
+    outLog.Printf(strconv.Itoa(client.id)+":Bootstrapped Network. Calling signal")
 	networkBootstrapped <- true
+	outLog.Printf(strconv.Itoa(client.id)+":Bootstrapped Network. Signal called")
 
 }
 
 func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
 
+	
+	outLog.Printf(strconv.Itoa(client.id)+":Inside callRegisterRPC")
 	var chain Blockchain
 	c := make(chan error)
 
+	outLog.Printf(strconv.Itoa(client.id)+"Making RPC call")
 	conn, err := rpc.Dial("tcp", peerAddress.String()) 
 	printError("Peer offline.Couldn't connect to peer: " + peerAddress.String(), err)
 	
 	if(err == nil){
+
+		outLog.Printf(strconv.Itoa(client.id)+"RPC dial successful")
 
 		defer conn.Close()	
 		outLog.Printf(strconv.Itoa(client.id)+":Calling RPC:"+ peerAddress.String())
@@ -489,7 +498,6 @@ func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
 				if(len(chain.Blocks) > len(client.bc.Blocks)){
 					boolLock.Lock()
 					iterationCount = client.replaceChain(chain)
-					fmt.Println("Iteration Count")
 					boolLock.Unlock()
 				}
 
@@ -729,7 +737,6 @@ func addBlockToChain(block Block) {
 
 // Main sending thread. Checks if you are a non-verifier in the current itearation 
 // Sends update if thats the case.
-// TODO: Replace with channels for cleanliness
 
 func messageSender(ports []string) {
 
@@ -741,7 +748,7 @@ func messageSender(ports []string) {
 			continue
 		}
 
-		outLog.Printf(strconv.Itoa(client.id)+":Acquiring bool lock")
+		// outLog.Printf(strconv.Itoa(client.id)+":Acquiring bool lock")
 		boolLock.Lock()
 
 		if !updateSent {
@@ -761,13 +768,13 @@ func messageSender(ports []string) {
 			}
 
 			boolLock.Unlock()
-			outLog.Printf(strconv.Itoa(client.id)+":Bool lock released")
+			// outLog.Printf(strconv.Itoa(client.id)+":Bool lock released")
 
 
 		} else {
 
 			boolLock.Unlock()
-			outLog.Printf(strconv.Itoa(client.id)+":Bool lock released")
+			// outLog.Printf(strconv.Itoa(client.id)+":Bool lock released")
 			time.Sleep(100 * time.Millisecond)
 
 		}
@@ -806,7 +813,7 @@ func sendUpdateToVerifier(address string) {
 		case <-time.After(timeoutRPC):
 
 			// create Empty Block and Send
-			outLog.Printf("Timeout. Sending Update. Retrying...")
+			outLog.Printf(strconv.Itoa(client.id)+":Timeout. Sending Update. Retrying...")
 			blockChainLock.Lock()
 			blockToSend, err := client.createBlock(iterationCount)
 			blockChainLock.Unlock()
