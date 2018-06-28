@@ -32,7 +32,7 @@ for (( totalnodes = 40; totalnodes < 41; totalnodes++ )); do
 	for (( index = 0; index < totalnodes; index++ )); do
 		
 		thisLogFile=test1_$index\_$totalnodes.log
-		myAddress=127.0.0.1:
+		myAddress=127.0.0.1
 		let thisPort=8000+$index
 		echo $index
 		echo $thisPort

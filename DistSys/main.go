@@ -318,7 +318,7 @@ func main() {
     // Running locally
     if (peersFileName == "") {
 
-        myIP = "127.0.0.1:"
+        myIP = "127.0.0.1"
         myPort = strconv.Itoa(nodeNum + basePort)
 
         for i := 0; i < numberOfNodes; i++ {
