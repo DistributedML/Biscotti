@@ -18,7 +18,7 @@ echo "#export go path" >> .profile
 echo "export PATH=$PATH:/usr/local/go/bin" >> .profile
 
 #make root directory and set GOPATH
-rm -rf gopath
+sudo rm -rf gopath
 mkdir -p gopath/src
 export GOPATH=$HOME/gopath
 echo "" >> .profile
@@ -50,9 +50,9 @@ go get github.com/coniks-sys/coniks-go/crypto/vrf
 
 ##TODO Probably install python
 echo "pkg-config"
-apt-get install -y pkg-config
+sudo  apt-get install -y pkg-config
 echo "pip"
-apt-get install -y python-pip
+sudo  apt-get install -y python-pip
 echo "pandas"
 pip install pandas
 echo "emcee"
