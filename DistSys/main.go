@@ -302,8 +302,8 @@ func main() {
 	datasetName = *datasetNamePtr
     datasetName = *datasetNamePtr
     peersFileName = *peersFileNamePtr
-    myPrivateIP = *myPrivateIPPtr
-    myIP = *myIPPtr
+    myPrivateIP = *myPrivateIPPtr+":"
+    myIP = *myIPPtr+":"
     myPort = *myPortPtr
 
 	if(numberOfNodes <= 0 || nodeNum < 0 || datasetName == ""){
@@ -339,7 +339,7 @@ func main() {
         
         peerAddresses = make(map[int]net.TCPAddr)
 
-    } else if (myIP == "" || myPort == "" || myPrivateIP == "") {
+    } else if (myIP == ":" || myPort == "" || myPrivateIP == ":") {
     
         flag.PrintDefaults()
         os.Exit(1)
