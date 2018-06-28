@@ -16,7 +16,7 @@ do
 	break
 done
 
-# git reset --hard
+git reset --hard
 git pull origin master
 
 go install
@@ -65,3 +65,4 @@ done
 
 echo "SUCCESS! Nodes have same blockchain"
 
+exit
