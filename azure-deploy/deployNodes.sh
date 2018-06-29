@@ -16,19 +16,22 @@ do
 	break
 done
 
+rm *.log
+
 git reset --hard
 git pull origin master
 
 go install
 
 myPrivateIp=$(ifconfig | grep -oE -m 1 "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | head -1)
+
 # myPrivateIp=$myPrivateIP+":"
 
 echo $myPrivateIp
 
 for (( index = startingIndex ; index < startingIndex + nodesToRun; index++ )); do
 	
-	thisLogFile=test1_$index\_$totalNodes.log
+	thisLogFile=test1_$index\_$totalnodes.log
 	
 	let thisPort=8000+$index
 
@@ -43,6 +46,8 @@ for (( index = startingIndex ; index < startingIndex + nodesToRun; index++ )); d
 done	
 
 wait
+
+scp *.log shayan@198.162.52.126:/home/shayan/work/src/github.com/m-shayanshafi/src/simpleBlockChain/azure-deploy/
 
 echo "Running with " $nodesToRun "nodes complete. Testing similarity of blockchain"
 
