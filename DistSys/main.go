@@ -701,10 +701,19 @@ func callRegisterBlockRPC(block Block, peerAddress net.TCPAddr) {
 
 func addBlockToChain(block Block) {
 
-	for block.Data.Iteration > iterationCount {
-		outLog.Printf(strconv.Itoa(client.id)+":Blocking. Got block for %d, I am at %d\n", block.Data.Iteration, iterationCount)
-		time.Sleep(1000 * time.Millisecond)
+	if block.Data.Iteration > iterationCount {
+		
+		boolLock.Unlock()
+
+		for block.Data.Iteration > iterationCount {
+			outLog.Printf(strconv.Itoa(client.id)+":Blocking. Got block for %d, I am at %d\n", block.Data.Iteration, iterationCount)
+			time.Sleep(1000 * time.Millisecond)
+		}
+
+		boolLock.Lock()	
+			
 	}
+	
 
 	outLog.Printf(strconv.Itoa(client.id)+":Adding block to chain")	
 	blockChainLock.Lock()
