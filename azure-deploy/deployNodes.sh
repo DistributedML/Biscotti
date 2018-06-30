@@ -16,10 +16,10 @@ do
 	break
 done
 
-rm *.log
+sudo rm *.log
 
-git reset --hard
-git pull origin master
+sudo git reset --hard
+sudo git pull origin master
 
 go install
 
@@ -35,7 +35,7 @@ for (( index = startingIndex ; index < startingIndex + nodesToRun; index++ )); d
 	
 	let thisPort=8000+$index
 
-	$GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myPrivateIp > $thisLogFile &
+	sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myPrivateIp > $thisLogFile &
 	
 	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile 2> outLog.log &
 	if [ $index -eq 0 ] 
@@ -47,7 +47,7 @@ done
 
 wait
 
-scp *.log shayan@198.162.52.126:/home/shayan/work/src/github.com/m-shayanshafi/src/simpleBlockChain/azure-deploy/
+# scp *.log shayan@198.162.52.126:/home/shayan/work/src/github.com/m-shayanshafi/src/simpleBlockChain/azure-deploy/
 
 echo "Running with " $nodesToRun "nodes complete. Testing similarity of blockchain"
 
