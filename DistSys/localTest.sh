@@ -25,7 +25,7 @@ go install
 
 echo "Running tests: No failure case. All nodes online"
 
-for (( totalnodes = 40; totalnodes < 41; totalnodes++ )); do
+for (( totalnodes = 10; totalnodes < 11; totalnodes++ )); do
 	
 	echo "Running with " $totalnodes "nodes"
 
@@ -38,7 +38,7 @@ for (( totalnodes = 40; totalnodes < 41; totalnodes++ )); do
 		echo $thisPort
 		echo $myAddress
 
-		sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort > $thisLogFile & 
+		sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile & 
 		# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile 2> /dev/null &
 		if [ $index -eq 0 ] 
 		then			
