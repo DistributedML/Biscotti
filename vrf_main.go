@@ -14,7 +14,7 @@ func main() {
     }
 
     pk, _ := sk.Public()
-    alice := []byte("alice")
+    alice := []byte("theLatestBlock")
  
     aliceVRF := sk.Compute(alice)
     aliceVRFFromProof, aliceProof := sk.Prove(alice)
@@ -37,6 +37,13 @@ func main() {
     
     fmt.Print("The VRF proof gets the nodes: ")
     fmt.Println(getNodeSet(aliceVRFFromProof, 5))
+
+    for i := 0; i < 10; i++ {
+        vrfValue, _ := sk.Prove(alice)
+        alice = append(alice, 12)
+        fmt.Println(getNodeSet(vrfValue, 1))
+    }
+
 
 }
 

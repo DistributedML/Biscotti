@@ -48,6 +48,7 @@ var (
     peersFileName       string
 
 	client 				Honest
+	myVRF				VRF
 	
 	allUpdatesReceived	chan bool
 	networkBootstrapped	chan bool
@@ -67,6 +68,7 @@ var (
 	ensureRPC      		sync.WaitGroup
 
 	// global shared variables
+	verifierIDs 		map[int]struct{} // this is a map since it optimizes contains()
     updateSent     		bool
 	converged      		bool
 	verifier       		bool
@@ -213,35 +215,53 @@ func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, chain *Blockchain) error {
 
 func amVerifier(nodeNum int) bool {
 
-	//TODO: THIS WILL CHANGE AS OUR VRF APPROACH MATURES.
+	_, exists := verifierIDs[client.id]
+	return exists
+
+	/*//TODO: THIS WILL CHANGE AS OUR VRF APPROACH MATURES.
 	if (iterationCount % numberOfNodes) == client.id {
+		outLog.Printf(strconv.Itoa(client.id)+" : amVerifier true")	
 		return true
 	} else {
+		outLog.Printf(strconv.Itoa(client.id)+" : amVerifier false")
 		return false
-	}
+	}*/
 
 }
 
-// Dummy placeholder VRF function
+// Runs a single VRF to get verifierIDs. Don't rerun this.
+func getVerifierIDs() map[int]struct{} {
 
-func VRF(iterationCount int) []string {
+	idMap := make(map[int]struct{})
+	ids, _, _ := myVRF.getNodes([]byte("theLatestBlock"), numVerifiers, numberOfNodes)
+	var empty struct{}
+
+	for _, id := range ids {
+		idMap[id] = empty
+	}
+
+	return idMap
+}
+
+// Convert the verifierIDs to verifier strings 
+func getVerifiers(iterationCount int) []string {
 
 	// TODO: THIS WILL CHANGE AS THE VRF IMPLEMENTATION CHANGES
-	verifiers := make([]string, numVerifiers)
-	verifierID := iterationCount % numberOfNodes
-    
+	verifiers := make([]string, 0)
+
     // Find the address corresponding to the ID.
     // TODO: Make fault tolerant
     // TODO: Maybe implement inverted index
-    outLog.Printf(strconv.Itoa(client.id)+":Looking for ID %d", verifierID)
-    outLog.Println(peerLookup)
+    outLog.Printf(strconv.Itoa(client.id)+" : VRF returned ID %d", verifierIDs)
     for address, ID := range peerLookup {
-        if verifierID == ID {
-            verifiers[0] = address
+        // TODO: change this to if verifierIDs contains ID
+        _, exists := verifierIDs[ID]
+        if exists {
+            verifiers = append(verifiers, address)
         }
     }
 
-    outLog.Printf(strconv.Itoa(client.id)+":Verifier %s returned.", verifiers[0])
+    outLog.Printf(strconv.Itoa(client.id)+" :Verifiers %s returned.", verifiers)
 	return verifiers
 
 }
@@ -387,7 +407,10 @@ func main() {
 	
 	// Reading data and declaring some global locks to be used later
 	client.initializeData(datasetName, numberOfNodes)
-	
+
+	// initialize the VRF
+	myVRF = VRF{}
+	myVRF.init()
 
 	converged = false
 	verifier = false	
@@ -542,6 +565,8 @@ func prepareForNextIteration() {
 
 	iterationCount++
 
+	// This runs the VRF and sets the verifiers for this iteration
+	verifierIDs = getVerifierIDs()
 	verifier = amVerifier(client.id)
 
 	if verifier {
@@ -766,7 +791,7 @@ func messageSender(ports []string) {
 
 			client.computeUpdate(iterationCount, datasetName)
 
-			portsToConnect = VRF(iterationCount)
+			portsToConnect = getVerifiers(iterationCount)
 
 			for _, port := range portsToConnect {
 				
