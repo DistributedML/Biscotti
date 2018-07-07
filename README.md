@@ -1,3 +1,5 @@
+# Welcome!
+
 # Setting up env
 
 In the DistSys Directory, run the install script to download all the required packages.
