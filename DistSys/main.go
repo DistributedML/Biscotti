@@ -233,7 +233,7 @@ func amVerifier(nodeNum int) bool {
 func getVerifierIDs() map[int]struct{} {
 
 	idMap := make(map[int]struct{})
-	ids, _, _ := myVRF.getNodes([]byte("theLatestBlock"), numVerifiers, numberOfNodes)
+	ids, _, _ := myVRF.getNodes(client.bc.getLatestBlockHash(), numVerifiers, numberOfNodes)
 	var empty struct{}
 
 	for _, id := range ids {

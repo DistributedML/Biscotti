@@ -41,6 +41,11 @@ func (bc *Blockchain) PrintChain() {
 
 }
 
+// Get hash of the last block
+func (bc *Blockchain) getLatestBlockHash() []byte {
+	return bc.Blocks[len(bc.Blocks)-1].Hash
+}
+
 func (bc *Blockchain) verifyBlock(block Block) bool {
 
 	return true
