@@ -17,15 +17,13 @@ do
 	break
 done
 
-
 go install
-
 
 # #---------------------------------------------------Test 1: All nodes online--------------------------------------------------------------------
 
 echo "Running tests: No failure case. All nodes online"
 
-for (( totalnodes = 10; totalnodes < 11; totalnodes++ )); do
+for (( totalnodes = 20; totalnodes < 21; totalnodes++ )); do
 	
 	echo "Running with " $totalnodes "nodes"
 
