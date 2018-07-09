@@ -18,8 +18,8 @@ done
 
 rm *.log
 
-git reset --hard
-git pull origin master
+# git reset --hard
+# git pull origin master
 
 go install
 
@@ -35,7 +35,7 @@ for (( index = startingIndex ; index < startingIndex + nodesToRun; index++ )); d
 	
 	let thisPort=8000+$index
 
-	sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myPrivateIp > $thisLogFile &
+	sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myAddress > $thisLogFile &
 	
 	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile 2> outLog.log &
 	if [ $index -eq 0 ] 
