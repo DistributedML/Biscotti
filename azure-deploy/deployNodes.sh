@@ -16,7 +16,7 @@ do
 	break
 done
 
-rm *.log
+rm LogFiles/*.log
 
 # git reset --hard
 # git pull origin master
@@ -27,17 +27,21 @@ myPrivateIp=$(ifconfig | grep -oE -m 1 "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | head 
 
 # myPrivateIp=$myPrivateIP+":"
 
-echo $myPrivateIp
+# echo $myPrivateIp
 
 for (( index = startingIndex ; index < startingIndex + nodesToRun; index++ )); do
 	
 	thisLogFile=test1_$index\_$totalnodes.log
+	thatLogFile=log_$index\_$totalnodes.log
 	
 	let thisPort=8000+$index
 
-	sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myAddress > $thisLogFile &
+	sudo timeout 60 $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
 	
+
+	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
 	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile 2> outLog.log &
+	
 	if [ $index -eq 0 ] 
 	then			
 		sleep 5			
@@ -47,7 +51,15 @@ done
 
 wait
 
-# scp *.log shayan@198.162.52.126:/home/shayan/work/src/github.com/m-shayanshafi/src/simpleBlockChain/azure-deploy/
+if [[ "$myAddress" == "198.162.52.57" ]]; then
+	
+	echo "Copying files back to naur"
+	cd ./LogFiles
+	scp *.log shayan@198.162.52.126:/home/shayan/gopath/src/simpleBlockChain/DistSys/LogFiles
+
+fi
+
+cd ..
 
 echo "Running with " $nodesToRun "nodes complete. Testing similarity of blockchain"
 

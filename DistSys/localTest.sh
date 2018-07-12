@@ -30,13 +30,15 @@ for (( totalnodes = 20; totalnodes < 21; totalnodes++ )); do
 	for (( index = 0; index < totalnodes; index++ )); do
 		
 		thisLogFile=test1_$index\_$totalnodes.log
+		thatLogFile=log_$index\_$totalnodes.log
+
 		myAddress=127.0.0.1
 		let thisPort=8000+$index
 		echo $index
 		echo $thisPort
 		echo $myAddress
 
-		sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile & 
+		sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile 2> ./LogFiles/$thatLogFile & 
 		# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile 2> /dev/null &
 		if [ $index -eq 0 ] 
 		then			
