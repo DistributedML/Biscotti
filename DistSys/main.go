@@ -138,8 +138,12 @@ func (s *Peer) RegisterBlock(block Block, returnBlock *Block) error {
 	boolLock.Lock()
 	outLog.Printf(strconv.Itoa(client.id)+":Acquired bool lock")
 
-	if ((block.Data.Iteration < iterationCount) || client.hasBlock(block.Data.Iteration) || iterationCount<0) {
+	hasBlock := client.hasBlock(block.Data.Iteration)
+	if ((block.Data.Iteration < iterationCount) || hasBlock || iterationCount<0) {
 		
+		if hasBlock {
+			outLog.Printf("Already have block")
+		}
 		
 		boolLock.Unlock()
 
