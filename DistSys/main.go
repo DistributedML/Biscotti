@@ -521,6 +521,7 @@ func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
 				if(len(chain.Blocks) > len(client.bc.Blocks)){
 					boolLock.Lock()
 					iterationCount = client.replaceChain(chain)
+					outLog.Printf(strconv.Itoa(client.id)+"Got lastest chain until iteration " + strconv.Itoa(iterationCount))
 					boolLock.Unlock()
 				}
 
