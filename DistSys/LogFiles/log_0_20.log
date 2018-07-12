@@ -1,390 +1,303 @@
-[peer] 22:02:33.159435 honest.go:105: 0Importing modules...
+[peer] 22:09:32.041978 honest.go:105: 0Importing modules...
 ../ML/code/utils.py:223: FutureWarning: Method .as_matrix will be removed in a future version. Use .values instead.
   data = data.as_matrix()
 ../ML/code/utils.py:94: FutureWarning: Method .as_matrix will be removed in a future version. Use .values instead.
   credit = df.ix[1:nn, 1:dd].as_matrix()
-[peer] 22:02:36.299193 honest.go:118: 0Sucessfully pulled dataset. Features: 25
-[peer] 22:02:36.299473 main.go:598: 0:Peer started. Receiving on 8000
-[peer] 22:02:37.802872 main.go:602: 0:Accepted new Connection
-[peer] 22:02:37.803917 main.go:201: 0:Registering peer:198.162.52.57:8015
-[peer] 22:02:37.804075 main.go:557: 0:Acquiring bool lock
-[peer] 22:02:37.804111 main.go:559: 0:Acquired bool lock
-[peer] 22:02:37.806282 main.go:578: 0:I am not verifier IterationCount:0
-[peer] 22:02:37.806305 main.go:583: 0:Bool lock released
-[peer] 22:02:37.806323 main.go:791: 0:Computing Update
-[peer] 22:02:37.807046 main.go:255: 0 : VRF returned ID map[15:{}]
-[peer] 22:02:37.807086 main.go:264: 0 :Verifiers [198.162.52.57:8015] returned.
-[peer] 22:02:37.807560 main.go:836: 0:Making RPC Call to Verifier. Sending Update, Iteration:0
-[peer] 22:02:37.808790 main.go:843: 0:Update sent successfully
-[peer] 22:02:37.905935 main.go:602: 0:Accepted new Connection
-[peer] 22:02:37.906975 main.go:201: 0:Registering peer:198.162.52.57:8012
-[peer] 22:02:37.911153 main.go:602: 0:Accepted new Connection
-[peer] 22:02:37.911976 main.go:201: 0:Registering peer:198.162.52.57:8013
-[peer] 22:02:37.966498 main.go:602: 0:Accepted new Connection
-[peer] 22:02:37.967477 main.go:201: 0:Registering peer:198.162.52.57:8010
-[peer] 22:02:37.972389 main.go:602: 0:Accepted new Connection
-[peer] 22:02:37.973144 main.go:201: 0:Registering peer:198.162.52.57:8011
-[peer] 22:02:38.016250 main.go:602: 0:Accepted new Connection
-[peer] 22:02:38.017134 main.go:201: 0:Registering peer:198.162.52.57:8019
-[peer] 22:02:38.031404 main.go:602: 0:Accepted new Connection
-[peer] 22:02:38.032536 main.go:201: 0:Registering peer:198.162.52.57:8014
-[peer] 22:02:38.048002 main.go:602: 0:Accepted new Connection
-[peer] 22:02:38.049050 main.go:201: 0:Registering peer:198.162.52.57:8016
-[peer] 22:02:38.097198 main.go:602: 0:Accepted new Connection
-[peer] 22:02:38.098698 main.go:201: 0:Registering peer:198.162.52.57:8018
-[peer] 22:02:38.108599 main.go:602: 0:Accepted new Connection
-[peer] 22:02:38.109705 main.go:201: 0:Registering peer:198.162.52.57:8017
-[peer] 22:02:44.728539 main.go:602: 0:Accepted new Connection
-[peer] 22:02:44.729005 main.go:201: 0:Registering peer:198.162.52.126:8007
-[peer] 22:02:44.757948 main.go:602: 0:Accepted new Connection
-[peer] 22:02:44.758645 main.go:201: 0:Registering peer:198.162.52.126:8009
-[peer] 22:02:44.778170 main.go:602: 0:Accepted new Connection
-[peer] 22:02:44.778745 main.go:201: 0:Registering peer:198.162.52.126:8001
-[peer] 22:02:44.788930 main.go:602: 0:Accepted new Connection
-[peer] 22:02:44.789293 main.go:201: 0:Registering peer:198.162.52.126:8002
-[peer] 22:02:44.975762 main.go:602: 0:Accepted new Connection
-[peer] 22:02:44.976117 main.go:201: 0:Registering peer:198.162.52.126:8004
-[peer] 22:02:45.060401 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.060740 main.go:201: 0:Registering peer:198.162.52.126:8003
-[peer] 22:02:45.090257 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.090524 main.go:201: 0:Registering peer:198.162.52.126:8008
-[peer] 22:02:45.317870 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.318214 main.go:201: 0:Registering peer:198.162.52.126:8005
-[peer] 22:02:45.420068 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.420422 main.go:201: 0:Registering peer:198.162.52.126:8006
-[peer] 22:02:45.450584 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.466012 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.466126 main.go:126: 0:Got block message, iteration 0
-[peer] 22:02:45.466166 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:45.466190 main.go:135: 0:Acquired bool lock
-[peer] 22:02:45.466214 main.go:175: 0:Sending to channel
-[peer] 22:02:45.466241 main.go:181: 0:Sent to channel
-[peer] 22:02:45.466283 main.go:183: 0:Returning
-[peer] 22:02:45.466403 main.go:744: 0:Adding block to chain
-[peer] 22:02:45.466441 main.go:748: 0:Adding block to chain
-[peer] 22:02:45.466467 main.go:754: 0:Checking convergence
-[peer] 22:02:45.471548 main.go:126: 0:Got block message, iteration 0
-[peer] 22:02:45.471572 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:45.471596 main.go:917: 0:Block Received. Appending to chain and moving on to the next iteration..
-[peer] 22:02:45.480353 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.499289 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.499314 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.499334 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.499355 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.499380 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.499592 main.go:126: 0:Got block message, iteration 0
-[peer] 22:02:45.499612 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:45.499790 main.go:126: 0:Got block message, iteration 0
-[peer] 22:02:45.499811 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:45.499991 main.go:126: 0:Got block message, iteration 0
-[peer] 22:02:45.500009 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:45.500197 main.go:126: 0:Got block message, iteration 0
-[peer] 22:02:45.500216 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:45.510446 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.510651 main.go:126: 0:Got block message, iteration 0
-[peer] 22:02:45.510673 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:45.480361 honest.go:79: 0Train Error is 0.06229 in Iteration 0
-[peer] 22:02:45.512451 main.go:757: 0:Convergence checked
-[peer] 22:02:45.512460 main.go:760: 0:Bool lock released
-[peer] 22:02:45.512516 main.go:633: 0:Sending block. Iteration: 0
-[peer] 22:02:45.512617 main.go:135: 0:Acquired bool lock
-[peer] 22:02:45.512631 main.go:142: 0:Bool lock released
-[peer] 22:02:45.512640 main.go:167: 0:Equal block
-[peer] 22:02:45.512718 main.go:135: 0:Acquired bool lock
-[peer] 22:02:45.512731 main.go:142: 0:Bool lock released
-[peer] 22:02:45.512739 main.go:167: 0:Equal block
-[peer] 22:02:45.512779 main.go:135: 0:Acquired bool lock
-[peer] 22:02:45.512791 main.go:142: 0:Bool lock released
-[peer] 22:02:45.512799 main.go:167: 0:Equal block
-[peer] 22:02:45.512840 main.go:135: 0:Acquired bool lock
-[peer] 22:02:45.512851 main.go:142: 0:Bool lock released
-[peer] 22:02:45.512859 main.go:167: 0:Equal block
-[peer] 22:02:45.512897 main.go:135: 0:Acquired bool lock
-[peer] 22:02:45.512908 main.go:142: 0:Bool lock released
-[peer] 22:02:45.512916 main.go:167: 0:Equal block
-[peer] 22:02:45.512955 main.go:135: 0:Acquired bool lock
-[peer] 22:02:45.512966 main.go:142: 0:Bool lock released
-[peer] 22:02:45.512973 main.go:167: 0:Equal block
-[peer] 22:02:45.515339 main.go:698: 0:Block sent to peer successful
-[peer] 22:02:45.517505 main.go:698: 0:Block sent to peer successful
-[err] 22:02:45.517521 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.517625 main.go:698: 0:Block sent to peer successful
-[err] 22:02:45.517639 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.517743 main.go:698: 0:Block sent to peer successful
-[err] 22:02:45.517755 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.529217 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.529345 main.go:698: 0:Block sent to peer successful
-[err] 22:02:45.529357 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.529496 main.go:698: 0:Block sent to peer successful
-[err] 22:02:45.529510 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.529723 main.go:126: 0:Got block message, iteration 0
-[peer] 22:02:45.529743 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:45.529751 main.go:135: 0:Acquired bool lock
-[peer] 22:02:45.529758 main.go:142: 0:Bool lock released
-[peer] 22:02:45.529765 main.go:167: 0:Equal block
-[peer] 22:02:45.538419 main.go:698: 0:Block sent to peer successful
-[err] 22:02:45.538433 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.554918 main.go:698: 0:Block sent to peer successful
-[err] 22:02:45.554934 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.559575 main.go:126: 0:Got block message, iteration 0
-[peer] 22:02:45.559597 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:45.559604 main.go:135: 0:Acquired bool lock
-[peer] 22:02:45.559611 main.go:142: 0:Bool lock released
-[peer] 22:02:45.559618 main.go:167: 0:Equal block
-[peer] 22:02:45.562270 main.go:698: 0:Block sent to peer successful
-[err] 22:02:45.562282 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.566186 main.go:698: 0:Block sent to peer successful
-[err] 22:02:45.566199 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.566364 main.go:126: 0:Got block message, iteration 0
-[peer] 22:02:45.566385 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:45.566393 main.go:135: 0:Acquired bool lock
-[peer] 22:02:45.566400 main.go:142: 0:Bool lock released
-[peer] 22:02:45.566407 main.go:167: 0:Equal block
-[peer] 22:02:45.569438 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.569552 main.go:698: 0:Block sent to peer successful
-[err] 22:02:45.569565 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.577660 main.go:126: 0:Got block message, iteration 0
-[peer] 22:02:45.577689 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:45.577695 main.go:135: 0:Acquired bool lock
-[peer] 22:02:45.577707 main.go:142: 0:Bool lock released
-[peer] 22:02:45.577712 main.go:167: 0:Equal block
-[peer] 22:02:45.579845 main.go:698: 0:Block sent to peer successful
-[err] 22:02:45.579861 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.579853 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.592527 main.go:698: 0:Block sent to peer successful
-[err] 22:02:45.592560 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.592879 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.602844 main.go:126: 0:Got block message, iteration 0
-[peer] 22:02:45.602860 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:45.602865 main.go:135: 0:Acquired bool lock
-[peer] 22:02:45.602869 main.go:142: 0:Bool lock released
-[peer] 22:02:45.602874 main.go:167: 0:Equal block
-[peer] 22:02:45.613083 main.go:126: 0:Got block message, iteration 0
-[peer] 22:02:45.613106 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:45.613112 main.go:135: 0:Acquired bool lock
-[peer] 22:02:45.613116 main.go:142: 0:Bool lock released
-[peer] 22:02:45.613120 main.go:167: 0:Equal block
-[peer] 22:02:45.694995 main.go:698: 0:Block sent to peer successful
-[err] 22:02:45.695012 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.695384 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.701238 main.go:698: 0:Block sent to peer successful
-[err] 22:02:45.701248 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.702298 main.go:126: 0:Got block message, iteration 0
-[peer] 22:02:45.702319 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:45.702325 main.go:135: 0:Acquired bool lock
-[peer] 22:02:45.702330 main.go:142: 0:Bool lock released
-[peer] 22:02:45.702335 main.go:167: 0:Equal block
-[peer] 22:02:45.702948 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.713151 main.go:126: 0:Got block message, iteration 0
-[peer] 22:02:45.713194 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:45.713199 main.go:135: 0:Acquired bool lock
-[peer] 22:02:45.713204 main.go:142: 0:Bool lock released
-[peer] 22:02:45.713210 main.go:167: 0:Equal block
-[peer] 22:02:45.802609 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.804488 main.go:698: 0:Block sent to peer successful
-[err] 22:02:45.804510 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.808487 main.go:126: 0:Got block message, iteration 0
-[peer] 22:02:45.808528 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:45.808540 main.go:135: 0:Acquired bool lock
-[peer] 22:02:45.808550 main.go:142: 0:Bool lock released
-[peer] 22:02:45.808560 main.go:167: 0:Equal block
-[peer] 22:02:45.810458 main.go:698: 0:Block sent to peer successful
-[err] 22:02:45.810478 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.810929 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.812723 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.817549 main.go:126: 0:Got block message, iteration 0
-[peer] 22:02:45.817574 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:45.817583 main.go:135: 0:Acquired bool lock
-[peer] 22:02:45.817590 main.go:142: 0:Bool lock released
-[peer] 22:02:45.817597 main.go:167: 0:Equal block
-[peer] 22:02:45.819038 main.go:698: 0:Block sent to peer successful
-[err] 22:02:45.819060 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.822566 main.go:126: 0:Got block message, iteration 0
-[peer] 22:02:45.822601 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:45.822614 main.go:135: 0:Acquired bool lock
-[peer] 22:02:45.822626 main.go:142: 0:Bool lock released
-[peer] 22:02:45.822638 main.go:167: 0:Equal block
-[peer] 22:02:45.842154 main.go:698: 0:Block sent to peer successful
-[err] 22:02:45.842181 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.842220 main.go:653: 0:RPC calls successfully returned. Iteration: 0
-[peer] 22:02:45.842514 main.go:602: 0:Accepted new Connection
-[peer] 22:02:45.856356 honest.go:79: 0Train Error is 0.06229 in Iteration 0
-[peer] 22:02:45.856387 main.go:661: 0:Preparing for next Iteration. Current Iteration: 0
-[peer] 22:02:45.856399 main.go:557: 0:Acquiring bool lock
-[peer] 22:02:45.856409 main.go:559: 0:Acquired bool lock
-[peer] 22:02:45.866194 main.go:578: 0:I am not verifier IterationCount:1
-[peer] 22:02:45.866223 main.go:583: 0:Bool lock released
-[peer] 22:02:45.918682 main.go:791: 0:Computing Update
-[peer] 22:02:45.919141 main.go:255: 0 : VRF returned ID map[13:{}]
-[peer] 22:02:45.919165 main.go:264: 0 :Verifiers [198.162.52.57:8013] returned.
-[peer] 22:02:45.919493 main.go:836: 0:Making RPC Call to Verifier. Sending Update, Iteration:1
-[peer] 22:02:45.920196 main.go:843: 0:Update sent successfully
-[peer] 22:02:45.975650 main.go:126: 0:Got block message, iteration 0
-[peer] 22:02:45.975703 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:45.975730 main.go:135: 0:Acquired bool lock
-[peer] 22:02:45.975754 main.go:142: 0:Bool lock released
-[peer] 22:02:45.975782 main.go:167: 0:Equal block
-[peer] 22:02:46.115276 main.go:602: 0:Accepted new Connection
-[peer] 22:02:46.122229 main.go:602: 0:Accepted new Connection
-[peer] 22:02:46.125847 main.go:602: 0:Accepted new Connection
-[peer] 22:02:46.125875 main.go:602: 0:Accepted new Connection
-[peer] 22:02:46.126039 main.go:126: 0:Got block message, iteration 1
-[peer] 22:02:46.126060 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:46.126071 main.go:135: 0:Acquired bool lock
-[peer] 22:02:46.126078 main.go:175: 0:Sending to channel
-[peer] 22:02:46.126088 main.go:181: 0:Sent to channel
-[peer] 22:02:46.126099 main.go:183: 0:Returning
-[peer] 22:02:46.126261 main.go:744: 0:Adding block to chain
-[peer] 22:02:46.126278 main.go:748: 0:Adding block to chain
-[peer] 22:02:46.126286 main.go:754: 0:Checking convergence
-[peer] 22:02:46.126596 main.go:917: 0:Block Received. Appending to chain and moving on to the next iteration..
-[peer] 22:02:46.127911 main.go:126: 0:Got block message, iteration 1
-[peer] 22:02:46.128562 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:46.129914 main.go:126: 0:Got block message, iteration 1
-[peer] 22:02:46.129958 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:46.134080 honest.go:79: 0Train Error is 0.03876 in Iteration 1
-[peer] 22:02:46.134107 main.go:757: 0:Convergence checked
-[peer] 22:02:46.134122 main.go:760: 0:Bool lock released
-[peer] 22:02:46.134151 main.go:633: 0:Sending block. Iteration: 1
-[peer] 22:02:46.134188 main.go:135: 0:Acquired bool lock
-[peer] 22:02:46.134335 main.go:142: 0:Bool lock released
-[peer] 22:02:46.134366 main.go:167: 0:Equal block
-[peer] 22:02:46.134446 main.go:135: 0:Acquired bool lock
-[peer] 22:02:46.134480 main.go:142: 0:Bool lock released
-[peer] 22:02:46.134510 main.go:167: 0:Equal block
-[peer] 22:02:46.137342 main.go:602: 0:Accepted new Connection
-[peer] 22:02:46.137364 main.go:602: 0:Accepted new Connection
-[peer] 22:02:46.137384 main.go:602: 0:Accepted new Connection
-[peer] 22:02:46.138106 main.go:602: 0:Accepted new Connection
-[peer] 22:02:46.138209 main.go:126: 0:Got block message, iteration 1
-[peer] 22:02:46.138231 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:46.138238 main.go:135: 0:Acquired bool lock
-[peer] 22:02:46.138245 main.go:142: 0:Bool lock released
-[peer] 22:02:46.138252 main.go:167: 0:Equal block
-[peer] 22:02:46.144146 main.go:602: 0:Accepted new Connection
-[peer] 22:02:46.144383 main.go:126: 0:Got block message, iteration 1
-[peer] 22:02:46.144403 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:46.144411 main.go:135: 0:Acquired bool lock
-[peer] 22:02:46.144418 main.go:142: 0:Bool lock released
-[peer] 22:02:46.144425 main.go:167: 0:Equal block
-[peer] 22:02:46.144657 main.go:126: 0:Got block message, iteration 1
-[peer] 22:02:46.144680 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:46.144688 main.go:135: 0:Acquired bool lock
-[peer] 22:02:46.144695 main.go:142: 0:Bool lock released
-[peer] 22:02:46.144703 main.go:167: 0:Equal block
-[peer] 22:02:46.144824 main.go:698: 0:Block sent to peer successful
-[err] 22:02:46.144838 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.145039 main.go:126: 0:Got block message, iteration 1
-[peer] 22:02:46.145056 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:46.145062 main.go:135: 0:Acquired bool lock
-[peer] 22:02:46.145069 main.go:142: 0:Bool lock released
-[peer] 22:02:46.145077 main.go:167: 0:Equal block
-[peer] 22:02:46.145292 main.go:126: 0:Got block message, iteration 1
-[peer] 22:02:46.145312 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:46.145320 main.go:135: 0:Acquired bool lock
-[peer] 22:02:46.145326 main.go:142: 0:Bool lock released
-[peer] 22:02:46.145333 main.go:167: 0:Equal block
-[peer] 22:02:46.145464 main.go:698: 0:Block sent to peer successful
-[err] 22:02:46.145479 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.145579 main.go:698: 0:Block sent to peer successful
-[err] 22:02:46.145593 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.145778 main.go:602: 0:Accepted new Connection
-[peer] 22:02:46.145893 main.go:698: 0:Block sent to peer successful
-[err] 22:02:46.145905 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.146005 main.go:698: 0:Block sent to peer successful
-[err] 22:02:46.146018 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.146122 main.go:698: 0:Block sent to peer successful
-[err] 22:02:46.146134 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.154912 main.go:602: 0:Accepted new Connection
-[peer] 22:02:46.154937 main.go:602: 0:Accepted new Connection
-[peer] 22:02:46.155065 main.go:698: 0:Block sent to peer successful
-[err] 22:02:46.155077 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.155272 main.go:126: 0:Got block message, iteration 1
-[peer] 22:02:46.155293 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:46.155300 main.go:135: 0:Acquired bool lock
-[peer] 22:02:46.155307 main.go:142: 0:Bool lock released
-[peer] 22:02:46.155314 main.go:167: 0:Equal block
-[peer] 22:02:46.155431 main.go:698: 0:Block sent to peer successful
-[err] 22:02:46.155443 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.155541 main.go:698: 0:Block sent to peer successful
-[err] 22:02:46.155553 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.155748 main.go:698: 0:Block sent to peer successful
-[err] 22:02:46.155761 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.158744 main.go:126: 0:Got block message, iteration 1
-[peer] 22:02:46.158766 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:46.158774 main.go:135: 0:Acquired bool lock
-[peer] 22:02:46.158782 main.go:142: 0:Bool lock released
-[peer] 22:02:46.158789 main.go:167: 0:Equal block
-[peer] 22:02:46.163016 main.go:126: 0:Got block message, iteration 1
-[peer] 22:02:46.163047 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:46.163055 main.go:135: 0:Acquired bool lock
-[peer] 22:02:46.163061 main.go:142: 0:Bool lock released
-[peer] 22:02:46.163069 main.go:167: 0:Equal block
-[peer] 22:02:46.179638 main.go:698: 0:Block sent to peer successful
-[err] 22:02:46.179675 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.180350 main.go:602: 0:Accepted new Connection
-[peer] 22:02:46.188486 main.go:698: 0:Block sent to peer successful
-[err] 22:02:46.188520 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.198136 main.go:126: 0:Got block message, iteration 1
-[peer] 22:02:46.198161 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:46.198170 main.go:135: 0:Acquired bool lock
-[peer] 22:02:46.198177 main.go:142: 0:Bool lock released
-[peer] 22:02:46.198185 main.go:167: 0:Equal block
-[peer] 22:02:46.199381 main.go:698: 0:Block sent to peer successful
-[err] 22:02:46.199396 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.202306 main.go:602: 0:Accepted new Connection
-[peer] 22:02:46.203417 main.go:698: 0:Block sent to peer successful
-[err] 22:02:46.203431 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.208804 main.go:126: 0:Got block message, iteration 1
-[peer] 22:02:46.208826 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:46.208833 main.go:135: 0:Acquired bool lock
-[peer] 22:02:46.208841 main.go:142: 0:Bool lock released
-[peer] 22:02:46.208849 main.go:167: 0:Equal block
-[peer] 22:02:46.213070 main.go:126: 0:Got block message, iteration 1
-[peer] 22:02:46.213095 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:46.213103 main.go:135: 0:Acquired bool lock
-[peer] 22:02:46.213110 main.go:142: 0:Bool lock released
-[peer] 22:02:46.213117 main.go:167: 0:Equal block
-[peer] 22:02:46.216183 main.go:698: 0:Block sent to peer successful
-[err] 22:02:46.216196 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.216772 main.go:602: 0:Accepted new Connection
-[peer] 22:02:46.218604 main.go:126: 0:Got block message, iteration 1
-[peer] 22:02:46.218626 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:46.218633 main.go:135: 0:Acquired bool lock
-[peer] 22:02:46.218640 main.go:142: 0:Bool lock released
-[peer] 22:02:46.218647 main.go:167: 0:Equal block
-[peer] 22:02:46.220752 main.go:698: 0:Block sent to peer successful
-[err] 22:02:46.220765 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.222384 main.go:602: 0:Accepted new Connection
-[peer] 22:02:46.236279 main.go:602: 0:Accepted new Connection
-[peer] 22:02:46.237120 main.go:698: 0:Block sent to peer successful
-[err] 22:02:46.237133 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.237212 main.go:126: 0:Got block message, iteration 1
-[peer] 22:02:46.237234 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:46.237257 main.go:135: 0:Acquired bool lock
-[peer] 22:02:46.237266 main.go:142: 0:Bool lock released
-[peer] 22:02:46.237274 main.go:167: 0:Equal block
-[peer] 22:02:46.246439 main.go:126: 0:Got block message, iteration 1
-[peer] 22:02:46.246462 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:46.246469 main.go:135: 0:Acquired bool lock
-[peer] 22:02:46.246475 main.go:142: 0:Bool lock released
-[peer] 22:02:46.246482 main.go:167: 0:Equal block
-[peer] 22:02:46.260262 main.go:698: 0:Block sent to peer successful
-[err] 22:02:46.260276 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.260420 main.go:602: 0:Accepted new Connection
-[peer] 22:02:46.262628 main.go:602: 0:Accepted new Connection
-[peer] 22:02:46.262925 main.go:698: 0:Block sent to peer successful
-[err] 22:02:46.262940 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.262973 main.go:653: 0:RPC calls successfully returned. Iteration: 1
-[peer] 22:02:46.264994 main.go:126: 0:Got block message, iteration 1
-[peer] 22:02:46.265016 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:46.265023 main.go:135: 0:Acquired bool lock
-[peer] 22:02:46.265030 main.go:142: 0:Bool lock released
-[peer] 22:02:46.265049 main.go:167: 0:Equal block
-[peer] 22:02:46.270962 honest.go:79: 0Train Error is 0.03876 in Iteration 1
-[peer] 22:02:46.270980 main.go:661: 0:Preparing for next Iteration. Current Iteration: 1
-[peer] 22:02:46.305483 main.go:126: 0:Got block message, iteration 1
-[peer] 22:02:46.305634 main.go:133: 0:Acquiring bool lock
-[peer] 22:02:46.305663 main.go:135: 0:Acquired bool lock
-[peer] 22:02:46.305689 main.go:142: 0:Bool lock released
-[peer] 22:02:46.305725 main.go:167: 0:Equal block
+[peer] 22:09:35.223853 honest.go:118: 0Sucessfully pulled dataset. Features: 25
+[peer] 22:09:35.224130 main.go:598: 0:Peer started. Receiving on 8000
+[peer] 22:09:36.748069 main.go:602: 0:Accepted new Connection
+[peer] 22:09:36.749057 main.go:201: 0:Registering peer:198.162.52.57:8017
+[peer] 22:09:36.749219 main.go:557: 0:Acquiring bool lock
+[peer] 22:09:36.749253 main.go:559: 0:Acquired bool lock
+[peer] 22:09:36.751490 main.go:578: 0:I am not verifier IterationCount:0
+[peer] 22:09:36.751511 main.go:583: 0:Bool lock released
+[peer] 22:09:36.751522 main.go:791: 0:Computing Update
+[peer] 22:09:36.752303 main.go:255: 0 : VRF returned ID map[15:{}]
+[peer] 22:09:36.752336 main.go:264: 0 :Verifiers [198.162.52.57:8015] returned.
+[err] 22:09:36.752884 main.go:282: Unable to connect to verifier, err = dial tcp 198.162.52.57:8015: connect: connection refused
+[peer] 22:09:36.752917 main.go:863: 0:Will try and create an empty block
+[peer] 22:09:36.752996 main.go:870: 0:Will try and create an empty block
+[peer] 22:09:36.753068 main.go:633: 0:Sending block. Iteration: 0
+[peer] 22:09:36.754913 main.go:698: 0:Block sent to peer successful
+[peer] 22:09:36.754975 main.go:653: 0:RPC calls successfully returned. Iteration: 0
+[peer] 22:09:36.758365 honest.go:79: 0Train Error is 1.00000 in Iteration 0
+[peer] 22:09:36.758468 main.go:661: 0:Preparing for next Iteration. Current Iteration: 0
+[peer] 22:09:36.758519 main.go:557: 0:Acquiring bool lock
+[peer] 22:09:36.758565 main.go:559: 0:Acquired bool lock
+[peer] 22:09:36.759154 main.go:602: 0:Accepted new Connection
+[peer] 22:09:36.760071 main.go:126: 0:Got block message, iteration 0
+[peer] 22:09:36.760125 main.go:133: 0:Acquiring bool lock
+[peer] 22:09:36.761889 main.go:578: 0:I am not verifier IterationCount:1
+[peer] 22:09:36.761921 main.go:583: 0:Bool lock released
+[peer] 22:09:36.761948 main.go:135: 0:Acquired bool lock
+[peer] 22:09:36.761966 main.go:142: 0:Bool lock released
+[peer] 22:09:36.761982 main.go:167: 0:Equal block
+[peer] 22:09:36.806318 main.go:602: 0:Accepted new Connection
+[peer] 22:09:36.807488 main.go:201: 0:Registering peer:198.162.52.57:8019
+[peer] 22:09:36.819417 main.go:602: 0:Accepted new Connection
+[peer] 22:09:36.819980 main.go:126: 0:Got block message, iteration 1
+[peer] 22:09:36.820049 main.go:133: 0:Acquiring bool lock
+[peer] 22:09:36.820085 main.go:135: 0:Acquired bool lock
+[peer] 22:09:36.820125 main.go:175: 0:Sending to channel
+[peer] 22:09:36.820160 main.go:181: 0:Sent to channel
+[peer] 22:09:36.820197 main.go:183: 0:Returning
+[peer] 22:09:36.820296 main.go:744: 0:Adding block to chain
+[peer] 22:09:36.820349 main.go:748: 0:Adding block to chain
+[peer] 22:09:36.820384 main.go:754: 0:Checking convergence
+[peer] 22:09:36.821588 honest.go:79: 0Train Error is 1.00000 in Iteration 1
+[peer] 22:09:36.821683 main.go:757: 0:Convergence checked
+[peer] 22:09:36.821720 main.go:760: 0:Bool lock released
+[peer] 22:09:36.821815 main.go:633: 0:Sending block. Iteration: 1
+[peer] 22:09:36.824520 main.go:698: 0:Block sent to peer successful
+[err] 22:09:36.824578 main.go:282: Error in sending block, err = Stale Update/Block
+[peer] 22:09:36.824687 main.go:602: 0:Accepted new Connection
+[peer] 22:09:36.825111 main.go:126: 0:Got block message, iteration 1
+[peer] 22:09:36.825185 main.go:133: 0:Acquiring bool lock
+[peer] 22:09:36.825222 main.go:135: 0:Acquired bool lock
+[peer] 22:09:36.825262 main.go:142: 0:Bool lock released
+[peer] 22:09:36.825296 main.go:167: 0:Equal block
+[peer] 22:09:36.832625 main.go:698: 0:Block sent to peer successful
+[err] 22:09:36.832677 main.go:282: Error in sending block, err = Stale Update/Block
+[peer] 22:09:36.832733 main.go:653: 0:RPC calls successfully returned. Iteration: 1
+[peer] 22:09:36.833729 honest.go:79: 0Train Error is 1.00000 in Iteration 1
+[peer] 22:09:36.833806 main.go:661: 0:Preparing for next Iteration. Current Iteration: 1
+[peer] 22:09:36.833841 main.go:557: 0:Acquiring bool lock
+[peer] 22:09:36.833876 main.go:559: 0:Acquired bool lock
+[peer] 22:09:36.836024 main.go:578: 0:I am not verifier IterationCount:2
+[peer] 22:09:36.836070 main.go:583: 0:Bool lock released
+[peer] 22:09:36.853106 main.go:791: 0:Computing Update
+[peer] 22:09:36.853335 main.go:602: 0:Accepted new Connection
+[peer] 22:09:36.853637 main.go:255: 0 : VRF returned ID map[10:{}]
+[peer] 22:09:36.853665 main.go:264: 0 :Verifiers [198.162.52.57:8010] returned.
+[peer] 22:09:36.854034 main.go:201: 0:Registering peer:198.162.52.57:8018
+[err] 22:09:36.854241 main.go:282: Unable to connect to verifier, err = dial tcp 198.162.52.57:8010: connect: connection refused
+[peer] 22:09:36.854281 main.go:863: 0:Will try and create an empty block
+[peer] 22:09:36.854364 main.go:870: 0:Will try and create an empty block
+[peer] 22:09:36.854436 main.go:633: 0:Sending block. Iteration: 2
+[peer] 22:09:36.856206 main.go:698: 0:Block sent to peer successful
+[peer] 22:09:36.856718 main.go:698: 0:Block sent to peer successful
+[peer] 22:09:36.857223 main.go:698: 0:Block sent to peer successful
+[peer] 22:09:36.857309 main.go:653: 0:RPC calls successfully returned. Iteration: 2
+[peer] 22:09:36.858347 main.go:602: 0:Accepted new Connection
+[peer] 22:09:36.858995 main.go:126: 0:Got block message, iteration 2
+[peer] 22:09:36.859055 main.go:133: 0:Acquiring bool lock
+[peer] 22:09:36.859087 main.go:135: 0:Acquired bool lock
+[peer] 22:09:36.859116 main.go:142: 0:Bool lock released
+[peer] 22:09:36.859152 main.go:167: 0:Equal block
+[peer] 22:09:36.867810 honest.go:79: 0Train Error is 1.00000 in Iteration 2
+[peer] 22:09:36.867883 main.go:661: 0:Preparing for next Iteration. Current Iteration: 2
+[peer] 22:09:36.867916 main.go:557: 0:Acquiring bool lock
+[peer] 22:09:36.867945 main.go:559: 0:Acquired bool lock
+[peer] 22:09:36.869544 main.go:602: 0:Accepted new Connection
+[peer] 22:09:36.870074 main.go:126: 0:Got block message, iteration 3
+[peer] 22:09:36.870132 main.go:133: 0:Acquiring bool lock
+[peer] 22:09:36.870426 main.go:578: 0:I am not verifier IterationCount:3
+[peer] 22:09:36.870470 main.go:583: 0:Bool lock released
+[peer] 22:09:36.870510 main.go:135: 0:Acquired bool lock
+[peer] 22:09:36.870543 main.go:175: 0:Sending to channel
+[peer] 22:09:36.870573 main.go:181: 0:Sent to channel
+[peer] 22:09:36.870603 main.go:183: 0:Returning
+[peer] 22:09:36.870697 main.go:744: 0:Adding block to chain
+[peer] 22:09:36.870739 main.go:748: 0:Adding block to chain
+[peer] 22:09:36.870768 main.go:754: 0:Checking convergence
+[peer] 22:09:36.880372 main.go:602: 0:Accepted new Connection
+[peer] 22:09:36.881152 main.go:201: 0:Registering peer:198.162.52.57:8011
+[peer] 22:09:36.881343 main.go:602: 0:Accepted new Connection
+[peer] 22:09:36.881989 main.go:201: 0:Registering peer:198.162.52.57:8014
+[peer] 22:09:36.882251 honest.go:79: 0Train Error is 1.00000 in Iteration 3
+[peer] 22:09:36.882293 main.go:757: 0:Convergence checked
+[peer] 22:09:36.882323 main.go:760: 0:Bool lock released
+[peer] 22:09:36.882437 main.go:633: 0:Sending block. Iteration: 3
+[peer] 22:09:36.884148 main.go:698: 0:Block sent to peer successful
+[peer] 22:09:36.884325 main.go:698: 0:Block sent to peer successful
+[err] 22:09:36.884366 main.go:282: Error in sending block, err = Stale Update/Block
+[peer] 22:09:36.884566 main.go:698: 0:Block sent to peer successful
+[peer] 22:09:36.884816 main.go:698: 0:Block sent to peer successful
+[err] 22:09:36.884856 main.go:282: Error in sending block, err = Stale Update/Block
+[peer] 22:09:36.895074 main.go:698: 0:Block sent to peer successful
+[err] 22:09:36.895155 main.go:282: Error in sending block, err = Stale Update/Block
+[peer] 22:09:36.895217 main.go:653: 0:RPC calls successfully returned. Iteration: 3
+[peer] 22:09:36.904143 main.go:602: 0:Accepted new Connection
+[peer] 22:09:36.905422 main.go:126: 0:Got block message, iteration 4
+[peer] 22:09:36.905496 main.go:133: 0:Acquiring bool lock
+[peer] 22:09:36.905523 main.go:135: 0:Acquired bool lock
+[peer] 22:09:36.905561 main.go:175: 0:Sending to channel
+[peer] 22:09:36.905588 main.go:181: 0:Sent to channel
+[peer] 22:09:36.905644 main.go:183: 0:Returning
+[peer] 22:09:36.905698 main.go:735: 0:Blocking. Got block for 4, I am at 3
+[peer] 22:09:36.905970 honest.go:79: 0Train Error is 1.00000 in Iteration 3
+[peer] 22:09:36.906006 main.go:661: 0:Preparing for next Iteration. Current Iteration: 3
+[peer] 22:09:36.906038 main.go:557: 0:Acquiring bool lock
+[peer] 22:09:36.906064 main.go:559: 0:Acquired bool lock
+[peer] 22:09:36.907825 main.go:578: 0:I am not verifier IterationCount:4
+[peer] 22:09:36.907867 main.go:583: 0:Bool lock released
+[peer] 22:09:36.908986 main.go:602: 0:Accepted new Connection
+[peer] 22:09:36.910355 main.go:602: 0:Accepted new Connection
+[peer] 22:09:36.911100 main.go:126: 0:Got block message, iteration 4
+[peer] 22:09:36.911153 main.go:133: 0:Acquiring bool lock
+[peer] 22:09:36.911187 main.go:135: 0:Acquired bool lock
+[peer] 22:09:36.911213 main.go:175: 0:Sending to channel
+[peer] 22:09:36.911244 main.go:181: 0:Sent to channel
+[peer] 22:09:36.911272 main.go:183: 0:Returning
+[peer] 22:09:36.911356 main.go:744: 0:Adding block to chain
+[peer] 22:09:36.911394 main.go:748: 0:Adding block to chain
+[peer] 22:09:36.911421 main.go:754: 0:Checking convergence
+[peer] 22:09:36.920855 main.go:602: 0:Accepted new Connection
+[peer] 22:09:36.921269 main.go:201: 0:Registering peer:198.162.52.57:8010
+[peer] 22:09:36.921423 main.go:201: 0:Registering peer:198.162.52.57:8016
+[peer] 22:09:36.921843 honest.go:79: 0Train Error is 1.00000 in Iteration 4
+[peer] 22:09:36.921880 main.go:757: 0:Convergence checked
+[peer] 22:09:36.921906 main.go:760: 0:Bool lock released
+[peer] 22:09:36.921973 main.go:633: 0:Sending block. Iteration: 4
+[peer] 22:09:36.923338 main.go:698: 0:Block sent to peer successful
+[err] 22:09:36.923387 main.go:282: Error in sending block, err = Stale Update/Block
+[peer] 22:09:36.923580 main.go:698: 0:Block sent to peer successful
+[err] 22:09:36.923612 main.go:282: Error in sending block, err = Stale Update/Block
+[peer] 22:09:36.951042 main.go:602: 0:Accepted new Connection
+[peer] 22:09:36.951694 main.go:698: 0:Block sent to peer successful
+[peer] 22:09:36.951844 main.go:201: 0:Registering peer:198.162.52.57:8013
+[peer] 22:09:36.951918 main.go:698: 0:Block sent to peer successful
+[err] 22:09:36.952028 main.go:282: Error in sending block, err = Stale Update/Block
+[peer] 22:09:36.951930 main.go:602: 0:Accepted new Connection
+[peer] 22:09:36.952245 main.go:698: 0:Block sent to peer successful
+[peer] 22:09:36.952778 main.go:126: 0:Got block message, iteration 2
+[peer] 22:09:36.952803 main.go:133: 0:Acquiring bool lock
+[peer] 22:09:36.952811 main.go:135: 0:Acquired bool lock
+[peer] 22:09:36.952818 main.go:142: 0:Bool lock released
+[peer] 22:09:36.952825 main.go:167: 0:Equal block
+[peer] 22:09:36.954487 main.go:791: 0:Computing Update
+[peer] 22:09:36.954918 main.go:255: 0 : VRF returned ID map[7:{}]
+[peer] 22:09:36.954938 main.go:264: 0 :Verifiers [198.162.52.126:8007] returned.
+[err] 22:09:36.955036 main.go:282: Unable to connect to verifier, err = dial tcp 198.162.52.126:8007: connect: connection refused
+[peer] 22:09:36.955046 main.go:863: 0:Will try and create an empty block
+[err] 22:09:36.955054 main.go:282: Iteration: 4, err = Forbidden overwrite of block foiled
+[peer] 22:09:36.961361 main.go:602: 0:Accepted new Connection
+[peer] 22:09:36.962356 main.go:126: 0:Got block message, iteration 3
+[peer] 22:09:36.962394 main.go:133: 0:Acquiring bool lock
+[peer] 22:09:36.962403 main.go:135: 0:Acquired bool lock
+[peer] 22:09:36.962410 main.go:142: 0:Bool lock released
+[peer] 22:09:36.962418 main.go:167: 0:Equal block
+[peer] 22:09:36.966132 main.go:602: 0:Accepted new Connection
+[peer] 22:09:36.966659 main.go:698: 0:Block sent to peer successful
+[err] 22:09:36.966674 main.go:282: Error in sending block, err = Stale Update/Block
+[peer] 22:09:36.966956 main.go:126: 0:Got block message, iteration 4
+[peer] 22:09:36.966982 main.go:133: 0:Acquiring bool lock
+[peer] 22:09:36.966990 main.go:135: 0:Acquired bool lock
+[peer] 22:09:36.967008 main.go:142: 0:Bool lock released
+[peer] 22:09:36.967015 main.go:167: 0:Equal block
+[peer] 22:09:36.972507 main.go:602: 0:Accepted new Connection
+[peer] 22:09:36.973219 main.go:201: 0:Registering peer:198.162.52.57:8015
+[peer] 22:09:36.996271 main.go:602: 0:Accepted new Connection
+[peer] 22:09:36.997359 main.go:201: 0:Registering peer:198.162.52.57:8012
+[peer] 22:09:36.998171 main.go:698: 0:Block sent to peer successful
+[err] 22:09:36.998192 main.go:282: Error in sending block, err = Stale Update/Block
+[peer] 22:09:36.998227 main.go:653: 0:RPC calls successfully returned. Iteration: 4
+[peer] 22:09:37.004863 main.go:602: 0:Accepted new Connection
+[peer] 22:09:37.005821 main.go:126: 0:Got block message, iteration 5
+[peer] 22:09:37.005854 main.go:133: 0:Acquiring bool lock
+[peer] 22:09:37.005862 main.go:135: 0:Acquired bool lock
+[peer] 22:09:37.005876 main.go:175: 0:Sending to channel
+[peer] 22:09:37.005885 main.go:181: 0:Sent to channel
+[peer] 22:09:37.005894 main.go:183: 0:Returning
+[peer] 22:09:37.005975 main.go:735: 0:Blocking. Got block for 5, I am at 4
+[peer] 22:09:37.008048 main.go:602: 0:Accepted new Connection
+[peer] 22:09:37.009390 main.go:126: 0:Got block message, iteration 5
+[peer] 22:09:37.009415 main.go:133: 0:Acquiring bool lock
+[peer] 22:09:37.009424 main.go:135: 0:Acquired bool lock
+[peer] 22:09:37.009432 main.go:175: 0:Sending to channel
+[peer] 22:09:37.009449 main.go:181: 0:Sent to channel
+[peer] 22:09:37.009465 main.go:183: 0:Returning
+[peer] 22:09:37.009543 main.go:735: 0:Blocking. Got block for 5, I am at 4
+[peer] 22:09:37.015606 main.go:602: 0:Accepted new Connection
+[peer] 22:09:37.017264 main.go:602: 0:Accepted new Connection
+[peer] 22:09:37.018285 main.go:126: 0:Got block message, iteration 5
+[peer] 22:09:37.018355 main.go:133: 0:Acquiring bool lock
+[peer] 22:09:37.018384 main.go:135: 0:Acquired bool lock
+[peer] 22:09:37.018409 main.go:175: 0:Sending to channel
+[peer] 22:09:37.018439 main.go:181: 0:Sent to channel
+[peer] 22:09:37.018469 main.go:183: 0:Returning
+[peer] 22:09:37.018511 main.go:735: 0:Blocking. Got block for 5, I am at 4
+[peer] 22:09:37.019751 main.go:126: 0:Got block message, iteration 5
+[peer] 22:09:37.019808 main.go:133: 0:Acquiring bool lock
+[peer] 22:09:37.019840 main.go:135: 0:Acquired bool lock
+[peer] 22:09:37.019866 main.go:175: 0:Sending to channel
+[peer] 22:09:37.019892 main.go:181: 0:Sent to channel
+[peer] 22:09:37.019922 main.go:183: 0:Returning
+[peer] 22:09:37.020008 main.go:735: 0:Blocking. Got block for 5, I am at 4
+[peer] 22:09:37.066207 honest.go:79: 0Train Error is 1.00000 in Iteration 4
+[peer] 22:09:37.066493 main.go:661: 0:Preparing for next Iteration. Current Iteration: 4
+[peer] 22:09:37.066506 main.go:557: 0:Acquiring bool lock
+[peer] 22:09:37.066569 main.go:559: 0:Acquired bool lock
+[peer] 22:09:37.071463 main.go:578: 0:I am not verifier IterationCount:5
+[peer] 22:09:37.071487 main.go:583: 0:Bool lock released
+[peer] 22:09:37.098503 main.go:602: 0:Accepted new Connection
+[peer] 22:09:37.100016 main.go:126: 0:Got block message, iteration 5
+[peer] 22:09:37.100048 main.go:133: 0:Acquiring bool lock
+[peer] 22:09:37.100056 main.go:135: 0:Acquired bool lock
+[peer] 22:09:37.100063 main.go:175: 0:Sending to channel
+[peer] 22:09:37.100077 main.go:181: 0:Sent to channel
+[peer] 22:09:37.100086 main.go:183: 0:Returning
+[peer] 22:09:37.100153 main.go:744: 0:Adding block to chain
+[peer] 22:09:37.100169 main.go:748: 0:Adding block to chain
+[peer] 22:09:37.100176 main.go:754: 0:Checking convergence
+[peer] 22:09:37.109663 honest.go:79: 0Train Error is 1.00000 in Iteration 5
+[peer] 22:09:37.109741 main.go:757: 0:Convergence checked
+[peer] 22:09:37.109768 main.go:760: 0:Bool lock released
+[peer] 22:09:37.109831 main.go:633: 0:Sending block. Iteration: 5
+[peer] 22:09:37.136586 main.go:602: 0:Accepted new Connection
+[peer] 22:09:37.136672 main.go:698: 0:Block sent to peer successful
+[peer] 22:09:37.136785 main.go:698: 0:Block sent to peer successful
+[err] 22:09:37.136804 main.go:282: Error in sending block, err = Stale Update/Block
+[peer] 22:09:37.136858 main.go:126: 0:Got block message, iteration 3
+[peer] 22:09:37.136884 main.go:133: 0:Acquiring bool lock
+[peer] 22:09:37.136893 main.go:135: 0:Acquired bool lock
+[peer] 22:09:37.136900 main.go:142: 0:Bool lock released
+[peer] 22:09:37.136909 main.go:167: 0:Equal block
+[peer] 22:09:37.136930 main.go:698: 0:Block sent to peer successful
+[err] 22:09:37.136942 main.go:282: Error in sending block, err = Stale Update/Block
+[peer] 22:09:37.136621 main.go:698: 0:Block sent to peer successful
+[err] 22:09:37.136976 main.go:282: Error in sending block, err = Stale Update/Block
+[peer] 22:09:37.137080 main.go:698: 0:Block sent to peer successful
+[err] 22:09:37.137093 main.go:282: Error in sending block, err = Stale Update/Block
+[peer] 22:09:37.137102 main.go:698: 0:Block sent to peer successful
+[peer] 22:09:37.137193 main.go:698: 0:Block sent to peer successful
+[err] 22:09:37.137204 main.go:282: Error in sending block, err = Stale Update/Block
+[peer] 22:09:37.138003 main.go:698: 0:Block sent to peer successful
+[err] 22:09:37.138136 main.go:282: Error in sending block, err = Stale Update/Block
+[peer] 22:09:37.138095 main.go:698: 0:Block sent to peer successful
+[err] 22:09:37.138219 main.go:282: Error in sending block, err = Stale Update/Block
+[peer] 22:09:37.138691 main.go:698: 0:Block sent to peer successful
+[err] 22:09:37.138735 main.go:282: Error in sending block, err = Stale Update/Block
+[peer] 22:09:37.138779 main.go:653: 0:RPC calls successfully returned. Iteration: 5
+[peer] 22:09:37.155245 main.go:791: 0:Computing Update
+[peer] 22:09:37.155650 main.go:255: 0 : VRF returned ID map[5:{}]
+[peer] 22:09:37.155699 main.go:264: 0 :Verifiers [198.162.52.126:8005] returned.
+[err] 22:09:37.155827 main.go:282: Unable to connect to verifier, err = dial tcp 198.162.52.126:8005: connect: connection refused
+[peer] 22:09:37.155859 main.go:863: 0:Will try and create an empty block
+[err] 22:09:37.155884 main.go:282: Iteration: 5, err = Forbidden overwrite of block foiled
+[peer] 22:09:37.206374 honest.go:79: 0Train Error is 1.00000 in Iteration 5
+[peer] 22:09:37.206749 main.go:661: 0:Preparing for next Iteration. Current Iteration: 5
+[peer] 22:09:37.206830 main.go:557: 0:Acquiring bool lock
+[peer] 22:09:37.206901 main.go:559: 0:Acquired bool lock
+[peer] 22:09:37.208574 main.go:578: 0:I am not verifier IterationCount:6
+[peer] 22:09:37.209078 main.go:583: 0:Bool lock released
+[peer] 22:09:37.256036 main.go:791: 0:Computing Update
+[peer] 22:09:37.256619 main.go:255: 0 : VRF returned ID map[13:{}]
+[peer] 22:09:37.256722 main.go:264: 0 :Verifiers [198.162.52.57:8013] returned.
+[peer] 22:09:37.257151 main.go:836: 0:Making RPC Call to Verifier. Sending Update, Iteration:6
+[peer] 22:09:37.258483 main.go:843: 0:Update sent successfully
+[peer] 22:09:37.263259 main.go:602: 0:Accepted new Connection
+[peer] 22:09:37.263806 main.go:126: 0:Got block message, iteration 4
+[peer] 22:09:37.263839 main.go:133: 0:Acquiring bool lock
+[peer] 22:09:37.263846 main.go:135: 0:Acquired bool lock
+[peer] 22:09:37.263852 main.go:142: 0:Bool lock released
+[peer] 22:09:37.263858 main.go:167: 0:Equal block
+[peer] 22:09:37.265383 main.go:602: 0:Accepted new Connection
+[peer] 22:09:37.266209 main.go:126: 0:Got block message, iteration 4
+[peer] 22:09:37.266255 main.go:133: 0:Acquiring bool lock
+[peer] 22:09:37.266263 main.go:135: 0:Acquired bool lock
+[peer] 22:09:37.266270 main.go:142: 0:Bool lock released
+[peer] 22:09:37.266277 main.go:167: 0:Equal block
+[peer] 22:09:37.317067 main.go:602: 0:Accepted new Connection
+[peer] 22:09:37.317670 main.go:103: 0:Got update message, iteration 5
+[err] 22:09:37.317776 main.go:274: Update of previous iteration received, err = Stale Update/Block

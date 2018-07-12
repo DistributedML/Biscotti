@@ -51,15 +51,17 @@ done
 
 wait
 
+cd ./LogFiles
+
 if [[ "$myAddress" == "198.162.52.57" ]]; then
 	
 	echo "Copying files back to naur"
-	cd ./LogFiles
+
 	scp *.log shayan@198.162.52.126:/home/shayan/gopath/src/simpleBlockChain/DistSys/LogFiles
 
 fi
 
-cd ..
+
 
 echo "Running with " $nodesToRun "nodes complete. Testing similarity of blockchain"
 

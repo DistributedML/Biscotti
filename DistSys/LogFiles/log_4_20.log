@@ -1,476 +1,179 @@
-[peer] 22:02:38.532561 honest.go:105: 4Importing modules...
+[peer] 22:09:37.671015 honest.go:105: 4Importing modules...
 ../ML/code/utils.py:223: FutureWarning: Method .as_matrix will be removed in a future version. Use .values instead.
   data = data.as_matrix()
 ../ML/code/utils.py:94: FutureWarning: Method .as_matrix will be removed in a future version. Use .values instead.
   credit = df.ix[1:nn, 1:dd].as_matrix()
-[peer] 22:02:44.975378 honest.go:118: 4Sucessfully pulled dataset. Features: 25
-[peer] 22:02:44.975595 main.go:467: 4:Announcing myself to network
-[peer] 22:02:44.975641 main.go:472: 4:Calling {198.162.52.126 %!s(int=8000) }
-[peer] 22:02:44.975652 main.go:491: 4:Inside callRegisterRPC
-[peer] 22:02:44.975660 main.go:495: 4Making RPC call
-[peer] 22:02:44.975670 main.go:598: 4:Peer started. Receiving on 8004
-[peer] 22:02:44.975848 main.go:501: 4RPC dial successful
-[peer] 22:02:44.975860 main.go:504: 4:Calling RPC:198.162.52.126:8000
-[peer] 22:02:44.975870 main.go:506: 4:RPC called198.162.52.126:8000
-[peer] 22:02:44.976327 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 22:02:44.976381 main.go:472: 4:Calling {198.162.52.126 %!s(int=8001) }
-[peer] 22:02:44.976393 main.go:491: 4:Inside callRegisterRPC
-[peer] 22:02:44.976404 main.go:495: 4Making RPC call
-[peer] 22:02:44.976528 main.go:501: 4RPC dial successful
-[peer] 22:02:44.976541 main.go:504: 4:Calling RPC:198.162.52.126:8001
-[peer] 22:02:44.976551 main.go:506: 4:RPC called198.162.52.126:8001
-[peer] 22:02:44.976876 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 22:02:44.976915 main.go:472: 4:Calling {198.162.52.126 %!s(int=8002) }
-[peer] 22:02:44.976928 main.go:491: 4:Inside callRegisterRPC
-[peer] 22:02:44.976937 main.go:495: 4Making RPC call
-[peer] 22:02:44.977057 main.go:501: 4RPC dial successful
-[peer] 22:02:44.977070 main.go:504: 4:Calling RPC:198.162.52.126:8002
-[peer] 22:02:44.977080 main.go:506: 4:RPC called198.162.52.126:8002
-[peer] 22:02:44.977497 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 22:02:44.977540 main.go:472: 4:Calling {198.162.52.126 %!s(int=8003) }
-[peer] 22:02:44.977553 main.go:491: 4:Inside callRegisterRPC
-[peer] 22:02:44.977563 main.go:495: 4Making RPC call
-[err] 22:02:44.977612 main.go:282: Peer offline.Couldn't connect to peer: 198.162.52.126:8003, err = dial tcp 198.162.52.126:8003: connect: connection refused
-[peer] 22:02:44.977626 main.go:472: 4:Calling {198.162.52.126 %!s(int=8005) }
-[peer] 22:02:44.977631 main.go:491: 4:Inside callRegisterRPC
-[peer] 22:02:44.977636 main.go:495: 4Making RPC call
-[err] 22:02:44.977669 main.go:282: Peer offline.Couldn't connect to peer: 198.162.52.126:8005, err = dial tcp 198.162.52.126:8005: connect: connection refused
-[peer] 22:02:44.977681 main.go:472: 4:Calling {198.162.52.126 %!s(int=8006) }
-[peer] 22:02:44.977686 main.go:491: 4:Inside callRegisterRPC
-[peer] 22:02:44.977690 main.go:495: 4Making RPC call
-[err] 22:02:44.977720 main.go:282: Peer offline.Couldn't connect to peer: 198.162.52.126:8006, err = dial tcp 198.162.52.126:8006: connect: connection refused
-[peer] 22:02:44.977730 main.go:472: 4:Calling {198.162.52.126 %!s(int=8007) }
-[peer] 22:02:44.977736 main.go:491: 4:Inside callRegisterRPC
-[peer] 22:02:44.977743 main.go:495: 4Making RPC call
-[peer] 22:02:44.977789 main.go:501: 4RPC dial successful
-[peer] 22:02:44.977797 main.go:504: 4:Calling RPC:198.162.52.126:8007
-[peer] 22:02:44.977804 main.go:506: 4:RPC called198.162.52.126:8007
-[peer] 22:02:44.978206 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 22:02:44.978245 main.go:472: 4:Calling {198.162.52.126 %!s(int=8008) }
-[peer] 22:02:44.978254 main.go:491: 4:Inside callRegisterRPC
-[peer] 22:02:44.978265 main.go:495: 4Making RPC call
-[err] 22:02:44.978320 main.go:282: Peer offline.Couldn't connect to peer: 198.162.52.126:8008, err = dial tcp 198.162.52.126:8008: connect: connection refused
-[peer] 22:02:44.978335 main.go:472: 4:Calling {198.162.52.126 %!s(int=8009) }
-[peer] 22:02:44.978344 main.go:491: 4:Inside callRegisterRPC
-[peer] 22:02:44.978352 main.go:495: 4Making RPC call
-[peer] 22:02:44.978425 main.go:501: 4RPC dial successful
-[peer] 22:02:44.978437 main.go:504: 4:Calling RPC:198.162.52.126:8009
-[peer] 22:02:44.978447 main.go:506: 4:RPC called198.162.52.126:8009
-[peer] 22:02:44.978768 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 22:02:44.978805 main.go:472: 4:Calling {198.162.52.57 %!s(int=8010) }
-[peer] 22:02:44.978814 main.go:491: 4:Inside callRegisterRPC
-[peer] 22:02:44.978822 main.go:495: 4Making RPC call
-[peer] 22:02:44.979370 main.go:501: 4RPC dial successful
-[peer] 22:02:44.979383 main.go:504: 4:Calling RPC:198.162.52.57:8010
-[peer] 22:02:44.979393 main.go:506: 4:RPC called198.162.52.57:8010
-[peer] 22:02:44.980727 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 22:02:44.980758 main.go:472: 4:Calling {198.162.52.57 %!s(int=8011) }
-[peer] 22:02:44.980766 main.go:491: 4:Inside callRegisterRPC
-[peer] 22:02:44.980774 main.go:495: 4Making RPC call
-[peer] 22:02:44.981326 main.go:501: 4RPC dial successful
-[peer] 22:02:44.981339 main.go:504: 4:Calling RPC:198.162.52.57:8011
-[peer] 22:02:44.981348 main.go:506: 4:RPC called198.162.52.57:8011
-[peer] 22:02:44.983046 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 22:02:44.983092 main.go:472: 4:Calling {198.162.52.57 %!s(int=8012) }
-[peer] 22:02:44.983104 main.go:491: 4:Inside callRegisterRPC
-[peer] 22:02:44.983113 main.go:495: 4Making RPC call
-[peer] 22:02:44.983425 main.go:501: 4RPC dial successful
-[peer] 22:02:44.983438 main.go:504: 4:Calling RPC:198.162.52.57:8012
-[peer] 22:02:44.983448 main.go:506: 4:RPC called198.162.52.57:8012
-[peer] 22:02:44.984804 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 22:02:44.984836 main.go:472: 4:Calling {198.162.52.57 %!s(int=8013) }
-[peer] 22:02:44.984846 main.go:491: 4:Inside callRegisterRPC
-[peer] 22:02:44.984854 main.go:495: 4Making RPC call
-[peer] 22:02:44.985406 main.go:501: 4RPC dial successful
-[peer] 22:02:44.985419 main.go:504: 4:Calling RPC:198.162.52.57:8013
-[peer] 22:02:44.985428 main.go:506: 4:RPC called198.162.52.57:8013
-[peer] 22:02:44.986913 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 22:02:44.986957 main.go:472: 4:Calling {198.162.52.57 %!s(int=8014) }
-[peer] 22:02:44.986969 main.go:491: 4:Inside callRegisterRPC
-[peer] 22:02:44.986978 main.go:495: 4Making RPC call
-[peer] 22:02:44.987309 main.go:501: 4RPC dial successful
-[peer] 22:02:44.987327 main.go:504: 4:Calling RPC:198.162.52.57:8014
-[peer] 22:02:44.987338 main.go:506: 4:RPC called198.162.52.57:8014
-[peer] 22:02:44.988498 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 22:02:44.988534 main.go:472: 4:Calling {198.162.52.57 %!s(int=8015) }
-[peer] 22:02:44.988544 main.go:491: 4:Inside callRegisterRPC
-[peer] 22:02:44.988552 main.go:495: 4Making RPC call
-[peer] 22:02:44.989029 main.go:501: 4RPC dial successful
-[peer] 22:02:44.989041 main.go:504: 4:Calling RPC:198.162.52.57:8015
-[peer] 22:02:44.989051 main.go:506: 4:RPC called198.162.52.57:8015
-[peer] 22:02:44.990560 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 22:02:44.990657 main.go:472: 4:Calling {198.162.52.57 %!s(int=8016) }
-[peer] 22:02:44.990672 main.go:491: 4:Inside callRegisterRPC
-[peer] 22:02:44.990681 main.go:495: 4Making RPC call
-[peer] 22:02:44.991189 main.go:501: 4RPC dial successful
-[peer] 22:02:44.991204 main.go:504: 4:Calling RPC:198.162.52.57:8016
-[peer] 22:02:44.991215 main.go:506: 4:RPC called198.162.52.57:8016
-[peer] 22:02:44.992623 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 22:02:44.992663 main.go:472: 4:Calling {198.162.52.57 %!s(int=8017) }
-[peer] 22:02:44.992676 main.go:491: 4:Inside callRegisterRPC
-[peer] 22:02:44.992685 main.go:495: 4Making RPC call
-[peer] 22:02:44.992989 main.go:501: 4RPC dial successful
-[peer] 22:02:44.993003 main.go:504: 4:Calling RPC:198.162.52.57:8017
-[peer] 22:02:44.993014 main.go:506: 4:RPC called198.162.52.57:8017
-[peer] 22:02:44.994650 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 22:02:44.994698 main.go:472: 4:Calling {198.162.52.57 %!s(int=8018) }
-[peer] 22:02:44.994711 main.go:491: 4:Inside callRegisterRPC
-[peer] 22:02:44.994720 main.go:495: 4Making RPC call
-[peer] 22:02:44.995032 main.go:501: 4RPC dial successful
-[peer] 22:02:44.995047 main.go:504: 4:Calling RPC:198.162.52.57:8018
-[peer] 22:02:44.995059 main.go:506: 4:RPC called198.162.52.57:8018
-[peer] 22:02:44.996382 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 22:02:44.996425 main.go:472: 4:Calling {198.162.52.57 %!s(int=8019) }
-[peer] 22:02:44.996439 main.go:491: 4:Inside callRegisterRPC
-[peer] 22:02:44.996448 main.go:495: 4Making RPC call
-[peer] 22:02:44.996751 main.go:501: 4RPC dial successful
-[peer] 22:02:44.996766 main.go:504: 4:Calling RPC:198.162.52.57:8019
-[peer] 22:02:44.996780 main.go:506: 4:RPC called198.162.52.57:8019
-[peer] 22:02:44.998158 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 22:02:44.998194 main.go:482: 4:Bootstrapped Network. Calling signal
-[peer] 22:02:44.998208 main.go:484: 4:Bootstrapped Network. Signal called
-[peer] 22:02:44.998218 main.go:557: 4:Acquiring bool lock
-[peer] 22:02:44.998227 main.go:559: 4:Acquired bool lock
-[peer] 22:02:44.999814 main.go:578: 4:I am not verifier IterationCount:0
-[peer] 22:02:44.999830 main.go:583: 4:Bool lock released
-[peer] 22:02:44.999840 main.go:791: 4:Computing Update
-[peer] 22:02:45.000293 main.go:255: 4 : VRF returned ID map[15:{}]
-[peer] 22:02:45.000314 main.go:264: 4 :Verifiers [198.162.52.57:8015] returned.
-[peer] 22:02:45.000883 main.go:836: 4:Making RPC Call to Verifier. Sending Update, Iteration:0
-[peer] 22:02:45.002027 main.go:843: 4:Update sent successfully
-[peer] 22:02:45.062302 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.062549 main.go:201: 4:Registering peer:198.162.52.126:8003
-[peer] 22:02:45.092723 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.092898 main.go:201: 4:Registering peer:198.162.52.126:8008
-[peer] 22:02:45.319933 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.320076 main.go:201: 4:Registering peer:198.162.52.126:8005
-[peer] 22:02:45.422270 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.422411 main.go:201: 4:Registering peer:198.162.52.126:8006
-[peer] 22:02:45.450681 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.464090 main.go:126: 4:Got block message, iteration 0
-[peer] 22:02:45.464111 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:45.464116 main.go:135: 4:Acquired bool lock
-[peer] 22:02:45.464121 main.go:175: 4:Sending to channel
-[peer] 22:02:45.464129 main.go:181: 4:Sent to channel
-[peer] 22:02:45.464134 main.go:183: 4:Returning
-[peer] 22:02:45.464142 main.go:917: 4:Block Received. Appending to chain and moving on to the next iteration..
-[peer] 22:02:45.464218 main.go:744: 4:Adding block to chain
-[peer] 22:02:45.464229 main.go:748: 4:Adding block to chain
-[peer] 22:02:45.464234 main.go:754: 4:Checking convergence
-[peer] 22:02:45.465247 honest.go:79: 4Train Error is 0.06229 in Iteration 0
-[peer] 22:02:45.465317 main.go:757: 4:Convergence checked
-[peer] 22:02:45.465344 main.go:760: 4:Bool lock released
-[peer] 22:02:45.465400 main.go:633: 4:Sending block. Iteration: 0
-[peer] 22:02:45.481679 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.482073 main.go:698: 4:Block sent to peer successful
-[peer] 22:02:45.484441 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.482383 main.go:698: 4:Block sent to peer successful
-[peer] 22:02:45.482535 main.go:698: 4:Block sent to peer successful
-[peer] 22:02:45.511760 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.512006 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.512025 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.512042 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.512058 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.512245 main.go:126: 4:Got block message, iteration 0
-[peer] 22:02:45.512265 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:45.512272 main.go:135: 4:Acquired bool lock
-[peer] 22:02:45.512287 main.go:142: 4:Bool lock released
-[peer] 22:02:45.512295 main.go:167: 4:Equal block
-[peer] 22:02:45.482837 main.go:698: 4:Block sent to peer successful
-[peer] 22:02:45.512559 main.go:126: 4:Got block message, iteration 0
-[peer] 22:02:45.512579 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:45.512586 main.go:135: 4:Acquired bool lock
-[peer] 22:02:45.512593 main.go:142: 4:Bool lock released
-[peer] 22:02:45.512600 main.go:167: 4:Equal block
-[peer] 22:02:45.512802 main.go:126: 4:Got block message, iteration 0
-[peer] 22:02:45.512819 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:45.512826 main.go:135: 4:Acquired bool lock
-[peer] 22:02:45.512832 main.go:142: 4:Bool lock released
-[peer] 22:02:45.512839 main.go:167: 4:Equal block
-[peer] 22:02:45.513039 main.go:126: 4:Got block message, iteration 0
-[peer] 22:02:45.513058 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:45.513065 main.go:135: 4:Acquired bool lock
-[peer] 22:02:45.513072 main.go:142: 4:Bool lock released
-[peer] 22:02:45.513079 main.go:167: 4:Equal block
-[peer] 22:02:45.482982 main.go:698: 4:Block sent to peer successful
-[peer] 22:02:45.483132 main.go:698: 4:Block sent to peer successful
-[peer] 22:02:45.482232 main.go:698: 4:Block sent to peer successful
-[peer] 22:02:45.511949 main.go:126: 4:Got block message, iteration 0
-[peer] 22:02:45.513232 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:45.513239 main.go:135: 4:Acquired bool lock
-[peer] 22:02:45.513246 main.go:142: 4:Bool lock released
-[peer] 22:02:45.513253 main.go:167: 4:Equal block
-[peer] 22:02:45.517935 main.go:698: 4:Block sent to peer successful
-[err] 22:02:45.517951 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.517992 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.518186 main.go:126: 4:Got block message, iteration 0
-[peer] 22:02:45.518206 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:45.518214 main.go:135: 4:Acquired bool lock
-[peer] 22:02:45.518221 main.go:142: 4:Bool lock released
-[peer] 22:02:45.518229 main.go:167: 4:Equal block
-[peer] 22:02:45.482684 main.go:698: 4:Block sent to peer successful
-[peer] 22:02:45.531992 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.532331 main.go:126: 4:Got block message, iteration 0
-[peer] 22:02:45.532832 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:45.532863 main.go:135: 4:Acquired bool lock
-[peer] 22:02:45.532889 main.go:142: 4:Bool lock released
-[peer] 22:02:45.532916 main.go:167: 4:Equal block
-[peer] 22:02:45.533056 main.go:698: 4:Block sent to peer successful
-[err] 22:02:45.533246 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.551725 main.go:698: 4:Block sent to peer successful
-[err] 22:02:45.551741 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.560839 main.go:126: 4:Got block message, iteration 0
-[peer] 22:02:45.560885 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:45.560933 main.go:135: 4:Acquired bool lock
-[peer] 22:02:45.560964 main.go:142: 4:Bool lock released
-[peer] 22:02:45.560990 main.go:167: 4:Equal block
-[peer] 22:02:45.562927 main.go:698: 4:Block sent to peer successful
-[err] 22:02:45.562940 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.563452 main.go:698: 4:Block sent to peer successful
-[peer] 22:02:45.566614 main.go:126: 4:Got block message, iteration 0
-[peer] 22:02:45.566638 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:45.566647 main.go:135: 4:Acquired bool lock
-[peer] 22:02:45.566655 main.go:142: 4:Bool lock released
-[peer] 22:02:45.566662 main.go:167: 4:Equal block
-[peer] 22:02:45.569023 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.578373 main.go:126: 4:Got block message, iteration 0
-[peer] 22:02:45.578388 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:45.578396 main.go:135: 4:Acquired bool lock
-[peer] 22:02:45.578404 main.go:142: 4:Bool lock released
-[peer] 22:02:45.578414 main.go:167: 4:Equal block
-[peer] 22:02:45.579566 main.go:698: 4:Block sent to peer successful
-[err] 22:02:45.579578 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.579622 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.592204 main.go:698: 4:Block sent to peer successful
-[err] 22:02:45.592274 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.594104 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.595127 main.go:126: 4:Got block message, iteration 0
-[peer] 22:02:45.595142 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:45.595150 main.go:135: 4:Acquired bool lock
-[peer] 22:02:45.595158 main.go:142: 4:Bool lock released
-[peer] 22:02:45.595166 main.go:167: 4:Equal block
-[peer] 22:02:45.611275 main.go:126: 4:Got block message, iteration 0
-[peer] 22:02:45.611293 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:45.611298 main.go:135: 4:Acquired bool lock
-[peer] 22:02:45.611304 main.go:142: 4:Bool lock released
-[peer] 22:02:45.611312 main.go:167: 4:Equal block
-[peer] 22:02:45.695648 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.701228 main.go:698: 4:Block sent to peer successful
-[err] 22:02:45.701242 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.702958 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.704487 main.go:126: 4:Got block message, iteration 0
-[peer] 22:02:45.704505 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:45.704510 main.go:135: 4:Acquired bool lock
-[peer] 22:02:45.704515 main.go:142: 4:Bool lock released
-[peer] 22:02:45.704521 main.go:167: 4:Equal block
-[peer] 22:02:45.714391 main.go:126: 4:Got block message, iteration 0
-[peer] 22:02:45.714409 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:45.714414 main.go:135: 4:Acquired bool lock
-[peer] 22:02:45.714419 main.go:142: 4:Bool lock released
-[peer] 22:02:45.714425 main.go:167: 4:Equal block
-[peer] 22:02:45.802481 main.go:698: 4:Block sent to peer successful
-[err] 22:02:45.802523 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.802594 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.808720 main.go:126: 4:Got block message, iteration 0
-[peer] 22:02:45.808750 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:45.808762 main.go:135: 4:Acquired bool lock
-[peer] 22:02:45.808771 main.go:142: 4:Bool lock released
-[peer] 22:02:45.808779 main.go:167: 4:Equal block
-[peer] 22:02:45.809865 main.go:698: 4:Block sent to peer successful
-[err] 22:02:45.809884 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.811138 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.812611 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.815559 main.go:126: 4:Got block message, iteration 0
-[peer] 22:02:45.815586 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:45.815594 main.go:135: 4:Acquired bool lock
-[peer] 22:02:45.815601 main.go:142: 4:Bool lock released
-[peer] 22:02:45.815609 main.go:167: 4:Equal block
-[peer] 22:02:45.818125 main.go:698: 4:Block sent to peer successful
-[err] 22:02:45.818149 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:45.818204 main.go:653: 4:RPC calls successfully returned. Iteration: 0
-[peer] 22:02:45.819678 honest.go:79: 4Train Error is 0.06229 in Iteration 0
-[peer] 22:02:45.819699 main.go:661: 4:Preparing for next Iteration. Current Iteration: 0
-[peer] 22:02:45.819708 main.go:557: 4:Acquiring bool lock
-[peer] 22:02:45.819716 main.go:559: 4:Acquired bool lock
-[peer] 22:02:45.821765 main.go:578: 4:I am not verifier IterationCount:1
-[peer] 22:02:45.821837 main.go:583: 4:Bool lock released
-[peer] 22:02:45.822559 main.go:126: 4:Got block message, iteration 0
-[peer] 22:02:45.822585 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:45.822599 main.go:135: 4:Acquired bool lock
-[peer] 22:02:45.822613 main.go:142: 4:Bool lock released
-[peer] 22:02:45.822627 main.go:167: 4:Equal block
-[peer] 22:02:45.842897 main.go:602: 4:Accepted new Connection
-[peer] 22:02:45.912063 main.go:791: 4:Computing Update
-[peer] 22:02:45.912520 main.go:255: 4 : VRF returned ID map[13:{}]
-[peer] 22:02:45.912545 main.go:264: 4 :Verifiers [198.162.52.57:8013] returned.
-[peer] 22:02:45.912867 main.go:836: 4:Making RPC Call to Verifier. Sending Update, Iteration:1
-[peer] 22:02:45.913608 main.go:843: 4:Update sent successfully
-[peer] 22:02:46.020980 main.go:126: 4:Got block message, iteration 0
-[peer] 22:02:46.021004 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:46.021013 main.go:135: 4:Acquired bool lock
-[peer] 22:02:46.021029 main.go:142: 4:Bool lock released
-[peer] 22:02:46.021037 main.go:167: 4:Equal block
-[peer] 22:02:46.114727 main.go:602: 4:Accepted new Connection
-[peer] 22:02:46.118052 main.go:126: 4:Got block message, iteration 1
-[peer] 22:02:46.119318 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:46.119326 main.go:135: 4:Acquired bool lock
-[peer] 22:02:46.119335 main.go:175: 4:Sending to channel
-[peer] 22:02:46.119349 main.go:181: 4:Sent to channel
-[peer] 22:02:46.119362 main.go:183: 4:Returning
-[peer] 22:02:46.119465 main.go:744: 4:Adding block to chain
-[peer] 22:02:46.119482 main.go:748: 4:Adding block to chain
-[peer] 22:02:46.119489 main.go:754: 4:Checking convergence
-[peer] 22:02:46.119827 main.go:917: 4:Block Received. Appending to chain and moving on to the next iteration..
-[peer] 22:02:46.122117 main.go:602: 4:Accepted new Connection
-[peer] 22:02:46.122904 main.go:602: 4:Accepted new Connection
-[peer] 22:02:46.123079 main.go:602: 4:Accepted new Connection
-[peer] 22:02:46.123530 main.go:126: 4:Got block message, iteration 1
-[peer] 22:02:46.123886 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:46.136452 main.go:126: 4:Got block message, iteration 1
-[peer] 22:02:46.136477 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:46.136500 main.go:602: 4:Accepted new Connection
-[peer] 22:02:46.136521 main.go:602: 4:Accepted new Connection
-[peer] 22:02:46.136540 main.go:602: 4:Accepted new Connection
-[peer] 22:02:46.136853 main.go:126: 4:Got block message, iteration 1
-[peer] 22:02:46.136873 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:46.144044 main.go:126: 4:Got block message, iteration 1
-[peer] 22:02:46.144069 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:46.144260 main.go:126: 4:Got block message, iteration 1
-[peer] 22:02:46.144281 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:46.144302 main.go:602: 4:Accepted new Connection
-[peer] 22:02:46.144322 main.go:602: 4:Accepted new Connection
-[peer] 22:02:46.144340 main.go:602: 4:Accepted new Connection
-[peer] 22:02:46.144534 main.go:126: 4:Got block message, iteration 1
-[peer] 22:02:46.144557 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:46.144744 main.go:126: 4:Got block message, iteration 1
-[peer] 22:02:46.144764 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:46.144947 main.go:126: 4:Got block message, iteration 1
-[peer] 22:02:46.144967 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:46.150538 honest.go:79: 4Train Error is 0.03876 in Iteration 1
-[peer] 22:02:46.150555 main.go:757: 4:Convergence checked
-[peer] 22:02:46.150567 main.go:760: 4:Bool lock released
-[peer] 22:02:46.150627 main.go:633: 4:Sending block. Iteration: 1
-[peer] 22:02:46.150704 main.go:135: 4:Acquired bool lock
-[peer] 22:02:46.150717 main.go:142: 4:Bool lock released
-[peer] 22:02:46.150724 main.go:167: 4:Equal block
-[peer] 22:02:46.150771 main.go:135: 4:Acquired bool lock
-[peer] 22:02:46.150783 main.go:142: 4:Bool lock released
-[peer] 22:02:46.150790 main.go:167: 4:Equal block
-[peer] 22:02:46.150825 main.go:135: 4:Acquired bool lock
-[peer] 22:02:46.150836 main.go:142: 4:Bool lock released
-[peer] 22:02:46.150843 main.go:167: 4:Equal block
-[peer] 22:02:46.150876 main.go:135: 4:Acquired bool lock
-[peer] 22:02:46.150886 main.go:142: 4:Bool lock released
-[peer] 22:02:46.150893 main.go:167: 4:Equal block
-[peer] 22:02:46.150928 main.go:135: 4:Acquired bool lock
-[peer] 22:02:46.150939 main.go:142: 4:Bool lock released
-[peer] 22:02:46.150945 main.go:167: 4:Equal block
-[peer] 22:02:46.150982 main.go:135: 4:Acquired bool lock
-[peer] 22:02:46.150992 main.go:142: 4:Bool lock released
-[peer] 22:02:46.150999 main.go:167: 4:Equal block
-[peer] 22:02:46.151029 main.go:135: 4:Acquired bool lock
-[peer] 22:02:46.151038 main.go:142: 4:Bool lock released
-[peer] 22:02:46.151045 main.go:167: 4:Equal block
-[peer] 22:02:46.151073 main.go:135: 4:Acquired bool lock
-[peer] 22:02:46.151083 main.go:142: 4:Bool lock released
-[peer] 22:02:46.151098 main.go:167: 4:Equal block
-[peer] 22:02:46.159351 main.go:602: 4:Accepted new Connection
-[peer] 22:02:46.159374 main.go:602: 4:Accepted new Connection
-[peer] 22:02:46.159588 main.go:126: 4:Got block message, iteration 1
-[peer] 22:02:46.159609 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:46.159616 main.go:135: 4:Acquired bool lock
-[peer] 22:02:46.159622 main.go:142: 4:Bool lock released
-[peer] 22:02:46.159630 main.go:167: 4:Equal block
-[peer] 22:02:46.159736 main.go:698: 4:Block sent to peer successful
-[err] 22:02:46.159749 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.159847 main.go:698: 4:Block sent to peer successful
-[err] 22:02:46.159859 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.159954 main.go:698: 4:Block sent to peer successful
-[err] 22:02:46.159965 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.175605 main.go:698: 4:Block sent to peer successful
-[err] 22:02:46.176025 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.175750 main.go:698: 4:Block sent to peer successful
-[err] 22:02:46.176184 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.175939 main.go:126: 4:Got block message, iteration 1
-[peer] 22:02:46.176269 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:46.176295 main.go:135: 4:Acquired bool lock
-[peer] 22:02:46.176325 main.go:142: 4:Bool lock released
-[peer] 22:02:46.176350 main.go:167: 4:Equal block
-[peer] 22:02:46.176010 main.go:698: 4:Block sent to peer successful
-[err] 22:02:46.176440 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.176572 main.go:698: 4:Block sent to peer successful
-[err] 22:02:46.177653 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.179870 main.go:602: 4:Accepted new Connection
-[peer] 22:02:46.188231 main.go:698: 4:Block sent to peer successful
-[err] 22:02:46.188265 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.198070 main.go:698: 4:Block sent to peer successful
-[err] 22:02:46.198104 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.201065 main.go:602: 4:Accepted new Connection
-[peer] 22:02:46.201358 main.go:126: 4:Got block message, iteration 1
-[peer] 22:02:46.201378 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:46.201385 main.go:135: 4:Acquired bool lock
-[peer] 22:02:46.201392 main.go:142: 4:Bool lock released
-[peer] 22:02:46.201399 main.go:167: 4:Equal block
-[peer] 22:02:46.204703 main.go:698: 4:Block sent to peer successful
-[err] 22:02:46.204717 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.206517 main.go:698: 4:Block sent to peer successful
-[err] 22:02:46.206531 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.207541 main.go:698: 4:Block sent to peer successful
-[err] 22:02:46.207555 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.212043 main.go:126: 4:Got block message, iteration 1
-[peer] 22:02:46.212064 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:46.212072 main.go:135: 4:Acquired bool lock
-[peer] 22:02:46.212079 main.go:142: 4:Bool lock released
-[peer] 22:02:46.212088 main.go:167: 4:Equal block
-[peer] 22:02:46.212579 main.go:698: 4:Block sent to peer successful
-[err] 22:02:46.212592 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.215793 main.go:698: 4:Block sent to peer successful
-[err] 22:02:46.215806 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.215908 main.go:698: 4:Block sent to peer successful
-[err] 22:02:46.215919 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.216825 main.go:602: 4:Accepted new Connection
-[peer] 22:02:46.218592 main.go:126: 4:Got block message, iteration 1
-[peer] 22:02:46.218614 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:46.218620 main.go:135: 4:Acquired bool lock
-[peer] 22:02:46.218628 main.go:142: 4:Bool lock released
-[peer] 22:02:46.218635 main.go:167: 4:Equal block
-[peer] 22:02:46.220326 main.go:698: 4:Block sent to peer successful
-[err] 22:02:46.220339 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.222625 main.go:602: 4:Accepted new Connection
-[peer] 22:02:46.232289 main.go:126: 4:Got block message, iteration 1
-[peer] 22:02:46.232349 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:46.232377 main.go:135: 4:Acquired bool lock
-[peer] 22:02:46.232402 main.go:142: 4:Bool lock released
-[peer] 22:02:46.232432 main.go:167: 4:Equal block
-[peer] 22:02:46.238180 main.go:698: 4:Block sent to peer successful
-[err] 22:02:46.238194 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.241313 main.go:602: 4:Accepted new Connection
-[peer] 22:02:46.241545 main.go:126: 4:Got block message, iteration 1
-[peer] 22:02:46.241568 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:46.241577 main.go:135: 4:Acquired bool lock
-[peer] 22:02:46.241583 main.go:142: 4:Bool lock released
-[peer] 22:02:46.241590 main.go:167: 4:Equal block
-[peer] 22:02:46.255764 main.go:126: 4:Got block message, iteration 1
-[peer] 22:02:46.255948 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:46.256029 main.go:135: 4:Acquired bool lock
-[peer] 22:02:46.256077 main.go:142: 4:Bool lock released
-[peer] 22:02:46.256133 main.go:167: 4:Equal block
-[peer] 22:02:46.260180 main.go:602: 4:Accepted new Connection
-[peer] 22:02:46.262353 main.go:602: 4:Accepted new Connection
-[peer] 22:02:46.263057 main.go:698: 4:Block sent to peer successful
-[err] 22:02:46.263656 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.268258 main.go:126: 4:Got block message, iteration 1
-[peer] 22:02:46.268312 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:46.268341 main.go:135: 4:Acquired bool lock
-[peer] 22:02:46.268368 main.go:142: 4:Bool lock released
-[peer] 22:02:46.268397 main.go:167: 4:Equal block
-[peer] 22:02:46.306083 main.go:126: 4:Got block message, iteration 1
-[peer] 22:02:46.306108 main.go:133: 4:Acquiring bool lock
-[peer] 22:02:46.306116 main.go:135: 4:Acquired bool lock
-[peer] 22:02:46.306123 main.go:142: 4:Bool lock released
-[peer] 22:02:46.306130 main.go:167: 4:Equal block
-[peer] 22:02:46.307351 main.go:698: 4:Block sent to peer successful
-[err] 22:02:46.307363 main.go:282: Error in sending block, err = Stale Update/Block
-[peer] 22:02:46.307387 main.go:653: 4:RPC calls successfully returned. Iteration: 1
-[peer] 22:02:46.322153 honest.go:79: 4Train Error is 0.03876 in Iteration 1
-[peer] 22:02:46.322180 main.go:661: 4:Preparing for next Iteration. Current Iteration: 1
+[peer] 22:09:44.281568 honest.go:118: 4Sucessfully pulled dataset. Features: 25
+[peer] 22:09:44.281773 main.go:467: 4:Announcing myself to network
+[peer] 22:09:44.281805 main.go:472: 4:Calling {198.162.52.126 %!s(int=8000) }
+[peer] 22:09:44.281812 main.go:491: 4:Inside callRegisterRPC
+[peer] 22:09:44.281817 main.go:495: 4Making RPC call
+[peer] 22:09:44.281843 main.go:598: 4:Peer started. Receiving on 8004
+[err] 22:09:44.281908 main.go:282: Peer offline.Couldn't connect to peer: 198.162.52.126:8000, err = dial tcp 198.162.52.126:8000: connect: connection refused
+[peer] 22:09:44.281921 main.go:472: 4:Calling {198.162.52.126 %!s(int=8001) }
+[peer] 22:09:44.281926 main.go:491: 4:Inside callRegisterRPC
+[peer] 22:09:44.281931 main.go:495: 4Making RPC call
+[peer] 22:09:44.282004 main.go:501: 4RPC dial successful
+[peer] 22:09:44.282012 main.go:504: 4:Calling RPC:198.162.52.126:8001
+[peer] 22:09:44.282022 main.go:506: 4:RPC called198.162.52.126:8001
+[peer] 22:09:44.282616 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:09:44.282636 main.go:524: 4Got lastest chain until iteration 5
+[peer] 22:09:44.282684 main.go:472: 4:Calling {198.162.52.126 %!s(int=8002) }
+[peer] 22:09:44.282696 main.go:491: 4:Inside callRegisterRPC
+[peer] 22:09:44.282707 main.go:495: 4Making RPC call
+[peer] 22:09:44.282817 main.go:501: 4RPC dial successful
+[peer] 22:09:44.282832 main.go:504: 4:Calling RPC:198.162.52.126:8002
+[peer] 22:09:44.282842 main.go:506: 4:RPC called198.162.52.126:8002
+[peer] 22:09:44.283316 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:09:44.283359 main.go:472: 4:Calling {198.162.52.126 %!s(int=8003) }
+[peer] 22:09:44.283366 main.go:491: 4:Inside callRegisterRPC
+[peer] 22:09:44.283374 main.go:495: 4Making RPC call
+[err] 22:09:44.283423 main.go:282: Peer offline.Couldn't connect to peer: 198.162.52.126:8003, err = dial tcp 198.162.52.126:8003: connect: connection refused
+[peer] 22:09:44.283441 main.go:472: 4:Calling {198.162.52.126 %!s(int=8005) }
+[peer] 22:09:44.283452 main.go:491: 4:Inside callRegisterRPC
+[peer] 22:09:44.283463 main.go:495: 4Making RPC call
+[peer] 22:09:44.283540 main.go:501: 4RPC dial successful
+[peer] 22:09:44.283552 main.go:504: 4:Calling RPC:198.162.52.126:8005
+[peer] 22:09:44.283560 main.go:506: 4:RPC called198.162.52.126:8005
+[peer] 22:09:44.283935 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:09:44.283974 main.go:472: 4:Calling {198.162.52.126 %!s(int=8006) }
+[peer] 22:09:44.283981 main.go:491: 4:Inside callRegisterRPC
+[peer] 22:09:44.283986 main.go:495: 4Making RPC call
+[peer] 22:09:44.284053 main.go:501: 4RPC dial successful
+[peer] 22:09:44.284067 main.go:504: 4:Calling RPC:198.162.52.126:8006
+[peer] 22:09:44.284077 main.go:506: 4:RPC called198.162.52.126:8006
+[peer] 22:09:44.284460 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:09:44.284499 main.go:472: 4:Calling {198.162.52.126 %!s(int=8007) }
+[peer] 22:09:44.284507 main.go:491: 4:Inside callRegisterRPC
+[peer] 22:09:44.284512 main.go:495: 4Making RPC call
+[peer] 22:09:44.284568 main.go:501: 4RPC dial successful
+[peer] 22:09:44.284577 main.go:504: 4:Calling RPC:198.162.52.126:8007
+[peer] 22:09:44.284583 main.go:506: 4:RPC called198.162.52.126:8007
+[peer] 22:09:44.284972 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:09:44.285009 main.go:472: 4:Calling {198.162.52.126 %!s(int=8008) }
+[peer] 22:09:44.285018 main.go:491: 4:Inside callRegisterRPC
+[peer] 22:09:44.285023 main.go:495: 4Making RPC call
+[peer] 22:09:44.285078 main.go:501: 4RPC dial successful
+[peer] 22:09:44.285088 main.go:504: 4:Calling RPC:198.162.52.126:8008
+[peer] 22:09:44.285104 main.go:506: 4:RPC called198.162.52.126:8008
+[peer] 22:09:44.285419 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:09:44.285489 main.go:472: 4:Calling {198.162.52.126 %!s(int=8009) }
+[peer] 22:09:44.285502 main.go:491: 4:Inside callRegisterRPC
+[peer] 22:09:44.285508 main.go:495: 4Making RPC call
+[peer] 22:09:44.285573 main.go:501: 4RPC dial successful
+[peer] 22:09:44.285583 main.go:504: 4:Calling RPC:198.162.52.126:8009
+[peer] 22:09:44.285589 main.go:506: 4:RPC called198.162.52.126:8009
+[peer] 22:09:44.285939 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:09:44.285974 main.go:472: 4:Calling {198.162.52.57 %!s(int=8010) }
+[peer] 22:09:44.285984 main.go:491: 4:Inside callRegisterRPC
+[peer] 22:09:44.285992 main.go:495: 4Making RPC call
+[peer] 22:09:44.286541 main.go:501: 4RPC dial successful
+[peer] 22:09:44.286552 main.go:504: 4:Calling RPC:198.162.52.57:8010
+[peer] 22:09:44.286562 main.go:506: 4:RPC called198.162.52.57:8010
+[peer] 22:09:44.287967 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:09:44.287996 main.go:472: 4:Calling {198.162.52.57 %!s(int=8011) }
+[peer] 22:09:44.288002 main.go:491: 4:Inside callRegisterRPC
+[peer] 22:09:44.288007 main.go:495: 4Making RPC call
+[peer] 22:09:44.288462 main.go:501: 4RPC dial successful
+[peer] 22:09:44.288473 main.go:504: 4:Calling RPC:198.162.52.57:8011
+[peer] 22:09:44.288480 main.go:506: 4:RPC called198.162.52.57:8011
+[peer] 22:09:44.289691 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:09:44.289734 main.go:472: 4:Calling {198.162.52.57 %!s(int=8012) }
+[peer] 22:09:44.289746 main.go:491: 4:Inside callRegisterRPC
+[peer] 22:09:44.289752 main.go:495: 4Making RPC call
+[peer] 22:09:44.290222 main.go:501: 4RPC dial successful
+[peer] 22:09:44.290233 main.go:504: 4:Calling RPC:198.162.52.57:8012
+[peer] 22:09:44.290241 main.go:506: 4:RPC called198.162.52.57:8012
+[peer] 22:09:44.291420 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:09:44.291455 main.go:472: 4:Calling {198.162.52.57 %!s(int=8013) }
+[peer] 22:09:44.291466 main.go:491: 4:Inside callRegisterRPC
+[peer] 22:09:44.291472 main.go:495: 4Making RPC call
+[peer] 22:09:44.291907 main.go:501: 4RPC dial successful
+[peer] 22:09:44.291916 main.go:504: 4:Calling RPC:198.162.52.57:8013
+[peer] 22:09:44.291922 main.go:506: 4:RPC called198.162.52.57:8013
+[peer] 22:09:44.293251 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:09:44.293290 main.go:472: 4:Calling {198.162.52.57 %!s(int=8014) }
+[peer] 22:09:44.293299 main.go:491: 4:Inside callRegisterRPC
+[peer] 22:09:44.293304 main.go:495: 4Making RPC call
+[peer] 22:09:44.293787 main.go:501: 4RPC dial successful
+[peer] 22:09:44.293803 main.go:504: 4:Calling RPC:198.162.52.57:8014
+[peer] 22:09:44.293818 main.go:506: 4:RPC called198.162.52.57:8014
+[peer] 22:09:44.295078 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:09:44.295149 main.go:472: 4:Calling {198.162.52.57 %!s(int=8015) }
+[peer] 22:09:44.295158 main.go:491: 4:Inside callRegisterRPC
+[peer] 22:09:44.295164 main.go:495: 4Making RPC call
+[peer] 22:09:44.295532 main.go:501: 4RPC dial successful
+[peer] 22:09:44.295556 main.go:504: 4:Calling RPC:198.162.52.57:8015
+[peer] 22:09:44.295571 main.go:506: 4:RPC called198.162.52.57:8015
+[peer] 22:09:44.296843 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:09:44.296875 main.go:472: 4:Calling {198.162.52.57 %!s(int=8016) }
+[peer] 22:09:44.296882 main.go:491: 4:Inside callRegisterRPC
+[peer] 22:09:44.296886 main.go:495: 4Making RPC call
+[peer] 22:09:44.297330 main.go:501: 4RPC dial successful
+[peer] 22:09:44.297342 main.go:504: 4:Calling RPC:198.162.52.57:8016
+[peer] 22:09:44.297348 main.go:506: 4:RPC called198.162.52.57:8016
+[peer] 22:09:44.298579 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:09:44.298618 main.go:472: 4:Calling {198.162.52.57 %!s(int=8017) }
+[peer] 22:09:44.298634 main.go:491: 4:Inside callRegisterRPC
+[peer] 22:09:44.298639 main.go:495: 4Making RPC call
+[peer] 22:09:44.299081 main.go:501: 4RPC dial successful
+[peer] 22:09:44.299093 main.go:504: 4:Calling RPC:198.162.52.57:8017
+[peer] 22:09:44.299099 main.go:506: 4:RPC called198.162.52.57:8017
+[peer] 22:09:44.300582 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:09:44.300616 main.go:472: 4:Calling {198.162.52.57 %!s(int=8018) }
+[peer] 22:09:44.300624 main.go:491: 4:Inside callRegisterRPC
+[peer] 22:09:44.300637 main.go:495: 4Making RPC call
+[peer] 22:09:44.301133 main.go:501: 4RPC dial successful
+[peer] 22:09:44.301146 main.go:504: 4:Calling RPC:198.162.52.57:8018
+[peer] 22:09:44.301159 main.go:506: 4:RPC called198.162.52.57:8018
+[peer] 22:09:44.302620 main.go:513: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:09:44.302661 main.go:472: 4:Calling {198.162.52.57 %!s(int=8019) }
+[peer] 22:09:44.302677 main.go:491: 4:Inside callRegisterRPC
+[peer] 22:09:44.302694 main.go:495: 4Making RPC call
+[err] 22:09:44.303026 main.go:282: Peer offline.Couldn't connect to peer: 198.162.52.57:8019, err = dial tcp 198.162.52.57:8019: connect: connection refused
+[peer] 22:09:44.303037 main.go:482: 4:Bootstrapped Network. Calling signal
+[peer] 22:09:44.303055 main.go:484: 4:Bootstrapped Network. Signal called
+[peer] 22:09:44.303066 main.go:557: 4:Acquiring bool lock
+[peer] 22:09:44.303071 main.go:559: 4:Acquired bool lock
+[peer] 22:09:44.303988 main.go:578: 4:I am not verifier IterationCount:6
+[peer] 22:09:44.303996 main.go:583: 4:Bool lock released
+[peer] 22:09:44.304001 main.go:791: 4:Computing Update
+[peer] 22:09:44.304321 main.go:255: 4 : VRF returned ID map[12:{}]
+[peer] 22:09:44.304335 main.go:264: 4 :Verifiers [198.162.52.57:8012] returned.
+[peer] 22:09:44.304669 main.go:836: 4:Making RPC Call to Verifier. Sending Update, Iteration:6
+[peer] 22:09:44.305320 main.go:843: 4:Update sent successfully
+[peer] 22:09:44.552203 main.go:602: 4:Accepted new Connection
+[peer] 22:09:44.552447 main.go:201: 4:Registering peer:198.162.52.126:8003
+[peer] 22:09:52.173008 main.go:602: 4:Accepted new Connection
+[peer] 22:09:52.176960 main.go:126: 4:Got block message, iteration 6
+[peer] 22:09:52.177000 main.go:133: 4:Acquiring bool lock
+[peer] 22:09:52.177010 main.go:135: 4:Acquired bool lock
+[peer] 22:09:52.177019 main.go:142: 4:Bool lock released
+[peer] 22:09:52.177031 main.go:159: 4:Received better  block
+[peer] 22:09:52.181744 main.go:602: 4:Accepted new Connection
+[peer] 22:09:52.183961 main.go:602: 4:Accepted new Connection
+[peer] 22:09:52.184754 main.go:126: 4:Got block message, iteration 6
+[peer] 22:09:52.184799 main.go:133: 4:Acquiring bool lock
+[peer] 22:09:52.184818 main.go:135: 4:Acquired bool lock
+[peer] 22:09:52.184851 main.go:142: 4:Bool lock released
+[peer] 22:09:52.184862 main.go:159: 4:Received better  block
+[peer] 22:09:52.192029 main.go:126: 4:Got block message, iteration 6
+[peer] 22:09:52.192059 main.go:133: 4:Acquiring bool lock
+[peer] 22:09:52.192068 main.go:135: 4:Acquired bool lock
+[peer] 22:09:52.192076 main.go:142: 4:Bool lock released
+[peer] 22:09:52.192094 main.go:159: 4:Received better  block
+[peer] 22:09:52.243779 main.go:602: 4:Accepted new Connection
+[peer] 22:09:52.257870 main.go:126: 4:Got block message, iteration 6
+[peer] 22:09:52.257905 main.go:133: 4:Acquiring bool lock
+[peer] 22:09:52.257915 main.go:135: 4:Acquired bool lock
+[peer] 22:09:52.257923 main.go:142: 4:Bool lock released
+[peer] 22:09:52.257931 main.go:159: 4:Received better  block
+[peer] 22:09:52.305626 main.go:602: 4:Accepted new Connection
+[peer] 22:09:52.306190 main.go:126: 4:Got block message, iteration 6
+[peer] 22:09:52.306215 main.go:133: 4:Acquiring bool lock
+[peer] 22:09:52.306223 main.go:135: 4:Acquired bool lock
+[peer] 22:09:52.306231 main.go:142: 4:Bool lock released
+[peer] 22:09:52.306239 main.go:159: 4:Received better  block
+[peer] 22:10:00.305514 main.go:921: 4:Timeout. Didn't receive block. Appending empty block. Iteration: ..
+[peer] 22:10:00.305579 main.go:923: 4:chain lock acquired
+[err] 22:10:00.305623 main.go:282: Iteration: 6, err = Forbidden overwrite of block foiled
