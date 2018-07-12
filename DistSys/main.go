@@ -102,7 +102,11 @@ func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
 
 	outLog.Printf(strconv.Itoa(client.id)+":Got update message, iteration %d\n", update.Iteration)
 
-	// we can return the chain to the gut here instead of just leaving that guy with an error
+	// TODO: use the RONI score to actually reject bad updates
+	roniScore := client.verifyUpdate(update)
+	outLog.Printf("RONI for update is %f \n", roniScore)
+
+	// we can return the chain to the guy here instead of just leaving that guy with an error
 	
 	if update.Iteration < iterationCount {
 		handleErrorFatal("Update of previous iteration received", staleError)
@@ -891,17 +895,22 @@ func startUpdateDeadlineTimer(){
 	}
 
 	
-	if(len(client.blockUpdates) > 0){
+	if (len(client.blockUpdates) > 0) {
+		
 		outLog.Printf(strconv.Itoa(client.id)+":Acquiring chain lock")
 		blockChainLock.Lock()
+		
 		outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")
 		blockToSend, err := client.createBlock(iterationCount)
+		
 		blockChainLock.Unlock()		
 		printError("Iteration: " + strconv.Itoa(iterationCount), err)
-		if(err==nil){
+		
+		if (err == nil) {
 			sendBlock(*blockToSend)
-		}		
-	}else{
+		}
+
+	} else {
 		outLog.Printf(strconv.Itoa(client.id)+":Received no updates from peers. I WILL DIE")
 		os.Exit(1)
 	}

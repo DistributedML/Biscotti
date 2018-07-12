@@ -30,6 +30,10 @@ func (bc *Blockchain) getLatestGradient() []float64 {
 	return gradient
 }
 
+func (bc *Blockchain) getLatestBlockModel() []float64 {
+	return bc.Blocks[len(bc.Blocks)-1].Data.GlobalW
+}
+
 func (bc *Blockchain) PrintChain() {
 
 	for _, block := range bc.Blocks {

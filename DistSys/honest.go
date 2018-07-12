@@ -23,6 +23,8 @@ var (
 	pyTestModule  *python.PyObject
 	pyTestFunc    *python.PyObject
 	pyTrainFunc   *python.PyObject
+	pyRoniModule  *python.PyObject
+	pyRoniFunc    *python.PyObject
 
 	//Errors
 	 blockExistsError = errors.New("Forbidden overwrite of block foiled")
@@ -106,11 +108,13 @@ func pyInit(datasetName string) {
 
 	pyLogModule = python.PyImport_ImportModule("logistic_model")
 	pyTestModule = python.PyImport_ImportModule("logistic_model_test")
+	pyRoniModule = python.PyImport_ImportModule("logistic_validator")
 
 	pyLogInitFunc = pyLogModule.GetAttrString("init")
 	pyLogPrivFunc = pyLogModule.GetAttrString("privateFun")
 	pyTrainFunc = pyTestModule.GetAttrString("train_error")
 	pyTestFunc = pyTestModule.GetAttrString("test_error")
+	pyRoniFunc = pyRoniModule.GetAttrString("roni")
 
 	pyNumFeatures = pyLogInitFunc.CallFunction(python.PyString_FromString(datasetName), python.PyFloat_FromDouble(epsilon))
 	numFeatures := python.PyInt_AsLong(pyNumFeatures)
@@ -174,7 +178,6 @@ func (honest *Honest) createBlock(iterationCount int) (*Block,error) {
 		return nil, blockExistsError
 	}
 
-
 	pulledGradient := make([]float64, honest.data.Ncol())
 	pulledGradient = honest.bc.getLatestGradient()
 	updatedGradient := make([]float64, honest.data.Ncol())
@@ -205,9 +208,9 @@ func (honest *Honest) createBlock(iterationCount int) (*Block,error) {
 // function to check if you have a block with the same iteration
 func (honest *Honest) hasBlock(iterationCount int) bool {
 	
-	if(honest.bc.getBlock(iterationCount) != nil){
+	if (honest.bc.getBlock(iterationCount) != nil) {
 		return true;
-	}else{
+	} else {
 		return false;
 	}
 
@@ -241,7 +244,34 @@ func (honest *Honest) flushUpdates(numberOfNodes int) {
 	honest.blockUpdates = honest.blockUpdates[:0]
 }
 
-func (honest *Honest) evaluateBlockQuality(block Block) bool{
+func (honest *Honest) verifyUpdate(update Update) float64 {
+
+	runtime.LockOSThread()
+
+	_gstate := python.PyGILState_Ensure()
+
+	deltas := update.Delta
+	truthModel := honest.bc.getLatestBlockModel()
+
+	truthArray := python.PyList_New(len(truthModel))
+	updateArray := python.PyList_New(len(truthModel))
+
+	// Convert both into PyArrays
+	for i := 0; i < len(truthModel); i++ {
+		python.PyList_SetItem(truthArray, i, python.PyFloat_FromDouble(truthModel[i]))
+		python.PyList_SetItem(updateArray, i, python.PyFloat_FromDouble(deltas[i]))
+	}
+
+	pyRoni := pyRoniFunc.CallFunction(truthArray, updateArray)
+	score := python.PyFloat_AsDouble(pyRoni)
+
+	python.PyGILState_Release(_gstate)	
+
+	return score
+
+}
+
+func (honest *Honest) evaluateBlockQuality(block Block) bool {
 
 	//TODO: This is just a simple equality check comparing the hashes. 
 	myBlock := honest.bc.getBlock(block.Data.Iteration)
