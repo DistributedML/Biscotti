@@ -33,7 +33,7 @@ func NewBlock(data BlockData, prevBlockHash []byte) *Block {
 
 func GenesisBlock(numFeatures int) *Block {
 
-	genesisBlockData := BlockData{0, make([]float64, numFeatures), []Update{}} // create a globalWW with the appropriate number of features
+	genesisBlockData := BlockData{-1, make([]float64, numFeatures), []Update{}} // create a globalWW with the appropriate number of features
 	block := &Block{0, genesisBlockData, []byte{}, []byte{}}
 	block.SetHash()
 	return block

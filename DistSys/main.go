@@ -219,6 +219,9 @@ func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, chain *Blockchain) error {
 		networkBootstrapped <- true
 	}
 	*chain = *client.bc
+
+	outLog.Printf("Advertising chain to peer with length %d", len(chain.Blocks))
+
 	return  nil 
 }
 
@@ -528,6 +531,9 @@ func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
 				peerLock.Lock()
 				peerAddresses[peerLookup[peerAddress.String()]] = peerAddress
 				peerLock.Unlock()
+
+				outLog.Printf("Chain length received:%d", len(chain.Blocks))
+				outLog.Printf("My chain length:%d", len(client.bc.Blocks))
 
 				//Check the chain and see if its the longest one. If longer replace it with mine
 				if(len(chain.Blocks) > len(client.bc.Blocks)){
