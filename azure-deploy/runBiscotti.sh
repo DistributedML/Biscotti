@@ -18,4 +18,11 @@ for line in $(cat tempHosts);do
 
 	indexCount=$indexCount+$nodesInEachVM
 
+	
+	# Give time for nodes in the firstVM to get bootstrapped
+	
+	if [[ $indexCount == $nodesInEachVM ]]; then
+		sleep 10
+	fi
+
 done

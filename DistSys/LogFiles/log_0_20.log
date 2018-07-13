@@ -1,0 +1,41 @@
+[peer] 21:35:50.872359 honest.go:107: 0Importing modules...
+../ML/code/utils.py:223: FutureWarning: Method .as_matrix will be removed in a future version. Use .values instead.
+  data = data.as_matrix()
+../ML/code/utils.py:94: FutureWarning: Method .as_matrix will be removed in a future version. Use .values instead.
+  credit = df.ix[1:nn, 1:dd].as_matrix()
+[peer] 21:35:59.574277 honest.go:122: 0Sucessfully pulled dataset. Features: 25
+[peer] 21:35:59.574728 main.go:623: 0:Peer started. Receiving on 8000
+[peer] 21:36:02.734402 main.go:627: 0:Accepted new Connection
+[peer] 21:36:02.746445 main.go:213: 0:Registering peer:198.162.52.126:8001
+[peer] 21:36:02.746547 main.go:223: Advertising chain to peer with length 1
+[peer] 21:36:02.746590 main.go:582: 0:Acquiring bool lock
+[peer] 21:36:02.750994 main.go:584: 0:Acquired bool lock
+[peer] 21:36:02.751570 main.go:627: 0:Accepted new Connection
+[peer] 21:36:02.752104 main.go:213: 0:Registering peer:198.162.52.126:8003
+[peer] 21:36:02.752147 main.go:223: Advertising chain to peer with length 1
+[peer] 21:36:02.752554 main.go:603: 0:I am not verifier IterationCount:0
+[peer] 21:36:02.752570 main.go:608: 0:Bool lock released
+[peer] 21:36:02.752579 main.go:816: 0:Computing Update
+[peer] 21:36:02.753097 main.go:270: 0 : VRF returned ID map[2:{}]
+[peer] 21:36:02.753115 main.go:279: 0 :Verifiers [198.162.52.126:8002] returned.
+[err] 21:36:02.753214 main.go:297: Unable to connect to verifier, err = dial tcp 198.162.52.126:8002: connect: connection refused
+[peer] 21:36:02.753276 main.go:888: 0:Will try and create an empty block
+[peer] 21:36:02.753349 main.go:895: 0:Will try and create an empty block
+[peer] 21:36:02.753436 main.go:658: 0:Sending block. Iteration: 0
+[peer] 21:36:02.754320 main.go:723: 0:Block sent to peer successful
+[peer] 21:36:02.754821 main.go:723: 0:Block sent to peer successful
+[peer] 21:36:02.754926 main.go:678: 0:RPC calls successfully returned. Iteration: 0
+[peer] 21:36:02.757993 main.go:627: 0:Accepted new Connection
+[peer] 21:36:02.758683 main.go:213: 0:Registering peer:198.162.52.126:8007
+[peer] 21:36:02.758723 main.go:223: Advertising chain to peer with length 2
+[peer] 21:36:02.768734 honest.go:81: 0Train Error is 1.00000 in Iteration 0
+[peer] 21:36:02.768756 main.go:686: 0:Preparing for next Iteration. Current Iteration: 0
+[peer] 21:36:02.768764 main.go:582: 0:Acquiring bool lock
+[peer] 21:36:02.768771 main.go:584: 0:Acquired bool lock
+[peer] 21:36:02.770758 main.go:603: 0:I am not verifier IterationCount:1
+[peer] 21:36:02.770775 main.go:608: 0:Bool lock released
+[peer] 21:36:02.853487 main.go:816: 0:Computing Update
+[peer] 21:36:02.853825 main.go:270: 0 : VRF returned ID map[13:{}]
+[peer] 21:36:02.853845 main.go:279: 0 :Verifiers [198.162.52.57:8013] returned.
+[peer] 21:36:02.854494 main.go:861: 0:Making RPC Call to Verifier. Sending Update, Iteration:1
+[err] 21:36:02.901031 main.go:289: Error in sending update, err = unexpected EOF
