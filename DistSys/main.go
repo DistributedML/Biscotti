@@ -927,7 +927,7 @@ func startBlockDeadlineTimer(){
 	select{
 		
 		case <- blockReceived:
-			outLog.Printf(strconv.Itoa(client.id)+":Block Received. Appending to chain and moving on to the next iteration. %d", , iterationCount )
+			outLog.Printf(strconv.Itoa(client.id)+":Block Received. Appending to chain and moving on to the next iteration. %d", iterationCount)
 
 		case <-time.After(timeoutBlock):
 			
