@@ -278,10 +278,10 @@ func getVerifiers(iterationCount int) []string {
     }
 
     outLog.Printf(strconv.Itoa(client.id)+" :Verifiers %s returned.", verifiers)
-    if(len(verifiers) == 0) {
-    	outLog.Printf("VRF BUG. Empty verifiers set.")
-    	outLog.Printf(peerLookup)
-    }
+    // if(len(verifiers) == 0) {
+    // 	outLog.Printf("VRF BUG. Empty verifiers set.")
+    // 	// outLog.Printf(peerLookup)
+    // }
 	return verifiers
 
 }
