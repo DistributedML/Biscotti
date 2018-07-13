@@ -1,110 +1,93 @@
-[peer] 21:35:55.772191 honest.go:107: 6Importing modules...
+[peer] 22:07:23.076912 honest.go:107: 6Importing modules...
 ../ML/code/utils.py:223: FutureWarning: Method .as_matrix will be removed in a future version. Use .values instead.
   data = data.as_matrix()
 ../ML/code/utils.py:94: FutureWarning: Method .as_matrix will be removed in a future version. Use .values instead.
   credit = df.ix[1:nn, 1:dd].as_matrix()
-[peer] 21:36:03.043937 honest.go:122: 6Sucessfully pulled dataset. Features: 25
-[peer] 21:36:03.044161 main.go:482: 6:Announcing myself to network
-[peer] 21:36:03.044208 main.go:487: 6:Calling {198.162.52.126 %!s(int=8000) }
-[peer] 21:36:03.044229 main.go:506: 6:Inside callRegisterRPC
-[peer] 21:36:03.044237 main.go:510: 6Making RPC call
-[peer] 21:36:03.044243 main.go:623: 6:Peer started. Receiving on 8006
-[err] 21:36:03.044343 main.go:297: Peer offline.Couldn't connect to peer: 198.162.52.126:8000, err = dial tcp 198.162.52.126:8000: connect: connection refused
-[peer] 21:36:03.044357 main.go:487: 6:Calling {198.162.52.126 %!s(int=8001) }
-[peer] 21:36:03.044367 main.go:506: 6:Inside callRegisterRPC
-[peer] 21:36:03.044373 main.go:510: 6Making RPC call
-[err] 21:36:03.044410 main.go:297: Peer offline.Couldn't connect to peer: 198.162.52.126:8001, err = dial tcp 198.162.52.126:8001: connect: connection refused
-[peer] 21:36:03.044422 main.go:487: 6:Calling {198.162.52.126 %!s(int=8002) }
-[peer] 21:36:03.044427 main.go:506: 6:Inside callRegisterRPC
-[peer] 21:36:03.044431 main.go:510: 6Making RPC call
-[peer] 21:36:03.044494 main.go:516: 6RPC dial successful
-[peer] 21:36:03.044506 main.go:519: 6:Calling RPC:198.162.52.126:8002
-[peer] 21:36:03.044515 main.go:521: 6:RPC called198.162.52.126:8002
-[peer] 21:36:03.045208 main.go:487: 6:Calling {198.162.52.126 %!s(int=8003) }
-[peer] 21:36:03.045222 main.go:506: 6:Inside callRegisterRPC
-[peer] 21:36:03.045229 main.go:510: 6Making RPC call
-[err] 21:36:03.045284 main.go:297: Peer offline.Couldn't connect to peer: 198.162.52.126:8003, err = dial tcp 198.162.52.126:8003: connect: connection refused
-[peer] 21:36:03.045300 main.go:487: 6:Calling {198.162.52.126 %!s(int=8004) }
-[peer] 21:36:03.045305 main.go:506: 6:Inside callRegisterRPC
-[peer] 21:36:03.045310 main.go:510: 6Making RPC call
-[err] 21:36:03.045360 main.go:297: Peer offline.Couldn't connect to peer: 198.162.52.126:8004, err = dial tcp 198.162.52.126:8004: connect: connection refused
-[peer] 21:36:03.045374 main.go:487: 6:Calling {198.162.52.126 %!s(int=8005) }
-[peer] 21:36:03.045382 main.go:506: 6:Inside callRegisterRPC
-[peer] 21:36:03.045389 main.go:510: 6Making RPC call
-[err] 21:36:03.045457 main.go:297: Peer offline.Couldn't connect to peer: 198.162.52.126:8005, err = dial tcp 198.162.52.126:8005: connect: connection refused
-[peer] 21:36:03.045472 main.go:487: 6:Calling {198.162.52.126 %!s(int=8007) }
-[peer] 21:36:03.045481 main.go:506: 6:Inside callRegisterRPC
-[peer] 21:36:03.045489 main.go:510: 6Making RPC call
-[err] 21:36:03.045530 main.go:297: Peer offline.Couldn't connect to peer: 198.162.52.126:8007, err = dial tcp 198.162.52.126:8007: connect: connection refused
-[peer] 21:36:03.045545 main.go:487: 6:Calling {198.162.52.126 %!s(int=8008) }
-[peer] 21:36:03.045553 main.go:506: 6:Inside callRegisterRPC
-[peer] 21:36:03.045561 main.go:510: 6Making RPC call
-[peer] 21:36:03.045628 main.go:516: 6RPC dial successful
-[peer] 21:36:03.045640 main.go:519: 6:Calling RPC:198.162.52.126:8008
-[peer] 21:36:03.045648 main.go:521: 6:RPC called198.162.52.126:8008
-[peer] 21:36:03.045851 main.go:627: 6:Accepted new Connection
-[peer] 21:36:03.046166 main.go:213: 6:Registering peer:198.162.52.126:8008
-[peer] 21:36:03.046184 main.go:223: Advertising chain to peer with length 1
-[peer] 21:36:03.046280 main.go:528: 6:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 21:36:03.046292 main.go:535: Chain length received:1
-[peer] 21:36:03.046300 main.go:536: My chain length:1
-[peer] 21:36:03.046336 main.go:487: 6:Calling {198.162.52.126 %!s(int=8009) }
-[peer] 21:36:03.046348 main.go:506: 6:Inside callRegisterRPC
-[peer] 21:36:03.046359 main.go:510: 6Making RPC call
-[err] 21:36:03.046416 main.go:297: Peer offline.Couldn't connect to peer: 198.162.52.126:8009, err = dial tcp 198.162.52.126:8009: connect: connection refused
-[peer] 21:36:03.046437 main.go:487: 6:Calling {198.162.52.57 %!s(int=8010) }
-[peer] 21:36:03.046443 main.go:506: 6:Inside callRegisterRPC
-[peer] 21:36:03.046448 main.go:510: 6Making RPC call
-[err] 21:36:03.046738 main.go:297: Peer offline.Couldn't connect to peer: 198.162.52.57:8010, err = dial tcp 198.162.52.57:8010: connect: connection refused
-[peer] 21:36:03.046753 main.go:487: 6:Calling {198.162.52.57 %!s(int=8011) }
-[peer] 21:36:03.046758 main.go:506: 6:Inside callRegisterRPC
-[peer] 21:36:03.046763 main.go:510: 6Making RPC call
-[peer] 21:36:03.047306 main.go:516: 6RPC dial successful
-[peer] 21:36:03.047316 main.go:519: 6:Calling RPC:198.162.52.57:8011
-[peer] 21:36:03.047322 main.go:521: 6:RPC called198.162.52.57:8011
-[peer] 21:36:03.049078 main.go:528: 6:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 21:36:03.049089 main.go:535: Chain length received:5
-[peer] 21:36:03.049094 main.go:536: My chain length:1
-[peer] 21:36:03.049098 honest.go:340: Received chain length:5
-[peer] 21:36:03.049103 honest.go:341: Appended chain length:5
-[peer] 21:36:03.049107 main.go:549: 6Got lastest chain until iteration 3
-[peer] 21:36:03.049135 main.go:487: 6:Calling {198.162.52.57 %!s(int=8012) }
-[peer] 21:36:03.049142 main.go:506: 6:Inside callRegisterRPC
-[peer] 21:36:03.049147 main.go:510: 6Making RPC call
-[err] 21:36:03.049549 main.go:297: Peer offline.Couldn't connect to peer: 198.162.52.57:8012, err = dial tcp 198.162.52.57:8012: connect: connection refused
-[peer] 21:36:03.049575 main.go:487: 6:Calling {198.162.52.57 %!s(int=8013) }
-[peer] 21:36:03.049587 main.go:506: 6:Inside callRegisterRPC
-[peer] 21:36:03.049597 main.go:510: 6Making RPC call
-[err] 21:36:03.050020 main.go:297: Peer offline.Couldn't connect to peer: 198.162.52.57:8013, err = dial tcp 198.162.52.57:8013: connect: connection refused
-[peer] 21:36:03.050033 main.go:487: 6:Calling {198.162.52.57 %!s(int=8014) }
-[peer] 21:36:03.050042 main.go:506: 6:Inside callRegisterRPC
-[peer] 21:36:03.050050 main.go:510: 6Making RPC call
-[peer] 21:36:03.050591 main.go:516: 6RPC dial successful
-[peer] 21:36:03.050603 main.go:519: 6:Calling RPC:198.162.52.57:8014
-[peer] 21:36:03.050613 main.go:521: 6:RPC called198.162.52.57:8014
-[peer] 21:36:03.052191 main.go:528: 6:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 21:36:03.052205 main.go:535: Chain length received:5
-[peer] 21:36:03.052213 main.go:536: My chain length:5
-[peer] 21:36:03.052243 main.go:487: 6:Calling {198.162.52.57 %!s(int=8015) }
-[peer] 21:36:03.052254 main.go:506: 6:Inside callRegisterRPC
-[peer] 21:36:03.052261 main.go:510: 6Making RPC call
-[peer] 21:36:03.052578 main.go:516: 6RPC dial successful
-[peer] 21:36:03.052593 main.go:519: 6:Calling RPC:198.162.52.57:8015
-[peer] 21:36:03.052604 main.go:521: 6:RPC called198.162.52.57:8015
-[peer] 21:36:03.054052 main.go:528: 6:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 21:36:03.054066 main.go:535: Chain length received:5
-[peer] 21:36:03.054075 main.go:536: My chain length:5
-[peer] 21:36:03.054111 main.go:487: 6:Calling {198.162.52.57 %!s(int=8016) }
-[peer] 21:36:03.054122 main.go:506: 6:Inside callRegisterRPC
-[peer] 21:36:03.054130 main.go:510: 6Making RPC call
-[peer] 21:36:03.054457 main.go:516: 6RPC dial successful
-[peer] 21:36:03.054483 main.go:519: 6:Calling RPC:198.162.52.57:8016
-[peer] 21:36:03.054495 main.go:521: 6:RPC called198.162.52.57:8016
-[peer] 21:36:03.056203 main.go:528: 6:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 21:36:03.056214 main.go:535: Chain length received:6
-[peer] 21:36:03.056219 main.go:536: My chain length:5
-[peer] 21:36:03.056224 honest.go:340: Received chain length:6
-[peer] 21:36:03.056228 honest.go:341: Appended chain length:6
-[peer] 21:36:03.056232 main.go:543: Iteration:2
-[peer] 21:36:03.056237 main.go:544: Chain Length:6
-[peer] 21:36:03.056242 main.go:546: Chain and iteration Count are inconsistent
+[peer] 22:07:29.786132 honest.go:122: 6Sucessfully pulled dataset. Features: 25
+[peer] 22:07:29.786340 main.go:482: 6:Announcing myself to network
+[peer] 22:07:29.786377 main.go:487: 6:Calling {198.162.52.126 %!s(int=8000) }
+[peer] 22:07:29.786422 main.go:623: 6:Peer started. Receiving on 8006
+[peer] 22:07:29.786391 main.go:506: 6:Inside callRegisterRPC
+[peer] 22:07:29.786446 main.go:510: 6Making RPC call
+[peer] 22:07:29.786555 main.go:516: 6RPC dial successful
+[peer] 22:07:29.786568 main.go:519: 6:Calling RPC:198.162.52.126:8000
+[peer] 22:07:29.786586 main.go:521: 6:RPC called198.162.52.126:8000
+[peer] 22:07:29.787119 main.go:528: 6:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:07:29.787141 main.go:535: Chain length received:4
+[peer] 22:07:29.787148 main.go:536: My chain length:1
+[peer] 22:07:29.787153 honest.go:340: Received chain length:4
+[peer] 22:07:29.787160 honest.go:341: Appended chain length:4
+[peer] 22:07:29.787165 main.go:549: 6Got lastest chain until iteration 2
+[peer] 22:07:29.787210 main.go:487: 6:Calling {198.162.52.126 %!s(int=8001) }
+[peer] 22:07:29.787220 main.go:506: 6:Inside callRegisterRPC
+[peer] 22:07:29.787230 main.go:510: 6Making RPC call
+[err] 22:07:29.787294 main.go:297: Peer offline.Couldn't connect to peer: 198.162.52.126:8001, err = dial tcp 198.162.52.126:8001: connect: connection refused
+[peer] 22:07:29.787310 main.go:487: 6:Calling {198.162.52.126 %!s(int=8002) }
+[peer] 22:07:29.787316 main.go:506: 6:Inside callRegisterRPC
+[peer] 22:07:29.787320 main.go:510: 6Making RPC call
+[err] 22:07:29.787362 main.go:297: Peer offline.Couldn't connect to peer: 198.162.52.126:8002, err = dial tcp 198.162.52.126:8002: connect: connection refused
+[peer] 22:07:29.787374 main.go:487: 6:Calling {198.162.52.126 %!s(int=8003) }
+[peer] 22:07:29.787379 main.go:506: 6:Inside callRegisterRPC
+[peer] 22:07:29.787384 main.go:510: 6Making RPC call
+[err] 22:07:29.787418 main.go:297: Peer offline.Couldn't connect to peer: 198.162.52.126:8003, err = dial tcp 198.162.52.126:8003: connect: connection refused
+[peer] 22:07:29.787429 main.go:487: 6:Calling {198.162.52.126 %!s(int=8004) }
+[peer] 22:07:29.787434 main.go:506: 6:Inside callRegisterRPC
+[peer] 22:07:29.787439 main.go:510: 6Making RPC call
+[err] 22:07:29.787469 main.go:297: Peer offline.Couldn't connect to peer: 198.162.52.126:8004, err = dial tcp 198.162.52.126:8004: connect: connection refused
+[peer] 22:07:29.787482 main.go:487: 6:Calling {198.162.52.126 %!s(int=8005) }
+[peer] 22:07:29.787492 main.go:506: 6:Inside callRegisterRPC
+[peer] 22:07:29.787497 main.go:510: 6Making RPC call
+[err] 22:07:29.787528 main.go:297: Peer offline.Couldn't connect to peer: 198.162.52.126:8005, err = dial tcp 198.162.52.126:8005: connect: connection refused
+[peer] 22:07:29.787539 main.go:487: 6:Calling {198.162.52.126 %!s(int=8007) }
+[peer] 22:07:29.787544 main.go:506: 6:Inside callRegisterRPC
+[peer] 22:07:29.787548 main.go:510: 6Making RPC call
+[err] 22:07:29.787580 main.go:297: Peer offline.Couldn't connect to peer: 198.162.52.126:8007, err = dial tcp 198.162.52.126:8007: connect: connection refused
+[peer] 22:07:29.787591 main.go:487: 6:Calling {198.162.52.126 %!s(int=8008) }
+[peer] 22:07:29.787596 main.go:506: 6:Inside callRegisterRPC
+[peer] 22:07:29.787601 main.go:510: 6Making RPC call
+[err] 22:07:29.787629 main.go:297: Peer offline.Couldn't connect to peer: 198.162.52.126:8008, err = dial tcp 198.162.52.126:8008: connect: connection refused
+[peer] 22:07:29.787642 main.go:487: 6:Calling {198.162.52.126 %!s(int=8009) }
+[peer] 22:07:29.787648 main.go:506: 6:Inside callRegisterRPC
+[peer] 22:07:29.787653 main.go:510: 6Making RPC call
+[err] 22:07:29.787682 main.go:297: Peer offline.Couldn't connect to peer: 198.162.52.126:8009, err = dial tcp 198.162.52.126:8009: connect: connection refused
+[peer] 22:07:29.787702 main.go:487: 6:Calling {198.162.52.57 %!s(int=8010) }
+[peer] 22:07:29.787707 main.go:506: 6:Inside callRegisterRPC
+[peer] 22:07:29.787716 main.go:510: 6Making RPC call
+[peer] 22:07:29.788263 main.go:516: 6RPC dial successful
+[peer] 22:07:29.788272 main.go:519: 6:Calling RPC:198.162.52.57:8010
+[peer] 22:07:29.788278 main.go:521: 6:RPC called198.162.52.57:8010
+[peer] 22:07:29.789834 main.go:528: 6:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:07:29.789848 main.go:535: Chain length received:4
+[peer] 22:07:29.789854 main.go:536: My chain length:4
+[peer] 22:07:29.789875 main.go:487: 6:Calling {198.162.52.57 %!s(int=8011) }
+[peer] 22:07:29.789883 main.go:506: 6:Inside callRegisterRPC
+[peer] 22:07:29.789889 main.go:510: 6Making RPC call
+[peer] 22:07:29.790401 main.go:516: 6RPC dial successful
+[peer] 22:07:29.790413 main.go:519: 6:Calling RPC:198.162.52.57:8011
+[peer] 22:07:29.790419 main.go:521: 6:RPC called198.162.52.57:8011
+[peer] 22:07:29.791841 main.go:528: 6:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:07:29.791857 main.go:535: Chain length received:4
+[peer] 22:07:29.791863 main.go:536: My chain length:4
+[peer] 22:07:29.791892 main.go:487: 6:Calling {198.162.52.57 %!s(int=8012) }
+[peer] 22:07:29.791904 main.go:506: 6:Inside callRegisterRPC
+[peer] 22:07:29.791909 main.go:510: 6Making RPC call
+[peer] 22:07:29.792253 main.go:516: 6RPC dial successful
+[peer] 22:07:29.792271 main.go:519: 6:Calling RPC:198.162.52.57:8012
+[peer] 22:07:29.792280 main.go:521: 6:RPC called198.162.52.57:8012
+[peer] 22:07:29.793685 main.go:528: 6:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:07:29.793707 main.go:535: Chain length received:4
+[peer] 22:07:29.793718 main.go:536: My chain length:4
+[peer] 22:07:29.793769 main.go:487: 6:Calling {198.162.52.57 %!s(int=8013) }
+[peer] 22:07:29.793782 main.go:506: 6:Inside callRegisterRPC
+[peer] 22:07:29.793790 main.go:510: 6Making RPC call
+[peer] 22:07:29.794337 main.go:516: 6RPC dial successful
+[peer] 22:07:29.794352 main.go:519: 6:Calling RPC:198.162.52.57:8013
+[peer] 22:07:29.794362 main.go:521: 6:RPC called198.162.52.57:8013
+[peer] 22:07:29.795853 main.go:528: 6:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:07:29.795867 main.go:535: Chain length received:5
+[peer] 22:07:29.795876 main.go:536: My chain length:4
+[peer] 22:07:29.795884 honest.go:340: Received chain length:5
+[peer] 22:07:29.795893 honest.go:341: Appended chain length:5
+[peer] 22:07:29.795901 main.go:543: Iteration:1
+[peer] 22:07:29.795910 main.go:544: Chain Length:5
+[peer] 22:07:29.795918 main.go:546: Chain and iteration Count are inconsistent

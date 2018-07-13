@@ -270,6 +270,7 @@ func getVerifiers(iterationCount int) []string {
     outLog.Printf(strconv.Itoa(client.id)+" : VRF returned ID %d", verifierIDs)
     for address, ID := range peerLookup {
         // TODO: change this to if verifierIDs contains ID
+        // BUG ALERT: The verifiers string array is returning empty. THIS IS MESSING UP EVERYTHING. 
         _, exists := verifierIDs[ID]
         if exists {
             verifiers = append(verifiers, address)
@@ -277,6 +278,10 @@ func getVerifiers(iterationCount int) []string {
     }
 
     outLog.Printf(strconv.Itoa(client.id)+" :Verifiers %s returned.", verifiers)
+    if(len(verifiers) == 0) {
+    	outLog.Printf("VRF BUG. Empty verifiers set.")
+    	outLog.Printf(peerLookup)
+    }
 	return verifiers
 
 }
@@ -737,7 +742,9 @@ func callRegisterBlockRPC(block Block, peerAddress net.TCPAddr) {
 	}else{
 
 		delete(peerAddresses, peerLookup[peerAddress.String()])
-        delete(peerLookup, peerAddress.String())
+        
+		//BUG ALERT: You can't delete elements from peerLookup. VRF hinges on it. Its not going to be able to return the address in the verifier set
+        // delete(peerLookup, peerAddress.String())
 
 		// ensureRPC <- true
 		outLog.Printf(strconv.Itoa(client.id)+":Peer Unresponsive. Removed Peer:" + peerAddress.String())
@@ -821,7 +828,7 @@ func messageSender(ports []string) {
 
 			for _, port := range portsToConnect {
 				
-				sendUpdateToVerifier(port) // This has to be a go-routine. Can't keep the lock and wait for RPC to return. No matter what the result of the update RPC call. Lets dare to make it a non-go routine
+				sendUpdateToVerifier(port) 
 				if iterationCount == client.update.Iteration {
 					updateSent = true
 				}
