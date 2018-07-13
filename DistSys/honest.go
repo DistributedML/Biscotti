@@ -220,7 +220,7 @@ func (honest *Honest) addBlock(newBlock Block) error {
 
 	// if already exists don't create/replace it
 	outLog.Printf("Trying to append block with iteration:%d", newBlock.Data.Iteration)
-	
+
 	if(honest.bc.getBlock(iterationCount) != nil){
 		
 		better := honest.evaluateBlockQuality(newBlock)
@@ -337,8 +337,8 @@ func testModel(weights []float64, node string) (float64, float64) {
 func (honest *Honest) replaceChain(chain Blockchain) int {
 	
 	*honest.bc = chain
-	outLog.Printf("Received chain length" : len(chain.Blocks))
-	outLog.Printf("Appended chain length" : len(honest.bc.Blocks))	
+	outLog.Printf("Received chain length:%d",  len(chain.Blocks))
+	outLog.Printf("Appended chain length:%d",  len(honest.bc.Blocks))	
 	return chain.Blocks[len(chain.Blocks) - 1].Data.Iteration
 }
 

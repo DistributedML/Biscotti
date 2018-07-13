@@ -536,7 +536,9 @@ func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
 					if(len(client.bc.Blocks) - 2 != iterationCount) {
 						outLog.Printf("Iteration:%d", iterationCount)
 						outLog.Printf("Chain Length:%d", len(client.bc.Blocks))	
-						handleErrorFatal("Chain and iteration Count are inconsistent")
+
+						outLog.Printf("Chain and iteration Count are inconsistent",)
+						os.Exit(1)
 					}
 					outLog.Printf(strconv.Itoa(client.id)+"Got lastest chain until iteration " + strconv.Itoa(iterationCount))
 					boolLock.Unlock()
