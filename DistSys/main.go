@@ -137,8 +137,10 @@ func (s *Peer) RegisterBlock(block Block, returnBlock *Block) error {
 	outLog.Printf(strconv.Itoa(client.id)+":Acquiring bool lock")
 	boolLock.Lock()
 	outLog.Printf(strconv.Itoa(client.id)+":Acquired bool lock")
-
+	outLog.Printf("Chain Length:" + strconv.Itoa(len(client.bc.Blocks)))
 	hasBlock := client.hasBlock(block.Data.Iteration)
+	outLog.Printf("Chain Length:" + strconv.Itoa(len(client.bc.Blocks)))
+
 	if ((block.Data.Iteration < iterationCount) || hasBlock || iterationCount<0) {
 		
 		if hasBlock {
@@ -162,8 +164,10 @@ func (s *Peer) RegisterBlock(block Block, returnBlock *Block) error {
 			// go callRequestChainRPC(same conn) // returns whole chain. Is it longer than mine?
 			// go evaluateReceivedChain() // if chain longer than mine and checks out replace mine with his
 			
+			outLog.Printf("Chain Length:" + strconv.Itoa(len(client.bc.Blocks)))
 			if(block.Data.Iteration == len(client.bc.Blocks) - 2){
 				client.replaceBlock(block, block.Data.Iteration)
+				outLog.Printf("Chain Length:" + strconv.Itoa(len(client.bc.Blocks)))
 				outLog.Printf(strconv.Itoa(client.id)+":Received better  block")
 				return nil
 			}
