@@ -65,8 +65,10 @@ func (bc *Blockchain) getBlock(iterationCount int) (*Block) {
 
 	if(len(bc.Blocks) >= (iterationCount + 2)){
 
+		outLog.Printf("Returning a block")
 		return bc.Blocks[iterationCount+1]
 	}else{
+		outLog.Printf("Returning nil")
 		return nil 
 	}
 	
