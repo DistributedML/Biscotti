@@ -221,7 +221,7 @@ func (honest *Honest) addBlock(newBlock Block) error {
 	// if already exists don't create/replace it
 	outLog.Printf("Trying to append block with iteration:%d", newBlock.Data.Iteration)
 
-	if(honest.bc.getBlock(iterationCount) != nil){
+	if(honest.bc.getBlock(newBlock.Data.Iteration) != nil){
 		
 		better := honest.evaluateBlockQuality(newBlock)
 		if(!better){

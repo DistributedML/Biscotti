@@ -1,1881 +1,265 @@
-[peer] 22:07:17.589176 honest.go:107: 0Importing modules...
+[peer] 00:50:29.267417 honest.go:107: 0Importing modules...
 ../ML/code/utils.py:223: FutureWarning: Method .as_matrix will be removed in a future version. Use .values instead.
   data = data.as_matrix()
 ../ML/code/utils.py:94: FutureWarning: Method .as_matrix will be removed in a future version. Use .values instead.
   credit = df.ix[1:nn, 1:dd].as_matrix()
-[peer] 22:07:20.674113 honest.go:122: 0Sucessfully pulled dataset. Features: 25
-[peer] 22:07:20.674386 main.go:623: 0:Peer started. Receiving on 8000
-[peer] 22:07:22.243453 main.go:627: 0:Accepted new Connection
-[peer] 22:07:22.244654 main.go:213: 0:Registering peer:198.162.52.57:8019
-[peer] 22:07:22.244698 main.go:223: Advertising chain to peer with length 1
-[peer] 22:07:22.244828 main.go:582: 0:Acquiring bool lock
-[peer] 22:07:22.244864 main.go:584: 0:Acquired bool lock
-[peer] 22:07:22.246940 main.go:603: 0:I am not verifier IterationCount:0
-[peer] 22:07:22.246962 main.go:608: 0:Bool lock released
-[peer] 22:07:22.246973 main.go:816: 0:Computing Update
-[peer] 22:07:22.247644 main.go:270: 0 : VRF returned ID map[2:{}]
-[peer] 22:07:22.247678 main.go:279: 0 :Verifiers [198.162.52.126:8002] returned.
-[err] 22:07:22.247892 main.go:297: Unable to connect to verifier, err = dial tcp 198.162.52.126:8002: connect: connection refused
-[peer] 22:07:22.247929 main.go:888: 0:Will try and create an empty block
-[peer] 22:07:22.248041 main.go:895: 0:Will try and create an empty block
-[peer] 22:07:22.248167 main.go:658: 0:Sending block. Iteration: 0
-[peer] 22:07:22.250484 main.go:723: 0:Block sent to peer successful
-[peer] 22:07:22.250571 main.go:678: 0:RPC calls successfully returned. Iteration: 0
-[peer] 22:07:22.252101 honest.go:81: 0Train Error is 1.00000 in Iteration 0
-[peer] 22:07:22.252141 main.go:686: 0:Preparing for next Iteration. Current Iteration: 0
-[peer] 22:07:22.252156 main.go:582: 0:Acquiring bool lock
-[peer] 22:07:22.252169 main.go:584: 0:Acquired bool lock
-[peer] 22:07:22.255134 main.go:603: 0:I am not verifier IterationCount:1
-[peer] 22:07:22.255159 main.go:608: 0:Bool lock released
-[peer] 22:07:22.256198 main.go:627: 0:Accepted new Connection
-[peer] 22:07:22.257037 main.go:130: 0:Got block message, iteration 0
-[peer] 22:07:22.257078 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:22.257091 main.go:139: 0:Acquired bool lock
-[peer] 22:07:22.257103 main.go:140: Chain Length:2
-[peer] 22:07:22.257115 main.go:142: Chain Length:2
-[peer] 22:07:22.257128 main.go:147: Already have block
-[peer] 22:07:22.257143 main.go:152: 0:Bool lock released
-[peer] 22:07:22.257157 main.go:179: 0:Equal block
-[peer] 22:07:22.325963 main.go:627: 0:Accepted new Connection
-[peer] 22:07:22.326911 main.go:213: 0:Registering peer:198.162.52.57:8014
-[peer] 22:07:22.326965 main.go:223: Advertising chain to peer with length 2
-[peer] 22:07:22.334242 main.go:627: 0:Accepted new Connection
-[peer] 22:07:22.335168 main.go:213: 0:Registering peer:198.162.52.57:8013
-[peer] 22:07:22.335181 main.go:223: Advertising chain to peer with length 2
-[peer] 22:07:22.338271 main.go:627: 0:Accepted new Connection
-[peer] 22:07:22.338665 main.go:130: 0:Got block message, iteration 1
-[peer] 22:07:22.338682 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:22.338688 main.go:139: 0:Acquired bool lock
-[peer] 22:07:22.338693 main.go:140: Chain Length:2
-[peer] 22:07:22.338698 main.go:142: Chain Length:2
-[peer] 22:07:22.338703 main.go:187: 0:Sending to channel
-[peer] 22:07:22.338709 main.go:193: 0:Sent to channel
-[peer] 22:07:22.338718 main.go:195: 0:Returning
-[peer] 22:07:22.338780 main.go:769: 0:Adding block to chain
-[peer] 22:07:22.338793 honest.go:222: Trying to append block with iteration:1
-[peer] 22:07:22.338798 honest.go:238: Append successful
-[peer] 22:07:22.338804 main.go:773: 0:Adding block to chain
-[peer] 22:07:22.338809 main.go:779: 0:Checking convergence
-[peer] 22:07:22.339868 honest.go:81: 0Train Error is 1.00000 in Iteration 1
-[peer] 22:07:22.339933 main.go:782: 0:Convergence checked
-[peer] 22:07:22.339962 main.go:785: 0:Bool lock released
-[peer] 22:07:22.340094 main.go:658: 0:Sending block. Iteration: 1
-[peer] 22:07:22.341391 main.go:627: 0:Accepted new Connection
-[peer] 22:07:22.342177 main.go:723: 0:Block sent to peer successful
-[peer] 22:07:22.344169 main.go:723: 0:Block sent to peer successful
-[err] 22:07:22.344262 main.go:297: Error in sending block, err = Stale Update/Block
-[peer] 22:07:22.345361 main.go:130: 0:Got block message, iteration 1
-[peer] 22:07:22.345384 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:22.345392 main.go:139: 0:Acquired bool lock
-[peer] 22:07:22.345400 main.go:140: Chain Length:3
-[peer] 22:07:22.345408 main.go:142: Chain Length:3
-[peer] 22:07:22.345417 main.go:147: Already have block
-[peer] 22:07:22.345430 main.go:152: 0:Bool lock released
-[peer] 22:07:22.345439 main.go:179: 0:Equal block
-[peer] 22:07:22.345590 main.go:723: 0:Block sent to peer successful
-[err] 22:07:22.345602 main.go:297: Error in sending block, err = Stale Update/Block
-[peer] 22:07:22.345626 main.go:678: 0:RPC calls successfully returned. Iteration: 1
-[peer] 22:07:22.346369 honest.go:81: 0Train Error is 1.00000 in Iteration 1
-[peer] 22:07:22.346390 main.go:686: 0:Preparing for next Iteration. Current Iteration: 1
-[peer] 22:07:22.346398 main.go:582: 0:Acquiring bool lock
-[peer] 22:07:22.346406 main.go:584: 0:Acquired bool lock
-[peer] 22:07:22.348026 main.go:603: 0:I am not verifier IterationCount:2
-[peer] 22:07:22.348039 main.go:608: 0:Bool lock released
-[peer] 22:07:22.348180 main.go:816: 0:Computing Update
-[peer] 22:07:22.348582 main.go:270: 0 : VRF returned ID map[11:{}]
-[peer] 22:07:22.348626 main.go:279: 0 :Verifiers [198.162.52.57:8011] returned.
-[err] 22:07:22.348962 main.go:297: Unable to connect to verifier, err = dial tcp 198.162.52.57:8011: connect: connection refused
-[peer] 22:07:22.348994 main.go:888: 0:Will try and create an empty block
-[peer] 22:07:22.349069 main.go:895: 0:Will try and create an empty block
-[peer] 22:07:22.349117 main.go:658: 0:Sending block. Iteration: 2
-[peer] 22:07:22.349959 main.go:627: 0:Accepted new Connection
-[peer] 22:07:22.350511 main.go:723: 0:Block sent to peer successful
-[err] 22:07:22.350524 main.go:297: Error in sending block, err = Stale Update/Block
-[peer] 22:07:22.350813 main.go:130: 0:Got block message, iteration 2
-[peer] 22:07:22.350835 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:22.350842 main.go:139: 0:Acquired bool lock
-[peer] 22:07:22.350848 main.go:140: Chain Length:4
-[peer] 22:07:22.350855 main.go:142: Chain Length:4
-[peer] 22:07:22.350862 main.go:147: Already have block
-[peer] 22:07:22.350870 main.go:152: 0:Bool lock released
-[peer] 22:07:22.350877 main.go:179: 0:Equal block
-[peer] 22:07:22.351644 main.go:723: 0:Block sent to peer successful
-[peer] 22:07:22.352502 main.go:723: 0:Block sent to peer successful
-[peer] 22:07:22.352528 main.go:678: 0:RPC calls successfully returned. Iteration: 2
-[peer] 22:07:22.353300 honest.go:81: 0Train Error is 1.00000 in Iteration 2
-[peer] 22:07:22.353320 main.go:686: 0:Preparing for next Iteration. Current Iteration: 2
-[peer] 22:07:22.353328 main.go:582: 0:Acquiring bool lock
-[peer] 22:07:22.353335 main.go:584: 0:Acquired bool lock
-[peer] 22:07:22.354950 main.go:603: 0:I am not verifier IterationCount:3
-[peer] 22:07:22.354964 main.go:608: 0:Bool lock released
-[peer] 22:07:22.382589 main.go:627: 0:Accepted new Connection
-[peer] 22:07:22.383345 main.go:213: 0:Registering peer:198.162.52.57:8016
-[peer] 22:07:22.383527 main.go:223: Advertising chain to peer with length 4
-[peer] 22:07:22.386351 main.go:627: 0:Accepted new Connection
-[peer] 22:07:22.386400 main.go:627: 0:Accepted new Connection
-[peer] 22:07:22.386949 main.go:213: 0:Registering peer:198.162.52.57:8010
-[peer] 22:07:22.386987 main.go:223: Advertising chain to peer with length 4
-[peer] 22:07:22.387189 main.go:213: 0:Registering peer:198.162.52.57:8011
-[peer] 22:07:22.387228 main.go:223: Advertising chain to peer with length 4
-[peer] 22:07:22.415946 main.go:627: 0:Accepted new Connection
-[peer] 22:07:22.416572 main.go:213: 0:Registering peer:198.162.52.57:8015
-[peer] 22:07:22.416626 main.go:223: Advertising chain to peer with length 4
-[peer] 22:07:22.423862 main.go:627: 0:Accepted new Connection
-[peer] 22:07:22.424479 main.go:213: 0:Registering peer:198.162.52.57:8012
-[peer] 22:07:22.424529 main.go:223: Advertising chain to peer with length 4
-[peer] 22:07:22.449224 main.go:816: 0:Computing Update
-[peer] 22:07:22.449738 main.go:270: 0 : VRF returned ID map[11:{}]
-[peer] 22:07:22.449760 main.go:279: 0 :Verifiers [198.162.52.57:8011] returned.
-[peer] 22:07:22.450133 main.go:861: 0:Making RPC Call to Verifier. Sending Update, Iteration:3
-[peer] 22:07:22.452342 main.go:868: 0:Update sent successfully
-[peer] 22:07:22.474984 main.go:627: 0:Accepted new Connection
-[peer] 22:07:22.481645 main.go:213: 0:Registering peer:198.162.52.57:8018
-[peer] 22:07:22.481683 main.go:223: Advertising chain to peer with length 4
-[peer] 22:07:22.492797 main.go:627: 0:Accepted new Connection
-[peer] 22:07:22.494349 main.go:213: 0:Registering peer:198.162.52.57:8017
-[peer] 22:07:22.494372 main.go:223: Advertising chain to peer with length 4
-[peer] 22:07:23.423362 main.go:627: 0:Accepted new Connection
-[peer] 22:07:23.424017 main.go:130: 0:Got block message, iteration 2
-[peer] 22:07:23.424048 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:23.424063 main.go:139: 0:Acquired bool lock
-[peer] 22:07:23.424071 main.go:140: Chain Length:4
-[peer] 22:07:23.424078 main.go:142: Chain Length:4
-[peer] 22:07:23.424085 main.go:147: Already have block
-[peer] 22:07:23.424094 main.go:152: 0:Bool lock released
-[peer] 22:07:23.424102 main.go:179: 0:Equal block
-[peer] 22:07:23.432195 main.go:627: 0:Accepted new Connection
-[peer] 22:07:23.443310 main.go:130: 0:Got block message, iteration 2
-[peer] 22:07:23.443425 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:23.443455 main.go:139: 0:Acquired bool lock
-[peer] 22:07:23.443487 main.go:140: Chain Length:4
-[peer] 22:07:23.443517 main.go:142: Chain Length:4
-[peer] 22:07:23.443545 main.go:147: Already have block
-[peer] 22:07:23.443575 main.go:152: 0:Bool lock released
-[peer] 22:07:23.443608 main.go:179: 0:Equal block
-[peer] 22:07:29.372727 main.go:627: 0:Accepted new Connection
-[peer] 22:07:29.373353 main.go:213: 0:Registering peer:198.162.52.126:8009
-[peer] 22:07:29.373402 main.go:223: Advertising chain to peer with length 4
-[peer] 22:07:29.393711 main.go:627: 0:Accepted new Connection
-[peer] 22:07:29.393951 main.go:213: 0:Registering peer:198.162.52.126:8003
-[peer] 22:07:29.394005 main.go:223: Advertising chain to peer with length 4
-[peer] 22:07:29.617133 main.go:627: 0:Accepted new Connection
-[peer] 22:07:29.617711 main.go:213: 0:Registering peer:198.162.52.126:8001
-[peer] 22:07:29.617731 main.go:223: Advertising chain to peer with length 4
-[peer] 22:07:29.732588 main.go:627: 0:Accepted new Connection
-[peer] 22:07:29.733038 main.go:213: 0:Registering peer:198.162.52.126:8004
-[peer] 22:07:29.733057 main.go:223: Advertising chain to peer with length 4
-[peer] 22:07:29.786546 main.go:627: 0:Accepted new Connection
-[peer] 22:07:29.786852 main.go:213: 0:Registering peer:198.162.52.126:8006
-[peer] 22:07:29.786866 main.go:223: Advertising chain to peer with length 4
-[peer] 22:07:29.924732 main.go:627: 0:Accepted new Connection
-[peer] 22:07:29.925112 main.go:213: 0:Registering peer:198.162.52.126:8005
-[peer] 22:07:29.925134 main.go:223: Advertising chain to peer with length 4
-[peer] 22:07:30.005754 main.go:627: 0:Accepted new Connection
-[peer] 22:07:30.006105 main.go:213: 0:Registering peer:198.162.52.126:8007
-[peer] 22:07:30.006120 main.go:223: Advertising chain to peer with length 4
-[peer] 22:07:30.105027 main.go:627: 0:Accepted new Connection
-[peer] 22:07:30.105329 main.go:213: 0:Registering peer:198.162.52.126:8002
-[peer] 22:07:30.105342 main.go:223: Advertising chain to peer with length 4
-[peer] 22:07:30.291926 main.go:627: 0:Accepted new Connection
-[peer] 22:07:30.292362 main.go:213: 0:Registering peer:198.162.52.126:8008
-[peer] 22:07:30.292397 main.go:223: Advertising chain to peer with length 4
-[peer] 22:07:37.609296 main.go:627: 0:Accepted new Connection
-[peer] 22:07:37.610189 main.go:130: 0:Got block message, iteration 3
-[peer] 22:07:37.610228 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:37.610240 main.go:139: 0:Acquired bool lock
-[peer] 22:07:37.610261 main.go:140: Chain Length:4
-[peer] 22:07:37.610270 main.go:142: Chain Length:4
-[peer] 22:07:37.610280 main.go:187: 0:Sending to channel
-[peer] 22:07:37.610297 main.go:193: 0:Sent to channel
-[peer] 22:07:37.610321 main.go:195: 0:Returning
-[peer] 22:07:37.610352 main.go:947: 0:Block Received. Appending to chain and moving on to the next iteration. 3
-[peer] 22:07:37.610420 main.go:769: 0:Adding block to chain
-[peer] 22:07:37.610448 honest.go:222: Trying to append block with iteration:3
-[peer] 22:07:37.610459 honest.go:238: Append successful
-[peer] 22:07:37.610486 main.go:773: 0:Adding block to chain
-[peer] 22:07:37.610496 main.go:779: 0:Checking convergence
-[peer] 22:07:37.611805 honest.go:81: 0Train Error is 0.07805 in Iteration 3
-[peer] 22:07:37.611845 main.go:782: 0:Convergence checked
-[peer] 22:07:37.611859 main.go:785: 0:Bool lock released
-[peer] 22:07:37.611912 main.go:658: 0:Sending block. Iteration: 3
-[err] 22:07:37.612439 main.go:297: rpc Dial, err = dial tcp 198.162.52.126:8004: connect: connection refused
-[peer] 22:07:37.612473 main.go:743: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8004
-[err] 22:07:37.612474 main.go:297: rpc Dial, err = dial tcp 198.162.52.126:8001: connect: connection refused
-[err] 22:07:37.612514 main.go:297: rpc Dial, err = dial tcp 198.162.52.126:8008: connect: connection refused
-[err] 22:07:37.612453 main.go:297: rpc Dial, err = dial tcp 198.162.52.126:8006: connect: connection refused
-[err] 22:07:37.612546 main.go:297: rpc Dial, err = dial tcp 198.162.52.126:8003: connect: connection refused
-[err] 22:07:37.612565 main.go:297: rpc Dial, err = dial tcp 198.162.52.126:8002: connect: connection refused
-[err] 22:07:37.612585 main.go:297: rpc Dial, err = dial tcp 198.162.52.126:8007: connect: connection refused
-[peer] 22:07:37.612515 main.go:743: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8001
-[peer] 22:07:37.612536 main.go:743: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8008
-[err] 22:07:37.612630 main.go:297: rpc Dial, err = dial tcp 198.162.52.126:8005: connect: connection refused
-[peer] 22:07:37.612558 main.go:743: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8006
-[peer] 22:07:37.612578 main.go:743: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8003
-[peer] 22:07:37.612598 main.go:743: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8002
-[peer] 22:07:37.612618 main.go:743: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8007
-[peer] 22:07:37.612668 main.go:743: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8005
-[err] 22:07:37.614046 main.go:297: rpc Dial, err = dial tcp 198.162.52.126:8009: connect: connection refused
-[peer] 22:07:37.614076 main.go:743: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8009
-[peer] 22:07:37.616873 main.go:723: 0:Block sent to peer successful
-[peer] 22:07:37.617139 main.go:723: 0:Block sent to peer successful
-[err] 22:07:37.617166 main.go:297: Error in sending block, err = Stale Update/Block
-[peer] 22:07:37.684603 main.go:723: 0:Block sent to peer successful
-[err] 22:07:37.684640 main.go:297: Error in sending block, err = Stale Update/Block
-[peer] 22:07:37.684976 main.go:627: 0:Accepted new Connection
-[peer] 22:07:37.686343 main.go:130: 0:Got block message, iteration 3
-[peer] 22:07:37.686413 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:37.686451 main.go:139: 0:Acquired bool lock
-[peer] 22:07:37.686490 main.go:140: Chain Length:5
-[peer] 22:07:37.686523 main.go:142: Chain Length:5
-[peer] 22:07:37.686558 main.go:147: Already have block
-[peer] 22:07:37.686597 main.go:152: 0:Bool lock released
-[peer] 22:07:37.686631 main.go:179: 0:Equal block
-[peer] 22:07:37.691116 main.go:723: 0:Block sent to peer successful
-[err] 22:07:37.691132 main.go:297: Error in sending block, err = Stale Update/Block
-[peer] 22:07:37.691846 main.go:627: 0:Accepted new Connection
-[peer] 22:07:37.693612 main.go:130: 0:Got block message, iteration 3
-[peer] 22:07:37.693640 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:37.693648 main.go:139: 0:Acquired bool lock
-[peer] 22:07:37.693654 main.go:140: Chain Length:5
-[peer] 22:07:37.693673 main.go:142: Chain Length:5
-[peer] 22:07:37.693679 main.go:147: Already have block
-[peer] 22:07:37.693687 main.go:152: 0:Bool lock released
-[peer] 22:07:37.693693 main.go:179: 0:Equal block
-[peer] 22:07:37.694950 main.go:627: 0:Accepted new Connection
-[peer] 22:07:37.695810 main.go:723: 0:Block sent to peer successful
-[err] 22:07:37.695824 main.go:297: Error in sending block, err = Stale Update/Block
-[peer] 22:07:37.697355 main.go:130: 0:Got block message, iteration 3
-[peer] 22:07:37.697378 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:37.697386 main.go:139: 0:Acquired bool lock
-[peer] 22:07:37.697392 main.go:140: Chain Length:5
-[peer] 22:07:37.697398 main.go:142: Chain Length:5
-[peer] 22:07:37.697403 main.go:147: Already have block
-[peer] 22:07:37.697411 main.go:152: 0:Bool lock released
-[peer] 22:07:37.697418 main.go:179: 0:Equal block
-[peer] 22:07:37.721796 main.go:627: 0:Accepted new Connection
-[peer] 22:07:37.722618 main.go:723: 0:Block sent to peer successful
-[err] 22:07:37.722636 main.go:297: Error in sending block, err = Stale Update/Block
-[peer] 22:07:37.722790 main.go:627: 0:Accepted new Connection
-[peer] 22:07:37.722911 main.go:723: 0:Block sent to peer successful
-[err] 22:07:37.722928 main.go:297: Error in sending block, err = Stale Update/Block
-[peer] 22:07:37.726645 main.go:130: 0:Got block message, iteration 3
-[peer] 22:07:37.726677 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:37.726689 main.go:139: 0:Acquired bool lock
-[peer] 22:07:37.726705 main.go:140: Chain Length:5
-[peer] 22:07:37.726712 main.go:142: Chain Length:5
-[peer] 22:07:37.726719 main.go:147: Already have block
-[peer] 22:07:37.726728 main.go:152: 0:Bool lock released
-[peer] 22:07:37.726736 main.go:179: 0:Equal block
-[peer] 22:07:37.739035 main.go:130: 0:Got block message, iteration 3
-[peer] 22:07:37.739060 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:37.739067 main.go:139: 0:Acquired bool lock
-[peer] 22:07:37.739073 main.go:140: Chain Length:5
-[peer] 22:07:37.739079 main.go:142: Chain Length:5
-[peer] 22:07:37.739085 main.go:147: Already have block
-[peer] 22:07:37.739093 main.go:152: 0:Bool lock released
-[peer] 22:07:37.739100 main.go:179: 0:Equal block
-[peer] 22:07:37.769582 main.go:723: 0:Block sent to peer successful
-[err] 22:07:37.769647 main.go:297: Error in sending block, err = Stale Update/Block
-[peer] 22:07:37.769647 main.go:627: 0:Accepted new Connection
-[peer] 22:07:37.771309 main.go:130: 0:Got block message, iteration 3
-[peer] 22:07:37.771337 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:37.771345 main.go:139: 0:Acquired bool lock
-[peer] 22:07:37.771352 main.go:140: Chain Length:5
-[peer] 22:07:37.771358 main.go:142: Chain Length:5
-[peer] 22:07:37.771365 main.go:147: Already have block
-[peer] 22:07:37.771373 main.go:152: 0:Bool lock released
-[peer] 22:07:37.771380 main.go:179: 0:Equal block
-[peer] 22:07:37.782504 main.go:723: 0:Block sent to peer successful
-[err] 22:07:37.782525 main.go:297: Error in sending block, err = Stale Update/Block
-[peer] 22:07:37.783343 main.go:627: 0:Accepted new Connection
-[peer] 22:07:37.784269 main.go:130: 0:Got block message, iteration 3
-[peer] 22:07:37.784297 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:37.784306 main.go:139: 0:Acquired bool lock
-[peer] 22:07:37.784313 main.go:140: Chain Length:5
-[peer] 22:07:37.784319 main.go:142: Chain Length:5
-[peer] 22:07:37.784326 main.go:147: Already have block
-[peer] 22:07:37.784336 main.go:152: 0:Bool lock released
-[peer] 22:07:37.784344 main.go:179: 0:Equal block
-[peer] 22:07:37.848772 main.go:627: 0:Accepted new Connection
-[peer] 22:07:37.849766 main.go:130: 0:Got block message, iteration 3
-[peer] 22:07:37.849800 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:37.849811 main.go:139: 0:Acquired bool lock
-[peer] 22:07:37.849824 main.go:140: Chain Length:5
-[peer] 22:07:37.849840 main.go:142: Chain Length:5
-[peer] 22:07:37.849865 main.go:147: Already have block
-[peer] 22:07:37.849894 main.go:152: 0:Bool lock released
-[peer] 22:07:37.849910 main.go:179: 0:Equal block
-[peer] 22:07:37.850431 main.go:723: 0:Block sent to peer successful
-[err] 22:07:37.850475 main.go:297: Error in sending block, err = Stale Update/Block
-[peer] 22:07:37.850542 main.go:678: 0:RPC calls successfully returned. Iteration: 3
-[peer] 22:07:37.856299 honest.go:81: 0Train Error is 0.07805 in Iteration 3
-[peer] 22:07:37.856396 main.go:686: 0:Preparing for next Iteration. Current Iteration: 3
-[peer] 22:07:37.856444 main.go:582: 0:Acquiring bool lock
-[peer] 22:07:37.856488 main.go:584: 0:Acquired bool lock
-[peer] 22:07:37.859370 main.go:603: 0:I am not verifier IterationCount:4
-[peer] 22:07:37.859433 main.go:608: 0:Bool lock released
-[peer] 22:07:37.870722 main.go:816: 0:Computing Update
-[peer] 22:07:37.871324 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.871386 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.871428 main.go:816: 0:Computing Update
-[peer] 22:07:37.872029 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.872090 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.872133 main.go:816: 0:Computing Update
-[peer] 22:07:37.872565 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.872622 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.872665 main.go:816: 0:Computing Update
-[peer] 22:07:37.873100 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.873158 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.873199 main.go:816: 0:Computing Update
-[peer] 22:07:37.874390 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.874454 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.874496 main.go:816: 0:Computing Update
-[peer] 22:07:37.874925 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.874982 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.875022 main.go:816: 0:Computing Update
-[peer] 22:07:37.875460 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.875521 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.875565 main.go:816: 0:Computing Update
-[peer] 22:07:37.875995 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.876051 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.876092 main.go:816: 0:Computing Update
-[peer] 22:07:37.876511 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.876567 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.876608 main.go:816: 0:Computing Update
-[peer] 22:07:37.877027 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.877082 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.877122 main.go:816: 0:Computing Update
-[peer] 22:07:37.877563 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.877619 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.877658 main.go:816: 0:Computing Update
-[peer] 22:07:37.878054 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.878107 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.878146 main.go:816: 0:Computing Update
-[peer] 22:07:37.878558 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.878613 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.878652 main.go:816: 0:Computing Update
-[peer] 22:07:37.879044 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.879097 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.879135 main.go:816: 0:Computing Update
-[peer] 22:07:37.879535 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.879589 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.879628 main.go:816: 0:Computing Update
-[peer] 22:07:37.880025 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.880080 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.880119 main.go:816: 0:Computing Update
-[peer] 22:07:37.884428 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.884499 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.884540 main.go:816: 0:Computing Update
-[peer] 22:07:37.884985 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.885041 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.885081 main.go:816: 0:Computing Update
-[peer] 22:07:37.888762 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.888828 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.888869 main.go:816: 0:Computing Update
-[peer] 22:07:37.889317 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.889372 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.889411 main.go:816: 0:Computing Update
-[peer] 22:07:37.889853 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.889906 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.889944 main.go:816: 0:Computing Update
-[peer] 22:07:37.890336 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.890388 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.890425 main.go:816: 0:Computing Update
-[peer] 22:07:37.890814 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.890864 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.890902 main.go:816: 0:Computing Update
-[peer] 22:07:37.891291 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.891342 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.891378 main.go:816: 0:Computing Update
-[peer] 22:07:37.891771 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.891822 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.891859 main.go:816: 0:Computing Update
-[peer] 22:07:37.892239 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.892290 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.892329 main.go:816: 0:Computing Update
-[peer] 22:07:37.892709 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.892759 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.892797 main.go:816: 0:Computing Update
-[peer] 22:07:37.893176 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.893229 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.893267 main.go:816: 0:Computing Update
-[peer] 22:07:37.893657 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.893710 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.893747 main.go:816: 0:Computing Update
-[peer] 22:07:37.894127 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.894180 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.894217 main.go:816: 0:Computing Update
-[peer] 22:07:37.894595 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.894646 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.894684 main.go:816: 0:Computing Update
-[peer] 22:07:37.895069 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.895119 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.895157 main.go:816: 0:Computing Update
-[peer] 22:07:37.895534 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.895696 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.895739 main.go:816: 0:Computing Update
-[peer] 22:07:37.896171 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.896222 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.896259 main.go:816: 0:Computing Update
-[peer] 22:07:37.896647 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.896698 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.896736 main.go:816: 0:Computing Update
-[peer] 22:07:37.897127 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.897195 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.897162 main.go:627: 0:Accepted new Connection
-[peer] 22:07:37.897235 main.go:816: 0:Computing Update
-[peer] 22:07:37.897753 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.897806 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.897843 main.go:816: 0:Computing Update
-[peer] 22:07:37.898252 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.898310 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.898356 main.go:816: 0:Computing Update
-[peer] 22:07:37.898393 main.go:130: 0:Got block message, iteration 4
-[peer] 22:07:37.898536 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:37.898896 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.898947 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.898994 main.go:816: 0:Computing Update
-[peer] 22:07:37.899721 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.899774 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.899821 main.go:816: 0:Computing Update
-[peer] 22:07:37.900235 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.900295 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.900347 main.go:139: 0:Acquired bool lock
-[peer] 22:07:37.900385 main.go:140: Chain Length:5
-[peer] 22:07:37.900426 main.go:142: Chain Length:5
-[peer] 22:07:37.900463 main.go:187: 0:Sending to channel
-[peer] 22:07:37.900500 main.go:193: 0:Sent to channel
-[peer] 22:07:37.900540 main.go:195: 0:Returning
-[peer] 22:07:37.900583 main.go:769: 0:Adding block to chain
-[peer] 22:07:37.900729 honest.go:222: Trying to append block with iteration:4
-[peer] 22:07:37.900766 honest.go:238: Append successful
-[peer] 22:07:37.900803 main.go:773: 0:Adding block to chain
-[peer] 22:07:37.900838 main.go:779: 0:Checking convergence
-[peer] 22:07:37.901857 honest.go:81: 0Train Error is 0.07805 in Iteration 4
-[peer] 22:07:37.901928 main.go:782: 0:Convergence checked
-[peer] 22:07:37.901969 main.go:785: 0:Bool lock released
-[peer] 22:07:37.902072 main.go:658: 0:Sending block. Iteration: 4
-[peer] 22:07:37.902429 main.go:816: 0:Computing Update
-[peer] 22:07:37.902964 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.903022 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.903065 main.go:816: 0:Computing Update
-[peer] 22:07:37.903474 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.903526 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.903562 main.go:816: 0:Computing Update
-[peer] 22:07:37.903962 main.go:723: 0:Block sent to peer successful
-[peer] 22:07:37.904212 main.go:723: 0:Block sent to peer successful
-[peer] 22:07:37.904789 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.904814 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.904826 main.go:816: 0:Computing Update
-[peer] 22:07:37.905183 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.905208 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.905220 main.go:816: 0:Computing Update
-[peer] 22:07:37.905429 main.go:723: 0:Block sent to peer successful
-[peer] 22:07:37.905593 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.905615 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.905626 main.go:816: 0:Computing Update
-[peer] 22:07:37.905708 main.go:723: 0:Block sent to peer successful
-[peer] 22:07:37.905971 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.905993 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.906003 main.go:816: 0:Computing Update
-[peer] 22:07:37.906227 main.go:723: 0:Block sent to peer successful
-[peer] 22:07:37.906402 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.906425 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.906439 main.go:816: 0:Computing Update
-[peer] 22:07:37.906785 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.906806 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.906816 main.go:816: 0:Computing Update
-[peer] 22:07:37.907093 main.go:723: 0:Block sent to peer successful
-[peer] 22:07:37.907221 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.907243 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.907254 main.go:816: 0:Computing Update
-[peer] 22:07:37.907594 main.go:723: 0:Block sent to peer successful
-[peer] 22:07:37.907648 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.907674 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.907686 main.go:816: 0:Computing Update
-[peer] 22:07:37.908037 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.908058 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.908069 main.go:816: 0:Computing Update
-[peer] 22:07:37.908424 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.908446 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.908457 main.go:816: 0:Computing Update
-[peer] 22:07:37.908804 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.908826 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.908836 main.go:816: 0:Computing Update
-[peer] 22:07:37.909169 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.909190 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.909201 main.go:816: 0:Computing Update
-[peer] 22:07:37.909350 main.go:723: 0:Block sent to peer successful
-[err] 22:07:37.909383 main.go:297: Error in sending block, err = Stale Update/Block
-[peer] 22:07:37.909502 main.go:627: 0:Accepted new Connection
-[peer] 22:07:37.909625 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.909647 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.909658 main.go:816: 0:Computing Update
-[peer] 22:07:37.910001 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.910023 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.910034 main.go:816: 0:Computing Update
-[peer] 22:07:37.910387 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.910409 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.910419 main.go:816: 0:Computing Update
-[peer] 22:07:37.910805 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.910803 main.go:130: 0:Got block message, iteration 4
-[peer] 22:07:37.910834 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:37.910828 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.910900 main.go:816: 0:Computing Update
-[peer] 22:07:37.911261 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.911282 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.911298 main.go:816: 0:Computing Update
-[peer] 22:07:37.911651 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.911672 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.911687 main.go:816: 0:Computing Update
-[peer] 22:07:37.912095 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.912116 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.912132 main.go:816: 0:Computing Update
-[peer] 22:07:37.912480 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.912500 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.912522 main.go:139: 0:Acquired bool lock
-[peer] 22:07:37.912540 main.go:140: Chain Length:6
-[peer] 22:07:37.912552 main.go:142: Chain Length:6
-[peer] 22:07:37.912562 main.go:147: Already have block
-[peer] 22:07:37.912574 main.go:152: 0:Bool lock released
-[peer] 22:07:37.912588 main.go:179: 0:Equal block
-[peer] 22:07:37.912642 main.go:816: 0:Computing Update
-[peer] 22:07:37.912994 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.913018 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.913029 main.go:816: 0:Computing Update
-[peer] 22:07:37.913355 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.913375 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.913384 main.go:816: 0:Computing Update
-[peer] 22:07:37.913734 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.913757 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.913769 main.go:816: 0:Computing Update
-[peer] 22:07:37.914126 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.914146 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.914156 main.go:816: 0:Computing Update
-[peer] 22:07:37.914478 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.914498 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.914507 main.go:816: 0:Computing Update
-[peer] 22:07:37.914827 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.914847 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.914857 main.go:816: 0:Computing Update
-[peer] 22:07:37.915178 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.915197 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.915207 main.go:816: 0:Computing Update
-[peer] 22:07:37.915529 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.915548 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.915558 main.go:816: 0:Computing Update
-[peer] 22:07:37.915875 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.915895 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.915905 main.go:816: 0:Computing Update
-[peer] 22:07:37.916226 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.916246 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.916256 main.go:816: 0:Computing Update
-[peer] 22:07:37.916579 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.916599 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.916609 main.go:816: 0:Computing Update
-[peer] 22:07:37.916945 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.916967 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.916979 main.go:816: 0:Computing Update
-[peer] 22:07:37.917046 main.go:723: 0:Block sent to peer successful
-[err] 22:07:37.917067 main.go:297: Error in sending block, err = Stale Update/Block
-[peer] 22:07:37.917339 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.917360 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.917370 main.go:816: 0:Computing Update
-[peer] 22:07:37.917711 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.917736 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.917746 main.go:816: 0:Computing Update
-[peer] 22:07:37.918080 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.918101 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.918111 main.go:816: 0:Computing Update
-[peer] 22:07:37.918431 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.918451 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.918461 main.go:816: 0:Computing Update
-[peer] 22:07:37.918780 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.918800 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.918811 main.go:816: 0:Computing Update
-[peer] 22:07:37.919147 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.919167 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.919177 main.go:816: 0:Computing Update
-[peer] 22:07:37.919499 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.919518 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.919528 main.go:816: 0:Computing Update
-[peer] 22:07:37.920454 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.920480 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.920492 main.go:816: 0:Computing Update
-[peer] 22:07:37.920533 main.go:723: 0:Block sent to peer successful
-[err] 22:07:37.920554 main.go:297: Error in sending block, err = Stale Update/Block
-[peer] 22:07:37.920590 main.go:678: 0:RPC calls successfully returned. Iteration: 4
-[peer] 22:07:37.921009 main.go:627: 0:Accepted new Connection
-[peer] 22:07:37.922053 main.go:130: 0:Got block message, iteration 4
-[peer] 22:07:37.922086 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:37.922274 honest.go:81: 0Train Error is 0.07805 in Iteration 4
-[peer] 22:07:37.922294 main.go:686: 0:Preparing for next Iteration. Current Iteration: 4
-[peer] 22:07:37.922304 main.go:582: 0:Acquiring bool lock
-[peer] 22:07:37.922539 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.922560 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.922575 main.go:816: 0:Computing Update
-[peer] 22:07:37.922948 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.922968 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.922984 main.go:816: 0:Computing Update
-[peer] 22:07:37.923323 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.923343 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.923358 main.go:816: 0:Computing Update
-[peer] 22:07:37.923711 main.go:270: 0 : VRF returned ID map[9:{}]
-[peer] 22:07:37.923731 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.923754 main.go:139: 0:Acquired bool lock
-[peer] 22:07:37.923768 main.go:140: Chain Length:6
-[peer] 22:07:37.923777 main.go:142: Chain Length:6
-[peer] 22:07:37.923787 main.go:147: Already have block
-[peer] 22:07:37.923800 main.go:152: 0:Bool lock released
-[peer] 22:07:37.923808 main.go:179: 0:Equal block
-[peer] 22:07:37.923859 main.go:584: 0:Acquired bool lock
-[peer] 22:07:37.926018 main.go:603: 0:I am not verifier IterationCount:5
-[peer] 22:07:37.926040 main.go:608: 0:Bool lock released
-[peer] 22:07:37.926101 main.go:816: 0:Computing Update
-[peer] 22:07:37.926517 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.926534 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.926544 main.go:816: 0:Computing Update
-[peer] 22:07:37.926865 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.926885 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.926895 main.go:816: 0:Computing Update
-[peer] 22:07:37.927313 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.927375 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.927411 main.go:816: 0:Computing Update
-[peer] 22:07:37.927754 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.927802 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.927838 main.go:816: 0:Computing Update
-[peer] 22:07:37.928190 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.928235 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.928268 main.go:816: 0:Computing Update
-[peer] 22:07:37.928606 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.928651 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.928684 main.go:816: 0:Computing Update
-[peer] 22:07:37.929018 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.929064 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.929097 main.go:816: 0:Computing Update
-[peer] 22:07:37.929450 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.929497 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.929533 main.go:816: 0:Computing Update
-[peer] 22:07:37.929782 main.go:627: 0:Accepted new Connection
-[peer] 22:07:37.929929 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.929975 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.930009 main.go:816: 0:Computing Update
-[peer] 22:07:37.930347 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.930392 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.930425 main.go:816: 0:Computing Update
-[peer] 22:07:37.930765 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.930811 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.930844 main.go:816: 0:Computing Update
-[peer] 22:07:37.931185 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.931231 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.931264 main.go:816: 0:Computing Update
-[peer] 22:07:37.931516 main.go:130: 0:Got block message, iteration 4
-[peer] 22:07:37.931554 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:37.931685 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.931731 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.931773 main.go:816: 0:Computing Update
-[peer] 22:07:37.932138 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.932184 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.932227 main.go:816: 0:Computing Update
-[peer] 22:07:37.932593 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.932639 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.932680 main.go:816: 0:Computing Update
-[peer] 22:07:37.933034 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.933080 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.933126 main.go:139: 0:Acquired bool lock
-[peer] 22:07:37.933160 main.go:140: Chain Length:6
-[peer] 22:07:37.933197 main.go:142: Chain Length:6
-[peer] 22:07:37.933229 main.go:147: Already have block
-[peer] 22:07:37.933265 main.go:152: 0:Bool lock released
-[peer] 22:07:37.933305 main.go:179: 0:Equal block
-[peer] 22:07:37.933379 main.go:816: 0:Computing Update
-[peer] 22:07:37.933747 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.933795 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.933827 main.go:816: 0:Computing Update
-[peer] 22:07:37.934174 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.934220 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.934254 main.go:816: 0:Computing Update
-[peer] 22:07:37.934596 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.934641 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.934673 main.go:816: 0:Computing Update
-[peer] 22:07:37.935160 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.935207 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.935241 main.go:816: 0:Computing Update
-[peer] 22:07:37.935634 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.935683 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.935722 main.go:816: 0:Computing Update
-[peer] 22:07:37.936137 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.936186 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.936224 main.go:816: 0:Computing Update
-[peer] 22:07:37.936613 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.936659 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.936691 main.go:816: 0:Computing Update
-[peer] 22:07:37.937021 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.937065 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.937097 main.go:816: 0:Computing Update
-[peer] 22:07:37.937421 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.937471 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.937505 main.go:816: 0:Computing Update
-[peer] 22:07:37.937852 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.937898 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.937933 main.go:816: 0:Computing Update
-[peer] 22:07:37.938260 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.938303 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.938335 main.go:816: 0:Computing Update
-[peer] 22:07:37.938658 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.938702 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.938734 main.go:816: 0:Computing Update
-[peer] 22:07:37.939065 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.939109 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.939141 main.go:816: 0:Computing Update
-[peer] 22:07:37.939464 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.939507 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.939539 main.go:816: 0:Computing Update
-[peer] 22:07:37.939870 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.939914 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.939945 main.go:816: 0:Computing Update
-[peer] 22:07:37.940278 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.940321 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.940353 main.go:816: 0:Computing Update
-[peer] 22:07:37.940681 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.940725 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.940757 main.go:816: 0:Computing Update
-[peer] 22:07:37.941078 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.941121 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.941153 main.go:816: 0:Computing Update
-[peer] 22:07:37.941480 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.941525 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.941557 main.go:816: 0:Computing Update
-[peer] 22:07:37.941887 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.941930 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.941962 main.go:816: 0:Computing Update
-[peer] 22:07:37.942289 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.942332 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.942364 main.go:816: 0:Computing Update
-[peer] 22:07:37.942805 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.942850 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.942883 main.go:816: 0:Computing Update
-[peer] 22:07:37.943205 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.943249 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.943282 main.go:816: 0:Computing Update
-[peer] 22:07:37.943618 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.943661 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.943694 main.go:816: 0:Computing Update
-[peer] 22:07:37.944018 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.944061 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.944093 main.go:816: 0:Computing Update
-[peer] 22:07:37.944415 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.944458 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.944490 main.go:816: 0:Computing Update
-[peer] 22:07:37.944819 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.944863 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.944895 main.go:816: 0:Computing Update
-[peer] 22:07:37.945216 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.945259 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.945291 main.go:816: 0:Computing Update
-[peer] 22:07:37.945626 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.945678 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.945711 main.go:816: 0:Computing Update
-[peer] 22:07:37.946033 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.946076 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.946109 main.go:816: 0:Computing Update
-[peer] 22:07:37.946443 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.946486 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.946518 main.go:816: 0:Computing Update
-[peer] 22:07:37.946841 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.946884 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.946916 main.go:816: 0:Computing Update
-[peer] 22:07:37.947238 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.947282 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.947314 main.go:816: 0:Computing Update
-[peer] 22:07:37.947657 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.947701 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.947733 main.go:816: 0:Computing Update
-[peer] 22:07:37.948055 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.948104 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.948138 main.go:816: 0:Computing Update
-[peer] 22:07:37.948460 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.948503 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.948536 main.go:816: 0:Computing Update
-[peer] 22:07:37.948865 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.948908 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.948992 main.go:816: 0:Computing Update
-[peer] 22:07:37.949365 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.949384 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.949393 main.go:816: 0:Computing Update
-[peer] 22:07:37.949714 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.949734 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.949743 main.go:816: 0:Computing Update
-[peer] 22:07:37.950031 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.950050 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.950059 main.go:816: 0:Computing Update
-[peer] 22:07:37.951043 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.951070 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.951082 main.go:816: 0:Computing Update
-[peer] 22:07:37.951378 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.951396 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.951405 main.go:816: 0:Computing Update
-[peer] 22:07:37.951705 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.951723 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.951733 main.go:816: 0:Computing Update
-[peer] 22:07:37.952030 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.952049 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.952058 main.go:816: 0:Computing Update
-[peer] 22:07:37.952352 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.952369 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.952378 main.go:816: 0:Computing Update
-[peer] 22:07:37.952662 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.952680 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.952689 main.go:816: 0:Computing Update
-[peer] 22:07:37.952978 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.952996 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.953005 main.go:816: 0:Computing Update
-[peer] 22:07:37.953296 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.953314 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.953323 main.go:816: 0:Computing Update
-[peer] 22:07:37.953615 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.953634 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.953643 main.go:816: 0:Computing Update
-[peer] 22:07:37.953929 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.953947 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.953956 main.go:816: 0:Computing Update
-[peer] 22:07:37.954242 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.954260 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.954278 main.go:816: 0:Computing Update
-[peer] 22:07:37.954570 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.954588 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.954597 main.go:816: 0:Computing Update
-[peer] 22:07:37.954886 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.954904 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.954912 main.go:816: 0:Computing Update
-[peer] 22:07:37.955200 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.955218 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.955227 main.go:816: 0:Computing Update
-[peer] 22:07:37.955524 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.955541 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.955550 main.go:816: 0:Computing Update
-[peer] 22:07:37.955838 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.955855 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.955864 main.go:816: 0:Computing Update
-[peer] 22:07:37.956149 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.956167 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.956176 main.go:816: 0:Computing Update
-[peer] 22:07:37.956467 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.956485 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.956494 main.go:816: 0:Computing Update
-[peer] 22:07:37.956787 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.956805 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.956814 main.go:816: 0:Computing Update
-[peer] 22:07:37.957097 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.957114 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.957123 main.go:816: 0:Computing Update
-[peer] 22:07:37.957410 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.957427 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.957436 main.go:816: 0:Computing Update
-[peer] 22:07:37.957739 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.957757 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.957766 main.go:816: 0:Computing Update
-[peer] 22:07:37.958051 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.958068 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.958077 main.go:816: 0:Computing Update
-[peer] 22:07:37.958423 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.958441 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.958450 main.go:816: 0:Computing Update
-[peer] 22:07:37.958738 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.958756 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.958765 main.go:816: 0:Computing Update
-[peer] 22:07:37.959054 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.959071 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.959080 main.go:816: 0:Computing Update
-[peer] 22:07:37.959364 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.959384 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.959393 main.go:816: 0:Computing Update
-[peer] 22:07:37.959677 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.959695 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.959704 main.go:816: 0:Computing Update
-[peer] 22:07:37.959996 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.960013 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.960023 main.go:816: 0:Computing Update
-[peer] 22:07:37.960308 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.960326 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.960335 main.go:816: 0:Computing Update
-[peer] 22:07:37.960617 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.960635 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.960644 main.go:816: 0:Computing Update
-[peer] 22:07:37.960951 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.960969 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.960978 main.go:816: 0:Computing Update
-[peer] 22:07:37.961268 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.961288 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.961297 main.go:816: 0:Computing Update
-[peer] 22:07:37.961603 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.961622 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.961630 main.go:816: 0:Computing Update
-[peer] 22:07:37.961919 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.961936 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.961945 main.go:816: 0:Computing Update
-[peer] 22:07:37.962224 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.962241 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.962250 main.go:816: 0:Computing Update
-[peer] 22:07:37.962525 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.962542 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.962551 main.go:816: 0:Computing Update
-[peer] 22:07:37.962825 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.962842 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.962851 main.go:816: 0:Computing Update
-[peer] 22:07:37.963131 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.963148 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.963157 main.go:816: 0:Computing Update
-[peer] 22:07:37.963434 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.963451 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.963459 main.go:816: 0:Computing Update
-[peer] 22:07:37.963734 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.963751 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.963795 main.go:816: 0:Computing Update
-[peer] 22:07:37.964085 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.964103 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.964111 main.go:816: 0:Computing Update
-[peer] 22:07:37.964392 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.964409 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.964418 main.go:816: 0:Computing Update
-[peer] 22:07:37.964691 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.964707 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.964716 main.go:816: 0:Computing Update
-[peer] 22:07:37.964997 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.965014 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.965023 main.go:816: 0:Computing Update
-[peer] 22:07:37.965304 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.965321 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.965330 main.go:816: 0:Computing Update
-[peer] 22:07:37.965615 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.965633 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.965642 main.go:816: 0:Computing Update
-[peer] 22:07:37.965925 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.965941 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.965950 main.go:816: 0:Computing Update
-[peer] 22:07:37.966722 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.966741 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.966750 main.go:816: 0:Computing Update
-[peer] 22:07:37.967033 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.967050 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.967060 main.go:816: 0:Computing Update
-[peer] 22:07:37.967343 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.967360 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.967369 main.go:816: 0:Computing Update
-[peer] 22:07:37.967650 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.967667 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.967676 main.go:816: 0:Computing Update
-[peer] 22:07:37.967966 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.967983 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.967992 main.go:816: 0:Computing Update
-[peer] 22:07:37.968267 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.968284 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.968292 main.go:816: 0:Computing Update
-[peer] 22:07:37.968566 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.968583 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.968592 main.go:816: 0:Computing Update
-[peer] 22:07:37.968879 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.968905 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.968914 main.go:816: 0:Computing Update
-[peer] 22:07:37.969189 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.969206 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.969214 main.go:816: 0:Computing Update
-[peer] 22:07:37.969501 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.969520 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.969528 main.go:816: 0:Computing Update
-[peer] 22:07:37.969803 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.969826 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.969837 main.go:816: 0:Computing Update
-[peer] 22:07:37.970142 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.970159 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.970168 main.go:816: 0:Computing Update
-[peer] 22:07:37.970446 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.970463 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.970472 main.go:816: 0:Computing Update
-[peer] 22:07:37.970750 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.970767 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.970775 main.go:816: 0:Computing Update
-[peer] 22:07:37.971061 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.971078 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.971087 main.go:816: 0:Computing Update
-[peer] 22:07:37.971362 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.971379 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.971388 main.go:816: 0:Computing Update
-[peer] 22:07:37.971662 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.971684 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.971695 main.go:816: 0:Computing Update
-[peer] 22:07:37.971969 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.971987 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.971995 main.go:816: 0:Computing Update
-[peer] 22:07:37.972289 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.972306 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.972315 main.go:816: 0:Computing Update
-[peer] 22:07:37.972591 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.972608 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.972617 main.go:816: 0:Computing Update
-[peer] 22:07:37.972900 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.972917 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.972926 main.go:816: 0:Computing Update
-[peer] 22:07:37.973207 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.973224 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.973233 main.go:816: 0:Computing Update
-[peer] 22:07:37.973531 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.973548 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.973556 main.go:816: 0:Computing Update
-[peer] 22:07:37.973833 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.973850 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.973858 main.go:816: 0:Computing Update
-[peer] 22:07:37.974183 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.974201 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.974209 main.go:816: 0:Computing Update
-[peer] 22:07:37.974476 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.974493 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.974501 main.go:816: 0:Computing Update
-[peer] 22:07:37.974779 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.974796 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.974804 main.go:816: 0:Computing Update
-[peer] 22:07:37.975079 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.975095 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.975104 main.go:816: 0:Computing Update
-[peer] 22:07:37.975373 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.975389 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.975398 main.go:816: 0:Computing Update
-[peer] 22:07:37.975668 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.975685 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.975701 main.go:816: 0:Computing Update
-[peer] 22:07:37.975966 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.975982 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.975991 main.go:816: 0:Computing Update
-[peer] 22:07:37.976262 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.976278 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.976287 main.go:816: 0:Computing Update
-[peer] 22:07:37.976557 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.976574 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.976582 main.go:816: 0:Computing Update
-[peer] 22:07:37.976850 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.976867 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.976876 main.go:816: 0:Computing Update
-[peer] 22:07:37.977147 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.977164 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.977172 main.go:816: 0:Computing Update
-[peer] 22:07:37.977471 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.977489 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.977497 main.go:816: 0:Computing Update
-[peer] 22:07:37.977765 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.977781 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.977790 main.go:816: 0:Computing Update
-[peer] 22:07:37.978063 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.978080 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.978088 main.go:816: 0:Computing Update
-[peer] 22:07:37.978362 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.978378 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.978387 main.go:816: 0:Computing Update
-[peer] 22:07:37.978657 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.978674 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.978683 main.go:816: 0:Computing Update
-[peer] 22:07:37.978958 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.978975 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.978983 main.go:816: 0:Computing Update
-[peer] 22:07:37.979266 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.979283 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.979291 main.go:816: 0:Computing Update
-[peer] 22:07:37.979557 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.979576 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.979585 main.go:816: 0:Computing Update
-[peer] 22:07:37.979855 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.979872 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.979880 main.go:816: 0:Computing Update
-[peer] 22:07:37.980151 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.980168 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.980176 main.go:816: 0:Computing Update
-[peer] 22:07:37.980448 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.980465 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.980474 main.go:816: 0:Computing Update
-[peer] 22:07:37.980738 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.980755 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.980763 main.go:816: 0:Computing Update
-[peer] 22:07:37.981038 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.981055 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.981063 main.go:816: 0:Computing Update
-[peer] 22:07:37.981337 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.981357 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.981365 main.go:816: 0:Computing Update
-[peer] 22:07:37.981638 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.981656 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.981664 main.go:816: 0:Computing Update
-[peer] 22:07:37.982026 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.982043 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.982051 main.go:816: 0:Computing Update
-[peer] 22:07:37.982462 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.982479 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.982487 main.go:816: 0:Computing Update
-[peer] 22:07:37.982765 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.982787 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.982796 main.go:816: 0:Computing Update
-[peer] 22:07:37.983075 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.983091 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.983100 main.go:816: 0:Computing Update
-[peer] 22:07:37.983367 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.983384 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.983392 main.go:816: 0:Computing Update
-[peer] 22:07:37.983669 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.983685 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.983693 main.go:816: 0:Computing Update
-[peer] 22:07:37.983965 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.983981 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.983990 main.go:816: 0:Computing Update
-[peer] 22:07:37.984253 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.984270 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.984278 main.go:816: 0:Computing Update
-[peer] 22:07:37.984544 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.984561 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.984569 main.go:816: 0:Computing Update
-[peer] 22:07:37.984835 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.984851 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.984859 main.go:816: 0:Computing Update
-[peer] 22:07:37.985136 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.985153 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.985161 main.go:816: 0:Computing Update
-[peer] 22:07:37.985429 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.985453 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.985466 main.go:816: 0:Computing Update
-[peer] 22:07:37.985741 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.985757 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.985765 main.go:816: 0:Computing Update
-[peer] 22:07:37.986032 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.986048 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.986056 main.go:816: 0:Computing Update
-[peer] 22:07:37.986313 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.986329 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.986337 main.go:816: 0:Computing Update
-[peer] 22:07:37.986603 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.986619 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.986628 main.go:816: 0:Computing Update
-[peer] 22:07:37.986676 main.go:627: 0:Accepted new Connection
-[peer] 22:07:37.986907 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.986924 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.986933 main.go:816: 0:Computing Update
-[peer] 22:07:37.987207 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.987223 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.987232 main.go:816: 0:Computing Update
-[peer] 22:07:37.987497 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.987513 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.987522 main.go:816: 0:Computing Update
-[peer] 22:07:37.987787 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.987804 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.987813 main.go:816: 0:Computing Update
-[peer] 22:07:37.988121 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.988139 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.988148 main.go:816: 0:Computing Update
-[peer] 22:07:37.988128 main.go:130: 0:Got block message, iteration 5
-[peer] 22:07:37.988232 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:37.988434 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.988451 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.988473 main.go:816: 0:Computing Update
-[peer] 22:07:37.988769 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.988785 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.988805 main.go:816: 0:Computing Update
-[peer] 22:07:37.989094 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.989111 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.989137 main.go:816: 0:Computing Update
-[peer] 22:07:37.989536 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.989559 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.989580 main.go:816: 0:Computing Update
-[peer] 22:07:37.989866 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.989883 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.989909 main.go:139: 0:Acquired bool lock
-[peer] 22:07:37.989928 main.go:140: Chain Length:6
-[peer] 22:07:37.989936 main.go:142: Chain Length:6
-[peer] 22:07:37.989944 main.go:187: 0:Sending to channel
-[peer] 22:07:37.989953 main.go:193: 0:Sent to channel
-[peer] 22:07:37.989963 main.go:195: 0:Returning
-[peer] 22:07:37.989997 main.go:769: 0:Adding block to chain
-[peer] 22:07:37.990033 honest.go:222: Trying to append block with iteration:5
-[peer] 22:07:37.990060 honest.go:238: Append successful
-[peer] 22:07:37.990088 main.go:773: 0:Adding block to chain
-[peer] 22:07:37.990114 main.go:779: 0:Checking convergence
-[peer] 22:07:37.990964 honest.go:81: 0Train Error is 0.07805 in Iteration 5
-[peer] 22:07:37.991021 main.go:782: 0:Convergence checked
-[peer] 22:07:37.991054 main.go:785: 0:Bool lock released
-[peer] 22:07:37.991132 main.go:816: 0:Computing Update
-[peer] 22:07:37.991140 main.go:658: 0:Sending block. Iteration: 5
-[peer] 22:07:37.991502 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.991548 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.991583 main.go:816: 0:Computing Update
-[peer] 22:07:37.991945 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.991985 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.992016 main.go:816: 0:Computing Update
-[peer] 22:07:37.992320 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.992359 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.992387 main.go:816: 0:Computing Update
-[peer] 22:07:37.992687 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.992726 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.992757 main.go:816: 0:Computing Update
-[peer] 22:07:37.993056 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.993095 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.993124 main.go:816: 0:Computing Update
-[peer] 22:07:37.993424 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.993496 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.993526 main.go:816: 0:Computing Update
-[peer] 22:07:37.993820 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.993860 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.993888 main.go:816: 0:Computing Update
-[peer] 22:07:37.993991 main.go:723: 0:Block sent to peer successful
-[peer] 22:07:37.994210 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.994248 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.994277 main.go:816: 0:Computing Update
-[peer] 22:07:37.994573 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.994611 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.994639 main.go:816: 0:Computing Update
-[peer] 22:07:37.994919 main.go:723: 0:Block sent to peer successful
-[peer] 22:07:37.994248 main.go:723: 0:Block sent to peer successful
-[peer] 22:07:37.994929 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.994993 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.995020 main.go:816: 0:Computing Update
-[peer] 22:07:37.995198 main.go:723: 0:Block sent to peer successful
-[peer] 22:07:37.995360 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.995399 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.995427 main.go:816: 0:Computing Update
-[peer] 22:07:37.995441 main.go:723: 0:Block sent to peer successful
-[peer] 22:07:37.995756 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.995794 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.995825 main.go:816: 0:Computing Update
-[peer] 22:07:37.996117 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.996155 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.996183 main.go:816: 0:Computing Update
-[peer] 22:07:37.996468 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.996524 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.996552 main.go:816: 0:Computing Update
-[peer] 22:07:37.996844 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.996882 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.996910 main.go:816: 0:Computing Update
-[peer] 22:07:37.996945 main.go:627: 0:Accepted new Connection
-[peer] 22:07:37.997914 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.997957 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.997985 main.go:816: 0:Computing Update
-[peer] 22:07:37.998269 main.go:723: 0:Block sent to peer successful
-[err] 22:07:37.998282 main.go:297: Error in sending block, err = Stale Update/Block
-[peer] 22:07:37.998311 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.998345 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.998372 main.go:816: 0:Computing Update
-[peer] 22:07:37.998410 main.go:130: 0:Got block message, iteration 5
-[peer] 22:07:37.998434 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:37.998680 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.998718 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.998754 main.go:816: 0:Computing Update
-[peer] 22:07:37.999059 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.999097 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.999131 main.go:816: 0:Computing Update
-[peer] 22:07:37.999342 main.go:723: 0:Block sent to peer successful
-[peer] 22:07:37.999480 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.999518 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.999552 main.go:816: 0:Computing Update
-[peer] 22:07:37.999853 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:37.999891 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:37.999928 main.go:139: 0:Acquired bool lock
-[peer] 22:07:37.999956 main.go:140: Chain Length:7
-[peer] 22:07:37.999987 main.go:142: Chain Length:7
-[peer] 22:07:38.000013 main.go:147: Already have block
-[peer] 22:07:38.000045 main.go:152: 0:Bool lock released
-[peer] 22:07:38.000081 main.go:179: 0:Equal block
-[peer] 22:07:38.000147 main.go:816: 0:Computing Update
-[peer] 22:07:38.000446 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.000484 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.000511 main.go:816: 0:Computing Update
-[peer] 22:07:38.000793 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.000830 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.000857 main.go:816: 0:Computing Update
-[peer] 22:07:38.001141 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.001177 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.001204 main.go:816: 0:Computing Update
-[peer] 22:07:38.001490 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.001528 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.001556 main.go:816: 0:Computing Update
-[peer] 22:07:38.001855 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.001892 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.001919 main.go:816: 0:Computing Update
-[peer] 22:07:38.002200 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.002237 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.002264 main.go:816: 0:Computing Update
-[peer] 22:07:38.002542 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.002579 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.002606 main.go:816: 0:Computing Update
-[peer] 22:07:38.002887 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.002923 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.002950 main.go:816: 0:Computing Update
-[peer] 22:07:38.003224 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.003260 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.003287 main.go:816: 0:Computing Update
-[peer] 22:07:38.003559 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.003595 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.003622 main.go:816: 0:Computing Update
-[peer] 22:07:38.003894 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.003931 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.003965 main.go:816: 0:Computing Update
-[peer] 22:07:38.004246 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.004283 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.004310 main.go:816: 0:Computing Update
-[peer] 22:07:38.004582 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.004619 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.004646 main.go:816: 0:Computing Update
-[peer] 22:07:38.004920 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.004957 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.004984 main.go:816: 0:Computing Update
-[peer] 22:07:38.005319 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.005356 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.005383 main.go:816: 0:Computing Update
-[peer] 22:07:38.005666 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.005704 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.005731 main.go:816: 0:Computing Update
-[peer] 22:07:38.006012 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.006049 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.006076 main.go:816: 0:Computing Update
-[peer] 22:07:38.006351 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.006388 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.006415 main.go:816: 0:Computing Update
-[peer] 22:07:38.006695 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.006736 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.006764 main.go:816: 0:Computing Update
-[peer] 22:07:38.007041 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.007087 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.007113 main.go:816: 0:Computing Update
-[peer] 22:07:38.007377 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.007413 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.007439 main.go:816: 0:Computing Update
-[peer] 22:07:38.007714 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.007749 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.007775 main.go:816: 0:Computing Update
-[peer] 22:07:38.008043 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.008078 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.008105 main.go:816: 0:Computing Update
-[peer] 22:07:38.008375 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.008410 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.008436 main.go:816: 0:Computing Update
-[peer] 22:07:38.008709 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.008744 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.008770 main.go:816: 0:Computing Update
-[peer] 22:07:38.009044 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.009083 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.009112 main.go:816: 0:Computing Update
-[peer] 22:07:38.009362 main.go:627: 0:Accepted new Connection
-[peer] 22:07:38.009409 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.009448 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.009477 main.go:816: 0:Computing Update
-[peer] 22:07:38.009746 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.009782 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.009807 main.go:816: 0:Computing Update
-[peer] 22:07:38.010044 main.go:130: 0:Got block message, iteration 5
-[peer] 22:07:38.010064 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:38.010108 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.010143 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.010179 main.go:816: 0:Computing Update
-[peer] 22:07:38.010463 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.010499 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.010532 main.go:816: 0:Computing Update
-[peer] 22:07:38.010814 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.010850 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.010883 main.go:816: 0:Computing Update
-[peer] 22:07:38.011169 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.011205 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.011237 main.go:816: 0:Computing Update
-[peer] 22:07:38.011534 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.011570 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.011608 main.go:139: 0:Acquired bool lock
-[peer] 22:07:38.011620 main.go:140: Chain Length:7
-[peer] 22:07:38.011627 main.go:142: Chain Length:7
-[peer] 22:07:38.011634 main.go:147: Already have block
-[peer] 22:07:38.011644 main.go:152: 0:Bool lock released
-[peer] 22:07:38.011651 main.go:179: 0:Equal block
-[peer] 22:07:38.011693 main.go:816: 0:Computing Update
-[peer] 22:07:38.011979 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.012015 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.012041 main.go:816: 0:Computing Update
-[peer] 22:07:38.012321 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.012359 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.012385 main.go:816: 0:Computing Update
-[peer] 22:07:38.012650 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.012685 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.012711 main.go:816: 0:Computing Update
-[peer] 22:07:38.012982 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.013017 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.013043 main.go:816: 0:Computing Update
-[peer] 22:07:38.013760 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.013800 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.013828 main.go:816: 0:Computing Update
-[peer] 22:07:38.014108 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.014146 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.014174 main.go:816: 0:Computing Update
-[peer] 22:07:38.014454 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.014491 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.014518 main.go:816: 0:Computing Update
-[peer] 22:07:38.014788 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.014823 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.014850 main.go:816: 0:Computing Update
-[peer] 22:07:38.015124 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.015160 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.015186 main.go:816: 0:Computing Update
-[peer] 22:07:38.015451 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.015487 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.015513 main.go:816: 0:Computing Update
-[peer] 22:07:38.015780 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.015815 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.015841 main.go:816: 0:Computing Update
-[peer] 22:07:38.016107 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.016142 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.016168 main.go:816: 0:Computing Update
-[peer] 22:07:38.016435 main.go:723: 0:Block sent to peer successful
-[err] 22:07:38.016448 main.go:297: Error in sending block, err = Stale Update/Block
-[peer] 22:07:38.016482 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.016515 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.016541 main.go:816: 0:Computing Update
-[peer] 22:07:38.016809 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.016845 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.016870 main.go:816: 0:Computing Update
-[peer] 22:07:38.017175 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.017211 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.017238 main.go:816: 0:Computing Update
-[peer] 22:07:38.017521 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.017560 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.017593 main.go:816: 0:Computing Update
-[peer] 22:07:38.017856 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.017891 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.017916 main.go:816: 0:Computing Update
-[peer] 22:07:38.018212 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.018248 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.018274 main.go:816: 0:Computing Update
-[peer] 22:07:38.018555 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.018590 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.018622 main.go:816: 0:Computing Update
-[peer] 22:07:38.018881 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.018915 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.018941 main.go:816: 0:Computing Update
-[peer] 22:07:38.019205 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.019240 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.019265 main.go:816: 0:Computing Update
-[peer] 22:07:38.019543 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.019578 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.019603 main.go:816: 0:Computing Update
-[peer] 22:07:38.019861 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.019895 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.019921 main.go:816: 0:Computing Update
-[peer] 22:07:38.020212 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.020249 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.020275 main.go:816: 0:Computing Update
-[peer] 22:07:38.020544 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.020579 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.020605 main.go:816: 0:Computing Update
-[peer] 22:07:38.020872 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.020907 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.020933 main.go:816: 0:Computing Update
-[peer] 22:07:38.021241 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.021276 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.021301 main.go:816: 0:Computing Update
-[peer] 22:07:38.021568 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.021604 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.021630 main.go:816: 0:Computing Update
-[peer] 22:07:38.021893 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.021929 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.021954 main.go:816: 0:Computing Update
-[peer] 22:07:38.022214 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.022248 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.022274 main.go:816: 0:Computing Update
-[peer] 22:07:38.022536 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.022621 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.022649 main.go:816: 0:Computing Update
-[peer] 22:07:38.022919 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.022954 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.022980 main.go:816: 0:Computing Update
-[peer] 22:07:38.023237 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.023272 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.023297 main.go:816: 0:Computing Update
-[peer] 22:07:38.023559 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.023594 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.023619 main.go:816: 0:Computing Update
-[peer] 22:07:38.023880 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.023916 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.023942 main.go:816: 0:Computing Update
-[peer] 22:07:38.024205 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.024239 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.024265 main.go:816: 0:Computing Update
-[peer] 22:07:38.024526 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.024561 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.024586 main.go:816: 0:Computing Update
-[peer] 22:07:38.024847 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.024882 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.024907 main.go:816: 0:Computing Update
-[peer] 22:07:38.025168 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.025203 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.025229 main.go:816: 0:Computing Update
-[peer] 22:07:38.025500 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.025535 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.025560 main.go:816: 0:Computing Update
-[peer] 22:07:38.025821 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.025856 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.025881 main.go:816: 0:Computing Update
-[peer] 22:07:38.026143 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.026182 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.026208 main.go:816: 0:Computing Update
-[peer] 22:07:38.026328 main.go:723: 0:Block sent to peer successful
-[err] 22:07:38.026360 main.go:297: Error in sending block, err = Stale Update/Block
-[peer] 22:07:38.026656 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.026692 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.026717 main.go:816: 0:Computing Update
-[peer] 22:07:38.026981 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.027016 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.027042 main.go:816: 0:Computing Update
-[peer] 22:07:38.027302 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.027337 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.027363 main.go:816: 0:Computing Update
-[peer] 22:07:38.027628 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.027663 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.027688 main.go:816: 0:Computing Update
-[peer] 22:07:38.027945 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.027980 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.028005 main.go:816: 0:Computing Update
-[peer] 22:07:38.028266 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.028305 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.028331 main.go:816: 0:Computing Update
-[peer] 22:07:38.028597 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.028632 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.028657 main.go:816: 0:Computing Update
-[peer] 22:07:38.028930 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.028965 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.028990 main.go:816: 0:Computing Update
-[peer] 22:07:38.029336 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.029372 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.029397 main.go:816: 0:Computing Update
-[peer] 22:07:38.029665 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.029701 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.029726 main.go:816: 0:Computing Update
-[peer] 22:07:38.029997 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.030032 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.030057 main.go:816: 0:Computing Update
-[peer] 22:07:38.030315 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.030350 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.030375 main.go:816: 0:Computing Update
-[peer] 22:07:38.030636 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.030671 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.030696 main.go:816: 0:Computing Update
-[peer] 22:07:38.030995 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.031030 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.031055 main.go:816: 0:Computing Update
-[peer] 22:07:38.031318 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.031353 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.031378 main.go:816: 0:Computing Update
-[peer] 22:07:38.031638 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.031672 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.031698 main.go:816: 0:Computing Update
-[peer] 22:07:38.031953 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.031988 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.032014 main.go:816: 0:Computing Update
-[peer] 22:07:38.032282 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.032318 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.032344 main.go:816: 0:Computing Update
-[peer] 22:07:38.032600 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.032636 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.032661 main.go:816: 0:Computing Update
-[peer] 22:07:38.032924 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.032959 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.032984 main.go:816: 0:Computing Update
-[peer] 22:07:38.033251 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.033285 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.033319 main.go:816: 0:Computing Update
-[peer] 22:07:38.033589 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.033624 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.033650 main.go:816: 0:Computing Update
-[peer] 22:07:38.033913 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.033948 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.033973 main.go:816: 0:Computing Update
-[peer] 22:07:38.034231 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.034266 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.034292 main.go:816: 0:Computing Update
-[peer] 22:07:38.034554 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.034589 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.034614 main.go:816: 0:Computing Update
-[peer] 22:07:38.034877 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.034911 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.034936 main.go:816: 0:Computing Update
-[peer] 22:07:38.035200 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.035235 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.035261 main.go:816: 0:Computing Update
-[peer] 22:07:38.035523 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.035558 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.035583 main.go:816: 0:Computing Update
-[peer] 22:07:38.035845 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.035880 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.035905 main.go:816: 0:Computing Update
-[peer] 22:07:38.036162 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.036196 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.036221 main.go:816: 0:Computing Update
-[peer] 22:07:38.036564 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.036599 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.036624 main.go:816: 0:Computing Update
-[peer] 22:07:38.036889 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.036924 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.036950 main.go:816: 0:Computing Update
-[peer] 22:07:38.037206 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.037241 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.037266 main.go:816: 0:Computing Update
-[peer] 22:07:38.037534 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.037570 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.037596 main.go:816: 0:Computing Update
-[peer] 22:07:38.037858 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.037892 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.037918 main.go:816: 0:Computing Update
-[peer] 22:07:38.038178 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.038213 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.038238 main.go:816: 0:Computing Update
-[peer] 22:07:38.038499 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.038534 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.038560 main.go:816: 0:Computing Update
-[peer] 22:07:38.038816 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.038852 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.038877 main.go:816: 0:Computing Update
-[peer] 22:07:38.039139 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.039174 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.039199 main.go:816: 0:Computing Update
-[peer] 22:07:38.039460 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.039495 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.039520 main.go:816: 0:Computing Update
-[peer] 22:07:38.039779 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.039814 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.039840 main.go:816: 0:Computing Update
-[peer] 22:07:38.040099 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.040134 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.040159 main.go:816: 0:Computing Update
-[peer] 22:07:38.040429 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.040464 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.040489 main.go:816: 0:Computing Update
-[peer] 22:07:38.040751 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.040786 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.040812 main.go:816: 0:Computing Update
-[peer] 22:07:38.041080 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.041115 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.041140 main.go:816: 0:Computing Update
-[peer] 22:07:38.041400 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.041434 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.041465 main.go:816: 0:Computing Update
-[peer] 22:07:38.041725 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.041760 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.041785 main.go:816: 0:Computing Update
-[peer] 22:07:38.042047 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.042082 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.042107 main.go:816: 0:Computing Update
-[peer] 22:07:38.042370 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.042404 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.042429 main.go:816: 0:Computing Update
-[peer] 22:07:38.042700 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.042735 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.042760 main.go:816: 0:Computing Update
-[peer] 22:07:38.043017 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.043052 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.043077 main.go:816: 0:Computing Update
-[peer] 22:07:38.043333 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.043368 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.043393 main.go:816: 0:Computing Update
-[peer] 22:07:38.043658 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.043693 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.043718 main.go:816: 0:Computing Update
-[peer] 22:07:38.043973 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.044008 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.044033 main.go:816: 0:Computing Update
-[peer] 22:07:38.044292 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.044326 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.044351 main.go:816: 0:Computing Update
-[peer] 22:07:38.045063 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.045100 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.045126 main.go:816: 0:Computing Update
-[peer] 22:07:38.045400 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.045435 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.045469 main.go:816: 0:Computing Update
-[peer] 22:07:38.045733 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.045767 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.045793 main.go:816: 0:Computing Update
-[peer] 22:07:38.046060 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.046095 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.046120 main.go:816: 0:Computing Update
-[peer] 22:07:38.046397 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.046432 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.046458 main.go:816: 0:Computing Update
-[peer] 22:07:38.046720 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.046754 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.046780 main.go:816: 0:Computing Update
-[peer] 22:07:38.047035 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.047070 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.047095 main.go:816: 0:Computing Update
-[peer] 22:07:38.047360 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.047395 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.047420 main.go:816: 0:Computing Update
-[peer] 22:07:38.047686 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.047721 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.047746 main.go:816: 0:Computing Update
-[peer] 22:07:38.048006 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.048041 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.048066 main.go:816: 0:Computing Update
-[peer] 22:07:38.048267 main.go:723: 0:Block sent to peer successful
-[err] 22:07:38.048286 main.go:297: Error in sending block, err = Stale Update/Block
-[peer] 22:07:38.048312 main.go:678: 0:RPC calls successfully returned. Iteration: 5
-[peer] 22:07:38.048369 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.048384 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.048391 main.go:816: 0:Computing Update
-[peer] 22:07:38.048868 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.048887 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.048894 main.go:816: 0:Computing Update
-[peer] 22:07:38.049140 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.049155 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.049163 main.go:816: 0:Computing Update
-[peer] 22:07:38.049416 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.049431 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.049495 main.go:627: 0:Accepted new Connection
-[peer] 22:07:38.049551 main.go:816: 0:Computing Update
-[peer] 22:07:38.049799 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.049816 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.049824 main.go:816: 0:Computing Update
-[peer] 22:07:38.050064 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.050079 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.050086 main.go:816: 0:Computing Update
-[peer] 22:07:38.050336 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.050351 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.050359 main.go:816: 0:Computing Update
-[peer] 22:07:38.050594 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.050608 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.050616 main.go:816: 0:Computing Update
-[peer] 22:07:38.050855 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.050869 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.050877 main.go:816: 0:Computing Update
-[peer] 22:07:38.050928 main.go:627: 0:Accepted new Connection
-[peer] 22:07:38.051138 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.051153 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.051161 main.go:816: 0:Computing Update
-[peer] 22:07:38.051409 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.051425 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.051432 main.go:816: 0:Computing Update
-[peer] 22:07:38.051674 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.051689 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.051696 main.go:816: 0:Computing Update
-[peer] 22:07:38.052028 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.052046 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.052054 main.go:816: 0:Computing Update
-[peer] 22:07:38.052068 main.go:130: 0:Got block message, iteration 4
-[peer] 22:07:38.052093 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:38.052314 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.052330 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.052348 main.go:816: 0:Computing Update
-[peer] 22:07:38.052616 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.052631 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.052647 main.go:816: 0:Computing Update
-[peer] 22:07:38.052913 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.052928 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.052943 main.go:816: 0:Computing Update
-[peer] 22:07:38.053209 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.053224 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.053240 main.go:816: 0:Computing Update
-[peer] 22:07:38.053510 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.053526 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.053545 main.go:139: 0:Acquired bool lock
-[peer] 22:07:38.053554 main.go:140: Chain Length:7
-[peer] 22:07:38.053561 main.go:142: Chain Length:7
-[peer] 22:07:38.053568 main.go:147: Already have block
-[peer] 22:07:38.053577 main.go:152: 0:Bool lock released
-[peer] 22:07:38.053584 main.go:179: 0:Equal block
-[peer] 22:07:38.053638 main.go:816: 0:Computing Update
-[peer] 22:07:38.053891 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.053914 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.053922 main.go:816: 0:Computing Update
-[peer] 22:07:38.054168 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.054183 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.054190 main.go:816: 0:Computing Update
-[peer] 22:07:38.054431 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.054445 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.054453 main.go:816: 0:Computing Update
-[peer] 22:07:38.054700 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.054718 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.054729 main.go:816: 0:Computing Update
-[peer] 22:07:38.054862 main.go:130: 0:Got block message, iteration 5
-[peer] 22:07:38.054885 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:38.055019 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.055035 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.055050 main.go:816: 0:Computing Update
-[peer] 22:07:38.055315 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.055330 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.055346 main.go:816: 0:Computing Update
-[peer] 22:07:38.055604 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.055619 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.055635 main.go:816: 0:Computing Update
-[peer] 22:07:38.055895 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.055909 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.055924 main.go:816: 0:Computing Update
-[peer] 22:07:38.056192 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.056207 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.056227 main.go:139: 0:Acquired bool lock
-[peer] 22:07:38.056237 main.go:140: Chain Length:7
-[peer] 22:07:38.056244 main.go:142: Chain Length:7
-[peer] 22:07:38.056251 main.go:147: Already have block
-[peer] 22:07:38.056260 main.go:152: 0:Bool lock released
-[peer] 22:07:38.056267 main.go:179: 0:Equal block
-[peer] 22:07:38.056316 main.go:816: 0:Computing Update
-[peer] 22:07:38.056569 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.056584 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.056591 main.go:816: 0:Computing Update
-[peer] 22:07:38.056832 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.056847 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.056854 main.go:816: 0:Computing Update
-[peer] 22:07:38.057105 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.057120 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.057128 main.go:816: 0:Computing Update
-[peer] 22:07:38.057394 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.057409 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.057417 main.go:816: 0:Computing Update
-[peer] 22:07:38.057692 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.057708 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.057715 main.go:816: 0:Computing Update
-[peer] 22:07:38.058014 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.058028 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.058035 main.go:816: 0:Computing Update
-[peer] 22:07:38.058393 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.058408 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.058415 main.go:816: 0:Computing Update
-[peer] 22:07:38.058531 honest.go:81: 0Train Error is 0.07805 in Iteration 5
-[peer] 22:07:38.058565 main.go:686: 0:Preparing for next Iteration. Current Iteration: 5
-[peer] 22:07:38.058592 main.go:582: 0:Acquiring bool lock
-[peer] 22:07:38.058693 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.058708 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.058724 main.go:816: 0:Computing Update
-[peer] 22:07:38.058985 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.059000 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.059015 main.go:816: 0:Computing Update
-[peer] 22:07:38.059931 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.059948 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.059964 main.go:816: 0:Computing Update
-[peer] 22:07:38.060251 main.go:270: 0 : VRF returned ID map[8:{}]
-[peer] 22:07:38.060273 main.go:279: 0 :Verifiers [] returned.
-[peer] 22:07:38.060296 main.go:584: 0:Acquired bool lock
-[peer] 22:07:38.061908 main.go:603: 0:I am not verifier IterationCount:6
-[peer] 22:07:38.061929 main.go:608: 0:Bool lock released
-[peer] 22:07:38.061978 main.go:816: 0:Computing Update
-[peer] 22:07:38.062250 main.go:270: 0 : VRF returned ID map[15:{}]
-[peer] 22:07:38.062267 main.go:279: 0 :Verifiers [198.162.52.57:8015] returned.
-[peer] 22:07:38.062593 main.go:861: 0:Making RPC Call to Verifier. Sending Update, Iteration:6
-[peer] 22:07:38.093836 main.go:868: 0:Update sent successfully
-[peer] 22:07:38.106094 main.go:627: 0:Accepted new Connection
-[peer] 22:07:38.108055 main.go:130: 0:Got block message, iteration 4
-[peer] 22:07:38.108078 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:38.108085 main.go:139: 0:Acquired bool lock
-[peer] 22:07:38.108092 main.go:140: Chain Length:7
-[peer] 22:07:38.108098 main.go:142: Chain Length:7
-[peer] 22:07:38.108105 main.go:147: Already have block
-[peer] 22:07:38.108114 main.go:152: 0:Bool lock released
-[peer] 22:07:38.108121 main.go:179: 0:Equal block
-[peer] 22:07:38.218019 main.go:627: 0:Accepted new Connection
-[peer] 22:07:38.218697 main.go:130: 0:Got block message, iteration 4
-[peer] 22:07:38.218728 main.go:137: 0:Acquiring bool lock
-[peer] 22:07:38.218737 main.go:139: 0:Acquired bool lock
-[peer] 22:07:38.218745 main.go:140: Chain Length:7
-[peer] 22:07:38.218752 main.go:142: Chain Length:7
-[peer] 22:07:38.218760 main.go:147: Already have block
-[peer] 22:07:38.218769 main.go:152: 0:Bool lock released
-[peer] 22:07:38.218777 main.go:179: 0:Equal block
-[peer] 22:07:38.251606 main.go:627: 0:Accepted new Connection
-[peer] 22:07:38.252288 main.go:103: 0:Got update message, iteration 5
-[peer] 22:07:38.252858 main.go:107: RONI for update is -0.002112 
-[err] 22:07:38.252928 main.go:289: Update of previous iteration received, err = Stale Update/Block
+[peer] 00:50:32.864062 honest.go:122: 0Sucessfully pulled dataset. Features: 25
+[peer] 00:50:32.864352 main.go:629: 0:Peer started. Receiving on 8000
+[peer] 00:50:33.785511 main.go:633: 0:Accepted new Connection
+[peer] 00:50:33.786584 main.go:213: 0:Registering peer:198.162.52.57:8011
+[peer] 00:50:33.786632 main.go:223: Advertising chain to peer with length 1
+[peer] 00:50:33.786752 main.go:588: 0:Acquiring bool lock
+[peer] 00:50:33.786790 main.go:590: 0:Acquired bool lock
+[peer] 00:50:33.788860 main.go:609: 0:I am not verifier IterationCount:0
+[peer] 00:50:33.788879 main.go:614: 0:Bool lock released
+[peer] 00:50:33.788890 main.go:824: 0:Computing Update
+[peer] 00:50:33.789645 main.go:270: 0 : VRF returned ID map[2:{}]
+[peer] 00:50:33.789678 main.go:280: 0 :Verifiers [198.162.52.126:8002] returned.
+[err] 00:50:33.789804 main.go:302: Unable to connect to verifier, err = dial tcp 198.162.52.126:8002: connect: connection refused
+[peer] 00:50:33.789826 main.go:896: 0:Will try and create an empty block
+[peer] 00:50:33.789903 main.go:903: 0:Will try and create an empty block
+[peer] 00:50:33.789998 main.go:664: 0:Sending block. Iteration: 0
+[peer] 00:50:33.791796 main.go:729: 0:Block sent to peer successful
+[peer] 00:50:33.791874 main.go:684: 0:RPC calls successfully returned. Iteration: 0
+[peer] 00:50:33.794458 honest.go:81: 0Train Error is 1.00000 in Iteration 0
+[peer] 00:50:33.794565 main.go:692: 0:Preparing for next Iteration. Current Iteration: 0
+[peer] 00:50:33.794622 main.go:588: 0:Acquiring bool lock
+[peer] 00:50:33.794674 main.go:590: 0:Acquired bool lock
+[peer] 00:50:33.797633 main.go:633: 0:Accepted new Connection
+[peer] 00:50:33.798127 main.go:609: 0:I am not verifier IterationCount:1
+[peer] 00:50:33.798154 main.go:614: 0:Bool lock released
+[peer] 00:50:33.798674 main.go:130: 0:Got block message, iteration 0
+[peer] 00:50:33.798717 main.go:137: 0:Acquiring bool lock
+[peer] 00:50:33.798731 main.go:139: 0:Acquired bool lock
+[peer] 00:50:33.798744 main.go:140: Chain Length:2
+[peer] 00:50:33.798756 main.go:142: Chain Length:2
+[peer] 00:50:33.798770 main.go:147: Already have block
+[peer] 00:50:33.798788 main.go:152: 0:Bool lock released
+[peer] 00:50:33.798802 main.go:179: 0:Equal block
+[peer] 00:50:33.809537 main.go:633: 0:Accepted new Connection
+[peer] 00:50:33.810678 main.go:213: 0:Registering peer:198.162.52.57:8016
+[peer] 00:50:33.810714 main.go:223: Advertising chain to peer with length 2
+[peer] 00:50:33.822889 main.go:633: 0:Accepted new Connection
+[peer] 00:50:33.823656 main.go:130: 0:Got block message, iteration 1
+[peer] 00:50:33.823693 main.go:137: 0:Acquiring bool lock
+[peer] 00:50:33.823705 main.go:139: 0:Acquired bool lock
+[peer] 00:50:33.823718 main.go:140: Chain Length:2
+[peer] 00:50:33.823729 main.go:142: Chain Length:2
+[peer] 00:50:33.823742 main.go:187: 0:Sending to channel
+[peer] 00:50:33.823756 main.go:193: 0:Sent to channel
+[peer] 00:50:33.823771 main.go:195: 0:Returning
+[peer] 00:50:33.823890 main.go:777: 0:Adding block to chain
+[peer] 00:50:33.823915 honest.go:222: Trying to append block with iteration:1
+[peer] 00:50:33.823927 honest.go:238: Append successful
+[peer] 00:50:33.823943 main.go:781: 0:Adding block to chain
+[peer] 00:50:33.823956 main.go:787: 0:Checking convergence
+[peer] 00:50:33.824914 honest.go:81: 0Train Error is 1.00000 in Iteration 1
+[peer] 00:50:33.824944 main.go:790: 0:Convergence checked
+[peer] 00:50:33.824956 main.go:793: 0:Bool lock released
+[peer] 00:50:33.825042 main.go:664: 0:Sending block. Iteration: 1
+[peer] 00:50:33.834183 main.go:729: 0:Block sent to peer successful
+[err] 00:50:33.834209 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 00:50:33.840237 main.go:633: 0:Accepted new Connection
+[peer] 00:50:33.841604 main.go:213: 0:Registering peer:198.162.52.57:8018
+[peer] 00:50:33.845334 main.go:729: 0:Block sent to peer successful
+[peer] 00:50:33.845383 main.go:684: 0:RPC calls successfully returned. Iteration: 1
+[peer] 00:50:33.845657 main.go:223: Advertising chain to peer with length 3
+[peer] 00:50:33.854171 honest.go:81: 0Train Error is 1.00000 in Iteration 1
+[peer] 00:50:33.854198 main.go:692: 0:Preparing for next Iteration. Current Iteration: 1
+[peer] 00:50:33.854210 main.go:588: 0:Acquiring bool lock
+[peer] 00:50:33.854221 main.go:590: 0:Acquired bool lock
+[peer] 00:50:33.856638 main.go:609: 0:I am not verifier IterationCount:2
+[peer] 00:50:33.856655 main.go:614: 0:Bool lock released
+[peer] 00:50:33.889386 main.go:633: 0:Accepted new Connection
+[peer] 00:50:33.890020 main.go:824: 0:Computing Update
+[peer] 00:50:33.890242 main.go:213: 0:Registering peer:198.162.52.57:8010
+[peer] 00:50:33.890297 main.go:223: Advertising chain to peer with length 3
+[peer] 00:50:33.890496 main.go:270: 0 : VRF returned ID map[18:{}]
+[peer] 00:50:33.890521 main.go:280: 0 :Verifiers [198.162.52.57:8018] returned.
+[peer] 00:50:33.891050 main.go:869: 0:Making RPC Call to Verifier. Sending Update, Iteration:2
+[peer] 00:50:33.902173 main.go:633: 0:Accepted new Connection
+[peer] 00:50:33.902981 main.go:130: 0:Got block message, iteration 1
+[peer] 00:50:33.903040 main.go:137: 0:Acquiring bool lock
+[peer] 00:50:33.951536 main.go:633: 0:Accepted new Connection
+[peer] 00:50:33.952369 main.go:213: 0:Registering peer:198.162.52.57:8012
+[peer] 00:50:33.952395 main.go:223: Advertising chain to peer with length 3
+[peer] 00:50:33.963658 main.go:876: 0:Update sent successfully
+[peer] 00:50:33.963799 main.go:139: 0:Acquired bool lock
+[peer] 00:50:33.963822 main.go:140: Chain Length:3
+[peer] 00:50:33.963830 main.go:142: Chain Length:3
+[peer] 00:50:33.963836 main.go:147: Already have block
+[peer] 00:50:33.963842 main.go:152: 0:Bool lock released
+[peer] 00:50:33.963848 main.go:179: 0:Equal block
+[peer] 00:50:33.991159 main.go:633: 0:Accepted new Connection
+[peer] 00:50:33.991740 main.go:213: 0:Registering peer:198.162.52.57:8013
+[peer] 00:50:33.991754 main.go:223: Advertising chain to peer with length 3
+[peer] 00:50:34.027204 main.go:633: 0:Accepted new Connection
+[peer] 00:50:34.027921 main.go:213: 0:Registering peer:198.162.52.57:8017
+[peer] 00:50:34.027946 main.go:223: Advertising chain to peer with length 3
+[peer] 00:50:34.061674 main.go:633: 0:Accepted new Connection
+[peer] 00:50:34.061991 main.go:213: 0:Registering peer:198.162.52.57:8015
+[peer] 00:50:34.062028 main.go:223: Advertising chain to peer with length 3
+[peer] 00:50:34.076552 main.go:633: 0:Accepted new Connection
+[peer] 00:50:34.077132 main.go:213: 0:Registering peer:198.162.52.57:8019
+[peer] 00:50:34.077155 main.go:223: Advertising chain to peer with length 3
+[peer] 00:50:34.107206 main.go:633: 0:Accepted new Connection
+[peer] 00:50:34.108164 main.go:213: 0:Registering peer:198.162.52.57:8014
+[peer] 00:50:34.108209 main.go:223: Advertising chain to peer with length 3
+[peer] 00:50:40.799966 main.go:633: 0:Accepted new Connection
+[peer] 00:50:40.800563 main.go:213: 0:Registering peer:198.162.52.126:8005
+[peer] 00:50:40.800622 main.go:223: Advertising chain to peer with length 3
+[peer] 00:50:40.840773 main.go:633: 0:Accepted new Connection
+[peer] 00:50:40.841395 main.go:213: 0:Registering peer:198.162.52.126:8003
+[peer] 00:50:40.841454 main.go:223: Advertising chain to peer with length 3
+[peer] 00:50:40.985811 main.go:633: 0:Accepted new Connection
+[peer] 00:50:40.986373 main.go:213: 0:Registering peer:198.162.52.126:8001
+[peer] 00:50:40.986392 main.go:223: Advertising chain to peer with length 3
+[peer] 00:50:41.046019 main.go:633: 0:Accepted new Connection
+[peer] 00:50:41.046640 main.go:213: 0:Registering peer:198.162.52.126:8008
+[peer] 00:50:41.046694 main.go:223: Advertising chain to peer with length 3
+[peer] 00:50:41.244765 main.go:633: 0:Accepted new Connection
+[peer] 00:50:41.245170 main.go:213: 0:Registering peer:198.162.52.126:8004
+[peer] 00:50:41.245192 main.go:223: Advertising chain to peer with length 3
+[peer] 00:50:41.267621 main.go:633: 0:Accepted new Connection
+[peer] 00:50:41.267916 main.go:213: 0:Registering peer:198.162.52.126:8002
+[peer] 00:50:41.267929 main.go:223: Advertising chain to peer with length 3
+[peer] 00:50:41.311621 main.go:633: 0:Accepted new Connection
+[peer] 00:50:41.311963 main.go:213: 0:Registering peer:198.162.52.126:8009
+[peer] 00:50:41.311977 main.go:223: Advertising chain to peer with length 3
+[peer] 00:50:41.388777 main.go:633: 0:Accepted new Connection
+[peer] 00:50:41.389103 main.go:213: 0:Registering peer:198.162.52.126:8006
+[peer] 00:50:41.389119 main.go:223: Advertising chain to peer with length 3
+[peer] 00:50:41.415639 main.go:633: 0:Accepted new Connection
+[peer] 00:50:41.415986 main.go:213: 0:Registering peer:198.162.52.126:8007
+[peer] 00:50:41.416002 main.go:223: Advertising chain to peer with length 3
+[peer] 00:50:48.860692 main.go:633: 0:Accepted new Connection
+[peer] 00:50:48.865148 main.go:130: 0:Got block message, iteration 2
+[peer] 00:50:48.865186 main.go:137: 0:Acquiring bool lock
+[peer] 00:50:48.865197 main.go:139: 0:Acquired bool lock
+[peer] 00:50:48.865207 main.go:140: Chain Length:3
+[peer] 00:50:48.865216 main.go:142: Chain Length:3
+[peer] 00:50:48.865225 main.go:187: 0:Sending to channel
+[peer] 00:50:48.865246 main.go:193: 0:Sent to channel
+[peer] 00:50:48.865271 main.go:195: 0:Returning
+[peer] 00:50:48.865334 main.go:955: 0:Block Received. Appending to chain and moving on to the next iteration. 2
+[peer] 00:50:48.865421 main.go:777: 0:Adding block to chain
+[peer] 00:50:48.865478 honest.go:222: Trying to append block with iteration:2
+[peer] 00:50:48.865510 honest.go:238: Append successful
+[peer] 00:50:48.865527 main.go:781: 0:Adding block to chain
+[peer] 00:50:48.865536 main.go:787: 0:Checking convergence
+[peer] 00:50:48.866899 honest.go:81: 0Train Error is 0.00614 in Iteration 2
+[peer] 00:50:48.867039 main.go:790: 0:Convergence checked
+[peer] 00:50:48.867096 main.go:793: 0:Bool lock released
+[peer] 00:50:48.867194 main.go:664: 0:Sending block. Iteration: 2
+[err] 00:50:48.868228 main.go:302: rpc Dial, err = dial tcp 198.162.52.126:8004: connect: connection refused
+[peer] 00:50:48.868263 main.go:751: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8004
+[err] 00:50:48.868307 main.go:302: rpc Dial, err = dial tcp 198.162.52.126:8001: connect: connection refused
+[err] 00:50:48.868316 main.go:302: rpc Dial, err = dial tcp 198.162.52.126:8008: connect: connection refused
+[peer] 00:50:48.868337 main.go:751: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8001
+[err] 00:50:48.868368 main.go:302: rpc Dial, err = dial tcp 198.162.52.126:8005: connect: connection refused
+[peer] 00:50:48.868363 main.go:751: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8008
+[peer] 00:50:48.868391 main.go:751: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8005
+[err] 00:50:48.868846 main.go:302: rpc Dial, err = dial tcp 198.162.52.126:8006: connect: connection refused
+[peer] 00:50:48.868874 main.go:751: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8006
+[err] 00:50:48.868915 main.go:302: rpc Dial, err = dial tcp 198.162.52.126:8009: connect: connection refused
+[peer] 00:50:48.868941 main.go:751: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8009
+[err] 00:50:48.869222 main.go:302: rpc Dial, err = dial tcp 198.162.52.126:8007: connect: connection refused
+[peer] 00:50:48.869249 main.go:751: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8007
+[err] 00:50:48.869287 main.go:302: rpc Dial, err = dial tcp 198.162.52.126:8003: connect: connection refused
+[peer] 00:50:48.869311 main.go:751: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8003
+[err] 00:50:48.869346 main.go:302: rpc Dial, err = dial tcp 198.162.52.126:8002: connect: connection refused
+[peer] 00:50:48.869373 main.go:751: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8002
+[peer] 00:50:48.871859 main.go:729: 0:Block sent to peer successful
+[err] 00:50:48.871889 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 00:50:48.873055 main.go:729: 0:Block sent to peer successful
+[peer] 00:50:48.889906 main.go:729: 0:Block sent to peer successful
+[err] 00:50:48.889949 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 00:50:48.890015 main.go:633: 0:Accepted new Connection
+[peer] 00:50:48.897633 main.go:633: 0:Accepted new Connection
+[peer] 00:50:48.900852 main.go:130: 0:Got block message, iteration 2
+[peer] 00:50:48.900888 main.go:137: 0:Acquiring bool lock
+[peer] 00:50:48.900901 main.go:139: 0:Acquired bool lock
+[peer] 00:50:48.900912 main.go:140: Chain Length:4
+[peer] 00:50:48.900923 main.go:142: Chain Length:4
+[peer] 00:50:48.900935 main.go:147: Already have block
+[peer] 00:50:48.900950 main.go:152: 0:Bool lock released
+[peer] 00:50:48.900963 main.go:179: 0:Equal block
+[peer] 00:50:48.944463 main.go:729: 0:Block sent to peer successful
+[err] 00:50:48.944484 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 00:50:48.945128 main.go:633: 0:Accepted new Connection
+[peer] 00:50:48.947868 main.go:130: 0:Got block message, iteration 2
+[peer] 00:50:48.947897 main.go:137: 0:Acquiring bool lock
+[peer] 00:50:48.947923 main.go:139: 0:Acquired bool lock
+[peer] 00:50:48.947930 main.go:140: Chain Length:4
+[peer] 00:50:48.947936 main.go:142: Chain Length:4
+[peer] 00:50:48.947943 main.go:147: Already have block
+[peer] 00:50:48.947951 main.go:152: 0:Bool lock released
+[peer] 00:50:48.947958 main.go:179: 0:Equal block
+[peer] 00:50:48.986464 main.go:130: 0:Got block message, iteration 2
+[peer] 00:50:48.986502 main.go:137: 0:Acquiring bool lock
+[peer] 00:50:48.986511 main.go:139: 0:Acquired bool lock
+[peer] 00:50:48.986517 main.go:140: Chain Length:4
+[peer] 00:50:48.986523 main.go:142: Chain Length:4
+[peer] 00:50:48.986529 main.go:147: Already have block
+[peer] 00:50:48.986481 main.go:729: 0:Block sent to peer successful
+[err] 00:50:48.986571 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 00:50:48.986542 main.go:152: 0:Bool lock released
+[peer] 00:50:48.986619 main.go:179: 0:Equal block
+[peer] 00:50:49.022735 main.go:729: 0:Block sent to peer successful
+[err] 00:50:49.022765 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 00:50:49.024654 main.go:729: 0:Block sent to peer successful
+[err] 00:50:49.024689 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 00:50:49.025320 main.go:633: 0:Accepted new Connection
+[peer] 00:50:49.027678 main.go:130: 0:Got block message, iteration 2
+[peer] 00:50:49.027718 main.go:137: 0:Acquiring bool lock
+[peer] 00:50:49.027730 main.go:139: 0:Acquired bool lock
+[peer] 00:50:49.027739 main.go:140: Chain Length:4
+[peer] 00:50:49.027749 main.go:142: Chain Length:4
+[peer] 00:50:49.027758 main.go:147: Already have block
+[peer] 00:50:49.027771 main.go:152: 0:Bool lock released
+[peer] 00:50:49.027781 main.go:179: 0:Equal block
+[peer] 00:50:49.029953 main.go:633: 0:Accepted new Connection
+[peer] 00:50:49.032323 main.go:130: 0:Got block message, iteration 2
+[peer] 00:50:49.032359 main.go:137: 0:Acquiring bool lock
+[peer] 00:50:49.032370 main.go:139: 0:Acquired bool lock
+[peer] 00:50:49.032379 main.go:140: Chain Length:4
+[peer] 00:50:49.032388 main.go:142: Chain Length:4
+[peer] 00:50:49.032397 main.go:147: Already have block
+[peer] 00:50:49.032408 main.go:152: 0:Bool lock released
+[peer] 00:50:49.032418 main.go:179: 0:Equal block
+[peer] 00:50:49.122438 main.go:729: 0:Block sent to peer successful
+[err] 00:50:49.122463 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 00:50:49.122638 main.go:633: 0:Accepted new Connection
+[peer] 00:50:49.125722 main.go:130: 0:Got block message, iteration 2
+[peer] 00:50:49.125755 main.go:137: 0:Acquiring bool lock
+[peer] 00:50:49.125764 main.go:139: 0:Acquired bool lock
+[peer] 00:50:49.125771 main.go:140: Chain Length:4
+[peer] 00:50:49.125778 main.go:142: Chain Length:4
+[peer] 00:50:49.125786 main.go:147: Already have block
+[peer] 00:50:49.125795 main.go:152: 0:Bool lock released
+[peer] 00:50:49.125803 main.go:179: 0:Equal block
+[peer] 00:50:49.179704 main.go:729: 0:Block sent to peer successful
+[err] 00:50:49.179733 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 00:50:49.179851 main.go:633: 0:Accepted new Connection
+[peer] 00:50:49.182964 main.go:130: 0:Got block message, iteration 2
+[peer] 00:50:49.183001 main.go:137: 0:Acquiring bool lock
+[peer] 00:50:49.183012 main.go:139: 0:Acquired bool lock
+[peer] 00:50:49.183021 main.go:140: Chain Length:4
+[peer] 00:50:49.183030 main.go:142: Chain Length:4
+[peer] 00:50:49.183039 main.go:147: Already have block
+[peer] 00:50:49.183051 main.go:152: 0:Bool lock released
+[peer] 00:50:49.183068 main.go:179: 0:Equal block
+[peer] 00:50:49.198014 main.go:729: 0:Block sent to peer successful
+[err] 00:50:49.198042 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 00:50:49.198116 main.go:684: 0:RPC calls successfully returned. Iteration: 2
+[peer] 00:50:49.198136 main.go:633: 0:Accepted new Connection
+[peer] 00:50:49.202428 honest.go:81: 0Train Error is 0.00614 in Iteration 2
+[peer] 00:50:49.202533 main.go:692: 0:Preparing for next Iteration. Current Iteration: 2
+[peer] 00:50:49.205153 main.go:130: 0:Got block message, iteration 2
+[peer] 00:50:49.205251 main.go:137: 0:Acquiring bool lock
+[peer] 00:50:49.205301 main.go:139: 0:Acquired bool lock
+[peer] 00:50:49.205356 main.go:140: Chain Length:4
+[peer] 00:50:49.205403 main.go:142: Chain Length:4
+[peer] 00:50:49.205490 main.go:147: Already have block
+[peer] 00:50:49.205544 main.go:152: 0:Bool lock released
+[peer] 00:50:49.205597 main.go:179: 0:Equal block
