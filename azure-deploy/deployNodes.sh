@@ -18,8 +18,13 @@ done
 
 rm LogFiles/*.log
 
+echo "Pulling latest source code from github"
+
 git reset --hard
 git pull origin master
+
+
+echo "Compiling go"
 
 go install
 
