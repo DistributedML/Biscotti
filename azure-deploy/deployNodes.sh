@@ -18,8 +18,8 @@ done
 
 rm LogFiles/*.log
 
-# git reset --hard
-# git pull origin master
+git reset --hard
+git pull origin master
 
 go install
 
