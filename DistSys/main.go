@@ -509,7 +509,8 @@ func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
 
 	
 	outLog.Printf(strconv.Itoa(client.id)+":Inside callRegisterRPC")
-	var chain Blockchain
+	// var chain Blockchain
+	chain := Blockchain{[]*Block{}}
 	c := make(chan error)
 
 	outLog.Printf(strconv.Itoa(client.id)+"Making RPC call")
@@ -733,9 +734,9 @@ func callRegisterBlockRPC(block Block, peerAddress net.TCPAddr) {
 		case <-time.After(timeoutRPC):
 
 			// On timeout delete peer because its unresponsive
-			fmt.Println("Timeout. Sending Block. Retrying...")
+			outLog.Printf("Timeout. Sending Block.")
 			delete(peerAddresses, peerLookup[peerAddress.String()])
-            delete(peerLookup, peerAddress.String())
+            // delete(peerLookup, peerAddress.String())
 			// ensureRPC <- true
 		}
 
