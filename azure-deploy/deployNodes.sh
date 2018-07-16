@@ -16,7 +16,7 @@ do
 	break
 done
 
-rm LogFiles/*.log
+rm LogFiles
 
 echo "Pulling latest source code from github"
 
@@ -33,6 +33,8 @@ myPrivateIp=$(ifconfig | grep -oE -m 1 "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | head 
 # myPrivateIp=$myPrivateIP+":"
 
 # echo $myPrivateIp
+
+mkdir -p LogFiles
 
 for (( index = startingIndex ; index < startingIndex + nodesToRun; index++ )); do
 	
