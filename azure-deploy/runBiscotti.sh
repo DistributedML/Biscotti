@@ -18,12 +18,13 @@ for line in $(cat tempHosts);do
 
 	indexCount=$indexCount+$nodesInEachVM
 
+	indexCount=$((indexCount + nodesInEachVM))
 	
 	# Give time for nodes in the firstVM to get bootstrapped
 
 	if [ $indexCount -eq $nodesInEachVM ]; then
 		echo "Sleeping. Allowing first set of nodes to get bootstrapped"
-		sleep 10
+		sleep 7
 	fi
 
 done
