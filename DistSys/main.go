@@ -109,7 +109,7 @@ func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
 	// we can return the chain to the guy here instead of just leaving that guy with an error
 	
 	if update.Iteration < iterationCount {
-		handleErrorFatal("Update of previous iteration received", staleError)
+		printError("Update of previous iteration received", staleError)
 		return staleError
 	}
 
@@ -871,7 +871,7 @@ func sendUpdateToVerifier(address string) {
 		select {
 		case err := <-c:
 			
-			handleErrorFatal("Error in sending update", err)
+			printError("Error in sending update", err)
 			if(err==nil){
 				outLog.Printf(strconv.Itoa(client.id)+":Update sent successfully")
 			}

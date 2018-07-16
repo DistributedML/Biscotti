@@ -1,660 +1,1103 @@
-[peer] 22:01:45.325332 honest.go:107: 4Importing modules...
+[peer] 22:55:36.347123 honest.go:107: 4Importing modules...
 ../ML/code/utils.py:223: FutureWarning: Method .as_matrix will be removed in a future version. Use .values instead.
   data = data.as_matrix()
 ../ML/code/utils.py:94: FutureWarning: Method .as_matrix will be removed in a future version. Use .values instead.
   credit = df.ix[1:nn, 1:dd].as_matrix()
-[peer] 22:01:51.887817 honest.go:122: 4Sucessfully pulled dataset. Features: 25
-[peer] 22:01:51.888546 main.go:629: 4:Peer started. Receiving on 8004
-[peer] 22:01:51.888614 main.go:487: 4:Announcing myself to network
-[peer] 22:01:51.888697 main.go:492: 4:Calling {198.162.52.126 %!s(int=8000) }
-[peer] 22:01:51.888760 main.go:511: 4:Inside callRegisterRPC
-[peer] 22:01:51.888796 main.go:516: 4Making RPC call
-[peer] 22:01:51.889165 main.go:522: 4RPC dial successful
-[peer] 22:01:51.889240 main.go:525: 4:Calling RPC:198.162.52.126:8000
-[peer] 22:01:51.889940 main.go:527: 4:RPC called198.162.52.126:8000
-[peer] 22:01:51.890034 main.go:534: 4:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 22:01:51.890100 main.go:541: Chain length received:2
-[peer] 22:01:51.890137 main.go:542: My chain length:1
-[peer] 22:01:51.890177 honest.go:340: Received chain length:2
-[peer] 22:01:51.890212 honest.go:341: Appended chain length:2
-[peer] 22:01:51.890250 main.go:555: 4Got lastest chain until iteration 0
-[peer] 22:01:51.890384 main.go:492: 4:Calling {198.162.52.126 %!s(int=8001) }
-[peer] 22:01:51.890442 main.go:511: 4:Inside callRegisterRPC
-[peer] 22:01:51.890479 main.go:516: 4Making RPC call
-[err] 22:01:51.890597 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.126:8001, err = dial tcp 198.162.52.126:8001: connect: connection refused
-[peer] 22:01:51.890660 main.go:492: 4:Calling {198.162.52.126 %!s(int=8002) }
-[peer] 22:01:51.890701 main.go:511: 4:Inside callRegisterRPC
-[peer] 22:01:51.890740 main.go:516: 4Making RPC call
-[err] 22:01:51.890843 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.126:8002, err = dial tcp 198.162.52.126:8002: connect: connection refused
-[peer] 22:01:51.890902 main.go:492: 4:Calling {198.162.52.126 %!s(int=8003) }
-[peer] 22:01:51.890943 main.go:511: 4:Inside callRegisterRPC
-[peer] 22:01:51.890983 main.go:516: 4Making RPC call
-[err] 22:01:51.891086 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.126:8003, err = dial tcp 198.162.52.126:8003: connect: connection refused
-[peer] 22:01:51.891147 main.go:492: 4:Calling {198.162.52.126 %!s(int=8005) }
-[peer] 22:01:51.891192 main.go:511: 4:Inside callRegisterRPC
-[peer] 22:01:51.891226 main.go:516: 4Making RPC call
-[err] 22:01:51.891339 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.126:8005, err = dial tcp 198.162.52.126:8005: connect: connection refused
-[peer] 22:01:51.891385 main.go:492: 4:Calling {198.162.52.126 %!s(int=8006) }
-[peer] 22:01:51.891430 main.go:511: 4:Inside callRegisterRPC
-[peer] 22:01:51.891464 main.go:516: 4Making RPC call
-[err] 22:01:51.891581 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.126:8006, err = dial tcp 198.162.52.126:8006: connect: connection refused
-[peer] 22:01:51.891648 main.go:492: 4:Calling {198.162.52.126 %!s(int=8007) }
-[peer] 22:01:51.891697 main.go:511: 4:Inside callRegisterRPC
-[peer] 22:01:51.891748 main.go:516: 4Making RPC call
-[err] 22:01:51.891899 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.126:8007, err = dial tcp 198.162.52.126:8007: connect: connection refused
-[peer] 22:01:51.891965 main.go:492: 4:Calling {198.162.52.126 %!s(int=8008) }
-[peer] 22:01:51.892014 main.go:511: 4:Inside callRegisterRPC
-[peer] 22:01:51.892066 main.go:516: 4Making RPC call
-[err] 22:01:51.892215 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.126:8008, err = dial tcp 198.162.52.126:8008: connect: connection refused
-[peer] 22:01:51.892264 main.go:492: 4:Calling {198.162.52.126 %!s(int=8009) }
-[peer] 22:01:51.892317 main.go:511: 4:Inside callRegisterRPC
-[peer] 22:01:51.892360 main.go:516: 4Making RPC call
-[peer] 22:01:51.892537 main.go:522: 4RPC dial successful
-[peer] 22:01:51.892610 main.go:525: 4:Calling RPC:198.162.52.126:8009
-[peer] 22:01:51.892693 main.go:527: 4:RPC called198.162.52.126:8009
-[peer] 22:01:51.893236 main.go:534: 4:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 22:01:51.893252 main.go:541: Chain length received:2
-[peer] 22:01:51.893260 main.go:542: My chain length:2
-[peer] 22:01:51.893294 main.go:492: 4:Calling {198.162.52.57 %!s(int=8010) }
-[peer] 22:01:51.893304 main.go:511: 4:Inside callRegisterRPC
-[peer] 22:01:51.893311 main.go:516: 4Making RPC call
-[err] 22:01:51.893909 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.57:8010, err = dial tcp 198.162.52.57:8010: connect: connection refused
-[peer] 22:01:51.893956 main.go:492: 4:Calling {198.162.52.57 %!s(int=8011) }
-[peer] 22:01:51.893990 main.go:511: 4:Inside callRegisterRPC
-[peer] 22:01:51.894023 main.go:516: 4Making RPC call
-[err] 22:01:51.894600 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.57:8011, err = dial tcp 198.162.52.57:8011: connect: connection refused
-[peer] 22:01:51.894645 main.go:492: 4:Calling {198.162.52.57 %!s(int=8012) }
-[peer] 22:01:51.894680 main.go:511: 4:Inside callRegisterRPC
-[peer] 22:01:51.894713 main.go:516: 4Making RPC call
-[err] 22:01:51.895299 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.57:8012, err = dial tcp 198.162.52.57:8012: connect: connection refused
-[peer] 22:01:51.895341 main.go:492: 4:Calling {198.162.52.57 %!s(int=8013) }
-[peer] 22:01:51.895374 main.go:511: 4:Inside callRegisterRPC
-[peer] 22:01:51.895406 main.go:516: 4Making RPC call
-[err] 22:01:51.895992 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.57:8013, err = dial tcp 198.162.52.57:8013: connect: connection refused
-[peer] 22:01:51.896035 main.go:492: 4:Calling {198.162.52.57 %!s(int=8014) }
-[peer] 22:01:51.896068 main.go:511: 4:Inside callRegisterRPC
-[peer] 22:01:51.896100 main.go:516: 4Making RPC call
-[err] 22:01:51.896678 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.57:8014, err = dial tcp 198.162.52.57:8014: connect: connection refused
-[peer] 22:01:51.896722 main.go:492: 4:Calling {198.162.52.57 %!s(int=8015) }
-[peer] 22:01:51.896756 main.go:511: 4:Inside callRegisterRPC
-[peer] 22:01:51.896788 main.go:516: 4Making RPC call
-[err] 22:01:51.897380 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.57:8015, err = dial tcp 198.162.52.57:8015: connect: connection refused
-[peer] 22:01:51.897421 main.go:492: 4:Calling {198.162.52.57 %!s(int=8016) }
-[peer] 22:01:51.897462 main.go:511: 4:Inside callRegisterRPC
-[peer] 22:01:51.897490 main.go:516: 4Making RPC call
-[err] 22:01:51.898056 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.57:8016, err = dial tcp 198.162.52.57:8016: connect: connection refused
-[peer] 22:01:51.898091 main.go:492: 4:Calling {198.162.52.57 %!s(int=8017) }
-[peer] 22:01:51.898121 main.go:511: 4:Inside callRegisterRPC
-[peer] 22:01:51.898146 main.go:516: 4Making RPC call
-[err] 22:01:51.898707 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.57:8017, err = dial tcp 198.162.52.57:8017: connect: connection refused
-[peer] 22:01:51.898742 main.go:492: 4:Calling {198.162.52.57 %!s(int=8018) }
-[peer] 22:01:51.898772 main.go:511: 4:Inside callRegisterRPC
-[peer] 22:01:51.898797 main.go:516: 4Making RPC call
-[err] 22:01:51.899356 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.57:8018, err = dial tcp 198.162.52.57:8018: connect: connection refused
-[peer] 22:01:51.899391 main.go:492: 4:Calling {198.162.52.57 %!s(int=8019) }
-[peer] 22:01:51.899421 main.go:511: 4:Inside callRegisterRPC
-[peer] 22:01:51.899446 main.go:516: 4Making RPC call
-[err] 22:01:51.900005 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.57:8019, err = dial tcp 198.162.52.57:8019: connect: connection refused
-[peer] 22:01:51.900035 main.go:502: 4:Bootstrapped Network. Calling signal
-[peer] 22:01:51.900068 main.go:504: 4:Bootstrapped Network. Signal called
-[peer] 22:01:51.900095 main.go:588: 4:Acquiring bool lock
-[peer] 22:01:51.900120 main.go:590: 4:Acquired bool lock
-[peer] 22:01:51.901760 main.go:609: 4:I am not verifier IterationCount:1
-[peer] 22:01:51.901801 main.go:614: 4:Bool lock released
-[peer] 22:01:51.901832 main.go:824: 4:Computing Update
-[peer] 22:01:51.902334 main.go:270: 4 : VRF returned ID map[0:{}]
-[peer] 22:01:51.902373 main.go:280: 4 :Verifiers [198.162.52.126:8000] returned.
-[peer] 22:01:51.902581 main.go:869: 4:Making RPC Call to Verifier. Sending Update, Iteration:1
-[peer] 22:01:51.914049 main.go:876: 4:Update sent successfully
-[peer] 22:01:51.960678 main.go:633: 4:Accepted new Connection
-[peer] 22:01:51.961012 main.go:213: 4:Registering peer:198.162.52.126:8007
-[peer] 22:01:51.961056 main.go:223: Advertising chain to peer with length 2
-[peer] 22:01:52.178561 main.go:633: 4:Accepted new Connection
-[peer] 22:01:52.178938 main.go:213: 4:Registering peer:198.162.52.126:8001
-[peer] 22:01:52.178955 main.go:223: Advertising chain to peer with length 2
-[peer] 22:01:52.220713 main.go:633: 4:Accepted new Connection
-[peer] 22:01:52.221104 main.go:213: 4:Registering peer:198.162.52.126:8003
-[peer] 22:01:52.221153 main.go:223: Advertising chain to peer with length 2
-[peer] 22:01:52.229297 main.go:633: 4:Accepted new Connection
-[peer] 22:01:52.229786 main.go:213: 4:Registering peer:198.162.52.126:8006
-[peer] 22:01:52.229802 main.go:223: Advertising chain to peer with length 2
-[peer] 22:01:52.353020 main.go:633: 4:Accepted new Connection
-[peer] 22:01:52.353238 main.go:213: 4:Registering peer:198.162.52.126:8008
-[peer] 22:01:52.353253 main.go:223: Advertising chain to peer with length 2
-[peer] 22:01:52.509463 main.go:633: 4:Accepted new Connection
-[peer] 22:01:52.509644 main.go:213: 4:Registering peer:198.162.52.126:8002
-[peer] 22:01:52.509658 main.go:223: Advertising chain to peer with length 2
-[peer] 22:01:52.541523 main.go:633: 4:Accepted new Connection
-[peer] 22:01:52.541898 main.go:213: 4:Registering peer:198.162.52.126:8005
-[peer] 22:01:52.541942 main.go:223: Advertising chain to peer with length 2
-[peer] 22:02:06.845577 main.go:633: 4:Accepted new Connection
-[peer] 22:02:06.846537 main.go:130: 4:Got block message, iteration 1
-[peer] 22:02:06.846581 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:06.846598 main.go:139: 4:Acquired bool lock
-[peer] 22:02:06.846613 main.go:140: Chain Length:2
-[peer] 22:02:06.846627 blockchain.go:71: Returning nil
-[peer] 22:02:06.846643 main.go:142: Chain Length:2
-[peer] 22:02:06.846659 main.go:187: 4:Sending to channel
-[peer] 22:02:06.846677 main.go:193: 4:Sent to channel
-[peer] 22:02:06.846694 main.go:195: 4:Returning
-[peer] 22:02:06.846862 main.go:777: 4:Adding block to chain
-[peer] 22:02:06.846893 honest.go:222: Trying to append block with iteration:1
-[peer] 22:02:06.846910 blockchain.go:71: Returning nil
-[peer] 22:02:06.846923 honest.go:238: Append successful
-[peer] 22:02:06.846939 main.go:781: 4:Adding block to chain
-[peer] 22:02:06.846953 main.go:787: 4:Checking convergence
-[peer] 22:02:06.847767 main.go:955: 4:Block Received. Appending to chain and moving on to the next iteration. 1
-[peer] 22:02:06.856388 main.go:633: 4:Accepted new Connection
-[peer] 22:02:06.858222 main.go:633: 4:Accepted new Connection
-[peer] 22:02:06.858761 main.go:130: 4:Got block message, iteration 1
-[peer] 22:02:06.859841 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:06.860187 main.go:130: 4:Got block message, iteration 1
-[peer] 22:02:06.860966 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:06.866124 main.go:633: 4:Accepted new Connection
-[peer] 22:02:06.869065 main.go:130: 4:Got block message, iteration 1
-[peer] 22:02:06.869101 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:06.878027 honest.go:81: 4Train Error is 0.06105 in Iteration 1
-[peer] 22:02:06.878058 main.go:790: 4:Convergence checked
-[peer] 22:02:06.878074 main.go:793: 4:Bool lock released
-[peer] 22:02:06.878162 main.go:664: 4:Sending block. Iteration: 1
-[peer] 22:02:06.878293 main.go:139: 4:Acquired bool lock
-[peer] 22:02:06.878316 main.go:140: Chain Length:3
-[peer] 22:02:06.878329 blockchain.go:68: Returning a block
-[peer] 22:02:06.878342 main.go:142: Chain Length:3
-[peer] 22:02:06.878359 main.go:147: Already have block
-[peer] 22:02:06.878388 main.go:152: 4:Bool lock released
-[peer] 22:02:06.878401 blockchain.go:68: Returning a block
-[peer] 22:02:06.878413 blockchain.go:68: Returning a block
-[peer] 22:02:06.878425 main.go:179: 4:Equal block
-[peer] 22:02:06.878556 main.go:139: 4:Acquired bool lock
-[peer] 22:02:06.878574 main.go:140: Chain Length:3
-[peer] 22:02:06.878586 blockchain.go:68: Returning a block
-[peer] 22:02:06.878598 main.go:142: Chain Length:3
-[peer] 22:02:06.878610 main.go:147: Already have block
-[peer] 22:02:06.878625 main.go:152: 4:Bool lock released
-[peer] 22:02:06.878637 blockchain.go:68: Returning a block
-[peer] 22:02:06.878648 blockchain.go:68: Returning a block
-[peer] 22:02:06.878659 main.go:179: 4:Equal block
-[peer] 22:02:06.878731 main.go:139: 4:Acquired bool lock
-[peer] 22:02:06.878752 main.go:140: Chain Length:3
-[peer] 22:02:06.878768 blockchain.go:68: Returning a block
-[peer] 22:02:06.878780 main.go:142: Chain Length:3
-[peer] 22:02:06.878793 main.go:147: Already have block
-[peer] 22:02:06.878807 main.go:152: 4:Bool lock released
-[peer] 22:02:06.878819 blockchain.go:68: Returning a block
-[peer] 22:02:06.878830 blockchain.go:68: Returning a block
-[peer] 22:02:06.878843 main.go:179: 4:Equal block
-[peer] 22:02:06.886809 main.go:633: 4:Accepted new Connection
-[peer] 22:02:06.902750 main.go:633: 4:Accepted new Connection
-[peer] 22:02:06.902923 main.go:633: 4:Accepted new Connection
-[peer] 22:02:06.903161 main.go:633: 4:Accepted new Connection
-[peer] 22:02:06.903640 main.go:130: 4:Got block message, iteration 1
-[peer] 22:02:06.905714 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:06.905692 main.go:729: 4:Block sent to peer successful
-[err] 22:02:06.906283 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:06.905863 main.go:139: 4:Acquired bool lock
-[peer] 22:02:06.906536 main.go:140: Chain Length:3
-[peer] 22:02:06.906615 blockchain.go:68: Returning a block
-[peer] 22:02:06.906701 main.go:142: Chain Length:3
-[peer] 22:02:06.906780 main.go:147: Already have block
-[peer] 22:02:06.906867 main.go:152: 4:Bool lock released
-[peer] 22:02:06.907020 blockchain.go:68: Returning a block
-[peer] 22:02:06.907060 blockchain.go:68: Returning a block
-[peer] 22:02:06.907104 main.go:179: 4:Equal block
-[peer] 22:02:06.904232 main.go:130: 4:Got block message, iteration 1
-[peer] 22:02:06.907476 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:06.907524 main.go:139: 4:Acquired bool lock
-[peer] 22:02:06.907567 main.go:140: Chain Length:3
-[peer] 22:02:06.907606 blockchain.go:68: Returning a block
-[peer] 22:02:06.897285 main.go:729: 4:Block sent to peer successful
-[err] 22:02:06.907705 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:06.897405 main.go:729: 4:Block sent to peer successful
-[err] 22:02:06.907836 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:06.900122 main.go:729: 4:Block sent to peer successful
-[err] 22:02:06.908010 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:06.892342 main.go:729: 4:Block sent to peer successful
-[err] 22:02:06.908187 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:06.904471 main.go:130: 4:Got block message, iteration 1
-[peer] 22:02:06.904701 main.go:130: 4:Got block message, iteration 1
-[peer] 22:02:06.907661 main.go:142: Chain Length:3
-[peer] 22:02:06.908417 main.go:147: Already have block
-[peer] 22:02:06.908471 main.go:152: 4:Bool lock released
-[peer] 22:02:06.908531 blockchain.go:68: Returning a block
-[peer] 22:02:06.908583 blockchain.go:68: Returning a block
-[peer] 22:02:06.908635 main.go:179: 4:Equal block
-[peer] 22:02:06.908314 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:06.908804 main.go:139: 4:Acquired bool lock
-[peer] 22:02:06.908864 main.go:140: Chain Length:3
-[peer] 22:02:06.909294 blockchain.go:68: Returning a block
-[peer] 22:02:06.909445 main.go:142: Chain Length:3
-[peer] 22:02:06.909634 main.go:147: Already have block
-[peer] 22:02:06.909838 main.go:152: 4:Bool lock released
-[peer] 22:02:06.909990 blockchain.go:68: Returning a block
-[peer] 22:02:06.910122 blockchain.go:68: Returning a block
-[peer] 22:02:06.910304 main.go:179: 4:Equal block
-[peer] 22:02:06.908363 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:06.910810 main.go:139: 4:Acquired bool lock
-[peer] 22:02:06.910929 main.go:140: Chain Length:3
-[peer] 22:02:06.911039 blockchain.go:68: Returning a block
-[peer] 22:02:06.911183 main.go:142: Chain Length:3
-[peer] 22:02:06.911443 main.go:147: Already have block
-[peer] 22:02:06.911658 main.go:152: 4:Bool lock released
-[peer] 22:02:06.911811 blockchain.go:68: Returning a block
-[peer] 22:02:06.911954 blockchain.go:68: Returning a block
-[peer] 22:02:06.912101 main.go:179: 4:Equal block
-[peer] 22:02:06.915353 main.go:729: 4:Block sent to peer successful
-[err] 22:02:06.915402 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:06.917225 main.go:729: 4:Block sent to peer successful
-[err] 22:02:06.917244 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:06.922995 main.go:633: 4:Accepted new Connection
-[peer] 22:02:06.923095 main.go:729: 4:Block sent to peer successful
-[err] 22:02:06.923114 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:06.924794 main.go:130: 4:Got block message, iteration 1
-[peer] 22:02:06.924824 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:06.924836 main.go:139: 4:Acquired bool lock
-[peer] 22:02:06.924847 main.go:140: Chain Length:3
-[peer] 22:02:06.924857 blockchain.go:68: Returning a block
-[peer] 22:02:06.924867 main.go:142: Chain Length:3
-[peer] 22:02:06.924878 main.go:147: Already have block
-[peer] 22:02:06.924889 main.go:152: 4:Bool lock released
-[peer] 22:02:06.924899 blockchain.go:68: Returning a block
-[peer] 22:02:06.924909 blockchain.go:68: Returning a block
-[peer] 22:02:06.924919 main.go:179: 4:Equal block
-[peer] 22:02:06.950600 main.go:729: 4:Block sent to peer successful
-[err] 22:02:06.950633 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:06.950698 main.go:684: 4:RPC calls successfully returned. Iteration: 1
-[peer] 22:02:06.980192 main.go:633: 4:Accepted new Connection
-[peer] 22:02:06.980445 main.go:130: 4:Got block message, iteration 2
-[peer] 22:02:06.980481 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:06.980490 main.go:139: 4:Acquired bool lock
-[peer] 22:02:06.980498 main.go:140: Chain Length:3
-[peer] 22:02:06.980506 blockchain.go:71: Returning nil
-[peer] 22:02:06.980514 main.go:142: Chain Length:3
-[peer] 22:02:06.980522 main.go:187: 4:Sending to channel
-[peer] 22:02:06.980530 main.go:193: 4:Sent to channel
-[peer] 22:02:06.980551 main.go:195: 4:Returning
-[peer] 22:02:06.980732 main.go:768: 4:Blocking. Got block for 2, I am at 1
-[peer] 22:02:06.997857 main.go:633: 4:Accepted new Connection
-[peer] 22:02:06.998476 main.go:130: 4:Got block message, iteration 2
-[peer] 22:02:07.000708 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:07.000724 main.go:139: 4:Acquired bool lock
-[peer] 22:02:07.000733 main.go:140: Chain Length:3
-[peer] 22:02:07.000741 blockchain.go:71: Returning nil
-[peer] 22:02:07.000750 main.go:142: Chain Length:3
-[peer] 22:02:07.000758 main.go:187: 4:Sending to channel
-[peer] 22:02:07.000767 main.go:193: 4:Sent to channel
-[peer] 22:02:07.000787 main.go:195: 4:Returning
-[peer] 22:02:07.000866 main.go:768: 4:Blocking. Got block for 2, I am at 1
-[peer] 22:02:07.002574 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.002798 main.go:130: 4:Got block message, iteration 2
-[peer] 22:02:07.002820 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:07.002828 main.go:139: 4:Acquired bool lock
-[peer] 22:02:07.002835 main.go:140: Chain Length:3
-[peer] 22:02:07.002842 blockchain.go:71: Returning nil
-[peer] 22:02:07.002849 main.go:142: Chain Length:3
-[peer] 22:02:07.002857 main.go:187: 4:Sending to channel
-[peer] 22:02:07.002865 main.go:193: 4:Sent to channel
-[peer] 22:02:07.002873 main.go:195: 4:Returning
-[peer] 22:02:07.002961 main.go:768: 4:Blocking. Got block for 2, I am at 1
-[peer] 22:02:07.006440 honest.go:81: 4Train Error is 0.06105 in Iteration 1
-[peer] 22:02:07.006458 main.go:692: 4:Preparing for next Iteration. Current Iteration: 1
-[peer] 22:02:07.006467 main.go:588: 4:Acquiring bool lock
-[peer] 22:02:07.006483 main.go:590: 4:Acquired bool lock
-[peer] 22:02:07.008230 main.go:609: 4:I am not verifier IterationCount:2
-[peer] 22:02:07.008242 main.go:614: 4:Bool lock released
-[peer] 22:02:07.031696 main.go:824: 4:Computing Update
-[peer] 22:02:07.031801 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.031832 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.032066 main.go:130: 4:Got block message, iteration 2
-[peer] 22:02:07.032087 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:07.032118 main.go:270: 4 : VRF returned ID map[15:{}]
-[peer] 22:02:07.032137 main.go:280: 4 :Verifiers [198.162.52.57:8015] returned.
-[peer] 22:02:07.032253 main.go:130: 4:Got block message, iteration 2
-[peer] 22:02:07.032273 main.go:137: 4:Acquiring bool lock
-[err] 22:02:07.032695 main.go:302: Unable to connect to verifier, err = dial tcp 198.162.52.57:8015: connect: connection refused
-[peer] 22:02:07.032706 main.go:896: 4:Will try and create an empty block
-[peer] 22:02:07.032712 blockchain.go:71: Returning nil
-[peer] 22:02:07.032768 main.go:903: 4:Will try and create an empty block
-[peer] 22:02:07.032795 main.go:139: 4:Acquired bool lock
-[peer] 22:02:07.032806 main.go:140: Chain Length:4
-[peer] 22:02:07.032813 blockchain.go:68: Returning a block
-[peer] 22:02:07.032819 main.go:142: Chain Length:4
-[peer] 22:02:07.032826 main.go:147: Already have block
-[peer] 22:02:07.032834 main.go:152: 4:Bool lock released
-[peer] 22:02:07.032841 blockchain.go:68: Returning a block
-[peer] 22:02:07.032847 blockchain.go:68: Returning a block
-[peer] 22:02:07.032854 main.go:179: 4:Equal block
-[peer] 22:02:07.032899 main.go:139: 4:Acquired bool lock
-[peer] 22:02:07.032909 main.go:140: Chain Length:4
-[peer] 22:02:07.032916 blockchain.go:68: Returning a block
-[peer] 22:02:07.032922 main.go:142: Chain Length:4
-[peer] 22:02:07.032929 main.go:147: Already have block
-[peer] 22:02:07.032936 main.go:152: 4:Bool lock released
-[peer] 22:02:07.032943 blockchain.go:68: Returning a block
-[peer] 22:02:07.032949 blockchain.go:68: Returning a block
-[peer] 22:02:07.032956 main.go:179: 4:Equal block
-[peer] 22:02:07.033000 main.go:664: 4:Sending block. Iteration: 2
-[peer] 22:02:07.034400 main.go:729: 4:Block sent to peer successful
-[err] 22:02:07.034415 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:07.034590 main.go:729: 4:Block sent to peer successful
-[err] 22:02:07.034603 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:07.034969 main.go:729: 4:Block sent to peer successful
-[peer] 22:02:07.035402 main.go:729: 4:Block sent to peer successful
-[err] 22:02:07.035415 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:07.035467 main.go:729: 4:Block sent to peer successful
-[err] 22:02:07.035480 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:07.043337 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.043367 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.043385 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.043461 main.go:729: 4:Block sent to peer successful
-[err] 22:02:07.043475 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:07.043563 main.go:130: 4:Got block message, iteration 2
-[peer] 22:02:07.043584 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:07.043591 main.go:139: 4:Acquired bool lock
-[peer] 22:02:07.043598 main.go:140: Chain Length:4
-[peer] 22:02:07.043604 blockchain.go:68: Returning a block
-[peer] 22:02:07.043611 main.go:142: Chain Length:4
-[peer] 22:02:07.043618 main.go:147: Already have block
-[peer] 22:02:07.043625 main.go:152: 4:Bool lock released
-[peer] 22:02:07.043632 blockchain.go:68: Returning a block
-[peer] 22:02:07.043639 blockchain.go:68: Returning a block
-[peer] 22:02:07.043645 main.go:179: 4:Equal block
-[peer] 22:02:07.043647 main.go:729: 4:Block sent to peer successful
-[peer] 22:02:07.043574 main.go:729: 4:Block sent to peer successful
-[err] 22:02:07.043830 main.go:302: Error in sending block, err = Stale Update/Block
-[err] 22:02:07.043832 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:07.043980 main.go:130: 4:Got block message, iteration 2
-[peer] 22:02:07.043999 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:07.044006 main.go:139: 4:Acquired bool lock
-[peer] 22:02:07.044013 main.go:140: Chain Length:4
-[peer] 22:02:07.044019 blockchain.go:68: Returning a block
-[peer] 22:02:07.044025 main.go:142: Chain Length:4
-[peer] 22:02:07.044032 main.go:147: Already have block
-[peer] 22:02:07.044039 main.go:152: 4:Bool lock released
-[peer] 22:02:07.044046 blockchain.go:68: Returning a block
-[peer] 22:02:07.044052 blockchain.go:68: Returning a block
-[peer] 22:02:07.044059 main.go:179: 4:Equal block
-[peer] 22:02:07.044078 main.go:130: 4:Got block message, iteration 2
-[peer] 22:02:07.044099 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:07.044106 main.go:139: 4:Acquired bool lock
-[peer] 22:02:07.044113 main.go:140: Chain Length:4
-[peer] 22:02:07.044119 blockchain.go:68: Returning a block
-[peer] 22:02:07.044126 main.go:142: Chain Length:4
-[peer] 22:02:07.044133 main.go:147: Already have block
-[peer] 22:02:07.044143 main.go:152: 4:Bool lock released
-[peer] 22:02:07.044150 blockchain.go:68: Returning a block
-[peer] 22:02:07.044156 blockchain.go:68: Returning a block
-[peer] 22:02:07.044163 main.go:179: 4:Equal block
-[peer] 22:02:07.084199 main.go:729: 4:Block sent to peer successful
-[peer] 22:02:07.084277 main.go:684: 4:RPC calls successfully returned. Iteration: 2
-[peer] 22:02:07.127672 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.127897 main.go:103: 4:Got update message, iteration 3
-[peer] 22:02:07.128816 main.go:107: RONI for update is -0.018893 
-[peer] 22:02:07.128932 main.go:644: 4:Blocking. Got update for 3, I am at 2
-[peer] 22:02:07.133040 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.133234 main.go:130: 4:Got block message, iteration 3
-[peer] 22:02:07.133257 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:07.133265 main.go:139: 4:Acquired bool lock
-[peer] 22:02:07.133272 main.go:140: Chain Length:4
-[peer] 22:02:07.133279 blockchain.go:71: Returning nil
-[peer] 22:02:07.133286 main.go:142: Chain Length:4
-[peer] 22:02:07.133292 main.go:187: 4:Sending to channel
-[peer] 22:02:07.133300 main.go:193: 4:Sent to channel
-[peer] 22:02:07.133311 main.go:195: 4:Returning
-[peer] 22:02:07.133384 main.go:768: 4:Blocking. Got block for 3, I am at 2
-[peer] 22:02:07.136321 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.136708 main.go:130: 4:Got block message, iteration 3
-[peer] 22:02:07.136986 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:07.137011 main.go:139: 4:Acquired bool lock
-[peer] 22:02:07.137041 main.go:140: Chain Length:4
-[peer] 22:02:07.137066 blockchain.go:71: Returning nil
-[peer] 22:02:07.137091 main.go:142: Chain Length:4
-[peer] 22:02:07.137179 main.go:187: 4:Sending to channel
-[peer] 22:02:07.137205 main.go:193: 4:Sent to channel
-[peer] 22:02:07.137256 main.go:195: 4:Returning
-[peer] 22:02:07.137368 main.go:768: 4:Blocking. Got block for 3, I am at 2
-[peer] 22:02:07.155101 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.155308 main.go:130: 4:Got block message, iteration 3
-[peer] 22:02:07.155332 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:07.155340 main.go:139: 4:Acquired bool lock
-[peer] 22:02:07.155348 main.go:140: Chain Length:4
-[peer] 22:02:07.155356 blockchain.go:71: Returning nil
-[peer] 22:02:07.155368 main.go:142: Chain Length:4
-[peer] 22:02:07.155376 main.go:187: 4:Sending to channel
-[peer] 22:02:07.155386 main.go:193: 4:Sent to channel
-[peer] 22:02:07.155394 main.go:195: 4:Returning
-[peer] 22:02:07.155466 main.go:768: 4:Blocking. Got block for 3, I am at 2
-[peer] 22:02:07.159472 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.161307 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.161492 main.go:130: 4:Got block message, iteration 3
-[peer] 22:02:07.161513 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:07.161520 main.go:139: 4:Acquired bool lock
-[peer] 22:02:07.161527 main.go:140: Chain Length:4
-[peer] 22:02:07.161534 blockchain.go:71: Returning nil
-[peer] 22:02:07.161540 main.go:142: Chain Length:4
-[peer] 22:02:07.161554 main.go:187: 4:Sending to channel
-[peer] 22:02:07.161562 main.go:193: 4:Sent to channel
-[peer] 22:02:07.161570 main.go:195: 4:Returning
-[peer] 22:02:07.161641 main.go:768: 4:Blocking. Got block for 3, I am at 2
-[peer] 22:02:07.161782 main.go:130: 4:Got block message, iteration 3
-[peer] 22:02:07.161800 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:07.161806 main.go:139: 4:Acquired bool lock
-[peer] 22:02:07.161813 main.go:140: Chain Length:4
-[peer] 22:02:07.161820 blockchain.go:71: Returning nil
-[peer] 22:02:07.161827 main.go:142: Chain Length:4
-[peer] 22:02:07.161833 main.go:187: 4:Sending to channel
-[peer] 22:02:07.161840 main.go:193: 4:Sent to channel
-[peer] 22:02:07.161848 main.go:195: 4:Returning
-[peer] 22:02:07.161911 main.go:768: 4:Blocking. Got block for 3, I am at 2
-[peer] 22:02:07.172678 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.172708 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.172853 main.go:103: 4:Got update message, iteration 3
-[peer] 22:02:07.172902 main.go:130: 4:Got block message, iteration 3
-[peer] 22:02:07.172925 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:07.172933 main.go:139: 4:Acquired bool lock
-[peer] 22:02:07.172940 main.go:140: Chain Length:4
-[peer] 22:02:07.172946 blockchain.go:71: Returning nil
-[peer] 22:02:07.172953 main.go:142: Chain Length:4
-[peer] 22:02:07.172960 main.go:187: 4:Sending to channel
-[peer] 22:02:07.172968 main.go:193: 4:Sent to channel
-[peer] 22:02:07.172975 main.go:195: 4:Returning
-[peer] 22:02:07.173062 main.go:768: 4:Blocking. Got block for 3, I am at 2
-[peer] 22:02:07.174523 main.go:107: RONI for update is 0.005446 
-[peer] 22:02:07.174613 main.go:644: 4:Blocking. Got update for 3, I am at 2
-[peer] 22:02:07.177303 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.177502 main.go:130: 4:Got block message, iteration 3
-[peer] 22:02:07.177522 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:07.177529 main.go:139: 4:Acquired bool lock
-[peer] 22:02:07.177536 main.go:140: Chain Length:4
-[peer] 22:02:07.177543 blockchain.go:71: Returning nil
-[peer] 22:02:07.177549 main.go:142: Chain Length:4
-[peer] 22:02:07.177556 main.go:187: 4:Sending to channel
-[peer] 22:02:07.177564 main.go:193: 4:Sent to channel
-[peer] 22:02:07.177571 main.go:195: 4:Returning
-[peer] 22:02:07.177642 main.go:768: 4:Blocking. Got block for 3, I am at 2
-[peer] 22:02:07.180674 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.183794 main.go:130: 4:Got block message, iteration 3
-[peer] 22:02:07.183815 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:07.183822 main.go:139: 4:Acquired bool lock
-[peer] 22:02:07.183830 main.go:140: Chain Length:4
-[peer] 22:02:07.183836 blockchain.go:71: Returning nil
-[peer] 22:02:07.183843 main.go:142: Chain Length:4
-[peer] 22:02:07.183850 main.go:187: 4:Sending to channel
-[peer] 22:02:07.183857 main.go:193: 4:Sent to channel
-[peer] 22:02:07.183869 main.go:195: 4:Returning
-[peer] 22:02:07.183947 main.go:768: 4:Blocking. Got block for 3, I am at 2
-[peer] 22:02:07.201105 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.201372 main.go:103: 4:Got update message, iteration 4
-[peer] 22:02:07.202299 main.go:107: RONI for update is 0.002000 
-[peer] 22:02:07.202447 main.go:644: 4:Blocking. Got update for 4, I am at 2
-[peer] 22:02:07.204715 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.204992 main.go:130: 4:Got block message, iteration 2
-[peer] 22:02:07.205504 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:07.205594 main.go:139: 4:Acquired bool lock
-[peer] 22:02:07.205672 main.go:140: Chain Length:4
-[peer] 22:02:07.205749 blockchain.go:68: Returning a block
-[peer] 22:02:07.205827 main.go:142: Chain Length:4
-[peer] 22:02:07.205904 main.go:147: Already have block
-[peer] 22:02:07.205983 main.go:152: 4:Bool lock released
-[peer] 22:02:07.206061 blockchain.go:68: Returning a block
-[peer] 22:02:07.206139 blockchain.go:68: Returning a block
-[peer] 22:02:07.206242 main.go:179: 4:Equal block
-[peer] 22:02:07.210573 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.210923 main.go:103: 4:Got update message, iteration 4
-[peer] 22:02:07.212050 main.go:107: RONI for update is 0.010002 
-[peer] 22:02:07.212153 main.go:644: 4:Blocking. Got update for 4, I am at 2
-[peer] 22:02:07.218193 honest.go:81: 4Train Error is 0.06105 in Iteration 2
-[peer] 22:02:07.218211 main.go:692: 4:Preparing for next Iteration. Current Iteration: 2
-[peer] 22:02:07.218219 main.go:588: 4:Acquiring bool lock
-[peer] 22:02:07.218226 main.go:590: 4:Acquired bool lock
-[peer] 22:02:07.219803 main.go:605: 4:I am verifier. IterationCount:3
-[peer] 22:02:07.219819 main.go:614: 4:Bool lock released
-[peer] 22:02:07.229950 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.230031 main.go:914: 4:Starting Update Deadline Timer. Iteration: 3
-[peer] 22:02:07.238587 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.238766 main.go:103: 4:Got update message, iteration 4
-[peer] 22:02:07.239089 main.go:103: 4:Got update message, iteration 4
-[peer] 22:02:07.243526 main.go:107: RONI for update is -0.007224 
-[peer] 22:02:07.243601 main.go:644: 4:Blocking. Got update for 4, I am at 3
-[peer] 22:02:07.244826 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.244971 main.go:103: 4:Got update message, iteration 4
-[peer] 22:02:07.245835 main.go:107: RONI for update is 0.021449 
-[peer] 22:02:07.249082 main.go:107: RONI for update is -0.008113 
-[peer] 22:02:07.251251 main.go:644: 4:Blocking. Got update for 4, I am at 3
-[peer] 22:02:07.251280 main.go:644: 4:Blocking. Got update for 4, I am at 3
-[peer] 22:02:07.277764 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.278039 main.go:103: 4:Got update message, iteration 4
-[peer] 22:02:07.279130 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.279283 main.go:103: 4:Got update message, iteration 4
-[peer] 22:02:07.279880 main.go:107: RONI for update is -0.002000 
-[peer] 22:02:07.279964 main.go:644: 4:Blocking. Got update for 4, I am at 3
-[peer] 22:02:07.281349 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.281597 main.go:103: 4:Got update message, iteration 4
-[peer] 22:02:07.282061 main.go:107: RONI for update is 0.018449 
-[peer] 22:02:07.282146 main.go:644: 4:Blocking. Got update for 4, I am at 3
-[peer] 22:02:07.283376 main.go:107: RONI for update is 0.009669 
-[peer] 22:02:07.283459 main.go:644: 4:Blocking. Got update for 4, I am at 3
-[peer] 22:02:07.303910 main.go:633: 4:Accepted new Connection
-[peer] 22:02:07.304148 main.go:103: 4:Got update message, iteration 3
-[peer] 22:02:07.304657 main.go:107: RONI for update is -0.005446 
-[peer] 22:02:07.980914 main.go:777: 4:Adding block to chain
-[peer] 22:02:07.980948 honest.go:222: Trying to append block with iteration:2
-[peer] 22:02:07.980964 blockchain.go:68: Returning a block
-[peer] 22:02:07.980975 blockchain.go:68: Returning a block
-[peer] 22:02:07.980984 honest.go:228: Append foiled
-[peer] 22:02:07.980992 main.go:781: 4:Adding block to chain
-[peer] 22:02:07.981000 main.go:798: 4:Bool lock released
-[peer] 22:02:08.000962 main.go:777: 4:Adding block to chain
-[peer] 22:02:08.000999 honest.go:222: Trying to append block with iteration:2
-[peer] 22:02:08.001014 blockchain.go:68: Returning a block
-[peer] 22:02:08.001022 blockchain.go:68: Returning a block
-[peer] 22:02:08.001029 honest.go:228: Append foiled
-[peer] 22:02:08.001040 main.go:781: 4:Adding block to chain
-[peer] 22:02:08.001051 main.go:798: 4:Bool lock released
-[peer] 22:02:08.003104 main.go:777: 4:Adding block to chain
-[peer] 22:02:08.003167 honest.go:222: Trying to append block with iteration:2
-[peer] 22:02:08.003176 blockchain.go:68: Returning a block
-[peer] 22:02:08.003183 blockchain.go:68: Returning a block
-[peer] 22:02:08.003192 honest.go:228: Append foiled
-[peer] 22:02:08.003203 main.go:781: 4:Adding block to chain
-[peer] 22:02:08.003213 main.go:798: 4:Bool lock released
-[peer] 22:02:08.133520 main.go:777: 4:Adding block to chain
-[peer] 22:02:08.133552 honest.go:222: Trying to append block with iteration:3
-[peer] 22:02:08.133572 blockchain.go:71: Returning nil
-[peer] 22:02:08.133581 honest.go:238: Append successful
-[peer] 22:02:08.133592 main.go:781: 4:Adding block to chain
-[peer] 22:02:08.133598 main.go:787: 4:Checking convergence
-[peer] 22:02:08.135275 main.go:633: 4:Accepted new Connection
-[peer] 22:02:08.135967 main.go:130: 4:Got block message, iteration 3
-[peer] 22:02:08.135994 main.go:137: 4:Acquiring bool lock
-[peer] 22:02:08.174913 honest.go:81: 4Train Error is 0.06105 in Iteration 3
-[peer] 22:02:08.174960 main.go:790: 4:Convergence checked
-[peer] 22:02:08.175009 main.go:793: 4:Bool lock released
-[peer] 22:02:08.175087 main.go:664: 4:Sending block. Iteration: 3
-[peer] 22:02:08.175052 main.go:139: 4:Acquired bool lock
-[peer] 22:02:08.177901 main.go:140: Chain Length:5
-[peer] 22:02:08.178164 blockchain.go:68: Returning a block
-[peer] 22:02:08.178200 main.go:142: Chain Length:5
-[peer] 22:02:08.178238 main.go:147: Already have block
-[peer] 22:02:08.178324 main.go:152: 4:Bool lock released
-[peer] 22:02:08.178404 blockchain.go:68: Returning a block
-[peer] 22:02:08.178469 blockchain.go:68: Returning a block
-[peer] 22:02:08.178541 main.go:179: 4:Equal block
-[peer] 22:02:08.178658 main.go:777: 4:Adding block to chain
-[peer] 22:02:08.179179 honest.go:222: Trying to append block with iteration:3
-[peer] 22:02:08.179290 blockchain.go:68: Returning a block
-[peer] 22:02:08.179364 blockchain.go:68: Returning a block
-[peer] 22:02:08.180069 honest.go:228: Append foiled
-[peer] 22:02:08.180381 main.go:781: 4:Adding block to chain
-[peer] 22:02:08.180493 main.go:798: 4:Bool lock released
-[peer] 22:02:08.178299 main.go:729: 4:Block sent to peer successful
-[err] 22:02:08.180678 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:08.177533 main.go:729: 4:Block sent to peer successful
-[err] 22:02:08.180889 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:08.177687 main.go:729: 4:Block sent to peer successful
-[err] 22:02:08.181438 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:08.177497 main.go:729: 4:Block sent to peer successful
-[err] 22:02:08.181754 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:08.180641 main.go:777: 4:Adding block to chain
-[peer] 22:02:08.181853 honest.go:222: Trying to append block with iteration:3
-[peer] 22:02:08.181893 blockchain.go:68: Returning a block
-[peer] 22:02:08.181923 blockchain.go:68: Returning a block
-[peer] 22:02:08.181952 honest.go:228: Append foiled
-[peer] 22:02:08.181990 main.go:781: 4:Adding block to chain
-[peer] 22:02:08.182020 main.go:798: 4:Bool lock released
-[peer] 22:02:08.182051 main.go:777: 4:Adding block to chain
-[peer] 22:02:08.182090 honest.go:222: Trying to append block with iteration:3
-[peer] 22:02:08.182120 blockchain.go:68: Returning a block
-[peer] 22:02:08.182149 blockchain.go:68: Returning a block
-[peer] 22:02:08.182186 honest.go:228: Append foiled
-[peer] 22:02:08.182215 main.go:781: 4:Adding block to chain
-[peer] 22:02:08.182244 main.go:798: 4:Bool lock released
-[peer] 22:02:08.182283 main.go:777: 4:Adding block to chain
-[peer] 22:02:08.182314 honest.go:222: Trying to append block with iteration:3
-[peer] 22:02:08.182343 blockchain.go:68: Returning a block
-[peer] 22:02:08.182379 blockchain.go:68: Returning a block
-[peer] 22:02:08.182409 honest.go:228: Append foiled
-[peer] 22:02:08.182438 main.go:781: 4:Adding block to chain
-[peer] 22:02:08.182476 main.go:798: 4:Bool lock released
-[peer] 22:02:08.182507 main.go:777: 4:Adding block to chain
-[peer] 22:02:08.182536 honest.go:222: Trying to append block with iteration:3
-[peer] 22:02:08.182573 blockchain.go:68: Returning a block
-[peer] 22:02:08.182602 blockchain.go:68: Returning a block
-[peer] 22:02:08.182631 honest.go:228: Append foiled
-[peer] 22:02:08.182669 main.go:781: 4:Adding block to chain
-[peer] 22:02:08.182732 main.go:798: 4:Bool lock released
-[peer] 22:02:08.182773 main.go:777: 4:Adding block to chain
-[peer] 22:02:08.182803 honest.go:222: Trying to append block with iteration:3
-[peer] 22:02:08.182832 blockchain.go:68: Returning a block
-[peer] 22:02:08.182868 blockchain.go:68: Returning a block
-[peer] 22:02:08.182897 honest.go:228: Append foiled
-[peer] 22:02:08.182925 main.go:781: 4:Adding block to chain
-[peer] 22:02:08.182958 main.go:798: 4:Bool lock released
-[peer] 22:02:08.184028 main.go:777: 4:Adding block to chain
-[peer] 22:02:08.184047 honest.go:222: Trying to append block with iteration:3
-[peer] 22:02:08.184056 blockchain.go:68: Returning a block
-[peer] 22:02:08.184065 blockchain.go:68: Returning a block
-[peer] 22:02:08.184074 honest.go:228: Append foiled
-[peer] 22:02:08.184084 main.go:781: 4:Adding block to chain
-[peer] 22:02:08.184093 main.go:798: 4:Bool lock released
-[peer] 22:02:08.186178 main.go:729: 4:Block sent to peer successful
-[err] 22:02:08.186228 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:08.186251 main.go:729: 4:Block sent to peer successful
-[peer] 22:02:08.186178 main.go:729: 4:Block sent to peer successful
-[peer] 22:02:08.186272 main.go:729: 4:Block sent to peer successful
-[peer] 22:02:08.186272 main.go:729: 4:Block sent to peer successful
-[err] 22:02:08.186282 main.go:302: Error in sending block, err = Stale Update/Block
-[err] 22:02:08.186356 main.go:302: Error in sending block, err = Stale Update/Block
-[err] 22:02:08.186368 main.go:302: Error in sending block, err = Stale Update/Block
-[err] 22:02:08.186380 main.go:302: Error in sending block, err = Stale Update/Block
-[peer] 22:02:08.186567 main.go:684: 4:RPC calls successfully returned. Iteration: 3
-[peer] 22:02:08.187772 honest.go:81: 4Train Error is 0.06105 in Iteration 3
-[peer] 22:02:08.187835 main.go:692: 4:Preparing for next Iteration. Current Iteration: 3
-[peer] 22:02:08.187867 main.go:588: 4:Acquiring bool lock
-[peer] 22:02:08.187898 main.go:590: 4:Acquired bool lock
-[peer] 22:02:08.190019 main.go:605: 4:I am verifier. IterationCount:4
-[peer] 22:02:08.190064 main.go:614: 4:Bool lock released
-[peer] 22:02:08.190101 main.go:914: 4:Starting Update Deadline Timer. Iteration: 4
-[peer] 22:02:08.206593 main.go:633: 4:Accepted new Connection
-[peer] 22:02:08.207014 main.go:103: 4:Got update message, iteration 4
-[peer] 22:02:08.215223 main.go:107: RONI for update is 0.017559 
+[peer] 22:55:43.580745 honest.go:122: 4Sucessfully pulled dataset. Features: 25
+[peer] 22:55:43.580946 main.go:487: 4:Announcing myself to network
+[peer] 22:55:43.580982 main.go:492: 4:Calling {198.162.52.126 %!s(int=8000) }
+[peer] 22:55:43.580997 main.go:511: 4:Inside callRegisterRPC
+[peer] 22:55:43.581002 main.go:516: 4Making RPC call
+[peer] 22:55:43.581022 main.go:629: 4:Peer started. Receiving on 8004
+[err] 22:55:43.581087 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.126:8000, err = dial tcp 198.162.52.126:8000: connect: connection refused
+[peer] 22:55:43.581102 main.go:492: 4:Calling {198.162.52.126 %!s(int=8001) }
+[peer] 22:55:43.581108 main.go:511: 4:Inside callRegisterRPC
+[peer] 22:55:43.581112 main.go:516: 4Making RPC call
+[err] 22:55:43.581152 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.126:8001, err = dial tcp 198.162.52.126:8001: connect: connection refused
+[peer] 22:55:43.581163 main.go:492: 4:Calling {198.162.52.126 %!s(int=8002) }
+[peer] 22:55:43.581168 main.go:511: 4:Inside callRegisterRPC
+[peer] 22:55:43.581173 main.go:516: 4Making RPC call
+[peer] 22:55:43.581233 main.go:522: 4RPC dial successful
+[peer] 22:55:43.581243 main.go:525: 4:Calling RPC:198.162.52.126:8002
+[peer] 22:55:43.581257 main.go:527: 4:RPC called198.162.52.126:8002
+[peer] 22:55:43.581782 main.go:534: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:55:43.581803 main.go:541: Chain length received:7
+[peer] 22:55:43.581809 main.go:542: My chain length:1
+[peer] 22:55:43.581814 honest.go:340: Received chain length:7
+[peer] 22:55:43.581819 honest.go:341: Appended chain length:7
+[peer] 22:55:43.581823 main.go:555: 4Got lastest chain until iteration 5
+[peer] 22:55:43.581867 main.go:492: 4:Calling {198.162.52.126 %!s(int=8003) }
+[peer] 22:55:43.581880 main.go:511: 4:Inside callRegisterRPC
+[peer] 22:55:43.581891 main.go:516: 4Making RPC call
+[err] 22:55:43.581955 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.126:8003, err = dial tcp 198.162.52.126:8003: connect: connection refused
+[peer] 22:55:43.581976 main.go:492: 4:Calling {198.162.52.126 %!s(int=8005) }
+[peer] 22:55:43.581984 main.go:511: 4:Inside callRegisterRPC
+[peer] 22:55:43.581991 main.go:516: 4Making RPC call
+[peer] 22:55:43.582050 main.go:522: 4RPC dial successful
+[peer] 22:55:43.582059 main.go:525: 4:Calling RPC:198.162.52.126:8005
+[peer] 22:55:43.582065 main.go:527: 4:RPC called198.162.52.126:8005
+[peer] 22:55:43.582450 main.go:534: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:55:43.582463 main.go:541: Chain length received:7
+[peer] 22:55:43.582469 main.go:542: My chain length:7
+[peer] 22:55:43.582498 main.go:492: 4:Calling {198.162.52.126 %!s(int=8006) }
+[peer] 22:55:43.582506 main.go:511: 4:Inside callRegisterRPC
+[peer] 22:55:43.582511 main.go:516: 4Making RPC call
+[peer] 22:55:43.582572 main.go:522: 4RPC dial successful
+[peer] 22:55:43.582590 main.go:525: 4:Calling RPC:198.162.52.126:8006
+[peer] 22:55:43.582601 main.go:527: 4:RPC called198.162.52.126:8006
+[peer] 22:55:43.582953 main.go:534: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:55:43.582968 main.go:541: Chain length received:7
+[peer] 22:55:43.582977 main.go:542: My chain length:7
+[peer] 22:55:43.583016 main.go:492: 4:Calling {198.162.52.126 %!s(int=8007) }
+[peer] 22:55:43.583025 main.go:511: 4:Inside callRegisterRPC
+[peer] 22:55:43.583032 main.go:516: 4Making RPC call
+[peer] 22:55:43.583096 main.go:522: 4RPC dial successful
+[peer] 22:55:43.583110 main.go:525: 4:Calling RPC:198.162.52.126:8007
+[peer] 22:55:43.583120 main.go:527: 4:RPC called198.162.52.126:8007
+[peer] 22:55:43.583462 main.go:534: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:55:43.583483 main.go:541: Chain length received:7
+[peer] 22:55:43.583489 main.go:542: My chain length:7
+[peer] 22:55:43.583520 main.go:492: 4:Calling {198.162.52.126 %!s(int=8008) }
+[peer] 22:55:43.583528 main.go:511: 4:Inside callRegisterRPC
+[peer] 22:55:43.583533 main.go:516: 4Making RPC call
+[peer] 22:55:43.583592 main.go:522: 4RPC dial successful
+[peer] 22:55:43.583604 main.go:525: 4:Calling RPC:198.162.52.126:8008
+[peer] 22:55:43.583611 main.go:527: 4:RPC called198.162.52.126:8008
+[peer] 22:55:43.583979 main.go:534: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:55:43.583990 main.go:541: Chain length received:7
+[peer] 22:55:43.583995 main.go:542: My chain length:7
+[peer] 22:55:43.584020 main.go:492: 4:Calling {198.162.52.126 %!s(int=8009) }
+[peer] 22:55:43.584032 main.go:511: 4:Inside callRegisterRPC
+[peer] 22:55:43.584037 main.go:516: 4Making RPC call
+[err] 22:55:43.584083 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.126:8009, err = dial tcp 198.162.52.126:8009: connect: connection refused
+[peer] 22:55:43.584103 main.go:492: 4:Calling {198.162.52.57 %!s(int=8010) }
+[peer] 22:55:43.584111 main.go:511: 4:Inside callRegisterRPC
+[peer] 22:55:43.584116 main.go:516: 4Making RPC call
+[peer] 22:55:43.584382 main.go:522: 4RPC dial successful
+[peer] 22:55:43.584393 main.go:525: 4:Calling RPC:198.162.52.57:8010
+[peer] 22:55:43.584398 main.go:527: 4:RPC called198.162.52.57:8010
+[peer] 22:55:43.585408 main.go:534: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:55:43.585419 main.go:541: Chain length received:7
+[peer] 22:55:43.585424 main.go:542: My chain length:7
+[peer] 22:55:43.585470 main.go:492: 4:Calling {198.162.52.57 %!s(int=8011) }
+[peer] 22:55:43.585479 main.go:511: 4:Inside callRegisterRPC
+[peer] 22:55:43.585484 main.go:516: 4Making RPC call
+[peer] 22:55:43.585906 main.go:522: 4RPC dial successful
+[peer] 22:55:43.585916 main.go:525: 4:Calling RPC:198.162.52.57:8011
+[peer] 22:55:43.585921 main.go:527: 4:RPC called198.162.52.57:8011
+[peer] 22:55:43.586985 main.go:534: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:55:43.587001 main.go:541: Chain length received:7
+[peer] 22:55:43.587007 main.go:542: My chain length:7
+[peer] 22:55:43.587038 main.go:492: 4:Calling {198.162.52.57 %!s(int=8012) }
+[peer] 22:55:43.587046 main.go:511: 4:Inside callRegisterRPC
+[peer] 22:55:43.587051 main.go:516: 4Making RPC call
+[peer] 22:55:43.587360 main.go:522: 4RPC dial successful
+[peer] 22:55:43.587371 main.go:525: 4:Calling RPC:198.162.52.57:8012
+[peer] 22:55:43.587377 main.go:527: 4:RPC called198.162.52.57:8012
+[peer] 22:55:43.588475 main.go:534: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:55:43.588488 main.go:541: Chain length received:7
+[peer] 22:55:43.588493 main.go:542: My chain length:7
+[peer] 22:55:43.588514 main.go:492: 4:Calling {198.162.52.57 %!s(int=8013) }
+[peer] 22:55:43.588521 main.go:511: 4:Inside callRegisterRPC
+[peer] 22:55:43.588526 main.go:516: 4Making RPC call
+[peer] 22:55:43.588950 main.go:522: 4RPC dial successful
+[peer] 22:55:43.588962 main.go:525: 4:Calling RPC:198.162.52.57:8013
+[peer] 22:55:43.588971 main.go:527: 4:RPC called198.162.52.57:8013
+[peer] 22:55:43.590038 main.go:534: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:55:43.590058 main.go:541: Chain length received:7
+[peer] 22:55:43.590065 main.go:542: My chain length:7
+[peer] 22:55:43.590103 main.go:492: 4:Calling {198.162.52.57 %!s(int=8014) }
+[peer] 22:55:43.590112 main.go:511: 4:Inside callRegisterRPC
+[peer] 22:55:43.590117 main.go:516: 4Making RPC call
+[peer] 22:55:43.590428 main.go:522: 4RPC dial successful
+[peer] 22:55:43.590440 main.go:525: 4:Calling RPC:198.162.52.57:8014
+[peer] 22:55:43.590446 main.go:527: 4:RPC called198.162.52.57:8014
+[peer] 22:55:43.591505 main.go:534: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:55:43.591519 main.go:541: Chain length received:7
+[peer] 22:55:43.591523 main.go:542: My chain length:7
+[peer] 22:55:43.591551 main.go:492: 4:Calling {198.162.52.57 %!s(int=8015) }
+[peer] 22:55:43.591566 main.go:511: 4:Inside callRegisterRPC
+[peer] 22:55:43.591571 main.go:516: 4Making RPC call
+[peer] 22:55:43.591997 main.go:522: 4RPC dial successful
+[peer] 22:55:43.592008 main.go:525: 4:Calling RPC:198.162.52.57:8015
+[peer] 22:55:43.592017 main.go:527: 4:RPC called198.162.52.57:8015
+[peer] 22:55:43.593085 main.go:534: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:55:43.593096 main.go:541: Chain length received:7
+[peer] 22:55:43.593101 main.go:542: My chain length:7
+[peer] 22:55:43.593121 main.go:492: 4:Calling {198.162.52.57 %!s(int=8016) }
+[peer] 22:55:43.593128 main.go:511: 4:Inside callRegisterRPC
+[peer] 22:55:43.593133 main.go:516: 4Making RPC call
+[err] 22:55:43.593555 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.57:8016, err = dial tcp 198.162.52.57:8016: connect: connection refused
+[peer] 22:55:43.593573 main.go:492: 4:Calling {198.162.52.57 %!s(int=8017) }
+[peer] 22:55:43.593583 main.go:511: 4:Inside callRegisterRPC
+[peer] 22:55:43.593592 main.go:516: 4Making RPC call
+[err] 22:55:43.593799 main.go:302: Peer offline.Couldn't connect to peer: 198.162.52.57:8017, err = dial tcp 198.162.52.57:8017: connect: connection refused
+[peer] 22:55:43.593813 main.go:492: 4:Calling {198.162.52.57 %!s(int=8018) }
+[peer] 22:55:43.593822 main.go:511: 4:Inside callRegisterRPC
+[peer] 22:55:43.593829 main.go:516: 4Making RPC call
+[peer] 22:55:43.594128 main.go:522: 4RPC dial successful
+[peer] 22:55:43.594139 main.go:525: 4:Calling RPC:198.162.52.57:8018
+[peer] 22:55:43.594148 main.go:527: 4:RPC called198.162.52.57:8018
+[peer] 22:55:43.595232 main.go:534: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:55:43.595245 main.go:541: Chain length received:7
+[peer] 22:55:43.595253 main.go:542: My chain length:7
+[peer] 22:55:43.595281 main.go:492: 4:Calling {198.162.52.57 %!s(int=8019) }
+[peer] 22:55:43.595291 main.go:511: 4:Inside callRegisterRPC
+[peer] 22:55:43.595299 main.go:516: 4Making RPC call
+[peer] 22:55:43.595700 main.go:522: 4RPC dial successful
+[peer] 22:55:43.595713 main.go:525: 4:Calling RPC:198.162.52.57:8019
+[peer] 22:55:43.595720 main.go:527: 4:RPC called198.162.52.57:8019
+[peer] 22:55:43.596782 main.go:534: 4:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 22:55:43.596800 main.go:541: Chain length received:7
+[peer] 22:55:43.596810 main.go:542: My chain length:7
+[peer] 22:55:43.596839 main.go:502: 4:Bootstrapped Network. Calling signal
+[peer] 22:55:43.596849 main.go:504: 4:Bootstrapped Network. Signal called
+[peer] 22:55:43.596859 main.go:588: 4:Acquiring bool lock
+[peer] 22:55:43.596867 main.go:590: 4:Acquired bool lock
+[peer] 22:55:43.598018 main.go:609: 4:I am not verifier IterationCount:6
+[peer] 22:55:43.598032 main.go:614: 4:Bool lock released
+[peer] 22:55:43.598041 main.go:824: 4:Computing Update
+[peer] 22:55:43.598376 main.go:270: 4 : VRF returned ID map[13:{}]
+[peer] 22:55:43.598392 main.go:280: 4 :Verifiers [198.162.52.57:8013] returned.
+[peer] 22:55:43.598714 main.go:869: 4:Making RPC Call to Verifier. Sending Update, Iteration:6
+[peer] 22:55:43.608149 main.go:876: 4:Update sent successfully
+[peer] 22:55:43.651331 main.go:633: 4:Accepted new Connection
+[peer] 22:55:43.651485 main.go:213: 4:Registering peer:198.162.52.126:8001
+[peer] 22:55:43.651509 main.go:223: Advertising chain to peer with length 7
+[peer] 22:55:43.665437 main.go:633: 4:Accepted new Connection
+[peer] 22:55:43.665654 main.go:213: 4:Registering peer:198.162.52.126:8009
+[peer] 22:55:43.665665 main.go:223: Advertising chain to peer with length 7
+[peer] 22:55:58.497880 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.535165 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.535213 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.535243 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.535273 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.535598 main.go:130: 4:Got block message, iteration 6
+[peer] 22:55:58.535633 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.535654 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.535681 main.go:140: Chain Length:7
+[peer] 22:55:58.535694 blockchain.go:71: Returning nil
+[peer] 22:55:58.535705 main.go:142: Chain Length:7
+[peer] 22:55:58.535597 main.go:130: 4:Got block message, iteration 6
+[peer] 22:55:58.535734 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.535717 main.go:187: 4:Sending to channel
+[peer] 22:55:58.535755 main.go:193: 4:Sent to channel
+[peer] 22:55:58.535768 main.go:195: 4:Returning
+[peer] 22:55:58.535904 main.go:777: 4:Adding block to chain
+[peer] 22:55:58.535965 honest.go:222: Trying to append block with iteration:6
+[peer] 22:55:58.536004 blockchain.go:71: Returning nil
+[peer] 22:55:58.536040 honest.go:238: Append successful
+[peer] 22:55:58.536079 main.go:781: 4:Adding block to chain
+[peer] 22:55:58.536115 main.go:787: 4:Checking convergence
+[peer] 22:55:58.548584 main.go:955: 4:Block Received. Appending to chain and moving on to the next iteration. 6
+[peer] 22:55:58.571347 honest.go:81: 4Train Error is 0.07257 in Iteration 6
+[peer] 22:55:58.572537 main.go:790: 4:Convergence checked
+[peer] 22:55:58.572756 main.go:793: 4:Bool lock released
+[peer] 22:55:58.575749 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.575812 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.575866 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.576041 main.go:130: 4:Got block message, iteration 6
+[peer] 22:55:58.576104 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.576142 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.576177 main.go:140: Chain Length:8
+[peer] 22:55:58.576211 blockchain.go:68: Returning a block
+[peer] 22:55:58.576245 main.go:142: Chain Length:8
+[peer] 22:55:58.576279 main.go:147: Already have block
+[peer] 22:55:58.576312 main.go:152: 4:Bool lock released
+[peer] 22:55:58.576344 blockchain.go:68: Returning a block
+[peer] 22:55:58.576378 blockchain.go:68: Returning a block
+[peer] 22:55:58.576410 main.go:179: 4:Equal block
+[peer] 22:55:58.576185 main.go:130: 4:Got block message, iteration 6
+[peer] 22:55:58.576554 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.576415 main.go:130: 4:Got block message, iteration 6
+[peer] 22:55:58.576634 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.575816 main.go:130: 4:Got block message, iteration 6
+[peer] 22:55:58.576695 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.576423 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.576761 main.go:140: Chain Length:8
+[peer] 22:55:58.576793 blockchain.go:68: Returning a block
+[peer] 22:55:58.576825 main.go:142: Chain Length:8
+[peer] 22:55:58.576856 main.go:147: Already have block
+[peer] 22:55:58.576890 main.go:152: 4:Bool lock released
+[peer] 22:55:58.576921 blockchain.go:68: Returning a block
+[peer] 22:55:58.576954 blockchain.go:68: Returning a block
+[peer] 22:55:58.576986 main.go:179: 4:Equal block
+[peer] 22:55:58.577061 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.577100 main.go:140: Chain Length:8
+[peer] 22:55:58.577132 blockchain.go:68: Returning a block
+[peer] 22:55:58.577164 main.go:142: Chain Length:8
+[peer] 22:55:58.577196 main.go:147: Already have block
+[peer] 22:55:58.577228 main.go:152: 4:Bool lock released
+[peer] 22:55:58.577260 blockchain.go:68: Returning a block
+[peer] 22:55:58.577291 blockchain.go:68: Returning a block
+[peer] 22:55:58.577323 main.go:179: 4:Equal block
+[peer] 22:55:58.577397 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.577461 main.go:140: Chain Length:8
+[peer] 22:55:58.577504 blockchain.go:68: Returning a block
+[peer] 22:55:58.577540 main.go:142: Chain Length:8
+[peer] 22:55:58.577571 main.go:147: Already have block
+[peer] 22:55:58.577628 main.go:152: 4:Bool lock released
+[peer] 22:55:58.577667 blockchain.go:68: Returning a block
+[peer] 22:55:58.577721 blockchain.go:68: Returning a block
+[peer] 22:55:58.577753 main.go:179: 4:Equal block
+[peer] 22:55:58.577827 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.577865 main.go:140: Chain Length:8
+[peer] 22:55:58.577897 blockchain.go:68: Returning a block
+[peer] 22:55:58.578026 main.go:142: Chain Length:8
+[peer] 22:55:58.578060 main.go:147: Already have block
+[peer] 22:55:58.578101 main.go:152: 4:Bool lock released
+[peer] 22:55:58.578133 blockchain.go:68: Returning a block
+[peer] 22:55:58.578164 blockchain.go:68: Returning a block
+[peer] 22:55:58.578196 main.go:179: 4:Equal block
+[peer] 22:55:58.576435 main.go:664: 4:Sending block. Iteration: 6
+[peer] 22:55:58.579319 main.go:130: 4:Got block message, iteration 6
+[peer] 22:55:58.579343 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.579353 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.579361 main.go:140: Chain Length:8
+[peer] 22:55:58.579369 blockchain.go:68: Returning a block
+[peer] 22:55:58.579377 main.go:142: Chain Length:8
+[peer] 22:55:58.579386 main.go:147: Already have block
+[peer] 22:55:58.579396 main.go:152: 4:Bool lock released
+[peer] 22:55:58.579404 blockchain.go:68: Returning a block
+[peer] 22:55:58.579412 blockchain.go:68: Returning a block
+[peer] 22:55:58.579421 main.go:179: 4:Equal block
+[peer] 22:55:58.580240 main.go:130: 4:Got block message, iteration 6
+[peer] 22:55:58.580267 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.580276 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.580285 main.go:140: Chain Length:8
+[peer] 22:55:58.580294 blockchain.go:68: Returning a block
+[peer] 22:55:58.580319 main.go:142: Chain Length:8
+[peer] 22:55:58.580328 main.go:147: Already have block
+[peer] 22:55:58.580338 main.go:152: 4:Bool lock released
+[peer] 22:55:58.580346 blockchain.go:68: Returning a block
+[peer] 22:55:58.580355 blockchain.go:68: Returning a block
+[peer] 22:55:58.580363 main.go:179: 4:Equal block
+[peer] 22:55:58.581115 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.581132 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.582533 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.582547 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.582845 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.582859 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.583255 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.583273 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.583459 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.583476 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.600301 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.600321 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.600316 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.600370 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.607636 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.607662 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.612283 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.618612 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.618627 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.619873 main.go:130: 4:Got block message, iteration 6
+[peer] 22:55:58.619897 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.619905 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.619912 main.go:140: Chain Length:8
+[peer] 22:55:58.619919 blockchain.go:68: Returning a block
+[peer] 22:55:58.619926 main.go:142: Chain Length:8
+[peer] 22:55:58.619933 main.go:147: Already have block
+[peer] 22:55:58.619945 main.go:152: 4:Bool lock released
+[peer] 22:55:58.619952 blockchain.go:68: Returning a block
+[peer] 22:55:58.619960 blockchain.go:68: Returning a block
+[peer] 22:55:58.619967 main.go:179: 4:Equal block
+[peer] 22:55:58.630458 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.631528 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.631542 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.632106 main.go:130: 4:Got block message, iteration 6
+[peer] 22:55:58.632129 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.632136 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.632144 main.go:140: Chain Length:8
+[peer] 22:55:58.632150 blockchain.go:68: Returning a block
+[peer] 22:55:58.632171 main.go:142: Chain Length:8
+[peer] 22:55:58.632181 main.go:147: Already have block
+[peer] 22:55:58.632189 main.go:152: 4:Bool lock released
+[peer] 22:55:58.632197 blockchain.go:68: Returning a block
+[peer] 22:55:58.632203 blockchain.go:68: Returning a block
+[peer] 22:55:58.632210 main.go:179: 4:Equal block
+[peer] 22:55:58.674499 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.674547 main.go:302: Error in sending block, err = unexpected EOF
+[peer] 22:55:58.680770 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.682180 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.682196 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.685622 main.go:130: 4:Got block message, iteration 6
+[peer] 22:55:58.685656 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.685665 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.685671 main.go:140: Chain Length:8
+[peer] 22:55:58.685676 blockchain.go:68: Returning a block
+[peer] 22:55:58.685682 main.go:142: Chain Length:8
+[peer] 22:55:58.685687 main.go:147: Already have block
+[peer] 22:55:58.685693 main.go:152: 4:Bool lock released
+[peer] 22:55:58.685698 blockchain.go:68: Returning a block
+[peer] 22:55:58.685712 blockchain.go:68: Returning a block
+[peer] 22:55:58.685717 main.go:179: 4:Equal block
+[peer] 22:55:58.701914 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.701929 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.702562 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.744878 main.go:130: 4:Got block message, iteration 6
+[peer] 22:55:58.744913 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.744925 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.744932 main.go:140: Chain Length:8
+[peer] 22:55:58.744938 blockchain.go:68: Returning a block
+[peer] 22:55:58.744947 main.go:142: Chain Length:8
+[peer] 22:55:58.744954 main.go:147: Already have block
+[peer] 22:55:58.744963 main.go:152: 4:Bool lock released
+[peer] 22:55:58.744969 blockchain.go:68: Returning a block
+[peer] 22:55:58.744976 blockchain.go:68: Returning a block
+[peer] 22:55:58.744982 main.go:179: 4:Equal block
+[peer] 22:55:58.760596 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.761355 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.761378 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.766585 main.go:130: 4:Got block message, iteration 6
+[peer] 22:55:58.766653 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.766690 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.766744 main.go:140: Chain Length:8
+[peer] 22:55:58.766780 blockchain.go:68: Returning a block
+[peer] 22:55:58.766814 main.go:142: Chain Length:8
+[peer] 22:55:58.766929 main.go:147: Already have block
+[peer] 22:55:58.766943 main.go:152: 4:Bool lock released
+[peer] 22:55:58.766952 blockchain.go:68: Returning a block
+[peer] 22:55:58.766985 blockchain.go:68: Returning a block
+[peer] 22:55:58.766994 main.go:179: 4:Equal block
+[peer] 22:55:58.827597 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.843139 main.go:130: 4:Got block message, iteration 6
+[peer] 22:55:58.843290 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.843346 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.843388 main.go:140: Chain Length:8
+[peer] 22:55:58.843422 blockchain.go:68: Returning a block
+[peer] 22:55:58.843448 main.go:142: Chain Length:8
+[peer] 22:55:58.843558 main.go:147: Already have block
+[peer] 22:55:58.843630 main.go:152: 4:Bool lock released
+[peer] 22:55:58.843658 blockchain.go:68: Returning a block
+[peer] 22:55:58.843682 blockchain.go:68: Returning a block
+[peer] 22:55:58.843710 main.go:179: 4:Equal block
+[peer] 22:55:58.843278 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.843803 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.843855 main.go:684: 4:RPC calls successfully returned. Iteration: 6
+[peer] 22:55:58.848406 honest.go:81: 4Train Error is 0.07257 in Iteration 6
+[peer] 22:55:58.849351 main.go:692: 4:Preparing for next Iteration. Current Iteration: 6
+[peer] 22:55:58.849537 main.go:588: 4:Acquiring bool lock
+[peer] 22:55:58.849620 main.go:590: 4:Acquired bool lock
+[peer] 22:55:58.852013 main.go:609: 4:I am not verifier IterationCount:7
+[peer] 22:55:58.852050 main.go:614: 4:Bool lock released
+[peer] 22:55:58.853436 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.853623 main.go:130: 4:Got block message, iteration 7
+[peer] 22:55:58.853643 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.853650 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.853656 main.go:140: Chain Length:8
+[peer] 22:55:58.853663 blockchain.go:71: Returning nil
+[peer] 22:55:58.853670 main.go:142: Chain Length:8
+[peer] 22:55:58.853676 main.go:187: 4:Sending to channel
+[peer] 22:55:58.853683 main.go:193: 4:Sent to channel
+[peer] 22:55:58.853691 main.go:195: 4:Returning
+[peer] 22:55:58.853769 main.go:777: 4:Adding block to chain
+[peer] 22:55:58.853784 honest.go:222: Trying to append block with iteration:7
+[peer] 22:55:58.853791 blockchain.go:71: Returning nil
+[peer] 22:55:58.853797 honest.go:238: Append successful
+[peer] 22:55:58.853805 main.go:781: 4:Adding block to chain
+[peer] 22:55:58.853811 main.go:787: 4:Checking convergence
+[peer] 22:55:58.855972 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.856646 main.go:130: 4:Got block message, iteration 7
+[peer] 22:55:58.856980 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.857812 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.857989 main.go:130: 4:Got block message, iteration 7
+[peer] 22:55:58.858032 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.859174 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.859663 main.go:130: 4:Got block message, iteration 7
+[peer] 22:55:58.859709 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.868263 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.869432 main.go:130: 4:Got block message, iteration 7
+[peer] 22:55:58.870186 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.872770 honest.go:81: 4Train Error is 0.07257 in Iteration 7
+[peer] 22:55:58.872789 main.go:790: 4:Convergence checked
+[peer] 22:55:58.872807 main.go:793: 4:Bool lock released
+[peer] 22:55:58.872833 main.go:664: 4:Sending block. Iteration: 7
+[peer] 22:55:58.872927 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.872939 main.go:140: Chain Length:9
+[peer] 22:55:58.872946 blockchain.go:68: Returning a block
+[peer] 22:55:58.872953 main.go:142: Chain Length:9
+[peer] 22:55:58.872960 main.go:147: Already have block
+[peer] 22:55:58.872968 main.go:152: 4:Bool lock released
+[peer] 22:55:58.872975 blockchain.go:68: Returning a block
+[peer] 22:55:58.872981 blockchain.go:68: Returning a block
+[peer] 22:55:58.872988 main.go:179: 4:Equal block
+[peer] 22:55:58.873037 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.873048 main.go:140: Chain Length:9
+[peer] 22:55:58.873054 blockchain.go:68: Returning a block
+[peer] 22:55:58.873061 main.go:142: Chain Length:9
+[peer] 22:55:58.873067 main.go:147: Already have block
+[peer] 22:55:58.873075 main.go:152: 4:Bool lock released
+[peer] 22:55:58.873082 blockchain.go:68: Returning a block
+[peer] 22:55:58.873088 blockchain.go:68: Returning a block
+[peer] 22:55:58.873095 main.go:179: 4:Equal block
+[peer] 22:55:58.873133 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.873143 main.go:140: Chain Length:9
+[peer] 22:55:58.873149 blockchain.go:68: Returning a block
+[peer] 22:55:58.873155 main.go:142: Chain Length:9
+[peer] 22:55:58.873161 main.go:147: Already have block
+[peer] 22:55:58.873169 main.go:152: 4:Bool lock released
+[peer] 22:55:58.873176 blockchain.go:68: Returning a block
+[peer] 22:55:58.873182 blockchain.go:68: Returning a block
+[peer] 22:55:58.873188 main.go:179: 4:Equal block
+[peer] 22:55:58.873415 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.873428 main.go:140: Chain Length:9
+[peer] 22:55:58.873435 blockchain.go:68: Returning a block
+[peer] 22:55:58.873471 main.go:142: Chain Length:9
+[peer] 22:55:58.873481 main.go:147: Already have block
+[peer] 22:55:58.873488 main.go:152: 4:Bool lock released
+[peer] 22:55:58.873494 blockchain.go:68: Returning a block
+[peer] 22:55:58.873501 blockchain.go:68: Returning a block
+[peer] 22:55:58.873516 main.go:179: 4:Equal block
+[err] 22:55:58.874627 main.go:302: rpc Dial, err = dial tcp 198.162.52.57:8012: connect: connection refused
+[peer] 22:55:58.874665 main.go:751: 4:Peer Unresponsive. Removed Peer:198.162.52.57:8012
+[peer] 22:55:58.875111 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.875874 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.875314 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.876055 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.875609 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:58.875870 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:58.876463 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:58.877099 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.877152 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.877448 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:58.877499 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:58.877886 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:58.878046 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:58.878571 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.878866 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.879648 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.879680 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.881698 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:58.882420 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.884154 main.go:130: 4:Got block message, iteration 7
+[peer] 22:55:58.884179 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.884188 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.884196 main.go:140: Chain Length:9
+[peer] 22:55:58.884203 blockchain.go:68: Returning a block
+[peer] 22:55:58.884212 main.go:142: Chain Length:9
+[peer] 22:55:58.884219 main.go:147: Already have block
+[peer] 22:55:58.884228 main.go:152: 4:Bool lock released
+[peer] 22:55:58.884236 blockchain.go:68: Returning a block
+[peer] 22:55:58.884243 blockchain.go:68: Returning a block
+[peer] 22:55:58.884251 main.go:179: 4:Equal block
+[peer] 22:55:58.896001 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.896142 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.896157 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.896190 main.go:684: 4:RPC calls successfully returned. Iteration: 7
+[peer] 22:55:58.908081 honest.go:81: 4Train Error is 0.07257 in Iteration 7
+[peer] 22:55:58.908100 main.go:692: 4:Preparing for next Iteration. Current Iteration: 7
+[peer] 22:55:58.908109 main.go:588: 4:Acquiring bool lock
+[peer] 22:55:58.908117 main.go:590: 4:Acquired bool lock
+[peer] 22:55:58.909871 main.go:609: 4:I am not verifier IterationCount:8
+[peer] 22:55:58.909884 main.go:614: 4:Bool lock released
+[peer] 22:55:58.909952 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.910129 main.go:130: 4:Got block message, iteration 8
+[peer] 22:55:58.910149 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.910156 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.910164 main.go:140: Chain Length:9
+[peer] 22:55:58.910171 blockchain.go:71: Returning nil
+[peer] 22:55:58.910179 main.go:142: Chain Length:9
+[peer] 22:55:58.910186 main.go:187: 4:Sending to channel
+[peer] 22:55:58.910195 main.go:193: 4:Sent to channel
+[peer] 22:55:58.910204 main.go:195: 4:Returning
+[peer] 22:55:58.910278 main.go:777: 4:Adding block to chain
+[peer] 22:55:58.910294 honest.go:222: Trying to append block with iteration:8
+[peer] 22:55:58.910302 blockchain.go:71: Returning nil
+[peer] 22:55:58.910309 honest.go:238: Append successful
+[peer] 22:55:58.910318 main.go:781: 4:Adding block to chain
+[peer] 22:55:58.910325 main.go:787: 4:Checking convergence
+[peer] 22:55:58.910542 main.go:130: 4:Got block message, iteration 7
+[peer] 22:55:58.910569 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.912156 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.923471 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.923494 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.923512 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.923682 main.go:130: 4:Got block message, iteration 8
+[peer] 22:55:58.923702 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.923858 main.go:130: 4:Got block message, iteration 7
+[peer] 22:55:58.923877 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.924020 main.go:130: 4:Got block message, iteration 8
+[peer] 22:55:58.924038 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.924170 main.go:130: 4:Got block message, iteration 8
+[peer] 22:55:58.924188 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.928434 honest.go:81: 4Train Error is 0.07257 in Iteration 8
+[peer] 22:55:58.928450 main.go:790: 4:Convergence checked
+[peer] 22:55:58.928459 main.go:793: 4:Bool lock released
+[peer] 22:55:58.928521 main.go:664: 4:Sending block. Iteration: 8
+[peer] 22:55:58.928600 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.928613 main.go:140: Chain Length:10
+[peer] 22:55:58.928620 blockchain.go:68: Returning a block
+[peer] 22:55:58.928627 main.go:142: Chain Length:10
+[peer] 22:55:58.928635 main.go:147: Already have block
+[peer] 22:55:58.928644 main.go:152: 4:Bool lock released
+[peer] 22:55:58.928652 blockchain.go:68: Returning a block
+[peer] 22:55:58.928660 blockchain.go:68: Returning a block
+[peer] 22:55:58.928668 main.go:179: 4:Equal block
+[peer] 22:55:58.928716 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.928734 main.go:140: Chain Length:10
+[peer] 22:55:58.928742 blockchain.go:68: Returning a block
+[peer] 22:55:58.928750 main.go:142: Chain Length:10
+[peer] 22:55:58.928757 main.go:147: Already have block
+[peer] 22:55:58.928766 main.go:152: 4:Bool lock released
+[peer] 22:55:58.928774 blockchain.go:68: Returning a block
+[peer] 22:55:58.928781 blockchain.go:68: Returning a block
+[peer] 22:55:58.928789 main.go:179: 4:Equal block
+[peer] 22:55:58.928829 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.928840 main.go:140: Chain Length:10
+[peer] 22:55:58.928847 blockchain.go:68: Returning a block
+[peer] 22:55:58.928854 main.go:142: Chain Length:10
+[peer] 22:55:58.928861 main.go:147: Already have block
+[peer] 22:55:58.928871 main.go:152: 4:Bool lock released
+[peer] 22:55:58.928879 blockchain.go:68: Returning a block
+[peer] 22:55:58.928886 blockchain.go:68: Returning a block
+[peer] 22:55:58.928893 main.go:179: 4:Equal block
+[peer] 22:55:58.928926 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.928936 main.go:140: Chain Length:10
+[peer] 22:55:58.928943 blockchain.go:68: Returning a block
+[peer] 22:55:58.928950 main.go:142: Chain Length:10
+[peer] 22:55:58.928958 main.go:147: Already have block
+[peer] 22:55:58.928968 main.go:152: 4:Bool lock released
+[peer] 22:55:58.928975 blockchain.go:68: Returning a block
+[peer] 22:55:58.928982 blockchain.go:68: Returning a block
+[peer] 22:55:58.928988 main.go:179: 4:Equal block
+[peer] 22:55:58.929051 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.929061 main.go:140: Chain Length:10
+[peer] 22:55:58.929069 blockchain.go:68: Returning a block
+[peer] 22:55:58.929076 main.go:142: Chain Length:10
+[peer] 22:55:58.929084 main.go:147: Already have block
+[peer] 22:55:58.929093 main.go:152: 4:Bool lock released
+[peer] 22:55:58.929101 blockchain.go:68: Returning a block
+[peer] 22:55:58.929108 blockchain.go:68: Returning a block
+[peer] 22:55:58.929115 main.go:179: 4:Equal block
+[peer] 22:55:58.930290 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:58.930442 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:58.931154 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.931166 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.931490 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.931501 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.931581 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.931591 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.931739 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:58.931886 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:58.932037 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:58.932082 main.go:824: 4:Computing Update
+[peer] 22:55:58.932287 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:58.932578 main.go:270: 4 : VRF returned ID map[3:{}]
+[peer] 22:55:58.932598 main.go:280: 4 :Verifiers [198.162.52.126:8003] returned.
+[peer] 22:55:58.933756 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.933975 main.go:633: 4:Accepted new Connection
+[err] 22:55:58.933886 main.go:302: Unable to connect to verifier, err = dial tcp 198.162.52.126:8003: connect: connection refused
+[peer] 22:55:58.934204 main.go:896: 4:Will try and create an empty block
+[peer] 22:55:58.934212 blockchain.go:68: Returning a block
+[err] 22:55:58.934220 main.go:302: Iteration: 8, err = Forbidden overwrite of block foiled
+[peer] 22:55:58.933865 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:58.934646 main.go:130: 4:Got block message, iteration 8
+[peer] 22:55:58.934672 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.934681 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.934688 main.go:140: Chain Length:10
+[peer] 22:55:58.934694 blockchain.go:68: Returning a block
+[peer] 22:55:58.934702 main.go:142: Chain Length:10
+[peer] 22:55:58.934709 main.go:147: Already have block
+[peer] 22:55:58.934717 main.go:152: 4:Bool lock released
+[peer] 22:55:58.934723 blockchain.go:68: Returning a block
+[peer] 22:55:58.934730 blockchain.go:68: Returning a block
+[peer] 22:55:58.934737 main.go:179: 4:Equal block
+[peer] 22:55:58.945473 main.go:729: 4:Block sent to peer successful
+[err] 22:55:58.945491 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:58.945510 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.945576 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:58.945681 main.go:130: 4:Got block message, iteration 7
+[peer] 22:55:58.945703 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.945710 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.945717 main.go:140: Chain Length:10
+[peer] 22:55:58.945724 blockchain.go:68: Returning a block
+[peer] 22:55:58.945731 main.go:142: Chain Length:10
+[peer] 22:55:58.945738 main.go:147: Already have block
+[peer] 22:55:58.945745 main.go:152: 4:Bool lock released
+[peer] 22:55:58.945752 blockchain.go:68: Returning a block
+[peer] 22:55:58.945681 main.go:130: 4:Got block message, iteration 7
+[peer] 22:55:58.945771 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.945779 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.945785 main.go:140: Chain Length:10
+[peer] 22:55:58.945792 blockchain.go:68: Returning a block
+[peer] 22:55:58.945798 main.go:142: Chain Length:10
+[peer] 22:55:58.945805 main.go:147: Already have block
+[peer] 22:55:58.945812 main.go:152: 4:Bool lock released
+[peer] 22:55:58.945819 blockchain.go:68: Returning a block
+[peer] 22:55:58.945825 blockchain.go:68: Returning a block
+[peer] 22:55:58.945832 main.go:179: 4:Equal block
+[peer] 22:55:58.945853 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:58.945762 blockchain.go:68: Returning a block
+[peer] 22:55:58.945875 main.go:179: 4:Equal block
+[peer] 22:55:58.955334 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.955523 main.go:130: 4:Got block message, iteration 8
+[peer] 22:55:58.955545 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.955552 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.955558 main.go:140: Chain Length:10
+[peer] 22:55:58.955565 blockchain.go:68: Returning a block
+[peer] 22:55:58.955571 main.go:142: Chain Length:10
+[peer] 22:55:58.955578 main.go:147: Already have block
+[peer] 22:55:58.955585 main.go:152: 4:Bool lock released
+[peer] 22:55:58.955591 blockchain.go:68: Returning a block
+[peer] 22:55:58.955598 blockchain.go:68: Returning a block
+[peer] 22:55:58.955604 main.go:179: 4:Equal block
+[peer] 22:55:58.982096 main.go:633: 4:Accepted new Connection
+[peer] 22:55:58.983490 main.go:130: 4:Got block message, iteration 7
+[peer] 22:55:58.983511 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:58.983518 main.go:139: 4:Acquired bool lock
+[peer] 22:55:58.983530 main.go:140: Chain Length:10
+[peer] 22:55:58.983537 blockchain.go:68: Returning a block
+[peer] 22:55:58.983544 main.go:142: Chain Length:10
+[peer] 22:55:58.983557 main.go:147: Already have block
+[peer] 22:55:58.983564 main.go:152: 4:Bool lock released
+[peer] 22:55:58.983571 blockchain.go:68: Returning a block
+[peer] 22:55:58.983578 blockchain.go:68: Returning a block
+[peer] 22:55:58.983586 main.go:179: 4:Equal block
+[peer] 22:55:59.056131 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.056449 main.go:130: 4:Got block message, iteration 8
+[peer] 22:55:59.056474 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.056482 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.056490 main.go:140: Chain Length:10
+[peer] 22:55:59.056496 blockchain.go:68: Returning a block
+[peer] 22:55:59.056504 main.go:142: Chain Length:10
+[peer] 22:55:59.056511 main.go:147: Already have block
+[peer] 22:55:59.056520 main.go:152: 4:Bool lock released
+[peer] 22:55:59.056527 blockchain.go:68: Returning a block
+[peer] 22:55:59.056534 blockchain.go:68: Returning a block
+[peer] 22:55:59.056587 main.go:179: 4:Equal block
+[peer] 22:55:59.110941 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:59.110996 main.go:684: 4:RPC calls successfully returned. Iteration: 8
+[peer] 22:55:59.116634 honest.go:81: 4Train Error is 0.07257 in Iteration 8
+[peer] 22:55:59.116654 main.go:692: 4:Preparing for next Iteration. Current Iteration: 8
+[peer] 22:55:59.116662 main.go:588: 4:Acquiring bool lock
+[peer] 22:55:59.116668 main.go:590: 4:Acquired bool lock
+[peer] 22:55:59.118233 main.go:609: 4:I am not verifier IterationCount:9
+[peer] 22:55:59.118248 main.go:614: 4:Bool lock released
+[peer] 22:55:59.126190 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.127320 main.go:130: 4:Got block message, iteration 7
+[peer] 22:55:59.127341 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.127349 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.127356 main.go:140: Chain Length:10
+[peer] 22:55:59.127362 blockchain.go:68: Returning a block
+[peer] 22:55:59.127369 main.go:142: Chain Length:10
+[peer] 22:55:59.127375 main.go:147: Already have block
+[peer] 22:55:59.127383 main.go:152: 4:Bool lock released
+[peer] 22:55:59.127389 blockchain.go:68: Returning a block
+[peer] 22:55:59.127396 blockchain.go:68: Returning a block
+[peer] 22:55:59.127403 main.go:179: 4:Equal block
+[peer] 22:55:59.135790 main.go:824: 4:Computing Update
+[peer] 22:55:59.136191 main.go:270: 4 : VRF returned ID map[1:{}]
+[peer] 22:55:59.136212 main.go:280: 4 :Verifiers [198.162.52.126:8001] returned.
+[peer] 22:55:59.136444 main.go:869: 4:Making RPC Call to Verifier. Sending Update, Iteration:9
+[peer] 22:55:59.172345 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.174092 main.go:130: 4:Got block message, iteration 7
+[peer] 22:55:59.174117 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.183497 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.184055 main.go:130: 4:Got block message, iteration 8
+[peer] 22:55:59.184076 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.186194 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.186597 main.go:130: 4:Got block message, iteration 8
+[peer] 22:55:59.186616 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.186970 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.187910 main.go:130: 4:Got block message, iteration 8
+[peer] 22:55:59.187930 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.192906 main.go:876: 4:Update sent successfully
+[peer] 22:55:59.192994 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.193005 main.go:140: Chain Length:10
+[peer] 22:55:59.193013 blockchain.go:68: Returning a block
+[peer] 22:55:59.193021 main.go:142: Chain Length:10
+[peer] 22:55:59.193029 main.go:147: Already have block
+[peer] 22:55:59.193039 main.go:152: 4:Bool lock released
+[peer] 22:55:59.193051 blockchain.go:68: Returning a block
+[peer] 22:55:59.193059 blockchain.go:68: Returning a block
+[peer] 22:55:59.193067 main.go:179: 4:Equal block
+[peer] 22:55:59.193090 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.193133 main.go:140: Chain Length:10
+[peer] 22:55:59.193160 blockchain.go:68: Returning a block
+[peer] 22:55:59.193184 main.go:142: Chain Length:10
+[peer] 22:55:59.193211 main.go:147: Already have block
+[peer] 22:55:59.193242 main.go:152: 4:Bool lock released
+[peer] 22:55:59.193273 blockchain.go:68: Returning a block
+[peer] 22:55:59.193302 blockchain.go:68: Returning a block
+[peer] 22:55:59.193327 main.go:179: 4:Equal block
+[peer] 22:55:59.193381 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.193410 main.go:140: Chain Length:10
+[peer] 22:55:59.193436 blockchain.go:68: Returning a block
+[peer] 22:55:59.193477 main.go:142: Chain Length:10
+[peer] 22:55:59.193501 main.go:147: Already have block
+[peer] 22:55:59.193527 main.go:152: 4:Bool lock released
+[peer] 22:55:59.193552 blockchain.go:68: Returning a block
+[peer] 22:55:59.193576 blockchain.go:68: Returning a block
+[peer] 22:55:59.193600 main.go:179: 4:Equal block
+[peer] 22:55:59.193651 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.193679 main.go:140: Chain Length:10
+[peer] 22:55:59.193704 blockchain.go:68: Returning a block
+[peer] 22:55:59.193731 main.go:142: Chain Length:10
+[peer] 22:55:59.193756 main.go:147: Already have block
+[peer] 22:55:59.193781 main.go:152: 4:Bool lock released
+[peer] 22:55:59.193805 blockchain.go:68: Returning a block
+[peer] 22:55:59.193829 blockchain.go:68: Returning a block
+[peer] 22:55:59.193853 main.go:179: 4:Equal block
+[peer] 22:55:59.315013 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.315858 main.go:130: 4:Got block message, iteration 8
+[peer] 22:55:59.315877 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.315885 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.315891 main.go:140: Chain Length:10
+[peer] 22:55:59.315898 blockchain.go:68: Returning a block
+[peer] 22:55:59.315905 main.go:142: Chain Length:10
+[peer] 22:55:59.315911 main.go:147: Already have block
+[peer] 22:55:59.315919 main.go:152: 4:Bool lock released
+[peer] 22:55:59.315926 blockchain.go:68: Returning a block
+[peer] 22:55:59.315933 blockchain.go:68: Returning a block
+[peer] 22:55:59.315963 main.go:179: 4:Equal block
+[peer] 22:55:59.395284 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.396574 main.go:130: 4:Got block message, iteration 9
+[peer] 22:55:59.397566 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.397760 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.397926 main.go:140: Chain Length:10
+[peer] 22:55:59.398091 blockchain.go:71: Returning nil
+[peer] 22:55:59.398213 main.go:142: Chain Length:10
+[peer] 22:55:59.398323 main.go:187: 4:Sending to channel
+[peer] 22:55:59.398626 main.go:193: 4:Sent to channel
+[peer] 22:55:59.399009 main.go:195: 4:Returning
+[peer] 22:55:59.399118 main.go:777: 4:Adding block to chain
+[peer] 22:55:59.399135 honest.go:222: Trying to append block with iteration:9
+[peer] 22:55:59.399142 blockchain.go:71: Returning nil
+[peer] 22:55:59.399148 honest.go:238: Append successful
+[peer] 22:55:59.399155 main.go:781: 4:Adding block to chain
+[peer] 22:55:59.399162 main.go:787: 4:Checking convergence
+[peer] 22:55:59.406055 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.407034 main.go:130: 4:Got block message, iteration 7
+[peer] 22:55:59.407054 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.407620 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.407641 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.407658 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.409387 main.go:130: 4:Got block message, iteration 9
+[peer] 22:55:59.411966 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.409669 main.go:130: 4:Got block message, iteration 9
+[peer] 22:55:59.412001 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.413687 honest.go:81: 4Train Error is 0.07257 in Iteration 9
+[peer] 22:55:59.413706 main.go:790: 4:Convergence checked
+[peer] 22:55:59.413719 main.go:793: 4:Bool lock released
+[peer] 22:55:59.413759 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.413772 main.go:140: Chain Length:11
+[peer] 22:55:59.413780 blockchain.go:68: Returning a block
+[peer] 22:55:59.413788 main.go:142: Chain Length:11
+[peer] 22:55:59.413803 main.go:147: Already have block
+[peer] 22:55:59.413813 main.go:152: 4:Bool lock released
+[peer] 22:55:59.413820 blockchain.go:68: Returning a block
+[peer] 22:55:59.413827 blockchain.go:68: Returning a block
+[peer] 22:55:59.413834 main.go:179: 4:Equal block
+[peer] 22:55:59.413886 main.go:664: 4:Sending block. Iteration: 9
+[peer] 22:55:59.414136 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.414501 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.415065 main.go:130: 4:Got block message, iteration 9
+[peer] 22:55:59.415084 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.414555 main.go:130: 4:Got block message, iteration 8
+[peer] 22:55:59.415111 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.414948 main.go:140: Chain Length:11
+[peer] 22:55:59.415503 blockchain.go:68: Returning a block
+[peer] 22:55:59.416453 main.go:142: Chain Length:11
+[peer] 22:55:59.416570 main.go:147: Already have block
+[peer] 22:55:59.416739 main.go:152: 4:Bool lock released
+[peer] 22:55:59.416861 blockchain.go:68: Returning a block
+[peer] 22:55:59.416990 blockchain.go:68: Returning a block
+[peer] 22:55:59.417119 main.go:179: 4:Equal block
+[peer] 22:55:59.418644 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.418833 main.go:140: Chain Length:11
+[peer] 22:55:59.418967 blockchain.go:68: Returning a block
+[peer] 22:55:59.419115 main.go:142: Chain Length:11
+[peer] 22:55:59.419271 main.go:147: Already have block
+[peer] 22:55:59.419352 main.go:152: 4:Bool lock released
+[peer] 22:55:59.419660 blockchain.go:68: Returning a block
+[peer] 22:55:59.419708 blockchain.go:68: Returning a block
+[peer] 22:55:59.419862 main.go:179: 4:Equal block
+[peer] 22:55:59.419997 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.420250 main.go:140: Chain Length:11
+[peer] 22:55:59.420322 blockchain.go:68: Returning a block
+[peer] 22:55:59.420391 main.go:142: Chain Length:11
+[peer] 22:55:59.420462 main.go:147: Already have block
+[peer] 22:55:59.420536 main.go:152: 4:Bool lock released
+[peer] 22:55:59.420644 blockchain.go:68: Returning a block
+[peer] 22:55:59.420691 blockchain.go:68: Returning a block
+[peer] 22:55:59.420737 main.go:179: 4:Equal block
+[peer] 22:55:59.420814 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.422371 main.go:140: Chain Length:11
+[peer] 22:55:59.422456 blockchain.go:68: Returning a block
+[peer] 22:55:59.422536 main.go:142: Chain Length:11
+[peer] 22:55:59.422583 main.go:147: Already have block
+[peer] 22:55:59.422656 main.go:152: 4:Bool lock released
+[peer] 22:55:59.422726 blockchain.go:68: Returning a block
+[peer] 22:55:59.422854 blockchain.go:68: Returning a block
+[peer] 22:55:59.423005 main.go:179: 4:Equal block
+[peer] 22:55:59.423422 main.go:729: 4:Block sent to peer successful
+[err] 22:55:59.423610 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:59.421666 main.go:729: 4:Block sent to peer successful
+[err] 22:55:59.423822 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:59.423762 main.go:729: 4:Block sent to peer successful
+[err] 22:55:59.423984 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:59.421881 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:59.421934 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.424293 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.424537 main.go:130: 4:Got block message, iteration 9
+[peer] 22:55:59.424933 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.424983 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.425029 main.go:140: Chain Length:11
+[peer] 22:55:59.425304 blockchain.go:68: Returning a block
+[peer] 22:55:59.425376 main.go:142: Chain Length:11
+[peer] 22:55:59.425429 main.go:147: Already have block
+[peer] 22:55:59.425483 main.go:152: 4:Bool lock released
+[peer] 22:55:59.425533 blockchain.go:68: Returning a block
+[peer] 22:55:59.425636 blockchain.go:68: Returning a block
+[peer] 22:55:59.425684 main.go:179: 4:Equal block
+[peer] 22:55:59.425151 main.go:729: 4:Block sent to peer successful
+[err] 22:55:59.425887 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:59.425344 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.421083 main.go:729: 4:Block sent to peer successful
+[err] 22:55:59.426156 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:59.421738 main.go:729: 4:Block sent to peer successful
+[err] 22:55:59.426475 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:59.422058 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:59.426323 main.go:130: 4:Got block message, iteration 9
+[peer] 22:55:59.427029 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.427274 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.427323 main.go:140: Chain Length:11
+[peer] 22:55:59.427368 blockchain.go:68: Returning a block
+[peer] 22:55:59.427414 main.go:142: Chain Length:11
+[peer] 22:55:59.427461 main.go:147: Already have block
+[peer] 22:55:59.427509 main.go:152: 4:Bool lock released
+[peer] 22:55:59.427554 blockchain.go:68: Returning a block
+[peer] 22:55:59.427599 blockchain.go:68: Returning a block
+[peer] 22:55:59.427644 main.go:179: 4:Equal block
+[peer] 22:55:59.425293 main.go:130: 4:Got block message, iteration 9
+[peer] 22:55:59.427813 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.427863 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.427909 main.go:140: Chain Length:11
+[peer] 22:55:59.427952 blockchain.go:68: Returning a block
+[peer] 22:55:59.427997 main.go:142: Chain Length:11
+[peer] 22:55:59.428076 main.go:147: Already have block
+[peer] 22:55:59.428125 main.go:152: 4:Bool lock released
+[peer] 22:55:59.428195 blockchain.go:68: Returning a block
+[peer] 22:55:59.428286 blockchain.go:68: Returning a block
+[peer] 22:55:59.428362 main.go:179: 4:Equal block
+[peer] 22:55:59.433399 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:59.434136 main.go:729: 4:Block sent to peer successful
+[err] 22:55:59.434174 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:59.434744 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.441145 main.go:130: 4:Got block message, iteration 8
+[peer] 22:55:59.441186 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.441212 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.441238 main.go:140: Chain Length:11
+[peer] 22:55:59.441822 blockchain.go:68: Returning a block
+[peer] 22:55:59.441852 main.go:142: Chain Length:11
+[peer] 22:55:59.441878 main.go:147: Already have block
+[peer] 22:55:59.441904 main.go:152: 4:Bool lock released
+[peer] 22:55:59.441929 blockchain.go:68: Returning a block
+[peer] 22:55:59.441954 blockchain.go:68: Returning a block
+[peer] 22:55:59.441979 main.go:179: 4:Equal block
+[peer] 22:55:59.475150 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.475579 main.go:130: 4:Got block message, iteration 10
+[peer] 22:55:59.476281 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.476387 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.476489 main.go:140: Chain Length:11
+[peer] 22:55:59.476591 blockchain.go:71: Returning nil
+[peer] 22:55:59.476694 main.go:142: Chain Length:11
+[peer] 22:55:59.476806 main.go:187: 4:Sending to channel
+[peer] 22:55:59.476884 main.go:193: 4:Sent to channel
+[peer] 22:55:59.476988 main.go:195: 4:Returning
+[peer] 22:55:59.477188 main.go:768: 4:Blocking. Got block for 10, I am at 9
+[peer] 22:55:59.488315 main.go:729: 4:Block sent to peer successful
+[err] 22:55:59.488352 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:59.489235 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.490596 main.go:130: 4:Got block message, iteration 9
+[peer] 22:55:59.490647 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.490657 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.490664 main.go:140: Chain Length:11
+[peer] 22:55:59.490670 blockchain.go:68: Returning a block
+[peer] 22:55:59.490678 main.go:142: Chain Length:11
+[peer] 22:55:59.490684 main.go:147: Already have block
+[peer] 22:55:59.490692 main.go:152: 4:Bool lock released
+[peer] 22:55:59.490699 blockchain.go:68: Returning a block
+[peer] 22:55:59.490705 blockchain.go:68: Returning a block
+[peer] 22:55:59.490722 main.go:179: 4:Equal block
+[peer] 22:55:59.496727 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.496805 main.go:729: 4:Block sent to peer successful
+[err] 22:55:59.496818 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:59.496910 main.go:130: 4:Got block message, iteration 9
+[peer] 22:55:59.496928 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.496935 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.496941 main.go:140: Chain Length:11
+[peer] 22:55:59.496948 blockchain.go:68: Returning a block
+[peer] 22:55:59.496954 main.go:142: Chain Length:11
+[peer] 22:55:59.496961 main.go:147: Already have block
+[peer] 22:55:59.496968 main.go:152: 4:Bool lock released
+[peer] 22:55:59.496975 blockchain.go:68: Returning a block
+[peer] 22:55:59.496981 blockchain.go:68: Returning a block
+[peer] 22:55:59.496988 main.go:179: 4:Equal block
+[peer] 22:55:59.550666 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.550849 main.go:130: 4:Got block message, iteration 9
+[peer] 22:55:59.550869 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.550876 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.550883 main.go:140: Chain Length:11
+[peer] 22:55:59.550889 blockchain.go:68: Returning a block
+[peer] 22:55:59.550896 main.go:142: Chain Length:11
+[peer] 22:55:59.550902 main.go:147: Already have block
+[peer] 22:55:59.550910 main.go:152: 4:Bool lock released
+[peer] 22:55:59.550916 blockchain.go:68: Returning a block
+[peer] 22:55:59.550922 blockchain.go:68: Returning a block
+[peer] 22:55:59.550929 main.go:179: 4:Equal block
+[peer] 22:55:59.559958 main.go:729: 4:Block sent to peer successful
+[err] 22:55:59.559975 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:59.662791 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.663487 main.go:130: 4:Got block message, iteration 9
+[peer] 22:55:59.663664 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.663697 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.664098 main.go:140: Chain Length:11
+[peer] 22:55:59.664131 blockchain.go:68: Returning a block
+[peer] 22:55:59.664166 main.go:142: Chain Length:11
+[peer] 22:55:59.664194 main.go:147: Already have block
+[peer] 22:55:59.664224 main.go:152: 4:Bool lock released
+[peer] 22:55:59.664261 blockchain.go:68: Returning a block
+[peer] 22:55:59.664295 blockchain.go:68: Returning a block
+[peer] 22:55:59.664342 main.go:179: 4:Equal block
+[peer] 22:55:59.664276 main.go:729: 4:Block sent to peer successful
+[err] 22:55:59.664449 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:59.664481 main.go:684: 4:RPC calls successfully returned. Iteration: 9
+[peer] 22:55:59.675789 honest.go:81: 4Train Error is 0.07257 in Iteration 9
+[peer] 22:55:59.675807 main.go:692: 4:Preparing for next Iteration. Current Iteration: 9
+[peer] 22:55:59.675816 main.go:588: 4:Acquiring bool lock
+[peer] 22:55:59.675823 main.go:590: 4:Acquired bool lock
+[peer] 22:55:59.675925 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.679044 main.go:130: 4:Got block message, iteration 10
+[peer] 22:55:59.679096 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.680321 main.go:609: 4:I am not verifier IterationCount:10
+[peer] 22:55:59.680343 main.go:614: 4:Bool lock released
+[peer] 22:55:59.680399 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.680439 main.go:140: Chain Length:11
+[peer] 22:55:59.680521 blockchain.go:71: Returning nil
+[peer] 22:55:59.680555 main.go:142: Chain Length:11
+[peer] 22:55:59.680594 main.go:187: 4:Sending to channel
+[peer] 22:55:59.680652 main.go:193: 4:Sent to channel
+[peer] 22:55:59.680706 main.go:195: 4:Returning
+[peer] 22:55:59.680743 main.go:777: 4:Adding block to chain
+[peer] 22:55:59.681091 honest.go:222: Trying to append block with iteration:10
+[peer] 22:55:59.681155 blockchain.go:71: Returning nil
+[peer] 22:55:59.681191 honest.go:238: Append successful
+[peer] 22:55:59.681207 main.go:781: 4:Adding block to chain
+[peer] 22:55:59.681219 main.go:787: 4:Checking convergence
+[peer] 22:55:59.682323 honest.go:81: 4Train Error is 0.07257 in Iteration 10
+[peer] 22:55:59.682346 main.go:790: 4:Convergence checked
+[peer] 22:55:59.682358 main.go:793: 4:Bool lock released
+[peer] 22:55:59.682452 main.go:664: 4:Sending block. Iteration: 10
+[err] 22:55:59.683161 main.go:302: rpc Dial, err = dial tcp 198.162.52.126:8002: connect: connection refused
+[peer] 22:55:59.683184 main.go:751: 4:Peer Unresponsive. Removed Peer:198.162.52.126:8002
+[err] 22:55:59.683314 main.go:302: rpc Dial, err = dial tcp 198.162.52.57:8018: connect: connection refused
+[peer] 22:55:59.683334 main.go:751: 4:Peer Unresponsive. Removed Peer:198.162.52.57:8018
+[peer] 22:55:59.736684 main.go:729: 4:Block sent to peer successful
+[err] 22:55:59.736700 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:59.736813 main.go:729: 4:Block sent to peer successful
+[err] 22:55:59.736826 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:59.737072 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.737097 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.737114 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.737129 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.737305 main.go:130: 4:Got block message, iteration 8
+[peer] 22:55:59.737322 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.737481 main.go:130: 4:Got block message, iteration 10
+[peer] 22:55:59.737501 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.737649 main.go:130: 4:Got block message, iteration 10
+[peer] 22:55:59.737668 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.737681 main.go:824: 4:Computing Update
+[peer] 22:55:59.738244 main.go:729: 4:Block sent to peer successful
+[err] 22:55:59.738258 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:59.738321 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:59.738492 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:59.738527 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:59.738699 main.go:130: 4:Got block message, iteration 10
+[peer] 22:55:59.738719 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.738743 main.go:270: 4 : VRF returned ID map[3:{}]
+[peer] 22:55:59.738758 main.go:280: 4 :Verifiers [198.162.52.126:8003] returned.
+[peer] 22:55:59.738941 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:59.739101 main.go:729: 4:Block sent to peer successful
+[err] 22:55:59.739149 main.go:302: Unable to connect to verifier, err = dial tcp 198.162.52.126:8003: connect: connection refused
+[peer] 22:55:59.739161 main.go:896: 4:Will try and create an empty block
+[peer] 22:55:59.739168 blockchain.go:68: Returning a block
+[err] 22:55:59.739176 main.go:302: Iteration: 10, err = Forbidden overwrite of block foiled
+[peer] 22:55:59.739196 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.739205 main.go:140: Chain Length:12
+[peer] 22:55:59.739211 blockchain.go:68: Returning a block
+[peer] 22:55:59.739218 main.go:142: Chain Length:12
+[peer] 22:55:59.739224 main.go:147: Already have block
+[peer] 22:55:59.739232 main.go:152: 4:Bool lock released
+[peer] 22:55:59.739239 blockchain.go:68: Returning a block
+[peer] 22:55:59.739245 blockchain.go:68: Returning a block
+[peer] 22:55:59.739252 main.go:179: 4:Equal block
+[peer] 22:55:59.739284 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.739294 main.go:140: Chain Length:12
+[peer] 22:55:59.739301 blockchain.go:68: Returning a block
+[peer] 22:55:59.739307 main.go:142: Chain Length:12
+[peer] 22:55:59.739314 main.go:147: Already have block
+[peer] 22:55:59.739321 main.go:152: 4:Bool lock released
+[peer] 22:55:59.739328 blockchain.go:68: Returning a block
+[peer] 22:55:59.739335 blockchain.go:68: Returning a block
+[peer] 22:55:59.739341 main.go:179: 4:Equal block
+[peer] 22:55:59.739379 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.739388 main.go:140: Chain Length:12
+[peer] 22:55:59.739394 blockchain.go:68: Returning a block
+[peer] 22:55:59.739400 main.go:142: Chain Length:12
+[peer] 22:55:59.739407 main.go:147: Already have block
+[peer] 22:55:59.739415 main.go:152: 4:Bool lock released
+[peer] 22:55:59.739421 blockchain.go:68: Returning a block
+[peer] 22:55:59.739427 blockchain.go:68: Returning a block
+[peer] 22:55:59.739434 main.go:179: 4:Equal block
+[peer] 22:55:59.739482 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.739492 main.go:140: Chain Length:12
+[peer] 22:55:59.739498 blockchain.go:68: Returning a block
+[peer] 22:55:59.739504 main.go:142: Chain Length:12
+[peer] 22:55:59.739511 main.go:147: Already have block
+[peer] 22:55:59.739518 main.go:152: 4:Bool lock released
+[peer] 22:55:59.739525 blockchain.go:68: Returning a block
+[peer] 22:55:59.739531 blockchain.go:68: Returning a block
+[peer] 22:55:59.739537 main.go:179: 4:Equal block
+[peer] 22:55:59.740009 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:59.740212 main.go:729: 4:Block sent to peer successful
+[err] 22:55:59.740223 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:59.740443 main.go:729: 4:Block sent to peer successful
+[err] 22:55:59.740455 main.go:302: Error in sending block, err = Stale Update/Block
+[peer] 22:55:59.746228 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.746906 main.go:130: 4:Got block message, iteration 10
+[peer] 22:55:59.747023 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.747056 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.747083 main.go:140: Chain Length:12
+[peer] 22:55:59.747195 blockchain.go:68: Returning a block
+[peer] 22:55:59.747313 main.go:142: Chain Length:12
+[peer] 22:55:59.747339 main.go:147: Already have block
+[peer] 22:55:59.747369 main.go:152: 4:Bool lock released
+[peer] 22:55:59.747395 blockchain.go:68: Returning a block
+[peer] 22:55:59.747420 blockchain.go:68: Returning a block
+[peer] 22:55:59.747476 main.go:179: 4:Equal block
+[peer] 22:55:59.757209 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.757722 main.go:130: 4:Got block message, iteration 10
+[peer] 22:55:59.757844 main.go:137: 4:Acquiring bool lock
+[peer] 22:55:59.757887 main.go:139: 4:Acquired bool lock
+[peer] 22:55:59.757918 main.go:140: Chain Length:12
+[peer] 22:55:59.757944 blockchain.go:68: Returning a block
+[peer] 22:55:59.757970 main.go:142: Chain Length:12
+[peer] 22:55:59.757999 main.go:147: Already have block
+[peer] 22:55:59.758352 main.go:152: 4:Bool lock released
+[peer] 22:55:59.758466 blockchain.go:68: Returning a block
+[peer] 22:55:59.758494 blockchain.go:68: Returning a block
+[peer] 22:55:59.758520 main.go:179: 4:Equal block
+[peer] 22:55:59.758337 main.go:729: 4:Block sent to peer successful
+[peer] 22:55:59.758669 main.go:684: 4:RPC calls successfully returned. Iteration: 10
+[peer] 22:55:59.771162 honest.go:81: 4Train Error is 0.07257 in Iteration 10
+[peer] 22:55:59.771194 main.go:692: 4:Preparing for next Iteration. Current Iteration: 10
+[peer] 22:55:59.771203 main.go:588: 4:Acquiring bool lock
+[peer] 22:55:59.771211 main.go:590: 4:Acquired bool lock
+[peer] 22:55:59.772794 main.go:609: 4:I am not verifier IterationCount:11
+[peer] 22:55:59.772808 main.go:614: 4:Bool lock released
+[peer] 22:55:59.807834 main.go:633: 4:Accepted new Connection
+[peer] 22:55:59.808308 main.go:103: 4:Got update message, iteration 9
+[peer] 22:55:59.816610 main.go:107: RONI for update is 0.017337 
+[err] 22:55:59.816628 main.go:294: Update of previous iteration received, err = Stale Update/Block
