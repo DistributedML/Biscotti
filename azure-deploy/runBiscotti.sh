@@ -16,8 +16,6 @@ for line in $(cat tempHosts);do
 		ssh cfung@$tname 'bash -s' < deployNodes.sh $nodesInEachVM $indexCount 20 $tname &
 	fi
 
-	indexCount=$indexCount+$nodesInEachVM
-
 	indexCount=$((indexCount + nodesInEachVM))
 	
 	# Give time for nodes in the firstVM to get bootstrapped
