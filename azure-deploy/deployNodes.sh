@@ -16,7 +16,7 @@ do
 	break
 done
 
-rm LogFiles
+rm -r LogFiles
 
 echo "Pulling latest source code from github"
 
