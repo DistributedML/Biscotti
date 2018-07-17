@@ -1,0 +1,7 @@
+panic: runtime error: index out of range
+
+goroutine 1 [running]:
+main.(*Honest).initializeData(0xe84ea0, 0x7ffcf3e41df9, 0xa, 0x14)
+	/home/cfung/gopath/src/simpleBlockChain/DistSys/honest.go:65 +0x2fc
+main.main()
+	/home/cfung/gopath/src/simpleBlockChain/DistSys/main.go:429 +0xadf
