@@ -16,13 +16,12 @@ do
 	break
 done
 
-rm -r LogFiles
-
 echo "Pulling latest source code from github"
 
 git reset --hard
 git pull origin master
 
+rm -r LogFiles
 
 echo "Compiling go"
 
