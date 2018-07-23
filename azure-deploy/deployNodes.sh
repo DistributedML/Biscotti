@@ -50,6 +50,7 @@ for (( index = startingIndex ; index < startingIndex + nodesToRun; index++ )); d
 	
 	if [ $index -eq 0 ] 
 	then			
+		echo "Sleeping. Allowing node zero to be up and running"
 		sleep 5			
 	fi
 

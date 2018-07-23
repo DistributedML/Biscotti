@@ -1,0 +1,276 @@
+[peer] 23:41:20.707233 honest.go:107: 0Importing modules...
+../ML/code/utils.py:223: FutureWarning: Method .as_matrix will be removed in a future version. Use .values instead.
+  data = data.as_matrix()
+../ML/code/utils.py:94: FutureWarning: Method .as_matrix will be removed in a future version. Use .values instead.
+  credit = df.ix[1:nn, 1:dd].as_matrix()
+[peer] 23:41:52.202385 honest.go:122: 0Sucessfully pulled dataset. Features: 25
+[peer] 23:41:52.309337 main.go:564: 0:Peer started. Receiving on 8000
+[peer] 23:41:52.309861 main.go:568: 0:Accepted new Connection
+[peer] 23:41:52.560956 main.go:568: 0:Accepted new Connection
+[peer] 23:41:52.838138 main.go:568: 0:Accepted new Connection
+[peer] 23:41:53.229934 main.go:148: 0:Registering peer:198.162.52.126:8019
+[peer] 23:41:59.582895 main.go:158: Advertising chain to peer with length 1
+[peer] 23:41:53.230616 main.go:148: 0:Registering peer:198.162.52.126:8027
+[peer] 23:41:53.230772 main.go:148: 0:Registering peer:198.162.52.126:8021
+[peer] 23:41:59.583297 main.go:523: 0:Acquiring bool lock
+[peer] 23:41:59.583313 main.go:525: 0:Acquired bool lock
+[peer] 23:41:59.586234 main.go:544: 0:I am not verifier IterationCount:0
+[peer] 23:41:59.586262 main.go:549: 0:Bool lock released
+[peer] 23:41:59.586283 main.go:835: 0:Computing Update
+[peer] 23:42:00.936558 main.go:205: 0 : VRF returned ID map[22:{}]
+[peer] 23:42:00.936723 main.go:215: 0 :Verifiers [198.162.52.126:8022] returned.
+[peer] 23:42:00.936887 main.go:880: 0:Making RPC Call to Verifier. Sending Update, Iteration:0
+[peer] 23:42:01.146040 main.go:887: 0:Update sent successfully
+[peer] 23:42:16.146233 main.go:983: 0:Timeout. Didn't receive block. Appending empty block. Iteration:0 ..
+[peer] 23:42:16.146301 main.go:985: 0:chain lock acquired
+[peer] 23:42:16.146313 blockchain.go:71: Returning nil
+[peer] 23:42:16.146444 main.go:689: 0:Sending block. Iteration: 0
+[peer] 23:42:16.147437 main.go:754: 0:Block sent to peer successful
+[peer] 23:42:16.147603 main.go:754: 0:Block sent to peer successful
+[peer] 23:42:16.147672 main.go:754: 0:Block sent to peer successful
+[peer] 23:42:16.147728 main.go:709: 0:RPC calls successfully returned. Iteration: 0
+[peer] 23:42:16.149064 honest.go:81: 0Train Error is 1.00000 in Iteration 0
+[peer] 23:42:16.149107 main.go:717: 0:Preparing for next Iteration. Current Iteration: 0
+[peer] 23:42:16.149123 main.go:523: 0:Acquiring bool lock
+[peer] 23:42:16.149136 main.go:525: 0:Acquired bool lock
+[peer] 23:42:16.152072 main.go:544: 0:I am not verifier IterationCount:1
+[peer] 23:42:16.152101 main.go:549: 0:Bool lock released
+[peer] 23:42:16.189390 main.go:835: 0:Computing Update
+[peer] 23:42:16.190010 main.go:205: 0 : VRF returned ID map[14:{}]
+[peer] 23:42:16.190120 main.go:215: 0 :Verifiers [198.162.52.126:8014] returned.
+[peer] 23:42:16.190543 main.go:880: 0:Making RPC Call to Verifier. Sending Update, Iteration:1
+[peer] 23:42:16.192130 main.go:887: 0:Update sent successfully
+[peer] 23:42:31.193381 main.go:983: 0:Timeout. Didn't receive block. Appending empty block. Iteration:1 ..
+[peer] 23:42:31.193408 main.go:985: 0:chain lock acquired
+[peer] 23:42:31.193417 blockchain.go:71: Returning nil
+[peer] 23:42:31.193517 main.go:689: 0:Sending block. Iteration: 1
+[peer] 23:42:31.194926 main.go:754: 0:Block sent to peer successful
+[peer] 23:42:31.202194 main.go:754: 0:Block sent to peer successful
+[peer] 23:42:31.224981 main.go:754: 0:Block sent to peer successful
+[peer] 23:42:31.225025 main.go:709: 0:RPC calls successfully returned. Iteration: 1
+[peer] 23:42:31.243304 honest.go:81: 0Train Error is 1.00000 in Iteration 1
+[peer] 23:42:31.243325 main.go:717: 0:Preparing for next Iteration. Current Iteration: 1
+[peer] 23:42:31.243338 main.go:523: 0:Acquiring bool lock
+[peer] 23:42:31.243348 main.go:525: 0:Acquired bool lock
+[peer] 23:42:31.244968 main.go:544: 0:I am not verifier IterationCount:2
+[peer] 23:42:31.244985 main.go:549: 0:Bool lock released
+[peer] 23:42:31.281742 main.go:835: 0:Computing Update
+[peer] 23:42:31.282686 main.go:205: 0 : VRF returned ID map[14:{}]
+[peer] 23:42:31.282715 main.go:215: 0 :Verifiers [198.162.52.126:8014] returned.
+[peer] 23:42:31.282857 main.go:880: 0:Making RPC Call to Verifier. Sending Update, Iteration:2
+[err] 23:42:31.358703 main.go:237: Error in sending update, err = Stale Update/Block
+[peer] 23:42:46.358891 main.go:983: 0:Timeout. Didn't receive block. Appending empty block. Iteration:2 ..
+[peer] 23:42:46.358958 main.go:985: 0:chain lock acquired
+[peer] 23:42:46.358971 blockchain.go:71: Returning nil
+[peer] 23:42:46.359152 main.go:689: 0:Sending block. Iteration: 2
+[err] 23:42:46.359437 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8019: connect: connection refused
+[peer] 23:42:46.359470 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8019
+[err] 23:42:46.359438 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8021: connect: connection refused
+[peer] 23:42:46.359491 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8021
+[err] 23:42:46.359438 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8027: connect: connection refused
+[peer] 23:42:46.359521 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8027
+[peer] 23:42:46.359537 main.go:709: 0:RPC calls successfully returned. Iteration: 2
+[peer] 23:42:46.360894 honest.go:81: 0Train Error is 1.00000 in Iteration 2
+[peer] 23:42:46.360936 main.go:717: 0:Preparing for next Iteration. Current Iteration: 2
+[peer] 23:42:46.360951 main.go:523: 0:Acquiring bool lock
+[peer] 23:42:46.360964 main.go:525: 0:Acquired bool lock
+[peer] 23:42:46.363908 main.go:544: 0:I am not verifier IterationCount:3
+[peer] 23:42:46.363978 main.go:549: 0:Bool lock released
+[peer] 23:42:46.366982 main.go:835: 0:Computing Update
+[peer] 23:42:46.367573 main.go:205: 0 : VRF returned ID map[48:{}]
+[peer] 23:42:46.367613 main.go:215: 0 :Verifiers [198.162.52.57:8048] returned.
+[err] 23:42:46.368239 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.57:8048: connect: connection refused
+[peer] 23:42:46.368263 main.go:908: 0:Will try and create an empty block
+[peer] 23:42:46.368276 blockchain.go:71: Returning nil
+[peer] 23:42:46.368356 main.go:915: 0:Will try and create an empty block
+[peer] 23:42:46.368436 main.go:689: 0:Sending block. Iteration: 3
+[peer] 23:42:46.368456 main.go:709: 0:RPC calls successfully returned. Iteration: 3
+[peer] 23:42:46.369374 honest.go:81: 0Train Error is 1.00000 in Iteration 3
+[peer] 23:42:46.369409 main.go:717: 0:Preparing for next Iteration. Current Iteration: 3
+[peer] 23:42:46.369421 main.go:523: 0:Acquiring bool lock
+[peer] 23:42:46.369433 main.go:525: 0:Acquired bool lock
+[peer] 23:42:46.372106 main.go:544: 0:I am not verifier IterationCount:4
+[peer] 23:42:46.372129 main.go:549: 0:Bool lock released
+[peer] 23:42:46.468529 main.go:835: 0:Computing Update
+[peer] 23:42:46.468928 main.go:205: 0 : VRF returned ID map[47:{}]
+[peer] 23:42:46.468950 main.go:215: 0 :Verifiers [198.162.52.57:8047] returned.
+[err] 23:42:46.469367 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.57:8047: connect: connection refused
+[peer] 23:42:46.469380 main.go:908: 0:Will try and create an empty block
+[peer] 23:42:46.469389 blockchain.go:71: Returning nil
+[peer] 23:42:46.469484 main.go:915: 0:Will try and create an empty block
+[peer] 23:42:46.469534 main.go:689: 0:Sending block. Iteration: 4
+[peer] 23:42:46.469552 main.go:709: 0:RPC calls successfully returned. Iteration: 4
+[peer] 23:42:46.470961 honest.go:81: 0Train Error is 1.00000 in Iteration 4
+[peer] 23:42:46.471063 main.go:717: 0:Preparing for next Iteration. Current Iteration: 4
+[peer] 23:42:46.471114 main.go:523: 0:Acquiring bool lock
+[peer] 23:42:46.471162 main.go:525: 0:Acquired bool lock
+[peer] 23:42:46.473196 main.go:544: 0:I am not verifier IterationCount:5
+[peer] 23:42:46.473252 main.go:549: 0:Bool lock released
+[peer] 23:42:46.569629 main.go:835: 0:Computing Update
+[peer] 23:42:46.569996 main.go:205: 0 : VRF returned ID map[17:{}]
+[peer] 23:42:46.570016 main.go:215: 0 :Verifiers [198.162.52.126:8017] returned.
+[err] 23:42:46.570116 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.126:8017: connect: connection refused
+[peer] 23:42:46.570134 main.go:908: 0:Will try and create an empty block
+[peer] 23:42:46.570140 blockchain.go:71: Returning nil
+[peer] 23:42:46.570191 main.go:915: 0:Will try and create an empty block
+[peer] 23:42:46.570233 main.go:689: 0:Sending block. Iteration: 5
+[peer] 23:42:46.570245 main.go:709: 0:RPC calls successfully returned. Iteration: 5
+[peer] 23:42:46.578790 honest.go:81: 0Train Error is 1.00000 in Iteration 5
+[peer] 23:42:46.578874 main.go:717: 0:Preparing for next Iteration. Current Iteration: 5
+[peer] 23:42:46.578914 main.go:523: 0:Acquiring bool lock
+[peer] 23:42:46.578954 main.go:525: 0:Acquired bool lock
+[peer] 23:42:46.580562 main.go:544: 0:I am not verifier IterationCount:6
+[peer] 23:42:46.580607 main.go:549: 0:Bool lock released
+[peer] 23:42:46.670418 main.go:835: 0:Computing Update
+[peer] 23:42:46.670779 main.go:205: 0 : VRF returned ID map[28:{}]
+[peer] 23:42:46.670803 main.go:215: 0 :Verifiers [198.162.52.126:8028] returned.
+[err] 23:42:46.670897 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.126:8028: connect: connection refused
+[peer] 23:42:46.670905 main.go:908: 0:Will try and create an empty block
+[peer] 23:42:46.670910 blockchain.go:71: Returning nil
+[peer] 23:42:46.670962 main.go:915: 0:Will try and create an empty block
+[peer] 23:42:46.670989 main.go:689: 0:Sending block. Iteration: 6
+[peer] 23:42:46.671002 main.go:709: 0:RPC calls successfully returned. Iteration: 6
+[peer] 23:42:46.673943 honest.go:81: 0Train Error is 1.00000 in Iteration 6
+[peer] 23:42:46.674028 main.go:717: 0:Preparing for next Iteration. Current Iteration: 6
+[peer] 23:42:46.674071 main.go:523: 0:Acquiring bool lock
+[peer] 23:42:46.674110 main.go:525: 0:Acquired bool lock
+[peer] 23:42:46.675722 main.go:544: 0:I am not verifier IterationCount:7
+[peer] 23:42:46.675768 main.go:549: 0:Bool lock released
+[peer] 23:42:46.771121 main.go:835: 0:Computing Update
+[peer] 23:42:46.771566 main.go:205: 0 : VRF returned ID map[13:{}]
+[peer] 23:42:46.771606 main.go:215: 0 :Verifiers [198.162.52.126:8013] returned.
+[err] 23:42:46.771723 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.126:8013: connect: connection refused
+[peer] 23:42:46.771732 main.go:908: 0:Will try and create an empty block
+[peer] 23:42:46.771737 blockchain.go:71: Returning nil
+[peer] 23:42:46.771791 main.go:915: 0:Will try and create an empty block
+[peer] 23:42:46.771851 main.go:689: 0:Sending block. Iteration: 7
+[peer] 23:42:46.771871 main.go:709: 0:RPC calls successfully returned. Iteration: 7
+[peer] 23:42:46.772674 honest.go:81: 0Train Error is 1.00000 in Iteration 7
+[peer] 23:42:46.772698 main.go:717: 0:Preparing for next Iteration. Current Iteration: 7
+[peer] 23:42:46.772707 main.go:523: 0:Acquiring bool lock
+[peer] 23:42:46.772715 main.go:525: 0:Acquired bool lock
+[peer] 23:42:46.773826 main.go:544: 0:I am not verifier IterationCount:8
+[peer] 23:42:46.773879 main.go:549: 0:Bool lock released
+[peer] 23:42:46.872003 main.go:835: 0:Computing Update
+[peer] 23:42:46.872334 main.go:205: 0 : VRF returned ID map[41:{}]
+[peer] 23:42:46.872354 main.go:215: 0 :Verifiers [198.162.52.57:8041] returned.
+[err] 23:42:46.872838 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.57:8041: connect: connection refused
+[peer] 23:42:46.872854 main.go:908: 0:Will try and create an empty block
+[peer] 23:42:46.872862 blockchain.go:71: Returning nil
+[peer] 23:42:46.872906 main.go:915: 0:Will try and create an empty block
+[peer] 23:42:46.872979 main.go:689: 0:Sending block. Iteration: 8
+[peer] 23:42:46.872995 main.go:709: 0:RPC calls successfully returned. Iteration: 8
+[peer] 23:42:46.873943 honest.go:81: 0Train Error is 1.00000 in Iteration 8
+[peer] 23:42:46.873968 main.go:717: 0:Preparing for next Iteration. Current Iteration: 8
+[peer] 23:42:46.873977 main.go:523: 0:Acquiring bool lock
+[peer] 23:42:46.873984 main.go:525: 0:Acquired bool lock
+[peer] 23:42:46.875565 main.go:544: 0:I am not verifier IterationCount:9
+[peer] 23:42:46.875607 main.go:549: 0:Bool lock released
+[peer] 23:42:46.973104 main.go:835: 0:Computing Update
+[peer] 23:42:46.973490 main.go:205: 0 : VRF returned ID map[11:{}]
+[peer] 23:42:46.973509 main.go:215: 0 :Verifiers [198.162.52.126:8011] returned.
+[err] 23:42:46.973679 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.126:8011: connect: connection refused
+[peer] 23:42:46.973695 main.go:908: 0:Will try and create an empty block
+[peer] 23:42:46.973702 blockchain.go:71: Returning nil
+[peer] 23:42:46.973764 main.go:915: 0:Will try and create an empty block
+[peer] 23:42:46.973802 main.go:689: 0:Sending block. Iteration: 9
+[peer] 23:42:46.973825 main.go:709: 0:RPC calls successfully returned. Iteration: 9
+[peer] 23:42:46.974618 honest.go:81: 0Train Error is 1.00000 in Iteration 9
+[peer] 23:42:46.974671 main.go:717: 0:Preparing for next Iteration. Current Iteration: 9
+[peer] 23:42:46.974695 main.go:523: 0:Acquiring bool lock
+[peer] 23:42:46.974718 main.go:525: 0:Acquired bool lock
+[peer] 23:42:46.976312 main.go:544: 0:I am not verifier IterationCount:10
+[peer] 23:42:46.976343 main.go:549: 0:Bool lock released
+[peer] 23:42:47.073894 main.go:835: 0:Computing Update
+[peer] 23:42:47.074228 main.go:205: 0 : VRF returned ID map[7:{}]
+[peer] 23:42:47.074246 main.go:215: 0 :Verifiers [198.162.52.126:8007] returned.
+[err] 23:42:47.074431 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.126:8007: connect: connection refused
+[peer] 23:42:47.074446 main.go:908: 0:Will try and create an empty block
+[peer] 23:42:47.074454 blockchain.go:71: Returning nil
+[peer] 23:42:47.074500 main.go:915: 0:Will try and create an empty block
+[peer] 23:42:47.074572 main.go:689: 0:Sending block. Iteration: 10
+[peer] 23:42:47.074589 main.go:709: 0:RPC calls successfully returned. Iteration: 10
+[peer] 23:42:47.075397 honest.go:81: 0Train Error is 1.00000 in Iteration 10
+[peer] 23:42:47.075421 main.go:717: 0:Preparing for next Iteration. Current Iteration: 10
+[peer] 23:42:47.075429 main.go:523: 0:Acquiring bool lock
+[peer] 23:42:47.075436 main.go:525: 0:Acquired bool lock
+[peer] 23:42:47.077534 main.go:544: 0:I am not verifier IterationCount:11
+[peer] 23:42:47.077551 main.go:549: 0:Bool lock released
+[peer] 23:42:47.174694 main.go:835: 0:Computing Update
+[peer] 23:42:47.175046 main.go:205: 0 : VRF returned ID map[29:{}]
+[peer] 23:42:47.175069 main.go:215: 0 :Verifiers [198.162.52.126:8029] returned.
+[err] 23:42:47.175232 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.126:8029: connect: connection refused
+[peer] 23:42:47.175245 main.go:908: 0:Will try and create an empty block
+[peer] 23:42:47.175254 blockchain.go:71: Returning nil
+[peer] 23:42:47.175305 main.go:915: 0:Will try and create an empty block
+[peer] 23:42:47.175346 main.go:689: 0:Sending block. Iteration: 11
+[peer] 23:42:47.175372 main.go:709: 0:RPC calls successfully returned. Iteration: 11
+[peer] 23:42:47.176127 honest.go:81: 0Train Error is 1.00000 in Iteration 11
+[peer] 23:42:47.176184 main.go:717: 0:Preparing for next Iteration. Current Iteration: 11
+[peer] 23:42:47.176230 main.go:523: 0:Acquiring bool lock
+[peer] 23:42:47.176270 main.go:525: 0:Acquired bool lock
+[peer] 23:42:47.177915 main.go:544: 0:I am not verifier IterationCount:12
+[peer] 23:42:47.177963 main.go:549: 0:Bool lock released
+[peer] 23:42:47.275451 main.go:835: 0:Computing Update
+[peer] 23:42:47.275786 main.go:205: 0 : VRF returned ID map[31:{}]
+[peer] 23:42:47.275805 main.go:215: 0 :Verifiers [198.162.52.57:8031] returned.
+[err] 23:42:47.276297 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.57:8031: connect: connection refused
+[peer] 23:42:47.276328 main.go:908: 0:Will try and create an empty block
+[peer] 23:42:47.276340 blockchain.go:71: Returning nil
+[peer] 23:42:47.276401 main.go:915: 0:Will try and create an empty block
+[peer] 23:42:47.276449 main.go:689: 0:Sending block. Iteration: 12
+[peer] 23:42:47.276475 main.go:709: 0:RPC calls successfully returned. Iteration: 12
+[peer] 23:42:47.277285 honest.go:81: 0Train Error is 1.00000 in Iteration 12
+[peer] 23:42:47.277362 main.go:717: 0:Preparing for next Iteration. Current Iteration: 12
+[peer] 23:42:47.277416 main.go:523: 0:Acquiring bool lock
+[peer] 23:42:47.277486 main.go:525: 0:Acquired bool lock
+[peer] 23:42:47.279186 main.go:544: 0:I am not verifier IterationCount:13
+[peer] 23:42:47.279233 main.go:549: 0:Bool lock released
+[peer] 23:42:47.376606 main.go:835: 0:Computing Update
+[peer] 23:42:47.376925 main.go:205: 0 : VRF returned ID map[3:{}]
+[peer] 23:42:47.376962 main.go:215: 0 :Verifiers [198.162.52.126:8003] returned.
+[err] 23:42:47.377096 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.126:8003: connect: connection refused
+[peer] 23:42:47.377108 main.go:908: 0:Will try and create an empty block
+[peer] 23:42:47.377119 blockchain.go:71: Returning nil
+[peer] 23:42:47.377172 main.go:915: 0:Will try and create an empty block
+[peer] 23:42:47.377236 main.go:689: 0:Sending block. Iteration: 13
+[peer] 23:42:47.377262 main.go:709: 0:RPC calls successfully returned. Iteration: 13
+[peer] 23:42:47.385720 honest.go:81: 0Train Error is 1.00000 in Iteration 13
+[peer] 23:42:47.385781 main.go:717: 0:Preparing for next Iteration. Current Iteration: 13
+[peer] 23:42:47.385808 main.go:523: 0:Acquiring bool lock
+[peer] 23:42:47.385833 main.go:525: 0:Acquired bool lock
+[peer] 23:42:47.387434 main.go:544: 0:I am not verifier IterationCount:14
+[peer] 23:42:47.387465 main.go:549: 0:Bool lock released
+[peer] 23:42:47.477280 main.go:835: 0:Computing Update
+[peer] 23:42:47.477625 main.go:205: 0 : VRF returned ID map[56:{}]
+[peer] 23:42:47.477644 main.go:215: 0 :Verifiers [198.162.52.57:8056] returned.
+[err] 23:42:47.478387 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.57:8056: connect: connection refused
+[peer] 23:42:47.478403 main.go:908: 0:Will try and create an empty block
+[peer] 23:42:47.478410 blockchain.go:71: Returning nil
+[peer] 23:42:47.478487 main.go:915: 0:Will try and create an empty block
+[peer] 23:42:47.478565 main.go:689: 0:Sending block. Iteration: 14
+[peer] 23:42:47.478611 main.go:709: 0:RPC calls successfully returned. Iteration: 14
+[peer] 23:42:47.479383 honest.go:81: 0Train Error is 1.00000 in Iteration 14
+[peer] 23:42:47.479461 main.go:717: 0:Preparing for next Iteration. Current Iteration: 14
+[peer] 23:42:47.479500 main.go:523: 0:Acquiring bool lock
+[peer] 23:42:47.479539 main.go:525: 0:Acquired bool lock
+[peer] 23:42:47.481147 main.go:544: 0:I am not verifier IterationCount:15
+[peer] 23:42:47.481191 main.go:549: 0:Bool lock released
+[peer] 23:42:47.578710 main.go:835: 0:Computing Update
+[peer] 23:42:47.579052 main.go:205: 0 : VRF returned ID map[43:{}]
+[peer] 23:42:47.579073 main.go:215: 0 :Verifiers [198.162.52.57:8043] returned.
+[err] 23:42:47.579663 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.57:8043: connect: connection refused
+[peer] 23:42:47.579674 main.go:908: 0:Will try and create an empty block
+[peer] 23:42:47.579682 blockchain.go:71: Returning nil
+[peer] 23:42:47.579734 main.go:915: 0:Will try and create an empty block
+[peer] 23:42:47.579763 main.go:689: 0:Sending block. Iteration: 15
+[peer] 23:42:47.579778 main.go:709: 0:RPC calls successfully returned. Iteration: 15
+[peer] 23:42:47.588187 honest.go:81: 0Train Error is 1.00000 in Iteration 15
+[peer] 23:42:47.588243 main.go:717: 0:Preparing for next Iteration. Current Iteration: 15
+[peer] 23:42:47.588269 main.go:523: 0:Acquiring bool lock
+[peer] 23:42:47.588292 main.go:525: 0:Acquired bool lock
+[peer] 23:42:47.589897 main.go:540: 0:I am verifier. IterationCount:16
+[peer] 23:42:47.589944 main.go:549: 0:Bool lock released
+[peer] 23:42:47.590032 main.go:926: 0:Starting Update Deadline Timer. Iteration: 16
+[peer] 23:42:57.590181 main.go:934: 0:Timeout. Didn't receive expected number of updates. Preparing to send block. Iteration: 16..
+[peer] 23:42:57.590262 main.go:958: 0:Received no updates from peers. I WILL DIE
