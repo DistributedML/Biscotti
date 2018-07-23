@@ -25,7 +25,7 @@ rm -r LogFiles
 
 echo "Compiling go"
 
-go install
+sudo go install
 
 myPrivateIp=$(ifconfig | grep -oE -m 1 "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | head -1)
 
