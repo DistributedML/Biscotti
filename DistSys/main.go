@@ -17,11 +17,7 @@ import (
 	"encoding/gob"
 )
 
-// TODO: Figure out best values of timeouts to prevent unnecessary delays. Timeout for RegisterPeer< timeout for other two RPC's
-// Register Peer RPC is in and out so it must be equal to some times the RTT. TimeoutRPC for the other 2 remains the same
-// verifyUpdate, registerBlock might block client due to being behind in another iteration therefore its significantly larger. This is no longer true so can experiment with lower timeouts
-// timeoutBlock larger than timmeout update because verifier has to collect updates from everyone before sending out block so the block might come later
-// than the . Do the values need to be this large? Remains open to debate.
+// Timeout for block should be more than timeout for update because nodes should be more patients for the block to come through
 
 //Assumption: Requires node 0 to be online first. Need to move away from this
 
@@ -30,8 +26,8 @@ const (
 	verifierIP   	string        = "127.0.0.1:"
 	timeoutRPC    	time.Duration = 10000000000
 	numVerifiers 	int           = 1
-	timeoutUpdate 	time.Duration = 15000000000  
-	timeoutBlock 	time.Duration = 16000000000  
+	timeoutUpdate 	time.Duration = 10000000000  
+	timeoutBlock 	time.Duration = 15000000000  
 	timeoutPeer 	time.Duration = 5000000000
 )
 
@@ -542,7 +538,7 @@ func prepareForNextIteration() {
 
 	if verifier {
 		outLog.Printf(strconv.Itoa(client.id)+":I am verifier. IterationCount:%d", iterationCount)
-		go startUpdateDeadlineTimer() //start timer for receiving updates
+		go startUpdateDeadlineTimer(iterationCount) //start timer for receiving updates
 		updateSent = true
 	} else {
 		outLog.Printf(strconv.Itoa(client.id)+":I am not verifier IterationCount:%d", iterationCount)
@@ -925,7 +921,7 @@ func sendUpdateToVerifier(address string) {
 
 // Timer started by the verifier to set a deadline until which he will receive updates
 
-func startUpdateDeadlineTimer(){
+func startUpdateDeadlineTimer(timerForIteration int){
 
 	outLog.Printf(strconv.Itoa(client.id)+":Starting Update Deadline Timer. Iteration: %d", iterationCount)
 	
@@ -940,28 +936,33 @@ func startUpdateDeadlineTimer(){
 	}
 
 	
-	if (len(client.blockUpdates) > 0) {
+	if (timerForIteration == iterationCount) {
 		
-		outLog.Printf(strconv.Itoa(client.id)+":Acquiring chain lock")
-		blockChainLock.Lock()
-		
-		outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")
-		blockToSend, err := client.createBlock(iterationCount)
-		
-		blockChainLock.Unlock()		
-		printError("Iteration: " + strconv.Itoa(iterationCount), err)
-		
-		if (err == nil) {
-			sendBlock(*blockToSend)
+		if (len(client.blockUpdates) > 0) {
+	
+			outLog.Printf(strconv.Itoa(client.id)+":Acquiring chain lock")
+			blockChainLock.Lock()
+			
+			outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")
+			blockToSend, err := client.createBlock(iterationCount)
+			
+			blockChainLock.Unlock()		
+			printError("Iteration: " + strconv.Itoa(iterationCount), err)
+			
+			if (err == nil) {
+				sendBlock(*blockToSend)
+			}
+
+		} else {
+
+			outLog.Printf(strconv.Itoa(client.id)+":Received no updates from peers. I WILL DIE")
+			os.Exit(1)
 		}
 
-	} else {
-		outLog.Printf(strconv.Itoa(client.id)+":Received no updates from peers. I WILL DIE")
-		os.Exit(1)
 	}
 
 }
-
+	
 func startBlockDeadlineTimer(timerForIteration int){
 
 	
