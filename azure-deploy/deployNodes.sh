@@ -48,6 +48,8 @@ for (( index = startingIndex ; index < startingIndex + nodesToRun; index++ )); d
 	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
 	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile 2> outLog.log &
 	
+	echo $index
+
 	if [ $index -eq 0 ] 
 	then			
 		echo "Sleeping. Allowing node zero to be up and running"

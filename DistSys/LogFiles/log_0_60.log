@@ -1,0 +1,1874 @@
+[peer] 00:14:29.367615 honest.go:107: 0Importing modules...
+../ML/code/utils.py:223: FutureWarning: Method .as_matrix will be removed in a future version. Use .values instead.
+  data = data.as_matrix()
+../ML/code/utils.py:94: FutureWarning: Method .as_matrix will be removed in a future version. Use .values instead.
+  credit = df.ix[1:nn, 1:dd].as_matrix()
+[peer] 00:14:45.361807 honest.go:122: 0Sucessfully pulled dataset. Features: 25
+[peer] 00:14:46.783365 main.go:564: 0:Peer started. Receiving on 8000
+[peer] 00:14:56.782423 main.go:568: 0:Accepted new Connection
+[peer] 00:14:56.923872 main.go:568: 0:Accepted new Connection
+[peer] 00:14:57.007003 main.go:568: 0:Accepted new Connection
+[peer] 00:14:57.007161 main.go:148: 0:Registering peer:198.162.52.126:8002
+[peer] 00:14:57.007238 main.go:158: Advertising chain to peer with length 1
+[peer] 00:14:57.007290 main.go:148: 0:Registering peer:198.162.52.126:8010
+[peer] 00:14:57.007334 main.go:523: 0:Acquiring bool lock
+[peer] 00:14:57.007366 main.go:525: 0:Acquired bool lock
+[peer] 00:14:57.007244 main.go:148: 0:Registering peer:198.162.52.126:8005
+[peer] 00:14:57.009518 main.go:158: Advertising chain to peer with length 1
+[peer] 00:14:57.009393 main.go:544: 0:I am not verifier IterationCount:0
+[peer] 00:14:57.010468 main.go:549: 0:Bool lock released
+[peer] 00:14:57.010517 main.go:835: 0:Computing Update
+[peer] 00:14:57.373508 main.go:568: 0:Accepted new Connection
+[peer] 00:14:57.374379 main.go:148: 0:Registering peer:198.162.52.126:8007
+[peer] 00:14:57.374448 main.go:158: Advertising chain to peer with length 1
+[peer] 00:14:57.640644 main.go:568: 0:Accepted new Connection
+[peer] 00:14:57.641417 main.go:148: 0:Registering peer:198.162.52.126:8026
+[peer] 00:14:57.641515 main.go:158: Advertising chain to peer with length 1
+[peer] 00:14:57.642176 main.go:568: 0:Accepted new Connection
+[peer] 00:14:57.642391 main.go:148: 0:Registering peer:198.162.52.126:8006
+[peer] 00:14:57.642460 main.go:158: Advertising chain to peer with length 1
+[peer] 00:14:57.715584 main.go:205: 0 : VRF returned ID map[22:{}]
+[peer] 00:14:57.715749 main.go:215: 0 :Verifiers [198.162.52.126:8022] returned.
+[err] 00:14:57.716028 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.126:8022: connect: connection refused
+[peer] 00:14:57.716070 main.go:908: 0:Will try and create an empty block
+[peer] 00:14:57.716106 blockchain.go:71: Returning nil
+[peer] 00:14:57.811657 main.go:568: 0:Accepted new Connection
+[peer] 00:14:57.811898 main.go:148: 0:Registering peer:198.162.52.126:8016
+[peer] 00:14:57.811948 main.go:158: Advertising chain to peer with length 1
+[peer] 00:14:57.865294 main.go:568: 0:Accepted new Connection
+[peer] 00:14:57.866159 main.go:568: 0:Accepted new Connection
+[peer] 00:14:57.868688 main.go:126: 0:Got block message, iteration 8
+[peer] 00:14:57.868850 main.go:605: 0:Acquiring bool lock
+[peer] 00:14:57.876196 main.go:568: 0:Accepted new Connection
+[peer] 00:14:57.876447 main.go:126: 0:Got block message, iteration 8
+[peer] 00:14:57.876596 main.go:605: 0:Acquiring bool lock
+[peer] 00:14:57.880562 main.go:126: 0:Got block message, iteration 8
+[peer] 00:14:57.881035 main.go:605: 0:Acquiring bool lock
+[peer] 00:14:57.899772 main.go:915: 0:Will try and create an empty block
+[peer] 00:14:57.899843 main.go:689: 0:Sending block. Iteration: 0
+[peer] 00:14:57.899948 main.go:607: 0:Acquired bool lock
+[peer] 00:14:57.899964 main.go:608: Chain Length:2
+[peer] 00:14:57.899972 blockchain.go:71: Returning nil
+[peer] 00:14:57.899980 main.go:610: Chain Length:2
+[peer] 00:14:57.899989 main.go:660: 0:Blocking. Got block for 8, I am at 0
+[peer] 00:14:57.899998 main.go:607: 0:Acquired bool lock
+[peer] 00:14:57.900006 main.go:608: Chain Length:2
+[peer] 00:14:57.900013 blockchain.go:71: Returning nil
+[peer] 00:14:57.900020 main.go:610: Chain Length:2
+[peer] 00:14:57.900028 main.go:660: 0:Blocking. Got block for 8, I am at 0
+[peer] 00:14:57.900037 main.go:607: 0:Acquired bool lock
+[peer] 00:14:57.900045 main.go:608: Chain Length:2
+[peer] 00:14:57.900052 blockchain.go:71: Returning nil
+[peer] 00:14:57.900059 main.go:610: Chain Length:2
+[peer] 00:14:57.900080 main.go:660: 0:Blocking. Got block for 8, I am at 0
+[peer] 00:14:57.902374 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:57.906975 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:57.907558 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:57.907996 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:57.908307 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:57.908583 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:57.908788 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:57.908889 main.go:709: 0:RPC calls successfully returned. Iteration: 0
+[peer] 00:14:57.919007 honest.go:81: 0Train Error is 1.00000 in Iteration 0
+[peer] 00:14:57.919831 main.go:717: 0:Preparing for next Iteration. Current Iteration: 0
+[peer] 00:14:57.919900 main.go:523: 0:Acquiring bool lock
+[peer] 00:14:57.919957 main.go:525: 0:Acquired bool lock
+[peer] 00:14:57.926217 main.go:544: 0:I am not verifier IterationCount:1
+[peer] 00:14:57.926678 main.go:549: 0:Bool lock released
+[peer] 00:14:57.980697 main.go:568: 0:Accepted new Connection
+[peer] 00:14:57.980995 main.go:126: 0:Got block message, iteration 8
+[peer] 00:14:57.981175 main.go:605: 0:Acquiring bool lock
+[peer] 00:14:57.981217 main.go:607: 0:Acquired bool lock
+[peer] 00:14:57.981245 main.go:608: Chain Length:2
+[peer] 00:14:57.981272 blockchain.go:71: Returning nil
+[peer] 00:14:57.981303 main.go:610: Chain Length:2
+[peer] 00:14:57.981332 main.go:660: 0:Blocking. Got block for 8, I am at 1
+[peer] 00:14:58.003087 main.go:835: 0:Computing Update
+[peer] 00:14:58.003469 main.go:205: 0 : VRF returned ID map[21:{}]
+[peer] 00:14:58.003497 main.go:215: 0 :Verifiers [198.162.52.126:8021] returned.
+[err] 00:14:58.003587 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.126:8021: connect: connection refused
+[peer] 00:14:58.003601 main.go:908: 0:Will try and create an empty block
+[peer] 00:14:58.003608 blockchain.go:71: Returning nil
+[peer] 00:14:58.003668 main.go:915: 0:Will try and create an empty block
+[peer] 00:14:58.003705 main.go:689: 0:Sending block. Iteration: 1
+[peer] 00:14:58.004862 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:58.004873 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:58.005001 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:58.005519 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:58.005683 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:58.005895 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:58.013024 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:58.013070 main.go:709: 0:RPC calls successfully returned. Iteration: 1
+[peer] 00:14:58.041075 honest.go:81: 0Train Error is 1.00000 in Iteration 1
+[peer] 00:14:58.041096 main.go:717: 0:Preparing for next Iteration. Current Iteration: 1
+[peer] 00:14:58.041105 main.go:523: 0:Acquiring bool lock
+[peer] 00:14:58.041112 main.go:525: 0:Acquired bool lock
+[peer] 00:14:58.042750 main.go:544: 0:I am not verifier IterationCount:2
+[peer] 00:14:58.042766 main.go:549: 0:Bool lock released
+[peer] 00:14:58.057386 main.go:568: 0:Accepted new Connection
+[peer] 00:14:58.058318 main.go:126: 0:Got block message, iteration 8
+[peer] 00:14:58.058553 main.go:605: 0:Acquiring bool lock
+[peer] 00:14:58.058610 main.go:607: 0:Acquired bool lock
+[peer] 00:14:58.058646 main.go:608: Chain Length:3
+[peer] 00:14:58.058686 blockchain.go:71: Returning nil
+[peer] 00:14:58.058720 main.go:610: Chain Length:3
+[peer] 00:14:58.058758 main.go:660: 0:Blocking. Got block for 8, I am at 2
+[peer] 00:14:58.103785 main.go:835: 0:Computing Update
+[peer] 00:14:58.104243 main.go:205: 0 : VRF returned ID map[21:{}]
+[peer] 00:14:58.104311 main.go:215: 0 :Verifiers [198.162.52.126:8021] returned.
+[err] 00:14:58.104442 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.126:8021: connect: connection refused
+[peer] 00:14:58.104494 main.go:908: 0:Will try and create an empty block
+[peer] 00:14:58.104536 blockchain.go:71: Returning nil
+[peer] 00:14:58.104638 main.go:915: 0:Will try and create an empty block
+[peer] 00:14:58.104721 main.go:689: 0:Sending block. Iteration: 2
+[peer] 00:14:58.106962 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:58.107468 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:58.107617 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:58.108956 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:58.109350 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:58.110434 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:58.135740 main.go:754: 0:Block sent to peer successful
+[peer] 00:14:58.135844 main.go:709: 0:RPC calls successfully returned. Iteration: 2
+[peer] 00:14:58.189920 honest.go:81: 0Train Error is 1.00000 in Iteration 2
+[peer] 00:14:58.189939 main.go:717: 0:Preparing for next Iteration. Current Iteration: 2
+[peer] 00:14:58.189948 main.go:523: 0:Acquiring bool lock
+[peer] 00:14:58.189978 main.go:525: 0:Acquired bool lock
+[peer] 00:14:58.191440 main.go:544: 0:I am not verifier IterationCount:3
+[peer] 00:14:58.191460 main.go:549: 0:Bool lock released
+[peer] 00:14:58.205391 main.go:835: 0:Computing Update
+[peer] 00:14:58.205842 main.go:205: 0 : VRF returned ID map[32:{}]
+[peer] 00:14:58.205894 main.go:215: 0 :Verifiers [198.162.52.57:8032] returned.
+[peer] 00:14:58.206263 main.go:880: 0:Making RPC Call to Verifier. Sending Update, Iteration:3
+[err] 00:14:58.283022 main.go:237: Error in sending update, err = Stale Update/Block
+[peer] 00:14:58.397769 main.go:568: 0:Accepted new Connection
+[peer] 00:14:58.398272 main.go:148: 0:Registering peer:198.162.52.126:8012
+[peer] 00:14:58.398386 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:58.405438 main.go:568: 0:Accepted new Connection
+[peer] 00:14:58.406163 main.go:148: 0:Registering peer:198.162.52.126:8019
+[peer] 00:14:58.406231 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:58.539022 main.go:568: 0:Accepted new Connection
+[peer] 00:14:58.539316 main.go:148: 0:Registering peer:198.162.52.126:8015
+[peer] 00:14:58.539335 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:58.539468 main.go:568: 0:Accepted new Connection
+[peer] 00:14:58.541868 main.go:148: 0:Registering peer:198.162.52.126:8027
+[peer] 00:14:58.541890 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:58.678821 main.go:568: 0:Accepted new Connection
+[peer] 00:14:58.679530 main.go:148: 0:Registering peer:198.162.52.126:8003
+[peer] 00:14:58.679603 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:58.811234 main.go:568: 0:Accepted new Connection
+[peer] 00:14:58.812259 main.go:148: 0:Registering peer:198.162.52.126:8021
+[peer] 00:14:58.812281 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:58.900097 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:14:58.900171 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:14:58.900199 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:14:58.925232 main.go:568: 0:Accepted new Connection
+[peer] 00:14:58.925267 main.go:568: 0:Accepted new Connection
+[peer] 00:14:58.925453 main.go:148: 0:Registering peer:198.162.52.126:8022
+[peer] 00:14:58.925482 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:58.925714 main.go:148: 0:Registering peer:198.162.52.126:8001
+[peer] 00:14:58.925731 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:58.925837 main.go:568: 0:Accepted new Connection
+[peer] 00:14:58.926797 main.go:568: 0:Accepted new Connection
+[peer] 00:14:58.927294 main.go:148: 0:Registering peer:198.162.52.126:8017
+[peer] 00:14:58.927789 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:58.931004 main.go:148: 0:Registering peer:198.162.52.126:8011
+[peer] 00:14:58.931025 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:58.981451 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:14:59.038253 main.go:568: 0:Accepted new Connection
+[peer] 00:14:59.038717 main.go:148: 0:Registering peer:198.162.52.126:8014
+[peer] 00:14:59.038769 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:59.058890 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:14:59.115551 main.go:568: 0:Accepted new Connection
+[peer] 00:14:59.115915 main.go:148: 0:Registering peer:198.162.52.126:8013
+[peer] 00:14:59.115935 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:59.289326 main.go:568: 0:Accepted new Connection
+[peer] 00:14:59.289355 main.go:568: 0:Accepted new Connection
+[peer] 00:14:59.289373 main.go:568: 0:Accepted new Connection
+[peer] 00:14:59.289749 main.go:148: 0:Registering peer:198.162.52.126:8020
+[peer] 00:14:59.289766 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:59.289995 main.go:148: 0:Registering peer:198.162.52.126:8008
+[peer] 00:14:59.290013 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:59.290114 main.go:568: 0:Accepted new Connection
+[peer] 00:14:59.290133 main.go:568: 0:Accepted new Connection
+[peer] 00:14:59.290270 main.go:148: 0:Registering peer:198.162.52.126:8009
+[peer] 00:14:59.290288 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:59.290548 main.go:148: 0:Registering peer:198.162.52.126:8029
+[peer] 00:14:59.290564 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:59.290803 main.go:148: 0:Registering peer:198.162.52.126:8004
+[peer] 00:14:59.290821 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:59.292380 main.go:568: 0:Accepted new Connection
+[peer] 00:14:59.292804 main.go:148: 0:Registering peer:198.162.52.126:8028
+[peer] 00:14:59.292822 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:59.449865 main.go:568: 0:Accepted new Connection
+[peer] 00:14:59.450199 main.go:148: 0:Registering peer:198.162.52.126:8018
+[peer] 00:14:59.450214 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:59.457751 main.go:568: 0:Accepted new Connection
+[peer] 00:14:59.458049 main.go:148: 0:Registering peer:198.162.52.126:8024
+[peer] 00:14:59.458072 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:59.523675 main.go:568: 0:Accepted new Connection
+[peer] 00:14:59.524032 main.go:148: 0:Registering peer:198.162.52.126:8025
+[peer] 00:14:59.524049 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:59.581196 main.go:568: 0:Accepted new Connection
+[peer] 00:14:59.581480 main.go:148: 0:Registering peer:198.162.52.126:8023
+[peer] 00:14:59.581495 main.go:158: Advertising chain to peer with length 4
+[peer] 00:14:59.900396 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:14:59.900396 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:14:59.900411 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:14:59.981710 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:00.059026 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:00.900601 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:00.900617 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:00.900624 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:00.981935 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:01.059195 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:01.900776 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:01.900831 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:01.900831 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:01.982058 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:02.059385 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:02.900950 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:02.900950 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:02.900967 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:02.982239 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:03.059546 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:03.901137 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:03.901131 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:03.901155 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:03.982399 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:04.059750 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:04.901334 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:04.901333 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:04.901359 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:04.982578 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:05.059937 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:05.901486 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:05.901486 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:05.901564 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:05.982790 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:06.060054 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:06.901661 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:06.901661 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:06.901661 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:06.982934 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:07.060232 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:07.901821 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:07.901876 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:07.901869 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:07.983094 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:08.060351 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:08.122091 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.136481 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.144015 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:08.144280 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:08.144304 main.go:607: 0:Acquired bool lock
+[peer] 00:15:08.144314 main.go:608: Chain Length:4
+[peer] 00:15:08.144323 blockchain.go:71: Returning nil
+[peer] 00:15:08.144333 main.go:610: Chain Length:4
+[peer] 00:15:08.144343 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:08.174865 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.175919 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.184141 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.194635 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.195359 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.202823 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.203202 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:08.203472 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:08.204375 main.go:607: 0:Acquired bool lock
+[peer] 00:15:08.204413 main.go:608: Chain Length:4
+[peer] 00:15:08.204451 blockchain.go:71: Returning nil
+[peer] 00:15:08.204500 main.go:610: Chain Length:4
+[peer] 00:15:08.204535 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:08.204355 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:08.204972 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:08.204988 main.go:607: 0:Acquired bool lock
+[peer] 00:15:08.204997 main.go:608: Chain Length:4
+[peer] 00:15:08.205005 blockchain.go:71: Returning nil
+[peer] 00:15:08.205014 main.go:610: Chain Length:4
+[peer] 00:15:08.205029 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:08.208903 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.218165 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.218199 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.218541 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:08.218768 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:08.218793 main.go:607: 0:Acquired bool lock
+[peer] 00:15:08.218803 main.go:608: Chain Length:4
+[peer] 00:15:08.218812 blockchain.go:71: Returning nil
+[peer] 00:15:08.218824 main.go:610: Chain Length:4
+[peer] 00:15:08.218834 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:08.219106 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:08.219328 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:08.219347 main.go:607: 0:Acquired bool lock
+[peer] 00:15:08.219356 main.go:608: Chain Length:4
+[peer] 00:15:08.219363 blockchain.go:71: Returning nil
+[peer] 00:15:08.219371 main.go:610: Chain Length:4
+[peer] 00:15:08.219380 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:08.224713 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:08.224948 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:08.225022 main.go:607: 0:Acquired bool lock
+[peer] 00:15:08.225073 main.go:608: Chain Length:4
+[peer] 00:15:08.225115 blockchain.go:71: Returning nil
+[peer] 00:15:08.225254 main.go:610: Chain Length:4
+[peer] 00:15:08.225296 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:08.224992 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.225962 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:08.226211 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:08.226326 main.go:607: 0:Acquired bool lock
+[peer] 00:15:08.226361 main.go:608: Chain Length:4
+[peer] 00:15:08.226389 blockchain.go:71: Returning nil
+[peer] 00:15:08.226416 main.go:610: Chain Length:4
+[peer] 00:15:08.229921 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:08.245891 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:08.246101 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:08.246118 main.go:607: 0:Acquired bool lock
+[peer] 00:15:08.246126 main.go:608: Chain Length:4
+[peer] 00:15:08.246132 blockchain.go:71: Returning nil
+[peer] 00:15:08.246139 main.go:610: Chain Length:4
+[peer] 00:15:08.246148 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:08.246173 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.246442 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:08.246624 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:08.246640 main.go:607: 0:Acquired bool lock
+[peer] 00:15:08.246648 main.go:608: Chain Length:4
+[peer] 00:15:08.246654 blockchain.go:71: Returning nil
+[peer] 00:15:08.246660 main.go:610: Chain Length:4
+[peer] 00:15:08.246667 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:08.293938 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.293975 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.293992 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.294009 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.294029 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.294045 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.294062 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.294356 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:08.294542 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:08.294557 main.go:607: 0:Acquired bool lock
+[peer] 00:15:08.294564 main.go:608: Chain Length:4
+[peer] 00:15:08.294570 blockchain.go:71: Returning nil
+[peer] 00:15:08.294576 main.go:610: Chain Length:4
+[peer] 00:15:08.294583 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:08.294828 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:08.295026 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:08.295046 main.go:607: 0:Acquired bool lock
+[peer] 00:15:08.295055 main.go:608: Chain Length:4
+[peer] 00:15:08.295062 blockchain.go:71: Returning nil
+[peer] 00:15:08.295072 main.go:610: Chain Length:4
+[peer] 00:15:08.295081 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:08.295384 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:08.295592 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:08.295610 main.go:607: 0:Acquired bool lock
+[peer] 00:15:08.295618 main.go:608: Chain Length:4
+[peer] 00:15:08.295625 blockchain.go:71: Returning nil
+[peer] 00:15:08.295632 main.go:610: Chain Length:4
+[peer] 00:15:08.295816 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:08.298889 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:08.299168 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:08.299207 main.go:607: 0:Acquired bool lock
+[peer] 00:15:08.299238 main.go:608: Chain Length:4
+[peer] 00:15:08.299280 blockchain.go:71: Returning nil
+[peer] 00:15:08.299320 main.go:610: Chain Length:4
+[peer] 00:15:08.299352 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:08.315421 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.319507 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:08.319712 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:08.319726 main.go:607: 0:Acquired bool lock
+[peer] 00:15:08.319734 main.go:608: Chain Length:4
+[peer] 00:15:08.319741 blockchain.go:71: Returning nil
+[peer] 00:15:08.319748 main.go:610: Chain Length:4
+[peer] 00:15:08.319756 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:08.320317 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.328898 main.go:568: 0:Accepted new Connection
+[peer] 00:15:08.359095 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:08.359328 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:08.359387 main.go:607: 0:Acquired bool lock
+[peer] 00:15:08.359419 main.go:608: Chain Length:4
+[peer] 00:15:08.359456 blockchain.go:71: Returning nil
+[peer] 00:15:08.359504 main.go:610: Chain Length:4
+[peer] 00:15:08.359585 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:08.478924 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:08.479031 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:08.479096 main.go:607: 0:Acquired bool lock
+[peer] 00:15:08.479127 main.go:608: Chain Length:4
+[peer] 00:15:08.479154 blockchain.go:71: Returning nil
+[peer] 00:15:08.479180 main.go:610: Chain Length:4
+[peer] 00:15:08.479206 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:08.693510 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:08.693726 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:08.693779 main.go:607: 0:Acquired bool lock
+[peer] 00:15:08.693813 main.go:608: Chain Length:4
+[peer] 00:15:08.693846 blockchain.go:71: Returning nil
+[peer] 00:15:08.693880 main.go:610: Chain Length:4
+[peer] 00:15:08.693912 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:08.901946 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:08.901969 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:08.901970 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:08.983216 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:09.060450 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:09.144421 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:09.204819 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:09.205108 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:09.218862 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:09.219456 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:09.225405 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:09.230009 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:09.246226 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:09.246737 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:09.294657 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:09.295130 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:09.295893 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:09.299444 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:09.319832 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:09.359708 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:09.479308 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:09.694019 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:09.745499 main.go:568: 0:Accepted new Connection
+[peer] 00:15:09.791895 main.go:568: 0:Accepted new Connection
+[peer] 00:15:09.758023 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:09.791966 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:09.791985 main.go:607: 0:Acquired bool lock
+[peer] 00:15:09.791993 main.go:608: Chain Length:4
+[peer] 00:15:09.792003 blockchain.go:71: Returning nil
+[peer] 00:15:09.792011 main.go:610: Chain Length:4
+[peer] 00:15:09.792030 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:09.792125 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:09.792204 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:09.792217 main.go:607: 0:Acquired bool lock
+[peer] 00:15:09.792223 main.go:608: Chain Length:4
+[peer] 00:15:09.792227 blockchain.go:71: Returning nil
+[peer] 00:15:09.792232 main.go:610: Chain Length:4
+[peer] 00:15:09.792240 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:09.893972 main.go:568: 0:Accepted new Connection
+[peer] 00:15:09.903666 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:09.903673 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:09.903677 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:09.983313 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:10.060546 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:10.144516 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:10.204909 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:10.205190 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:10.218944 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:10.219537 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:10.225488 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:10.230085 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:10.246308 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:10.246816 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:10.294748 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:10.295207 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:10.295967 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:10.299524 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:10.319917 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:10.359801 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:10.479400 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:10.791927 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:10.792104 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:10.792319 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:10.903758 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:10.903762 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:10.903758 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:10.983403 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:11.060636 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:11.144608 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:11.205002 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:11.205266 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:11.219025 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:11.219614 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:11.225566 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:11.230167 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:11.246394 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:11.246893 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:11.294831 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:11.295283 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:11.296046 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:11.299602 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:11.320001 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:11.359887 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:11.479490 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:11.792035 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:11.792187 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:11.792399 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:11.903846 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:11.903844 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:11.903844 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:11.983449 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:12.060719 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:12.144695 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:12.205084 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:12.205344 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:12.219104 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:12.219689 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:12.225641 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:12.230244 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:12.246436 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:12.246967 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:12.294911 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:12.295358 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:12.296124 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:12.299681 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:12.320081 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:12.359971 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:12.479577 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:12.792137 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:12.792270 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:12.792478 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:12.903936 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:12.903936 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:12.903940 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:12.983514 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:13.060801 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:13.144743 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.205174 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.205379 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.219148 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.219767 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.225720 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.230332 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.246524 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.247046 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.283219 main.go:983: 0:Timeout. Didn't receive block. Appending empty block. Iteration:3 ..
+[peer] 00:15:13.283247 main.go:985: 0:chain lock acquired
+[peer] 00:15:13.283256 blockchain.go:71: Returning nil
+[peer] 00:15:13.283350 main.go:689: 0:Sending block. Iteration: 3
+[peer] 00:15:13.284395 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:13.284527 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:13.294989 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.295404 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.296165 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.299756 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.308127 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:13.308205 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:13.308224 main.go:607: 0:Acquired bool lock
+[peer] 00:15:13.308234 main.go:608: Chain Length:5
+[peer] 00:15:13.308241 blockchain.go:71: Returning nil
+[peer] 00:15:13.308249 main.go:610: Chain Length:5
+[peer] 00:15:13.308259 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.315151 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:13.316244 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:13.316510 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:13.316526 main.go:607: 0:Acquired bool lock
+[peer] 00:15:13.316538 main.go:608: Chain Length:5
+[peer] 00:15:13.316548 blockchain.go:71: Returning nil
+[peer] 00:15:13.316555 main.go:610: Chain Length:5
+[peer] 00:15:13.316566 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.320179 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.321592 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:13.360058 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.479668 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.792234 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.792346 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.792551 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:13.904030 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:13.904029 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:13.904033 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:13.983604 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:14.060887 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:14.144839 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.205269 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.205414 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.219250 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.219847 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.225801 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.230407 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.246612 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.247124 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.295088 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.295486 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.296241 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.299834 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.308342 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.316642 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.320261 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.360149 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.404195 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:14.439857 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:14.454722 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:14.479754 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.494061 main.go:568: 0:Accepted new Connection
+[peer] 00:15:14.494704 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:14.494925 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:14.494975 main.go:607: 0:Acquired bool lock
+[peer] 00:15:14.495002 main.go:608: Chain Length:5
+[peer] 00:15:14.495028 blockchain.go:71: Returning nil
+[peer] 00:15:14.495059 main.go:610: Chain Length:5
+[peer] 00:15:14.495104 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.544181 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:14.544260 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:14.544272 main.go:607: 0:Acquired bool lock
+[peer] 00:15:14.544277 main.go:608: Chain Length:5
+[peer] 00:15:14.544282 blockchain.go:71: Returning nil
+[peer] 00:15:14.544286 main.go:610: Chain Length:5
+[peer] 00:15:14.544292 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.556476 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:14.558750 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:14.792337 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.792448 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.792602 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:14.912637 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:14.912637 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:14.912636 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:14.983694 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:15.060980 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:15.144924 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.205358 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.205473 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.219346 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.219923 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.225830 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.230483 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.246705 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.247199 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.295194 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.295566 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.296318 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.299907 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.308421 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.316717 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.320335 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.360245 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.479848 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.495214 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.544363 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.792448 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.793004 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.793005 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.818028 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:15.818145 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:15.818185 main.go:607: 0:Acquired bool lock
+[peer] 00:15:15.818215 main.go:608: Chain Length:5
+[peer] 00:15:15.818244 blockchain.go:71: Returning nil
+[peer] 00:15:15.818272 main.go:610: Chain Length:5
+[peer] 00:15:15.818300 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:15.888667 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:15.895238 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:15.913195 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:15.913201 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:15.913208 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:15.918104 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:15.937655 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:15.945207 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:15.961035 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:15.983796 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:16.017995 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:16.018342 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:16.018711 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:16.018729 main.go:607: 0:Acquired bool lock
+[peer] 00:15:16.018738 main.go:608: Chain Length:5
+[peer] 00:15:16.018746 blockchain.go:71: Returning nil
+[peer] 00:15:16.018757 main.go:610: Chain Length:5
+[peer] 00:15:16.018770 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.053877 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:16.054063 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:16.054082 main.go:607: 0:Acquired bool lock
+[peer] 00:15:16.054091 main.go:608: Chain Length:5
+[peer] 00:15:16.054103 blockchain.go:71: Returning nil
+[peer] 00:15:16.054111 main.go:610: Chain Length:5
+[peer] 00:15:16.054132 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.061036 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:16.145031 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.205462 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.205562 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.219432 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.220012 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.225911 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.230563 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.246795 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.247273 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.295296 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.295645 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.296399 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.299987 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.308504 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.316802 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.320417 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.345025 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:16.348033 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:16.356557 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:16.360352 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.369854 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:16.385262 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:16.479955 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.495303 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.544459 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.792561 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.793088 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.793090 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.818401 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:16.913344 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:16.913345 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:16.913344 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:16.983903 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:17.018850 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.054223 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.061130 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:17.084778 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:17.088081 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:17.145132 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.175063 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:17.495988 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:17.495395 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.179752 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:17.496068 main.go:607: 0:Acquired bool lock
+[peer] 00:15:17.496164 main.go:608: Chain Length:5
+[peer] 00:15:17.496174 blockchain.go:71: Returning nil
+[peer] 00:15:17.496184 main.go:610: Chain Length:5
+[peer] 00:15:17.496194 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.205554 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.205648 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.219511 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.220091 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.225992 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.230643 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.246884 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.247348 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.295391 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.295720 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.296473 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.300062 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.308585 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.316881 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.320496 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.360438 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.480057 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.544561 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.792690 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.793180 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.793183 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.818502 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:17.913469 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:17.913472 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:17.913469 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:18.495923 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.495923 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:18.495923 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.495929 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:18.496037 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.496187 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.496292 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.496300 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.496295 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.496298 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.496299 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.496297 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.496296 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.496305 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.496358 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.496362 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.496368 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.496366 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.496365 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.496366 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.496368 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.496360 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.496364 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.496420 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.544645 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.792805 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.793266 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.793848 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.818612 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:18.913588 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:18.913585 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:18.913585 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:19.496036 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:19.496036 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:19.496043 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496036 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496119 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496267 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496376 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496388 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496390 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496387 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496393 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496389 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496399 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496395 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496400 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496404 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496448 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496453 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496456 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496462 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496469 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496466 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496467 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.496473 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.544682 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.793101 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.794130 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.794136 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.818760 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:19.913679 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:19.913684 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:19.913686 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:20.496151 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:20.496151 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496152 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496158 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:20.496210 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496353 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496452 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496451 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496456 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496475 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496491 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496488 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496482 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496484 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496485 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496480 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496524 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496529 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496522 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496533 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496535 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496538 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496538 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.496539 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.544754 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.793241 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.794270 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.794271 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.818849 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:20.913771 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:20.913779 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:20.913780 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:21.496269 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496272 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:21.496281 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496430 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496490 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496563 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496632 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496287 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496498 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496565 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496567 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496569 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496571 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496573 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496574 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496576 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496284 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:21.496634 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496636 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496494 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496640 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496669 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496671 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.496673 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.544837 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.793353 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.794371 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.794372 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.818929 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:21.913866 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:21.913884 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:21.913887 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:22.183285 main.go:754: 0:Block sent to peer successful
+[peer] 00:15:22.496441 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.496458 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:22.496554 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.496561 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.496669 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.496745 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.496750 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.496849 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.496854 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.496946 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.496953 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.497045 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.497050 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.497141 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.497147 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.497241 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.497246 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:22.497340 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.497345 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.497437 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.497455 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.497570 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.497572 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.497646 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.544933 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.793474 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.794490 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.794490 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.819026 main.go:660: 0:Blocking. Got block for 9, I am at 3
+[peer] 00:15:22.913975 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:22.913976 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:22.913976 main.go:660: 0:Blocking. Got block for 8, I am at 3
+[peer] 00:15:23.283933 main.go:762: Timeout. Sending Block.
+[peer] 00:15:23.283960 main.go:762: Timeout. Sending Block.
+[peer] 00:15:23.284060 main.go:762: Timeout. Sending Block.
+[peer] 00:15:23.283964 main.go:762: Timeout. Sending Block.
+[peer] 00:15:23.284232 main.go:709: 0:RPC calls successfully returned. Iteration: 3
+[peer] 00:15:23.285549 honest.go:81: 0Train Error is 1.00000 in Iteration 3
+[peer] 00:15:23.285600 main.go:717: 0:Preparing for next Iteration. Current Iteration: 3
+[peer] 00:15:23.285612 main.go:523: 0:Acquiring bool lock
+[peer] 00:15:23.285622 main.go:525: 0:Acquired bool lock
+[peer] 00:15:23.496563 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.496563 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:23.496647 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.496647 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.496743 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.496825 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.496825 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.496922 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.496922 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.497021 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.497022 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.497117 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.497120 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.497214 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.497214 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.497312 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:23.497313 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.497412 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.497413 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.497528 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.497529 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.497643 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.497644 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.497715 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.545028 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.793624 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.794597 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.794604 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.819172 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:23.914093 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:23.914091 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:23.914104 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:24.289161 main.go:544: 0:I am not verifier IterationCount:4
+[peer] 00:15:24.289204 main.go:549: 0:Bool lock released
+[peer] 00:15:24.289238 main.go:835: 0:Computing Update
+[peer] 00:15:24.373321 main.go:205: 0 : VRF returned ID map[17:{}]
+[peer] 00:15:24.387438 main.go:215: 0 :Verifiers [198.162.52.126:8017] returned.
+[peer] 00:15:24.387588 main.go:880: 0:Making RPC Call to Verifier. Sending Update, Iteration:4
+[peer] 00:15:24.496691 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.496696 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:24.496719 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.496774 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.496824 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.496906 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.496907 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.497011 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.497011 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.497098 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.497098 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.497202 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.497202 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.497289 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.497288 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.497389 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:24.497389 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.497468 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.497467 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.497604 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.497605 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.497716 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.497718 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.497791 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.545132 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.793756 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.794706 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.794707 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.819273 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:24.914229 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:24.914249 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:24.914249 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:25.496845 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.496999 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.496997 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.496858 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:25.496877 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.496877 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.496851 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.497094 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.497099 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.497186 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.497190 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.497277 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.497276 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.497371 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.497382 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.497478 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.497478 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:25.497553 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.497555 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.497683 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.497685 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.497803 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.497810 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.497880 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.545272 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.793890 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.794814 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.794813 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.819399 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:25.914371 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:25.914407 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:25.914407 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:26.497110 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497130 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497191 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497130 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:26.497139 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497138 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497150 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497191 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497137 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497261 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497263 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497375 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497376 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497478 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497477 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497581 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497580 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497587 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:26.497648 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497766 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497766 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497889 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497889 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.497968 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.545425 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.794056 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.794907 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.794914 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.819538 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:26.914495 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:26.914495 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:26.914503 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:27.497287 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.497287 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:27.497304 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.497353 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.497307 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.497309 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.497313 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.497316 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.497320 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.497321 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.497355 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.497537 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.497537 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.497564 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.497568 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.497666 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:27.497665 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.497673 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.497736 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.497845 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.497846 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.497979 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.497980 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.498064 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.545617 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.794194 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.795014 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.795033 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.819672 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:27.914635 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:27.914634 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:27.914630 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:28.497424 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:28.497546 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.497418 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.497420 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.497461 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.497572 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.497463 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.497462 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.497562 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.497464 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.497562 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.497618 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.497628 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.497632 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.497637 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.497745 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.497761 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.497764 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:28.497809 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.497942 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.497941 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.498064 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.498070 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.498137 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.545741 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.794349 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.795146 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.795145 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.819778 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:28.914751 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:28.914759 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:28.914765 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:29.497611 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.497611 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:29.497628 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.497716 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.497737 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.497724 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.497737 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.497720 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.497631 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.497724 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.497632 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.497636 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.497838 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.497769 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.497840 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.497841 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.497841 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:29.497757 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.497845 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.498040 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.498080 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.498158 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.498168 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.498234 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.545816 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.794530 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.795251 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.795270 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.819883 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:29.914905 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:29.914902 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:29.914914 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:30.497789 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.497789 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.497810 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:30.497812 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.497814 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.497858 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.497863 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.497860 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.497865 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.497867 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.497871 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.497951 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.497963 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:30.497951 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.497958 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.497959 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.497960 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.497961 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.497971 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.498084 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.498179 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.498254 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.498254 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.498314 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.545942 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.794678 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.795404 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.795404 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.819993 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:30.915054 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:30.915050 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:30.915073 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:31.497934 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.497944 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:31.497983 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.497986 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.497959 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.497980 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.498027 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.497982 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.497990 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.497992 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.497934 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.497942 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.498050 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.498061 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.498055 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.498056 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:31.498059 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.498060 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.498057 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.498167 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.498252 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.498329 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.498341 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.498386 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.546076 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.794811 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.795508 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.795509 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.820106 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:31.915153 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:31.915158 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:31.915153 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:32.498090 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498154 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498168 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:32.498174 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498184 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498188 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498193 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498209 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498199 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498202 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498205 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498235 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498237 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:32.498197 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498244 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498247 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498290 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498177 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498292 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498298 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498324 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498466 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498491 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.498503 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.546223 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.607637 main.go:568: 0:Accepted new Connection
+[peer] 00:15:32.609688 main.go:126: 0:Got block message, iteration 9
+[peer] 00:15:32.609805 main.go:605: 0:Acquiring bool lock
+[peer] 00:15:32.794934 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.795608 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.795638 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.820239 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:32.915295 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:32.915294 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:32.915295 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[err] 00:15:32.972134 main.go:237: Error in sending update, err = Stale Update/Block
+[peer] 00:15:32.972194 main.go:607: 0:Acquired bool lock
+[peer] 00:15:32.972207 main.go:608: Chain Length:5
+[peer] 00:15:32.972214 blockchain.go:71: Returning nil
+[peer] 00:15:32.972222 main.go:610: Chain Length:5
+[peer] 00:15:32.972230 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498300 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:33.498296 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498295 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498305 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498337 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498339 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498339 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498340 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498341 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498341 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:33.498344 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498343 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498345 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498551 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498346 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498348 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498352 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498379 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498379 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498380 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498389 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498553 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498555 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.498346 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.546490 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.795061 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.795704 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.795745 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.820398 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:33.915453 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:33.915451 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:33.915469 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:33.972348 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498530 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498572 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498558 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498564 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498566 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498638 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498574 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498587 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498588 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498589 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498646 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498706 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498562 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:34.498568 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498585 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:34.498705 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498653 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498718 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498720 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498722 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498725 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498728 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498652 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.498786 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.546681 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.795225 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.795800 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.795871 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.820557 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:34.915617 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:34.915617 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:34.915634 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:34.972547 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498674 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498690 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498767 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498760 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498699 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498754 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498699 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498936 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498923 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498695 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498818 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498860 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:35.498856 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:35.498865 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498865 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498709 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498868 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498870 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498927 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498929 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498931 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498933 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498696 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.498764 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.546874 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.795406 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.795996 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.796001 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.820770 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:35.915780 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:35.915814 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:35.915821 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:35.972779 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.498829 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.498831 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.498881 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.498931 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.498936 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.498941 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.499007 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.499041 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.499040 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:36.499045 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.499047 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:36.499048 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.499057 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.499099 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.499101 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.499100 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.499105 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.499107 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.499163 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.499173 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.499179 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.499185 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.499191 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.499202 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.547128 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.795677 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.796168 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.796176 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.820944 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:36.915937 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:36.915937 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:36.915958 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:36.972983 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.498967 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.498973 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.498992 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.498991 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.499061 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.499098 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.498995 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.499145 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.499150 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.499156 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:37.499207 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.499197 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.499160 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.499267 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.499159 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:37.499290 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.499154 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.499216 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.499193 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.499210 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.499193 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.499261 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.499264 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.499205 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.547269 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.795858 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.796303 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.796341 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.821105 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:37.916101 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:37.916098 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:37.916114 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:37.973137 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499115 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499115 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499129 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499133 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499196 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499198 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499194 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499194 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499262 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:38.499266 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499337 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499341 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499342 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499393 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499406 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499414 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:38.499422 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499422 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499429 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499488 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499434 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499435 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499431 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.499437 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.547435 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.796043 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.796492 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.796498 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.821257 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:38.916235 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:38.916278 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:38.916289 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:38.973272 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499289 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499288 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499298 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499307 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499308 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499420 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499428 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499311 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499312 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499476 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499309 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499440 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499536 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499484 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499553 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499495 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:39.499423 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:39.499499 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499485 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499560 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499563 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499610 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499614 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.499617 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.547647 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.796249 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.796668 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.796678 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.821425 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:39.916375 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:39.916437 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:39.916491 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:39.973483 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499479 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499479 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499489 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499496 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499541 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499553 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499507 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499549 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499540 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499501 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499559 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499617 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:40.499624 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499701 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499637 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:40.499704 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499705 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499706 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499707 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499770 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499635 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499708 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499842 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.499860 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.547830 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.796446 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.796843 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.796850 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.821638 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:40.916584 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:40.916584 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:40.916611 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:40.973629 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499651 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499651 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499664 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499661 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499666 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499669 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499669 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499670 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499672 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499673 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499756 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:41.499767 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499763 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:41.499673 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499773 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499821 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499843 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499853 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499851 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499860 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499901 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499849 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.499919 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.500000 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.547951 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.796627 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.796974 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.797006 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.821817 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:41.916761 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:41.916811 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:41.916818 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:41.973774 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.499803 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.499849 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.499853 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.499840 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.499907 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.499842 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:42.499843 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.499844 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.499847 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.499853 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.499864 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.499978 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.499993 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.499919 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.500021 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.499921 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.499848 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.500000 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.499834 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:42.499840 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.500004 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.499917 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.500003 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.500170 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.548077 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.796800 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.797088 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.797123 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.821970 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:42.916921 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:42.916911 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:42.916947 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:42.973930 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.499947 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.499973 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.499976 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.499978 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.499979 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.499980 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.499981 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:43.499982 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.500050 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.500063 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.500067 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.500070 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.500124 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:43.500131 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.500132 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.500176 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.500179 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.500073 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.500143 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.500180 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.500134 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.500135 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.500188 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.500285 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.548222 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.796986 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.797223 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.797238 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.822153 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:43.917109 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:43.917119 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:43.917152 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:43.974129 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500109 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500124 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500129 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500140 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500142 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:44.500205 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500208 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500145 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500152 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500283 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500216 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500207 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500300 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500156 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500276 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500278 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500280 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500282 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500220 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500294 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500150 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500307 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.500218 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:44.500391 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.548385 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.797132 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.797338 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.797338 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.822373 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:44.917320 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:44.917318 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:44.917337 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:44.974281 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500280 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500303 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500355 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500381 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500363 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500314 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500317 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500324 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:45.500357 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500359 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500361 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500365 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500308 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500310 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500379 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500426 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500429 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500432 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500434 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500437 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500443 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500444 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500446 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.500447 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:45.548518 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.797262 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.797431 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.797432 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.822518 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:45.917514 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:45.917544 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:45.917557 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:45.974411 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500488 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500485 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500502 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500577 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500513 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500578 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500519 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500587 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500682 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500589 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:46.500590 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500689 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500788 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:46.500795 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500807 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500694 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500694 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500792 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500804 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500692 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500690 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500692 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500820 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.500831 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.548644 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.797501 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.797566 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.797569 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.822667 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:46.917759 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:46.917761 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:46.917772 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:46.974623 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.500704 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.500717 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.500734 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.500734 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.500820 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.500827 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:47.500744 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.500950 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.500941 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.500993 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.500845 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.500848 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.500896 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:47.500900 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.500943 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.500946 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.500748 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.500947 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.501123 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.500742 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.501025 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.501027 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.501033 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.500736 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.548763 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.797671 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.797671 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.797709 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.822832 main.go:660: 0:Blocking. Got block for 9, I am at 4
+[peer] 00:15:47.917934 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:47.917994 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:47.918003 main.go:660: 0:Blocking. Got block for 8, I am at 4
+[peer] 00:15:47.972351 main.go:983: 0:Timeout. Didn't receive block. Appending empty block. Iteration:4 ..
+[peer] 00:15:47.972413 main.go:985: 0:chain lock acquired
+[peer] 00:15:47.972423 blockchain.go:71: Returning nil
+[peer] 00:15:47.972512 main.go:689: 0:Sending block. Iteration: 4
+[err] 00:15:47.972862 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8020: connect: connection refused
+[err] 00:15:47.972881 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8015: connect: connection refused
+[err] 00:15:47.972884 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8008: connect: connection refused
+[err] 00:15:47.972926 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8004: connect: connection refused
+[err] 00:15:47.972881 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8022: connect: connection refused
+[peer] 00:15:47.972888 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8020
+[peer] 00:15:47.972902 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8015
+[err] 00:15:47.972884 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8026: connect: connection refused
+[peer] 00:15:47.972930 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8008
+[peer] 00:15:47.972945 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8004
+[err] 00:15:47.972894 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8016: connect: connection refused
+[peer] 00:15:47.972970 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8022
+[err] 00:15:47.972862 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8027: connect: connection refused
+[peer] 00:15:47.973012 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8026
+[err] 00:15:47.972902 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8013: connect: connection refused
+[err] 00:15:47.972902 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8003: connect: connection refused
+[err] 00:15:47.972864 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8018: connect: connection refused
+[err] 00:15:47.972870 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8012: connect: connection refused
+[err] 00:15:47.972907 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8024: connect: connection refused
+[peer] 00:15:47.973041 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8027
+[err] 00:15:47.972913 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8009: connect: connection refused
+[peer] 00:15:47.973031 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8016
+[err] 00:15:47.972917 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8005: connect: connection refused
+[peer] 00:15:47.973114 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8009
+[peer] 00:15:47.973075 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8003
+[peer] 00:15:47.973083 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8018
+[peer] 00:15:47.973093 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8012
+[peer] 00:15:47.973101 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8024
+[peer] 00:15:47.973065 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8013
+[peer] 00:15:47.973123 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8005
+[err] 00:15:47.972918 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8010: connect: connection refused
+[peer] 00:15:47.973167 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8010
+[err] 00:15:47.972917 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8006: connect: connection refused
+[peer] 00:15:47.973183 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8006
+[err] 00:15:47.972931 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8025: connect: connection refused
+[peer] 00:15:47.973195 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8025
+[err] 00:15:47.972931 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8019: connect: connection refused
+[peer] 00:15:47.973211 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8019
+[err] 00:15:47.972937 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8021: connect: connection refused
+[peer] 00:15:47.973230 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8021
+[err] 00:15:47.972943 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8028: connect: connection refused
+[peer] 00:15:47.973241 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8028
+[err] 00:15:47.972942 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8014: connect: connection refused
+[peer] 00:15:47.973251 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8014
+[err] 00:15:47.972944 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8002: connect: connection refused
+[peer] 00:15:47.973261 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8002
+[err] 00:15:47.972863 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8001: connect: connection refused
+[peer] 00:15:47.973272 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8001
+[err] 00:15:47.973029 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8007: connect: connection refused
+[peer] 00:15:47.973285 main.go:776: 0:Peer Unresponsive. Removed Peer:198.162.52.126:8007
+[peer] 00:15:47.973298 main.go:709: 0:RPC calls successfully returned. Iteration: 4
+[peer] 00:15:47.974498 honest.go:81: 0Train Error is 1.00000 in Iteration 4
+[peer] 00:15:47.974613 main.go:717: 0:Preparing for next Iteration. Current Iteration: 4
+[peer] 00:15:47.974661 main.go:523: 0:Acquiring bool lock
+[peer] 00:15:47.974706 main.go:525: 0:Acquired bool lock
+[peer] 00:15:47.976603 main.go:544: 0:I am not verifier IterationCount:5
+[peer] 00:15:47.976658 main.go:549: 0:Bool lock released
+[peer] 00:15:47.976818 main.go:660: 0:Blocking. Got block for 9, I am at 5
+[peer] 00:15:47.995610 main.go:835: 0:Computing Update
+[peer] 00:15:47.996114 main.go:205: 0 : VRF returned ID map[47:{}]
+[peer] 00:15:47.996175 main.go:215: 0 :Verifiers [198.162.52.57:8047] returned.
+[err] 00:15:47.996803 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.57:8047: connect: connection refused
+[peer] 00:15:47.996850 main.go:908: 0:Will try and create an empty block
+[peer] 00:15:47.996889 blockchain.go:71: Returning nil
+[peer] 00:15:47.996976 main.go:915: 0:Will try and create an empty block
+[peer] 00:15:47.997049 main.go:689: 0:Sending block. Iteration: 5
+[peer] 00:15:47.997095 main.go:709: 0:RPC calls successfully returned. Iteration: 5
+[peer] 00:15:48.005764 honest.go:81: 0Train Error is 1.00000 in Iteration 5
+[peer] 00:15:48.005825 main.go:717: 0:Preparing for next Iteration. Current Iteration: 5
+[peer] 00:15:48.005850 main.go:523: 0:Acquiring bool lock
+[peer] 00:15:48.005883 main.go:525: 0:Acquired bool lock
+[peer] 00:15:48.007483 main.go:544: 0:I am not verifier IterationCount:6
+[peer] 00:15:48.007512 main.go:549: 0:Bool lock released
+[peer] 00:15:48.097139 main.go:835: 0:Computing Update
+[peer] 00:15:48.097697 main.go:205: 0 : VRF returned ID map[39:{}]
+[peer] 00:15:48.097725 main.go:215: 0 :Verifiers [198.162.52.57:8039] returned.
+[err] 00:15:48.098135 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.57:8039: connect: connection refused
+[peer] 00:15:48.098152 main.go:908: 0:Will try and create an empty block
+[peer] 00:15:48.098162 blockchain.go:71: Returning nil
+[peer] 00:15:48.098245 main.go:915: 0:Will try and create an empty block
+[peer] 00:15:48.098294 main.go:689: 0:Sending block. Iteration: 6
+[peer] 00:15:48.098309 main.go:709: 0:RPC calls successfully returned. Iteration: 6
+[peer] 00:15:48.101890 honest.go:81: 0Train Error is 1.00000 in Iteration 6
+[peer] 00:15:48.101984 main.go:717: 0:Preparing for next Iteration. Current Iteration: 6
+[peer] 00:15:48.102026 main.go:523: 0:Acquiring bool lock
+[peer] 00:15:48.102065 main.go:525: 0:Acquired bool lock
+[peer] 00:15:48.103682 main.go:544: 0:I am not verifier IterationCount:7
+[peer] 00:15:48.103727 main.go:549: 0:Bool lock released
+[peer] 00:15:48.198361 main.go:835: 0:Computing Update
+[peer] 00:15:48.198713 main.go:205: 0 : VRF returned ID map[35:{}]
+[peer] 00:15:48.198733 main.go:215: 0 :Verifiers [198.162.52.57:8035] returned.
+[err] 00:15:48.199122 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.57:8035: connect: connection refused
+[peer] 00:15:48.199137 main.go:908: 0:Will try and create an empty block
+[peer] 00:15:48.199145 blockchain.go:71: Returning nil
+[peer] 00:15:48.199209 main.go:915: 0:Will try and create an empty block
+[peer] 00:15:48.199247 main.go:689: 0:Sending block. Iteration: 7
+[peer] 00:15:48.199262 main.go:709: 0:RPC calls successfully returned. Iteration: 7
+[peer] 00:15:48.200120 honest.go:81: 0Train Error is 1.00000 in Iteration 7
+[peer] 00:15:48.200207 main.go:717: 0:Preparing for next Iteration. Current Iteration: 7
+[peer] 00:15:48.200248 main.go:523: 0:Acquiring bool lock
+[peer] 00:15:48.200287 main.go:525: 0:Acquired bool lock
+[peer] 00:15:48.201933 main.go:544: 0:I am not verifier IterationCount:8
+[peer] 00:15:48.201983 main.go:549: 0:Bool lock released
+[peer] 00:15:48.299320 main.go:835: 0:Computing Update
+[peer] 00:15:48.299746 main.go:205: 0 : VRF returned ID map[8:{}]
+[peer] 00:15:48.299766 main.go:215: 0 :Verifiers [198.162.52.126:8008] returned.
+[err] 00:15:48.299897 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.126:8008: connect: connection refused
+[peer] 00:15:48.299911 main.go:908: 0:Will try and create an empty block
+[peer] 00:15:48.299926 blockchain.go:71: Returning nil
+[peer] 00:15:48.300005 main.go:915: 0:Will try and create an empty block
+[peer] 00:15:48.300051 main.go:689: 0:Sending block. Iteration: 8
+[peer] 00:15:48.300071 main.go:709: 0:RPC calls successfully returned. Iteration: 8
+[peer] 00:15:48.308558 honest.go:81: 0Train Error is 1.00000 in Iteration 8
+[peer] 00:15:48.308626 main.go:717: 0:Preparing for next Iteration. Current Iteration: 8
+[peer] 00:15:48.308666 main.go:523: 0:Acquiring bool lock
+[peer] 00:15:48.308692 main.go:525: 0:Acquired bool lock
+[peer] 00:15:48.310301 main.go:544: 0:I am not verifier IterationCount:9
+[peer] 00:15:48.310334 main.go:549: 0:Bool lock released
+[peer] 00:15:48.400154 main.go:835: 0:Computing Update
+[peer] 00:15:48.400641 main.go:205: 0 : VRF returned ID map[48:{}]
+[peer] 00:15:48.400668 main.go:215: 0 :Verifiers [198.162.52.57:8048] returned.
+[err] 00:15:48.401309 main.go:237: Unable to connect to verifier, err = dial tcp 198.162.52.57:8048: connect: connection refused
+[peer] 00:15:48.401325 main.go:908: 0:Will try and create an empty block
+[peer] 00:15:48.401342 blockchain.go:71: Returning nil
+[peer] 00:15:48.401414 main.go:915: 0:Will try and create an empty block
+[peer] 00:15:48.401479 main.go:689: 0:Sending block. Iteration: 9
+[peer] 00:15:48.401498 main.go:709: 0:RPC calls successfully returned. Iteration: 9
+[peer] 00:15:48.402346 honest.go:81: 0Train Error is 1.00000 in Iteration 9
+[peer] 00:15:48.402409 main.go:717: 0:Preparing for next Iteration. Current Iteration: 9
+[peer] 00:15:48.402438 main.go:523: 0:Acquiring bool lock
+[peer] 00:15:48.402465 main.go:525: 0:Acquired bool lock
+[peer] 00:15:48.404091 main.go:544: 0:I am not verifier IterationCount:10
+[peer] 00:15:48.404123 main.go:549: 0:Bool lock released
+[peer] 00:15:48.500879 main.go:670: 0:Sent to channel
