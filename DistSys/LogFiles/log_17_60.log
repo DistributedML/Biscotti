@@ -1,1281 +1,1051 @@
-[peer] 00:14:35.612810 honest.go:107: 17Importing modules...
+[peer] 00:22:26.235408 honest.go:107: 17Importing modules...
 ../ML/code/utils.py:223: FutureWarning: Method .as_matrix will be removed in a future version. Use .values instead.
   data = data.as_matrix()
 ../ML/code/utils.py:94: FutureWarning: Method .as_matrix will be removed in a future version. Use .values instead.
   credit = df.ix[1:nn, 1:dd].as_matrix()
-[peer] 00:14:58.899615 honest.go:122: 17Sucessfully pulled dataset. Features: 25
-[peer] 00:14:58.925520 main.go:564: 17:Peer started. Receiving on 8017
-[peer] 00:14:58.925383 main.go:422: 17:Announcing myself to network
-[peer] 00:14:58.925657 main.go:427: 17:Calling {198.162.52.126 %!s(int=8000) }
-[peer] 00:14:58.925715 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.925797 main.go:451: 17Making RPC call
-[peer] 00:14:58.926416 main.go:457: 17RPC dial successful
-[peer] 00:14:58.926480 main.go:460: 17:Calling RPC:198.162.52.126:8000
-[peer] 00:14:58.926544 main.go:462: 17:RPC called198.162.52.126:8000
-[peer] 00:14:58.928283 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:58.928354 main.go:476: Chain length received:4
-[peer] 00:14:58.928415 main.go:477: My chain length:1
-[peer] 00:14:58.928466 honest.go:340: Received chain length:4
-[peer] 00:14:58.928525 honest.go:341: Appended chain length:4
-[peer] 00:14:58.928583 main.go:490: 17Got lastest chain until iteration 2
-[peer] 00:14:58.928669 main.go:427: 17:Calling {198.162.52.126 %!s(int=8001) }
-[peer] 00:14:58.928774 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.928839 main.go:451: 17Making RPC call
-[peer] 00:14:58.931158 main.go:457: 17RPC dial successful
-[peer] 00:14:58.931206 main.go:460: 17:Calling RPC:198.162.52.126:8001
-[peer] 00:14:58.931243 main.go:462: 17:RPC called198.162.52.126:8001
-[peer] 00:14:58.940757 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:58.940844 main.go:476: Chain length received:10
-[peer] 00:14:58.940903 main.go:477: My chain length:4
-[peer] 00:14:58.940956 honest.go:340: Received chain length:10
-[peer] 00:14:58.941016 honest.go:341: Appended chain length:10
-[peer] 00:14:58.941050 main.go:490: 17Got lastest chain until iteration 8
-[peer] 00:14:58.941298 main.go:427: 17:Calling {198.162.52.126 %!s(int=8002) }
-[peer] 00:14:58.941513 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.941549 main.go:451: 17Making RPC call
-[peer] 00:14:58.941678 main.go:457: 17RPC dial successful
-[peer] 00:14:58.941733 main.go:460: 17:Calling RPC:198.162.52.126:8002
-[peer] 00:14:58.941791 main.go:462: 17:RPC called198.162.52.126:8002
-[peer] 00:14:58.949635 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:58.949658 main.go:476: Chain length received:10
-[peer] 00:14:58.949668 main.go:477: My chain length:10
-[peer] 00:14:58.949712 main.go:427: 17:Calling {198.162.52.126 %!s(int=8003) }
-[peer] 00:14:58.949726 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.949735 main.go:451: 17Making RPC call
-[peer] 00:14:58.949806 main.go:457: 17RPC dial successful
-[peer] 00:14:58.949822 main.go:460: 17:Calling RPC:198.162.52.126:8003
-[peer] 00:14:58.949833 main.go:462: 17:RPC called198.162.52.126:8003
-[peer] 00:14:58.949817 main.go:568: 17:Accepted new Connection
-[peer] 00:14:58.950089 main.go:148: 17:Registering peer:198.162.52.126:8011
-[peer] 00:14:58.950129 main.go:158: Advertising chain to peer with length 10
-[peer] 00:14:58.951690 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:58.951709 main.go:476: Chain length received:10
-[peer] 00:14:58.951719 main.go:477: My chain length:10
-[peer] 00:14:58.951761 main.go:427: 17:Calling {198.162.52.126 %!s(int=8004) }
-[peer] 00:14:58.951776 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.951787 main.go:451: 17Making RPC call
-[err] 00:14:58.951846 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8004, err = dial tcp 198.162.52.126:8004: connect: connection refused
-[peer] 00:14:58.951904 main.go:427: 17:Calling {198.162.52.126 %!s(int=8005) }
-[peer] 00:14:58.951937 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.952020 main.go:451: 17Making RPC call
-[peer] 00:14:58.952143 main.go:457: 17RPC dial successful
-[peer] 00:14:58.952773 main.go:460: 17:Calling RPC:198.162.52.126:8005
-[peer] 00:14:58.952807 main.go:462: 17:RPC called198.162.52.126:8005
-[peer] 00:14:58.953142 main.go:568: 17:Accepted new Connection
-[peer] 00:14:58.953292 main.go:148: 17:Registering peer:198.162.52.126:8001
-[peer] 00:14:58.953309 main.go:158: Advertising chain to peer with length 10
-[peer] 00:14:58.954249 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:58.954361 main.go:476: Chain length received:10
-[peer] 00:14:58.954450 main.go:477: My chain length:10
-[peer] 00:14:58.954696 main.go:427: 17:Calling {198.162.52.126 %!s(int=8006) }
-[peer] 00:14:58.954780 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.954847 main.go:451: 17Making RPC call
-[peer] 00:14:58.954971 main.go:457: 17RPC dial successful
-[peer] 00:14:58.955039 main.go:460: 17:Calling RPC:198.162.52.126:8006
-[peer] 00:14:58.955084 main.go:462: 17:RPC called198.162.52.126:8006
-[peer] 00:14:58.956595 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:58.956685 main.go:476: Chain length received:10
-[peer] 00:14:58.956716 main.go:477: My chain length:10
-[peer] 00:14:58.956782 main.go:427: 17:Calling {198.162.52.126 %!s(int=8007) }
-[peer] 00:14:58.956922 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.956973 main.go:451: 17Making RPC call
-[peer] 00:14:58.957299 main.go:457: 17RPC dial successful
-[peer] 00:14:58.957419 main.go:460: 17:Calling RPC:198.162.52.126:8007
-[peer] 00:14:58.957482 main.go:462: 17:RPC called198.162.52.126:8007
-[peer] 00:14:58.958839 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:58.958877 main.go:476: Chain length received:10
-[peer] 00:14:58.958910 main.go:477: My chain length:10
-[peer] 00:14:58.958976 main.go:427: 17:Calling {198.162.52.126 %!s(int=8008) }
-[peer] 00:14:58.959114 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.959153 main.go:451: 17Making RPC call
-[err] 00:14:58.959285 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8008, err = dial tcp 198.162.52.126:8008: connect: connection refused
-[peer] 00:14:58.959364 main.go:427: 17:Calling {198.162.52.126 %!s(int=8009) }
-[peer] 00:14:58.959418 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.959448 main.go:451: 17Making RPC call
-[err] 00:14:58.959547 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8009, err = dial tcp 198.162.52.126:8009: connect: connection refused
-[peer] 00:14:58.959611 main.go:427: 17:Calling {198.162.52.126 %!s(int=8010) }
-[peer] 00:14:58.959716 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.959777 main.go:451: 17Making RPC call
-[peer] 00:14:58.959895 main.go:457: 17RPC dial successful
-[peer] 00:14:58.960042 main.go:460: 17:Calling RPC:198.162.52.126:8010
-[peer] 00:14:58.960118 main.go:462: 17:RPC called198.162.52.126:8010
-[peer] 00:14:58.961026 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:58.961114 main.go:476: Chain length received:1
-[peer] 00:14:58.961190 main.go:477: My chain length:10
-[peer] 00:14:58.961322 main.go:427: 17:Calling {198.162.52.126 %!s(int=8011) }
-[peer] 00:14:58.961377 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.961415 main.go:451: 17Making RPC call
-[peer] 00:14:58.961544 main.go:457: 17RPC dial successful
-[peer] 00:14:58.961581 main.go:460: 17:Calling RPC:198.162.52.126:8011
-[peer] 00:14:58.961620 main.go:462: 17:RPC called198.162.52.126:8011
-[peer] 00:14:58.962747 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:58.962829 main.go:476: Chain length received:10
-[peer] 00:14:58.962862 main.go:477: My chain length:10
-[peer] 00:14:58.962923 main.go:427: 17:Calling {198.162.52.126 %!s(int=8012) }
-[peer] 00:14:58.962980 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.963041 main.go:451: 17Making RPC call
-[peer] 00:14:58.963218 main.go:457: 17RPC dial successful
-[peer] 00:14:58.963291 main.go:460: 17:Calling RPC:198.162.52.126:8012
-[peer] 00:14:58.963330 main.go:462: 17:RPC called198.162.52.126:8012
-[peer] 00:14:58.963645 main.go:568: 17:Accepted new Connection
-[peer] 00:14:58.964195 main.go:148: 17:Registering peer:198.162.52.126:8022
-[peer] 00:14:58.964534 main.go:158: Advertising chain to peer with length 10
-[peer] 00:14:58.964512 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:58.965405 main.go:476: Chain length received:10
-[peer] 00:14:58.965419 main.go:477: My chain length:10
-[peer] 00:14:58.965468 main.go:427: 17:Calling {198.162.52.126 %!s(int=8013) }
-[peer] 00:14:58.965482 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.965493 main.go:451: 17Making RPC call
-[err] 00:14:58.965575 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8013, err = dial tcp 198.162.52.126:8013: connect: connection refused
-[peer] 00:14:58.965596 main.go:427: 17:Calling {198.162.52.126 %!s(int=8014) }
-[peer] 00:14:58.965606 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.965614 main.go:451: 17Making RPC call
-[err] 00:14:58.965668 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8014, err = dial tcp 198.162.52.126:8014: connect: connection refused
-[peer] 00:14:58.965685 main.go:427: 17:Calling {198.162.52.126 %!s(int=8015) }
-[peer] 00:14:58.965700 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.965709 main.go:451: 17Making RPC call
-[peer] 00:14:58.965779 main.go:457: 17RPC dial successful
-[peer] 00:14:58.965795 main.go:460: 17:Calling RPC:198.162.52.126:8015
-[peer] 00:14:58.965805 main.go:462: 17:RPC called198.162.52.126:8015
-[peer] 00:14:58.966664 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:58.966681 main.go:476: Chain length received:10
-[peer] 00:14:58.966690 main.go:477: My chain length:10
-[peer] 00:14:58.966723 main.go:427: 17:Calling {198.162.52.126 %!s(int=8016) }
-[peer] 00:14:58.966736 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.966744 main.go:451: 17Making RPC call
-[peer] 00:14:58.966807 main.go:457: 17RPC dial successful
-[peer] 00:14:58.966819 main.go:460: 17:Calling RPC:198.162.52.126:8016
-[peer] 00:14:58.966827 main.go:462: 17:RPC called198.162.52.126:8016
-[peer] 00:14:58.967553 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:58.967572 main.go:476: Chain length received:10
-[peer] 00:14:58.967582 main.go:477: My chain length:10
-[peer] 00:14:58.967618 main.go:427: 17:Calling {198.162.52.126 %!s(int=8018) }
-[peer] 00:14:58.967630 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.967638 main.go:451: 17Making RPC call
-[err] 00:14:58.967690 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8018, err = dial tcp 198.162.52.126:8018: connect: connection refused
-[peer] 00:14:58.967706 main.go:427: 17:Calling {198.162.52.126 %!s(int=8019) }
-[peer] 00:14:58.967718 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.967727 main.go:451: 17Making RPC call
-[peer] 00:14:58.967787 main.go:457: 17RPC dial successful
-[peer] 00:14:58.967799 main.go:460: 17:Calling RPC:198.162.52.126:8019
-[peer] 00:14:58.967808 main.go:462: 17:RPC called198.162.52.126:8019
-[peer] 00:14:58.972264 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:58.972289 main.go:476: Chain length received:10
-[peer] 00:14:58.972302 main.go:477: My chain length:10
-[peer] 00:14:58.972346 main.go:427: 17:Calling {198.162.52.126 %!s(int=8020) }
-[peer] 00:14:58.972360 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.972369 main.go:451: 17Making RPC call
-[err] 00:14:58.972432 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8020, err = dial tcp 198.162.52.126:8020: connect: connection refused
-[peer] 00:14:58.972454 main.go:427: 17:Calling {198.162.52.126 %!s(int=8021) }
-[peer] 00:14:58.972467 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.972476 main.go:451: 17Making RPC call
-[peer] 00:14:58.972581 main.go:457: 17RPC dial successful
-[peer] 00:14:58.972599 main.go:460: 17:Calling RPC:198.162.52.126:8021
-[peer] 00:14:58.972622 main.go:462: 17:RPC called198.162.52.126:8021
-[peer] 00:14:58.973427 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:58.973452 main.go:476: Chain length received:10
-[peer] 00:14:58.973463 main.go:477: My chain length:10
-[peer] 00:14:58.973502 main.go:427: 17:Calling {198.162.52.126 %!s(int=8022) }
-[peer] 00:14:58.973517 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.973525 main.go:451: 17Making RPC call
-[peer] 00:14:58.973593 main.go:457: 17RPC dial successful
-[peer] 00:14:58.973609 main.go:460: 17:Calling RPC:198.162.52.126:8022
-[peer] 00:14:58.973619 main.go:462: 17:RPC called198.162.52.126:8022
-[peer] 00:14:58.974577 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:58.974596 main.go:476: Chain length received:10
-[peer] 00:14:58.974606 main.go:477: My chain length:10
-[peer] 00:14:58.974642 main.go:427: 17:Calling {198.162.52.126 %!s(int=8023) }
-[peer] 00:14:58.974657 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.974665 main.go:451: 17Making RPC call
-[err] 00:14:58.974719 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8023, err = dial tcp 198.162.52.126:8023: connect: connection refused
-[peer] 00:14:58.974739 main.go:427: 17:Calling {198.162.52.126 %!s(int=8024) }
-[peer] 00:14:58.974752 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.974760 main.go:451: 17Making RPC call
-[err] 00:14:58.974811 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8024, err = dial tcp 198.162.52.126:8024: connect: connection refused
-[peer] 00:14:58.974831 main.go:427: 17:Calling {198.162.52.126 %!s(int=8025) }
-[peer] 00:14:58.974844 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.974853 main.go:451: 17Making RPC call
-[err] 00:14:58.974901 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8025, err = dial tcp 198.162.52.126:8025: connect: connection refused
-[peer] 00:14:58.974921 main.go:427: 17:Calling {198.162.52.126 %!s(int=8026) }
-[peer] 00:14:58.974931 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.974940 main.go:451: 17Making RPC call
-[peer] 00:14:58.975004 main.go:457: 17RPC dial successful
-[peer] 00:14:58.975020 main.go:460: 17:Calling RPC:198.162.52.126:8026
-[peer] 00:14:58.975030 main.go:462: 17:RPC called198.162.52.126:8026
-[peer] 00:14:58.975781 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:58.975800 main.go:476: Chain length received:10
-[peer] 00:14:58.975810 main.go:477: My chain length:10
-[peer] 00:14:58.975851 main.go:427: 17:Calling {198.162.52.126 %!s(int=8027) }
-[peer] 00:14:58.975931 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.975973 main.go:451: 17Making RPC call
-[peer] 00:14:58.976074 main.go:457: 17RPC dial successful
-[peer] 00:14:58.976213 main.go:460: 17:Calling RPC:198.162.52.126:8027
-[peer] 00:14:58.976256 main.go:462: 17:RPC called198.162.52.126:8027
-[peer] 00:14:58.977230 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:58.977276 main.go:476: Chain length received:10
-[peer] 00:14:58.977309 main.go:477: My chain length:10
-[peer] 00:14:58.977380 main.go:427: 17:Calling {198.162.52.126 %!s(int=8028) }
-[peer] 00:14:58.977477 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.977512 main.go:451: 17Making RPC call
-[err] 00:14:58.977612 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8028, err = dial tcp 198.162.52.126:8028: connect: connection refused
-[peer] 00:14:58.977658 main.go:427: 17:Calling {198.162.52.126 %!s(int=8029) }
-[peer] 00:14:58.977691 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.977723 main.go:451: 17Making RPC call
-[err] 00:14:58.977798 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8029, err = dial tcp 198.162.52.126:8029: connect: connection refused
-[peer] 00:14:58.977844 main.go:427: 17:Calling {198.162.52.57 %!s(int=8030) }
-[peer] 00:14:58.977949 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.977979 main.go:451: 17Making RPC call
-[err] 00:14:58.979169 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.57:8030, err = dial tcp 198.162.52.57:8030: connect: connection refused
-[peer] 00:14:58.979223 main.go:427: 17:Calling {198.162.52.57 %!s(int=8031) }
-[peer] 00:14:58.979257 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.979299 main.go:451: 17Making RPC call
-[peer] 00:14:58.979663 main.go:457: 17RPC dial successful
-[peer] 00:14:58.979679 main.go:460: 17:Calling RPC:198.162.52.57:8031
-[peer] 00:14:58.979690 main.go:462: 17:RPC called198.162.52.57:8031
-[peer] 00:14:58.986011 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:58.986038 main.go:476: Chain length received:10
-[peer] 00:14:58.986049 main.go:477: My chain length:10
-[peer] 00:14:58.986086 main.go:427: 17:Calling {198.162.52.57 %!s(int=8032) }
-[peer] 00:14:58.986102 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.986111 main.go:451: 17Making RPC call
-[peer] 00:14:58.986595 main.go:457: 17RPC dial successful
-[peer] 00:14:58.986612 main.go:460: 17:Calling RPC:198.162.52.57:8032
-[peer] 00:14:58.986623 main.go:462: 17:RPC called198.162.52.57:8032
-[peer] 00:14:58.992645 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:58.992681 main.go:476: Chain length received:10
-[peer] 00:14:58.992692 main.go:477: My chain length:10
-[peer] 00:14:58.992734 main.go:427: 17:Calling {198.162.52.57 %!s(int=8033) }
-[peer] 00:14:58.992748 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.992758 main.go:451: 17Making RPC call
-[peer] 00:14:58.993304 main.go:457: 17RPC dial successful
-[peer] 00:14:58.993318 main.go:460: 17:Calling RPC:198.162.52.57:8033
-[peer] 00:14:58.993329 main.go:462: 17:RPC called198.162.52.57:8033
-[peer] 00:14:58.998451 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:58.998487 main.go:476: Chain length received:10
-[peer] 00:14:58.998498 main.go:477: My chain length:10
-[peer] 00:14:58.998541 main.go:427: 17:Calling {198.162.52.57 %!s(int=8034) }
-[peer] 00:14:58.998556 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:58.998565 main.go:451: 17Making RPC call
-[peer] 00:14:59.000137 main.go:457: 17RPC dial successful
-[peer] 00:14:59.000153 main.go:460: 17:Calling RPC:198.162.52.57:8034
-[peer] 00:14:59.000166 main.go:462: 17:RPC called198.162.52.57:8034
-[peer] 00:14:59.013796 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.013883 main.go:476: Chain length received:10
-[peer] 00:14:59.013937 main.go:477: My chain length:10
-[peer] 00:14:59.014027 main.go:427: 17:Calling {198.162.52.57 %!s(int=8035) }
-[peer] 00:14:59.014081 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.014132 main.go:451: 17Making RPC call
-[peer] 00:14:59.017606 main.go:457: 17RPC dial successful
-[peer] 00:14:59.017689 main.go:460: 17:Calling RPC:198.162.52.57:8035
-[peer] 00:14:59.017746 main.go:462: 17:RPC called198.162.52.57:8035
-[peer] 00:14:59.020292 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.020893 main.go:476: Chain length received:10
-[peer] 00:14:59.020931 main.go:477: My chain length:10
-[peer] 00:14:59.021002 main.go:427: 17:Calling {198.162.52.57 %!s(int=8036) }
-[peer] 00:14:59.021038 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.021088 main.go:451: 17Making RPC call
-[peer] 00:14:59.021617 main.go:457: 17RPC dial successful
-[peer] 00:14:59.021684 main.go:460: 17:Calling RPC:198.162.52.57:8036
-[peer] 00:14:59.021724 main.go:462: 17:RPC called198.162.52.57:8036
-[peer] 00:14:59.026099 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.026119 main.go:476: Chain length received:10
-[peer] 00:14:59.026129 main.go:477: My chain length:10
-[peer] 00:14:59.026162 main.go:427: 17:Calling {198.162.52.57 %!s(int=8037) }
-[peer] 00:14:59.026177 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.026186 main.go:451: 17Making RPC call
-[peer] 00:14:59.027192 main.go:457: 17RPC dial successful
-[peer] 00:14:59.027488 main.go:460: 17:Calling RPC:198.162.52.57:8037
-[peer] 00:14:59.027561 main.go:462: 17:RPC called198.162.52.57:8037
-[peer] 00:14:59.032344 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.032395 main.go:476: Chain length received:10
-[peer] 00:14:59.032452 main.go:477: My chain length:10
-[peer] 00:14:59.032515 main.go:427: 17:Calling {198.162.52.57 %!s(int=8038) }
-[peer] 00:14:59.032557 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.032591 main.go:451: 17Making RPC call
-[peer] 00:14:59.035422 main.go:457: 17RPC dial successful
-[peer] 00:14:59.036169 main.go:460: 17:Calling RPC:198.162.52.57:8038
-[peer] 00:14:59.036279 main.go:462: 17:RPC called198.162.52.57:8038
-[peer] 00:14:59.040674 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.040779 main.go:476: Chain length received:10
-[peer] 00:14:59.040941 main.go:477: My chain length:10
-[peer] 00:14:59.041028 main.go:427: 17:Calling {198.162.52.57 %!s(int=8039) }
-[peer] 00:14:59.041071 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.041106 main.go:451: 17Making RPC call
-[peer] 00:14:59.042816 main.go:457: 17RPC dial successful
-[peer] 00:14:59.042861 main.go:460: 17:Calling RPC:198.162.52.57:8039
-[peer] 00:14:59.042926 main.go:462: 17:RPC called198.162.52.57:8039
-[peer] 00:14:59.048383 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.048549 main.go:476: Chain length received:10
-[peer] 00:14:59.048611 main.go:477: My chain length:10
-[peer] 00:14:59.048701 main.go:427: 17:Calling {198.162.52.57 %!s(int=8040) }
-[peer] 00:14:59.048788 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.048878 main.go:451: 17Making RPC call
-[peer] 00:14:59.052783 main.go:457: 17RPC dial successful
-[peer] 00:14:59.052860 main.go:460: 17:Calling RPC:198.162.52.57:8040
-[peer] 00:14:59.052900 main.go:462: 17:RPC called198.162.52.57:8040
-[peer] 00:14:59.054481 main.go:568: 17:Accepted new Connection
-[peer] 00:14:59.054710 main.go:148: 17:Registering peer:198.162.52.126:8014
-[peer] 00:14:59.054779 main.go:158: Advertising chain to peer with length 10
-[peer] 00:14:59.058058 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.058112 main.go:476: Chain length received:10
-[peer] 00:14:59.058148 main.go:477: My chain length:10
-[peer] 00:14:59.058324 main.go:427: 17:Calling {198.162.52.57 %!s(int=8041) }
-[peer] 00:14:59.058368 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.058403 main.go:451: 17Making RPC call
-[peer] 00:14:59.059593 main.go:457: 17RPC dial successful
-[peer] 00:14:59.059782 main.go:460: 17:Calling RPC:198.162.52.57:8041
-[peer] 00:14:59.059825 main.go:462: 17:RPC called198.162.52.57:8041
-[peer] 00:14:59.064942 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.065035 main.go:476: Chain length received:10
-[peer] 00:14:59.065088 main.go:477: My chain length:10
-[peer] 00:14:59.065179 main.go:427: 17:Calling {198.162.52.57 %!s(int=8042) }
-[peer] 00:14:59.065244 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.065279 main.go:451: 17Making RPC call
-[err] 00:14:59.066963 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.57:8042, err = dial tcp 198.162.52.57:8042: connect: connection refused
-[peer] 00:14:59.067049 main.go:427: 17:Calling {198.162.52.57 %!s(int=8043) }
-[peer] 00:14:59.067114 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.067149 main.go:451: 17Making RPC call
-[peer] 00:14:59.070387 main.go:457: 17RPC dial successful
-[peer] 00:14:59.070406 main.go:460: 17:Calling RPC:198.162.52.57:8043
-[peer] 00:14:59.070417 main.go:462: 17:RPC called198.162.52.57:8043
-[peer] 00:14:59.077677 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.077720 main.go:476: Chain length received:10
-[peer] 00:14:59.077734 main.go:477: My chain length:10
-[peer] 00:14:59.077770 main.go:427: 17:Calling {198.162.52.57 %!s(int=8044) }
-[peer] 00:14:59.077783 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.077792 main.go:451: 17Making RPC call
-[peer] 00:14:59.078265 main.go:457: 17RPC dial successful
-[peer] 00:14:59.078280 main.go:460: 17:Calling RPC:198.162.52.57:8044
-[peer] 00:14:59.078293 main.go:462: 17:RPC called198.162.52.57:8044
-[peer] 00:14:59.086539 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.086562 main.go:476: Chain length received:10
-[peer] 00:14:59.086572 main.go:477: My chain length:10
-[peer] 00:14:59.086608 main.go:427: 17:Calling {198.162.52.57 %!s(int=8045) }
-[peer] 00:14:59.086622 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.086631 main.go:451: 17Making RPC call
-[peer] 00:14:59.088112 main.go:457: 17RPC dial successful
-[peer] 00:14:59.088131 main.go:460: 17:Calling RPC:198.162.52.57:8045
-[peer] 00:14:59.088144 main.go:462: 17:RPC called198.162.52.57:8045
-[peer] 00:14:59.093946 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.093966 main.go:476: Chain length received:10
-[peer] 00:14:59.093978 main.go:477: My chain length:10
-[peer] 00:14:59.094011 main.go:427: 17:Calling {198.162.52.57 %!s(int=8046) }
-[peer] 00:14:59.094025 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.094034 main.go:451: 17Making RPC call
-[peer] 00:14:59.096670 main.go:457: 17RPC dial successful
-[peer] 00:14:59.096695 main.go:460: 17:Calling RPC:198.162.52.57:8046
-[peer] 00:14:59.096707 main.go:462: 17:RPC called198.162.52.57:8046
-[peer] 00:14:59.101343 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.101401 main.go:476: Chain length received:10
-[peer] 00:14:59.101412 main.go:477: My chain length:10
-[peer] 00:14:59.101455 main.go:427: 17:Calling {198.162.52.57 %!s(int=8047) }
-[peer] 00:14:59.101471 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.101481 main.go:451: 17Making RPC call
-[peer] 00:14:59.102051 main.go:457: 17RPC dial successful
-[peer] 00:14:59.102068 main.go:460: 17:Calling RPC:198.162.52.57:8047
-[peer] 00:14:59.102081 main.go:462: 17:RPC called198.162.52.57:8047
-[peer] 00:14:59.108870 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.108893 main.go:476: Chain length received:10
-[peer] 00:14:59.108950 main.go:477: My chain length:10
-[peer] 00:14:59.108986 main.go:427: 17:Calling {198.162.52.57 %!s(int=8048) }
-[peer] 00:14:59.109001 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.109011 main.go:451: 17Making RPC call
-[peer] 00:14:59.110216 main.go:457: 17RPC dial successful
-[peer] 00:14:59.110235 main.go:460: 17:Calling RPC:198.162.52.57:8048
-[peer] 00:14:59.110247 main.go:462: 17:RPC called198.162.52.57:8048
-[peer] 00:14:59.116130 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.116154 main.go:476: Chain length received:10
-[peer] 00:14:59.116193 main.go:477: My chain length:10
-[peer] 00:14:59.116228 main.go:427: 17:Calling {198.162.52.57 %!s(int=8049) }
-[peer] 00:14:59.116243 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.116252 main.go:451: 17Making RPC call
-[peer] 00:14:59.117742 main.go:457: 17RPC dial successful
-[peer] 00:14:59.117761 main.go:460: 17:Calling RPC:198.162.52.57:8049
-[peer] 00:14:59.117773 main.go:462: 17:RPC called198.162.52.57:8049
-[peer] 00:14:59.123901 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.123923 main.go:476: Chain length received:10
-[peer] 00:14:59.123949 main.go:477: My chain length:10
-[peer] 00:14:59.123983 main.go:427: 17:Calling {198.162.52.57 %!s(int=8050) }
-[peer] 00:14:59.123996 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.124006 main.go:451: 17Making RPC call
-[peer] 00:14:59.125650 main.go:457: 17RPC dial successful
-[peer] 00:14:59.125665 main.go:460: 17:Calling RPC:198.162.52.57:8050
-[peer] 00:14:59.125676 main.go:462: 17:RPC called198.162.52.57:8050
-[peer] 00:14:59.130654 main.go:568: 17:Accepted new Connection
-[peer] 00:14:59.131162 main.go:148: 17:Registering peer:198.162.52.126:8013
-[peer] 00:14:59.131211 main.go:158: Advertising chain to peer with length 10
-[peer] 00:14:59.131976 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.132029 main.go:476: Chain length received:10
-[peer] 00:14:59.132063 main.go:477: My chain length:10
-[peer] 00:14:59.132120 main.go:427: 17:Calling {198.162.52.57 %!s(int=8051) }
-[peer] 00:14:59.132159 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.132190 main.go:451: 17Making RPC call
-[peer] 00:14:59.134201 main.go:457: 17RPC dial successful
-[peer] 00:14:59.134219 main.go:460: 17:Calling RPC:198.162.52.57:8051
-[peer] 00:14:59.134234 main.go:462: 17:RPC called198.162.52.57:8051
-[peer] 00:14:59.141685 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.141707 main.go:476: Chain length received:10
-[peer] 00:14:59.141741 main.go:477: My chain length:10
-[peer] 00:14:59.141774 main.go:427: 17:Calling {198.162.52.57 %!s(int=8052) }
-[peer] 00:14:59.141787 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.141797 main.go:451: 17Making RPC call
-[peer] 00:14:59.143244 main.go:457: 17RPC dial successful
-[peer] 00:14:59.143290 main.go:460: 17:Calling RPC:198.162.52.57:8052
-[peer] 00:14:59.143303 main.go:462: 17:RPC called198.162.52.57:8052
-[peer] 00:14:59.154664 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.154686 main.go:476: Chain length received:10
-[peer] 00:14:59.154697 main.go:477: My chain length:10
-[peer] 00:14:59.154733 main.go:427: 17:Calling {198.162.52.57 %!s(int=8053) }
-[peer] 00:14:59.154747 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.154756 main.go:451: 17Making RPC call
-[peer] 00:14:59.156020 main.go:457: 17RPC dial successful
-[peer] 00:14:59.156036 main.go:460: 17:Calling RPC:198.162.52.57:8053
-[peer] 00:14:59.156047 main.go:462: 17:RPC called198.162.52.57:8053
-[peer] 00:14:59.163085 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.163173 main.go:476: Chain length received:10
-[peer] 00:14:59.163188 main.go:477: My chain length:10
-[peer] 00:14:59.163229 main.go:427: 17:Calling {198.162.52.57 %!s(int=8054) }
-[peer] 00:14:59.163244 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.163253 main.go:451: 17Making RPC call
-[peer] 00:14:59.166997 main.go:457: 17RPC dial successful
-[peer] 00:14:59.167018 main.go:460: 17:Calling RPC:198.162.52.57:8054
-[peer] 00:14:59.167030 main.go:462: 17:RPC called198.162.52.57:8054
-[peer] 00:14:59.171982 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.172009 main.go:476: Chain length received:10
-[peer] 00:14:59.172046 main.go:477: My chain length:10
-[peer] 00:14:59.172084 main.go:427: 17:Calling {198.162.52.57 %!s(int=8055) }
-[peer] 00:14:59.172099 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.172108 main.go:451: 17Making RPC call
-[peer] 00:14:59.173669 main.go:457: 17RPC dial successful
-[peer] 00:14:59.173686 main.go:460: 17:Calling RPC:198.162.52.57:8055
-[peer] 00:14:59.173697 main.go:462: 17:RPC called198.162.52.57:8055
-[peer] 00:14:59.183199 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.183224 main.go:476: Chain length received:10
-[peer] 00:14:59.183235 main.go:477: My chain length:10
-[peer] 00:14:59.183271 main.go:427: 17:Calling {198.162.52.57 %!s(int=8056) }
-[peer] 00:14:59.183282 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.183317 main.go:451: 17Making RPC call
-[peer] 00:14:59.183689 main.go:457: 17RPC dial successful
-[peer] 00:14:59.183706 main.go:460: 17:Calling RPC:198.162.52.57:8056
-[peer] 00:14:59.183722 main.go:462: 17:RPC called198.162.52.57:8056
-[peer] 00:14:59.188749 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.188772 main.go:476: Chain length received:10
-[peer] 00:14:59.188802 main.go:477: My chain length:10
-[peer] 00:14:59.188837 main.go:427: 17:Calling {198.162.52.57 %!s(int=8057) }
-[peer] 00:14:59.188851 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.188861 main.go:451: 17Making RPC call
-[peer] 00:14:59.189338 main.go:457: 17RPC dial successful
-[peer] 00:14:59.189352 main.go:460: 17:Calling RPC:198.162.52.57:8057
-[peer] 00:14:59.189372 main.go:462: 17:RPC called198.162.52.57:8057
-[peer] 00:14:59.194419 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.194453 main.go:476: Chain length received:10
-[peer] 00:14:59.194463 main.go:477: My chain length:10
-[peer] 00:14:59.194508 main.go:427: 17:Calling {198.162.52.57 %!s(int=8058) }
-[peer] 00:14:59.194520 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.194528 main.go:451: 17Making RPC call
-[peer] 00:14:59.194952 main.go:457: 17RPC dial successful
-[peer] 00:14:59.194967 main.go:460: 17:Calling RPC:198.162.52.57:8058
-[peer] 00:14:59.194990 main.go:462: 17:RPC called198.162.52.57:8058
-[peer] 00:14:59.199974 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.200021 main.go:476: Chain length received:10
-[peer] 00:14:59.200034 main.go:477: My chain length:10
-[peer] 00:14:59.200066 main.go:427: 17:Calling {198.162.52.57 %!s(int=8059) }
-[peer] 00:14:59.200077 main.go:446: 17:Inside callRegisterRPC
-[peer] 00:14:59.200087 main.go:451: 17Making RPC call
-[peer] 00:14:59.200573 main.go:457: 17RPC dial successful
-[peer] 00:14:59.200590 main.go:460: 17:Calling RPC:198.162.52.57:8059
-[peer] 00:14:59.200600 main.go:462: 17:RPC called198.162.52.57:8059
-[peer] 00:14:59.205695 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
-[peer] 00:14:59.205744 main.go:476: Chain length received:10
-[peer] 00:14:59.205756 main.go:477: My chain length:10
-[peer] 00:14:59.205784 main.go:437: 17:Bootstrapped Network. Calling signal
-[peer] 00:14:59.205800 main.go:439: 17:Bootstrapped Network. Signal called
-[peer] 00:14:59.205810 main.go:523: 17:Acquiring bool lock
-[peer] 00:14:59.205826 main.go:525: 17:Acquired bool lock
-[peer] 00:14:59.207473 main.go:544: 17:I am not verifier IterationCount:9
-[peer] 00:14:59.207491 main.go:549: 17:Bool lock released
-[peer] 00:14:59.207502 main.go:835: 17:Computing Update
-[peer] 00:14:59.208101 main.go:205: 17 : VRF returned ID map[46:{}]
-[peer] 00:14:59.208129 main.go:215: 17 :Verifiers [198.162.52.57:8046] returned.
-[peer] 00:14:59.209214 main.go:880: 17:Making RPC Call to Verifier. Sending Update, Iteration:9
-[peer] 00:14:59.211460 main.go:887: 17:Update sent successfully
-[peer] 00:14:59.328435 main.go:568: 17:Accepted new Connection
-[peer] 00:14:59.328871 main.go:148: 17:Registering peer:198.162.52.126:8004
-[peer] 00:14:59.328969 main.go:158: Advertising chain to peer with length 10
-[peer] 00:14:59.329589 main.go:568: 17:Accepted new Connection
-[peer] 00:14:59.329794 main.go:148: 17:Registering peer:198.162.52.126:8020
-[peer] 00:14:59.329812 main.go:158: Advertising chain to peer with length 10
-[peer] 00:14:59.332515 main.go:568: 17:Accepted new Connection
-[peer] 00:14:59.332713 main.go:148: 17:Registering peer:198.162.52.126:8009
-[peer] 00:14:59.332730 main.go:158: Advertising chain to peer with length 10
-[peer] 00:14:59.335648 main.go:568: 17:Accepted new Connection
-[peer] 00:14:59.335850 main.go:148: 17:Registering peer:198.162.52.126:8008
-[peer] 00:14:59.335868 main.go:158: Advertising chain to peer with length 10
-[peer] 00:14:59.336790 main.go:568: 17:Accepted new Connection
-[peer] 00:14:59.336939 main.go:148: 17:Registering peer:198.162.52.126:8029
-[peer] 00:14:59.336955 main.go:158: Advertising chain to peer with length 10
-[peer] 00:14:59.337197 main.go:568: 17:Accepted new Connection
-[peer] 00:14:59.337727 main.go:148: 17:Registering peer:198.162.52.126:8028
-[peer] 00:14:59.337752 main.go:158: Advertising chain to peer with length 10
-[peer] 00:14:59.464539 main.go:568: 17:Accepted new Connection
-[peer] 00:14:59.464718 main.go:148: 17:Registering peer:198.162.52.126:8018
-[peer] 00:14:59.464737 main.go:158: Advertising chain to peer with length 10
-[peer] 00:14:59.474294 main.go:568: 17:Accepted new Connection
-[peer] 00:14:59.474486 main.go:148: 17:Registering peer:198.162.52.126:8024
-[peer] 00:14:59.474502 main.go:158: Advertising chain to peer with length 10
-[peer] 00:14:59.534987 main.go:568: 17:Accepted new Connection
-[peer] 00:14:59.535183 main.go:148: 17:Registering peer:198.162.52.126:8025
-[peer] 00:14:59.535198 main.go:158: Advertising chain to peer with length 10
-[peer] 00:14:59.591769 main.go:568: 17:Accepted new Connection
-[peer] 00:14:59.591977 main.go:148: 17:Registering peer:198.162.52.126:8023
-[peer] 00:14:59.591988 main.go:158: Advertising chain to peer with length 10
-[peer] 00:15:01.935969 main.go:568: 17:Accepted new Connection
-[peer] 00:15:01.936150 main.go:148: 17:Registering peer:198.162.52.126:8010
-[peer] 00:15:01.936165 main.go:158: Advertising chain to peer with length 10
-[peer] 00:15:08.103817 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.122479 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.123374 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.148006 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.148055 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.148079 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.148458 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:08.148714 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:08.148737 main.go:607: 17:Acquired bool lock
-[peer] 00:15:08.148747 main.go:608: Chain Length:10
-[peer] 00:15:08.148757 blockchain.go:71: Returning nil
-[peer] 00:15:08.148766 main.go:610: Chain Length:10
-[peer] 00:15:08.148776 main.go:670: 17:Sent to channel
-[peer] 00:15:08.148787 main.go:672: 17:Sent to channel
-[peer] 00:15:08.148797 main.go:677: 17:Returning
-[peer] 00:15:08.148810 main.go:788: 17:Adding block to chain
-[peer] 00:15:08.148826 honest.go:222: Trying to append block with iteration:9
-[peer] 00:15:08.148835 blockchain.go:71: Returning nil
-[peer] 00:15:08.148844 honest.go:238: Append successful
-[peer] 00:15:08.148855 main.go:792: 17:Adding block to chain
-[peer] 00:15:08.148864 main.go:798: 17:Checking convergence
-[peer] 00:15:08.149085 main.go:975: 17:Block Received. Appending to chain and moving on to the next iteration. 9
-[peer] 00:15:08.166250 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.182718 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.198149 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.209910 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.216942 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.216972 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.216996 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.217351 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:08.217564 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:08.222164 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:08.222356 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:08.226647 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.226976 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:08.227237 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:08.235475 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.235531 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.235877 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:08.236077 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:08.238555 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.251560 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.251702 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.252814 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:08.273554 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:08.253854 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:08.273742 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:08.254826 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.273785 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.273814 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.258452 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:08.274019 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:08.274272 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:08.274455 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:08.271997 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:08.274640 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:08.279954 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.284041 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.296550 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:08.296823 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:08.305877 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:08.306023 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:08.317310 honest.go:81: 17Train Error is 0.04348 in Iteration 9
-[peer] 00:15:08.317330 main.go:801: 17:Convergence checked
-[peer] 00:15:08.317343 main.go:804: 17:Bool lock released
-[peer] 00:15:08.317407 main.go:607: 17:Acquired bool lock
-[peer] 00:15:08.317418 main.go:608: Chain Length:11
-[peer] 00:15:08.317426 blockchain.go:68: Returning a block
-[peer] 00:15:08.317433 main.go:610: Chain Length:11
-[peer] 00:15:08.317447 main.go:615: Already have block
-[peer] 00:15:08.317457 main.go:620: 17:Bool lock released
-[peer] 00:15:08.317465 blockchain.go:68: Returning a block
-[peer] 00:15:08.317472 main.go:647: 17:Equal block
-[peer] 00:15:08.317484 main.go:607: 17:Acquired bool lock
-[peer] 00:15:08.317491 main.go:608: Chain Length:11
-[peer] 00:15:08.317498 blockchain.go:68: Returning a block
-[peer] 00:15:08.317504 main.go:610: Chain Length:11
-[peer] 00:15:08.317513 main.go:615: Already have block
-[peer] 00:15:08.317522 main.go:620: 17:Bool lock released
-[peer] 00:15:08.317531 blockchain.go:68: Returning a block
-[peer] 00:15:08.317538 main.go:647: 17:Equal block
-[peer] 00:15:08.317549 main.go:607: 17:Acquired bool lock
-[peer] 00:15:08.317556 main.go:608: Chain Length:11
-[peer] 00:15:08.317563 blockchain.go:68: Returning a block
-[peer] 00:15:08.317570 main.go:610: Chain Length:11
-[peer] 00:15:08.317576 main.go:615: Already have block
-[peer] 00:15:08.317585 main.go:620: 17:Bool lock released
-[peer] 00:15:08.317593 blockchain.go:68: Returning a block
-[peer] 00:15:08.317599 main.go:647: 17:Equal block
-[peer] 00:15:08.317627 main.go:607: 17:Acquired bool lock
-[peer] 00:15:08.317638 main.go:608: Chain Length:11
-[peer] 00:15:08.317645 blockchain.go:68: Returning a block
-[peer] 00:15:08.317651 main.go:610: Chain Length:11
-[peer] 00:15:08.317658 main.go:615: Already have block
-[peer] 00:15:08.317666 main.go:620: 17:Bool lock released
-[peer] 00:15:08.317673 blockchain.go:68: Returning a block
-[peer] 00:15:08.317680 main.go:647: 17:Equal block
-[peer] 00:15:08.317688 main.go:607: 17:Acquired bool lock
-[peer] 00:15:08.317699 main.go:608: Chain Length:11
-[peer] 00:15:08.317705 blockchain.go:68: Returning a block
-[peer] 00:15:08.317712 main.go:610: Chain Length:11
-[peer] 00:15:08.317718 main.go:615: Already have block
-[peer] 00:15:08.317726 main.go:620: 17:Bool lock released
-[peer] 00:15:08.317733 blockchain.go:68: Returning a block
-[peer] 00:15:08.317740 main.go:647: 17:Equal block
-[peer] 00:15:08.317748 main.go:607: 17:Acquired bool lock
-[peer] 00:15:08.317755 main.go:608: Chain Length:11
-[peer] 00:15:08.317762 blockchain.go:68: Returning a block
-[peer] 00:15:08.317768 main.go:610: Chain Length:11
-[peer] 00:15:08.317775 main.go:615: Already have block
-[peer] 00:15:08.317783 main.go:620: 17:Bool lock released
-[peer] 00:15:08.317790 blockchain.go:68: Returning a block
-[peer] 00:15:08.317797 main.go:647: 17:Equal block
-[peer] 00:15:08.317805 main.go:607: 17:Acquired bool lock
-[peer] 00:15:08.317812 main.go:608: Chain Length:11
-[peer] 00:15:08.317818 blockchain.go:68: Returning a block
-[peer] 00:15:08.317825 main.go:610: Chain Length:11
-[peer] 00:15:08.317832 main.go:615: Already have block
-[peer] 00:15:08.317848 main.go:620: 17:Bool lock released
-[peer] 00:15:08.317859 blockchain.go:68: Returning a block
-[peer] 00:15:08.317866 main.go:647: 17:Equal block
-[peer] 00:15:08.317876 main.go:607: 17:Acquired bool lock
-[peer] 00:15:08.317883 main.go:608: Chain Length:11
-[peer] 00:15:08.317889 blockchain.go:68: Returning a block
-[peer] 00:15:08.317896 main.go:610: Chain Length:11
-[peer] 00:15:08.317902 main.go:615: Already have block
-[peer] 00:15:08.317911 main.go:620: 17:Bool lock released
-[peer] 00:15:08.317918 blockchain.go:68: Returning a block
-[peer] 00:15:08.317935 main.go:647: 17:Equal block
-[peer] 00:15:08.317945 main.go:607: 17:Acquired bool lock
-[peer] 00:15:08.317952 main.go:608: Chain Length:11
-[peer] 00:15:08.317958 blockchain.go:68: Returning a block
-[peer] 00:15:08.317965 main.go:610: Chain Length:11
-[peer] 00:15:08.317971 main.go:615: Already have block
-[peer] 00:15:08.317980 main.go:620: 17:Bool lock released
-[peer] 00:15:08.317987 blockchain.go:68: Returning a block
-[peer] 00:15:08.317994 main.go:647: 17:Equal block
-[peer] 00:15:08.318003 main.go:607: 17:Acquired bool lock
-[peer] 00:15:08.318009 main.go:608: Chain Length:11
-[peer] 00:15:08.318016 blockchain.go:68: Returning a block
-[peer] 00:15:08.318023 main.go:610: Chain Length:11
-[peer] 00:15:08.318030 main.go:615: Already have block
-[peer] 00:15:08.318038 main.go:620: 17:Bool lock released
-[peer] 00:15:08.318045 blockchain.go:68: Returning a block
-[peer] 00:15:08.318051 main.go:647: 17:Equal block
-[peer] 00:15:08.318063 main.go:607: 17:Acquired bool lock
-[peer] 00:15:08.318070 main.go:608: Chain Length:11
-[peer] 00:15:08.318076 blockchain.go:68: Returning a block
-[peer] 00:15:08.318083 main.go:610: Chain Length:11
-[peer] 00:15:08.318089 main.go:615: Already have block
-[peer] 00:15:08.318097 main.go:620: 17:Bool lock released
-[peer] 00:15:08.318103 blockchain.go:68: Returning a block
-[peer] 00:15:08.318110 main.go:647: 17:Equal block
-[peer] 00:15:08.318129 main.go:689: 17:Sending block. Iteration: 9
-[peer] 00:15:08.694796 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:08.694992 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:08.695008 main.go:607: 17:Acquired bool lock
-[peer] 00:15:08.695013 main.go:608: Chain Length:11
-[peer] 00:15:08.695017 blockchain.go:68: Returning a block
-[peer] 00:15:08.695022 main.go:610: Chain Length:11
-[peer] 00:15:08.695026 main.go:615: Already have block
-[peer] 00:15:08.695032 main.go:620: 17:Bool lock released
-[peer] 00:15:08.695037 blockchain.go:68: Returning a block
-[peer] 00:15:08.695042 main.go:647: 17:Equal block
-[peer] 00:15:08.695066 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.695082 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.695092 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.695104 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.695114 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.695124 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.695140 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.695153 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.695163 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.695175 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.695186 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.695196 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.695209 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.695224 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.695236 main.go:568: 17:Accepted new Connection
-[peer] 00:15:08.695253 main.go:568: 17:Accepted new Connection
-[peer] 00:15:32.603301 main.go:754: 17:Block sent to peer successful
-[peer] 00:15:32.603713 main.go:762: Timeout. Sending Block.
-[err] 00:15:32.608644 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8014: connect: connection refused
-[err] 00:15:32.609093 main.go:237: rpc Dial, err = dial tcp 198.162.52.57:8056: connect: connection refused
-[err] 00:15:32.609120 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8003: connect: connection refused
-[err] 00:15:32.609131 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8025: connect: connection refused
-[err] 00:15:32.609139 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8019: connect: connection refused
-[err] 00:15:32.609212 main.go:237: rpc Dial, err = dial tcp 198.162.52.57:8059: connect: connection refused
-[err] 00:15:32.609715 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8028: connect: connection refused
-[err] 00:15:32.609757 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8010: connect: connection refused
-[err] 00:15:32.609804 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8004: connect: connection refused
-[err] 00:15:32.610047 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8006: connect: connection refused
-[err] 00:15:32.610302 main.go:237: rpc Dial, err = dial tcp 198.162.52.126:8016: connect: connection refused
-[err] 00:15:32.610377 main.go:237: rpc Dial, err = dial tcp 198.162.52.57:8058: connect: connection refused
-[err] 00:15:32.610923 main.go:237: rpc Dial, err = dial tcp 198.162.52.57:8043: connect: connection refused
-[err] 00:15:32.952767 main.go:237: Error in sending block, err = write tcp 198.162.52.126:46336->198.162.52.126:8012: write: broken pipe
-[peer] 00:15:32.952800 main.go:776: 17:Peer Unresponsive. Removed Peer:198.162.52.126:8014
-[peer] 00:15:32.605614 main.go:762: Timeout. Sending Block.
-[peer] 00:15:32.610799 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.953026 main.go:237: Error in sending block, err = unexpected EOF
-[peer] 00:15:32.605854 main.go:762: Timeout. Sending Block.
-[peer] 00:15:32.952823 main.go:776: 17:Peer Unresponsive. Removed Peer:198.162.52.57:8056
-[peer] 00:15:32.605903 main.go:762: Timeout. Sending Block.
-[peer] 00:15:32.606344 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.606379 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.952840 main.go:776: 17:Peer Unresponsive. Removed Peer:198.162.52.126:8003
-[peer] 00:15:32.606386 main.go:762: Timeout. Sending Block.
-[peer] 00:15:32.606408 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.953155 main.go:237: Error in sending block, err = connection is shut down
-[peer] 00:15:32.606662 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.953196 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.953219 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.953231 main.go:608: Chain Length:11
-[peer] 00:15:32.953243 blockchain.go:68: Returning a block
-[peer] 00:15:32.953255 main.go:610: Chain Length:11
-[peer] 00:15:32.953264 main.go:615: Already have block
-[peer] 00:15:32.953276 main.go:620: 17:Bool lock released
-[peer] 00:15:32.952849 main.go:776: 17:Peer Unresponsive. Removed Peer:198.162.52.126:8025
-[peer] 00:15:32.953280 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.953317 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.953335 main.go:608: Chain Length:11
-[peer] 00:15:32.953346 blockchain.go:68: Returning a block
-[peer] 00:15:32.953356 main.go:610: Chain Length:11
-[peer] 00:15:32.953367 main.go:615: Already have block
-[peer] 00:15:32.953378 main.go:620: 17:Bool lock released
-[peer] 00:15:32.953387 blockchain.go:68: Returning a block
-[peer] 00:15:32.953399 main.go:647: 17:Equal block
-[peer] 00:15:32.606712 main.go:762: Timeout. Sending Block.
-[peer] 00:15:32.606726 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.952856 main.go:776: 17:Peer Unresponsive. Removed Peer:198.162.52.126:8019
-[peer] 00:15:32.606768 main.go:762: Timeout. Sending Block.
-[peer] 00:15:32.606820 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.953532 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.953552 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.953561 main.go:608: Chain Length:11
-[peer] 00:15:32.953568 blockchain.go:68: Returning a block
-[peer] 00:15:32.953576 main.go:610: Chain Length:11
-[peer] 00:15:32.953584 main.go:615: Already have block
-[peer] 00:15:32.953593 main.go:620: 17:Bool lock released
-[peer] 00:15:32.953601 blockchain.go:68: Returning a block
-[peer] 00:15:32.953604 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.953622 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.953628 main.go:608: Chain Length:11
-[peer] 00:15:32.953632 blockchain.go:68: Returning a block
-[peer] 00:15:32.953639 main.go:610: Chain Length:11
-[peer] 00:15:32.953644 main.go:615: Already have block
-[peer] 00:15:32.953649 main.go:620: 17:Bool lock released
-[peer] 00:15:32.953654 blockchain.go:68: Returning a block
-[peer] 00:15:32.953658 main.go:647: 17:Equal block
-[peer] 00:15:32.952865 main.go:776: 17:Peer Unresponsive. Removed Peer:198.162.52.57:8059
-[peer] 00:15:32.606879 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.953612 main.go:647: 17:Equal block
-[peer] 00:15:32.606944 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.953701 main.go:237: Error in sending block, err = write tcp 198.162.52.126:41312->198.162.52.126:8002: write: broken pipe
-[peer] 00:15:32.606945 main.go:762: Timeout. Sending Block.
-[peer] 00:15:32.606956 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.953744 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.953761 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.953770 main.go:608: Chain Length:11
-[peer] 00:15:32.953778 blockchain.go:68: Returning a block
-[peer] 00:15:32.953785 main.go:610: Chain Length:11
-[peer] 00:15:32.953794 main.go:615: Already have block
-[peer] 00:15:32.953805 main.go:620: 17:Bool lock released
-[peer] 00:15:32.953814 blockchain.go:68: Returning a block
-[peer] 00:15:32.953822 main.go:647: 17:Equal block
-[peer] 00:15:32.606974 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.953839 main.go:237: Error in sending block, err = connection is shut down
-[peer] 00:15:32.953850 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.953863 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.953868 main.go:608: Chain Length:11
-[peer] 00:15:32.953873 blockchain.go:68: Returning a block
-[peer] 00:15:32.953877 main.go:610: Chain Length:11
-[peer] 00:15:32.953883 main.go:615: Already have block
-[peer] 00:15:32.953888 main.go:620: 17:Bool lock released
-[peer] 00:15:32.953893 blockchain.go:68: Returning a block
-[peer] 00:15:32.953899 main.go:647: 17:Equal block
-[peer] 00:15:32.952873 main.go:776: 17:Peer Unresponsive. Removed Peer:198.162.52.126:8028
-[peer] 00:15:32.607064 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.953920 main.go:237: Error in sending block, err = write tcp 198.162.52.126:59954->198.162.52.126:8018: write: broken pipe
-[peer] 00:15:32.607089 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.952880 main.go:776: 17:Peer Unresponsive. Removed Peer:198.162.52.126:8010
-[peer] 00:15:32.607738 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.953952 main.go:237: Error in sending block, err = connection is shut down
-[peer] 00:15:32.607763 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.953973 main.go:237: Error in sending block, err = unexpected EOF
-[peer] 00:15:32.607777 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.953991 main.go:237: Error in sending block, err = unexpected EOF
-[peer] 00:15:32.607796 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.954008 main.go:237: Error in sending block, err = unexpected EOF
-[peer] 00:15:32.608452 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.954027 main.go:237: Error in sending block, err = write tcp 198.162.52.126:53432->198.162.52.126:8022: write: broken pipe
-[peer] 00:15:32.608470 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.954049 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.608607 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.954067 main.go:237: Error in sending block, err = write tcp 198.162.52.126:52566->198.162.52.126:8026: write: broken pipe
-[peer] 00:15:32.608719 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.608914 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.608962 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.609110 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.954246 main.go:237: Error in sending block, err = unexpected EOF
-[peer] 00:15:32.609133 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.954264 main.go:237: Error in sending block, err = unexpected EOF
-[peer] 00:15:32.609193 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.609195 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.609198 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.609200 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.609285 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.609373 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.954498 main.go:237: Error in sending block, err = connection is shut down
-[peer] 00:15:32.609376 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.954529 main.go:237: Error in sending block, err = unexpected EOF
-[peer] 00:15:32.609380 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.954561 main.go:237: Error in sending block, err = unexpected EOF
-[peer] 00:15:32.609388 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.954588 main.go:237: Error in sending block, err = connection is shut down
-[peer] 00:15:32.609390 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.954612 main.go:237: Error in sending block, err = unexpected EOF
-[peer] 00:15:32.609398 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.954629 main.go:237: Error in sending block, err = unexpected EOF
-[peer] 00:15:32.609404 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.954649 main.go:237: Error in sending block, err = connection is shut down
-[peer] 00:15:32.609423 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.954665 main.go:237: Error in sending block, err = unexpected EOF
-[peer] 00:15:32.609916 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.610132 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.954697 main.go:237: Error in sending block, err = write tcp 198.162.52.126:41860->198.162.52.126:8013: write: broken pipe
-[peer] 00:15:32.610141 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.954715 main.go:237: Error in sending block, err = unexpected EOF
-[peer] 00:15:32.605899 main.go:568: 17:Accepted new Connection
-[peer] 00:15:32.610152 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.954763 main.go:237: Error in sending block, err = unexpected EOF
-[peer] 00:15:32.610339 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.610720 main.go:754: 17:Block sent to peer successful
-[peer] 00:15:32.610856 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.610872 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.955099 main.go:237: Error in sending block, err = unexpected EOF
-[peer] 00:15:32.610906 main.go:754: 17:Block sent to peer successful
-[peer] 00:15:32.610963 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.955175 main.go:237: Error in sending block, err = write tcp 198.162.52.126:47676->198.162.52.126:8027: write: broken pipe
-[peer] 00:15:32.611074 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.955245 main.go:237: Error in sending block, err = unexpected EOF
-[peer] 00:15:32.611095 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.955281 main.go:237: Error in sending block, err = write tcp 198.162.52.126:55262->198.162.52.126:8024: write: broken pipe
-[peer] 00:15:32.611651 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.955316 main.go:237: Error in sending block, err = write tcp 198.162.52.126:34186->198.162.52.126:8020: write: broken pipe
-[peer] 00:15:32.611754 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.611838 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.611906 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.955391 main.go:237: Error in sending block, err = unexpected EOF
-[peer] 00:15:32.611969 main.go:754: 17:Block sent to peer successful
-[err] 00:15:32.955424 main.go:237: Error in sending block, err = unexpected EOF
-[peer] 00:15:32.611972 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.612023 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.612085 main.go:754: 17:Block sent to peer successful
-[peer] 00:15:32.612439 main.go:754: 17:Block sent to peer successful
-[peer] 00:15:32.612452 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.606663 main.go:126: 17:Got block message, iteration 9
-[err] 00:15:32.955728 main.go:237: Error in sending block, err = unexpected EOF
-[peer] 00:15:32.607034 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.952899 main.go:776: 17:Peer Unresponsive. Removed Peer:198.162.52.126:8004
-[peer] 00:15:32.952906 main.go:776: 17:Peer Unresponsive. Removed Peer:198.162.52.126:8006
-[peer] 00:15:32.952914 main.go:776: 17:Peer Unresponsive. Removed Peer:198.162.52.126:8016
-[peer] 00:15:32.952922 main.go:776: 17:Peer Unresponsive. Removed Peer:198.162.52.57:8058
-[peer] 00:15:32.952929 main.go:776: 17:Peer Unresponsive. Removed Peer:198.162.52.57:8043
-[peer] 00:15:32.955049 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.955916 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.955416 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.955417 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.955482 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.955559 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.955567 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.955729 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.953285 blockchain.go:68: Returning a block
-[peer] 00:15:32.956022 main.go:647: 17:Equal block
-[peer] 00:15:32.953289 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.955799 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.956042 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.954177 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.954238 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.954296 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.954358 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.954416 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.954477 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.954527 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.955903 main.go:709: 17:RPC calls successfully returned. Iteration: 9
-[peer] 00:15:32.954557 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.954750 main.go:568: 17:Accepted new Connection
-[peer] 00:15:32.954748 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.955296 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.956133 main.go:568: 17:Accepted new Connection
-[peer] 00:15:32.956161 main.go:568: 17:Accepted new Connection
-[peer] 00:15:32.954115 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.954060 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.956189 main.go:608: Chain Length:11
-[peer] 00:15:32.956195 blockchain.go:68: Returning a block
-[peer] 00:15:32.956200 main.go:610: Chain Length:11
-[peer] 00:15:32.956205 main.go:615: Already have block
-[peer] 00:15:32.956211 main.go:620: 17:Bool lock released
-[peer] 00:15:32.956182 main.go:568: 17:Accepted new Connection
-[peer] 00:15:32.956241 main.go:568: 17:Accepted new Connection
-[peer] 00:15:32.956256 main.go:568: 17:Accepted new Connection
-[peer] 00:15:32.956268 main.go:568: 17:Accepted new Connection
-[peer] 00:15:32.956219 blockchain.go:68: Returning a block
-[peer] 00:15:32.956590 main.go:647: 17:Equal block
-[peer] 00:15:32.956223 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.956632 main.go:608: Chain Length:11
-[peer] 00:15:32.956640 blockchain.go:68: Returning a block
-[peer] 00:15:32.956648 main.go:610: Chain Length:11
-[peer] 00:15:32.956699 main.go:615: Already have block
-[peer] 00:15:32.956709 main.go:620: 17:Bool lock released
-[peer] 00:15:32.956716 blockchain.go:68: Returning a block
-[peer] 00:15:32.956724 main.go:647: 17:Equal block
-[peer] 00:15:32.956733 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.956745 main.go:608: Chain Length:11
-[peer] 00:15:32.956753 blockchain.go:68: Returning a block
-[peer] 00:15:32.956761 main.go:610: Chain Length:11
-[peer] 00:15:32.956767 main.go:615: Already have block
-[peer] 00:15:32.956775 main.go:620: 17:Bool lock released
-[peer] 00:15:32.956783 blockchain.go:68: Returning a block
-[peer] 00:15:32.956795 main.go:647: 17:Equal block
-[peer] 00:15:32.956804 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.956812 main.go:608: Chain Length:11
-[peer] 00:15:32.956819 blockchain.go:68: Returning a block
-[peer] 00:15:32.956826 main.go:610: Chain Length:11
-[peer] 00:15:32.956837 main.go:615: Already have block
-[peer] 00:15:32.956847 main.go:620: 17:Bool lock released
-[peer] 00:15:32.956854 blockchain.go:68: Returning a block
-[peer] 00:15:32.956864 main.go:647: 17:Equal block
-[peer] 00:15:32.956872 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.956890 main.go:608: Chain Length:11
-[peer] 00:15:32.956903 blockchain.go:68: Returning a block
-[peer] 00:15:32.956928 main.go:610: Chain Length:11
-[peer] 00:15:32.956935 main.go:615: Already have block
-[peer] 00:15:32.956945 main.go:620: 17:Bool lock released
-[peer] 00:15:32.956953 blockchain.go:68: Returning a block
-[peer] 00:15:32.956965 main.go:647: 17:Equal block
-[peer] 00:15:32.956975 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.956982 main.go:608: Chain Length:11
-[peer] 00:15:32.956989 blockchain.go:68: Returning a block
-[peer] 00:15:32.956996 main.go:610: Chain Length:11
-[peer] 00:15:32.957002 main.go:615: Already have block
-[peer] 00:15:32.957017 main.go:620: 17:Bool lock released
-[peer] 00:15:32.957024 blockchain.go:68: Returning a block
-[peer] 00:15:32.957032 main.go:647: 17:Equal block
-[peer] 00:15:32.957042 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.957050 main.go:608: Chain Length:11
-[peer] 00:15:32.957062 blockchain.go:68: Returning a block
-[peer] 00:15:32.957071 main.go:610: Chain Length:11
-[peer] 00:15:32.957078 main.go:615: Already have block
-[peer] 00:15:32.957088 main.go:620: 17:Bool lock released
-[peer] 00:15:32.957096 blockchain.go:68: Returning a block
-[peer] 00:15:32.957103 main.go:647: 17:Equal block
-[peer] 00:15:32.957119 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.957127 main.go:608: Chain Length:11
-[peer] 00:15:32.957134 blockchain.go:68: Returning a block
-[peer] 00:15:32.957140 main.go:610: Chain Length:11
-[peer] 00:15:32.957147 main.go:615: Already have block
-[peer] 00:15:32.957187 main.go:620: 17:Bool lock released
-[peer] 00:15:32.957198 blockchain.go:68: Returning a block
-[peer] 00:15:32.957205 main.go:647: 17:Equal block
-[peer] 00:15:32.957214 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.957222 main.go:608: Chain Length:11
-[peer] 00:15:32.957233 blockchain.go:68: Returning a block
-[peer] 00:15:32.957241 main.go:610: Chain Length:11
-[peer] 00:15:32.957248 main.go:615: Already have block
-[peer] 00:15:32.957256 main.go:620: 17:Bool lock released
-[peer] 00:15:32.957263 blockchain.go:68: Returning a block
-[peer] 00:15:32.957270 main.go:647: 17:Equal block
-[peer] 00:15:32.957284 honest.go:81: 17Train Error is 0.04348 in Iteration 9
-[peer] 00:15:32.957303 main.go:717: 17:Preparing for next Iteration. Current Iteration: 9
-[peer] 00:15:32.957492 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.957511 main.go:608: Chain Length:11
-[peer] 00:15:32.957524 blockchain.go:68: Returning a block
-[peer] 00:15:32.957539 main.go:610: Chain Length:11
-[peer] 00:15:32.957550 main.go:615: Already have block
-[peer] 00:15:32.957566 main.go:620: 17:Bool lock released
-[peer] 00:15:32.957579 blockchain.go:68: Returning a block
-[peer] 00:15:32.957590 main.go:647: 17:Equal block
-[peer] 00:15:32.957607 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.957621 main.go:608: Chain Length:11
-[peer] 00:15:32.957634 blockchain.go:68: Returning a block
-[peer] 00:15:32.957646 main.go:610: Chain Length:11
-[peer] 00:15:32.957684 main.go:615: Already have block
-[peer] 00:15:32.957701 main.go:620: 17:Bool lock released
-[peer] 00:15:32.957715 blockchain.go:68: Returning a block
-[peer] 00:15:32.957728 main.go:647: 17:Equal block
-[peer] 00:15:32.957744 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.957757 main.go:608: Chain Length:11
-[peer] 00:15:32.957769 blockchain.go:68: Returning a block
-[peer] 00:15:32.957782 main.go:610: Chain Length:11
-[peer] 00:15:32.957793 main.go:615: Already have block
-[peer] 00:15:32.957807 main.go:620: 17:Bool lock released
-[peer] 00:15:32.957824 blockchain.go:68: Returning a block
-[peer] 00:15:32.957837 main.go:647: 17:Equal block
-[peer] 00:15:32.957816 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.957985 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.958002 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.958014 main.go:608: Chain Length:11
-[peer] 00:15:32.958026 blockchain.go:68: Returning a block
-[peer] 00:15:32.958038 main.go:610: Chain Length:11
-[peer] 00:15:32.958052 main.go:615: Already have block
-[peer] 00:15:32.958073 main.go:620: 17:Bool lock released
-[peer] 00:15:32.958085 blockchain.go:68: Returning a block
-[peer] 00:15:32.958097 main.go:647: 17:Equal block
-[peer] 00:15:32.957326 main.go:568: 17:Accepted new Connection
-[peer] 00:15:32.958123 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.957817 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.958269 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.958196 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.958314 main.go:568: 17:Accepted new Connection
-[peer] 00:15:32.958760 main.go:568: 17:Accepted new Connection
-[peer] 00:15:32.958788 main.go:568: 17:Accepted new Connection
-[peer] 00:15:32.958816 main.go:568: 17:Accepted new Connection
-[peer] 00:15:32.958841 main.go:568: 17:Accepted new Connection
-[peer] 00:15:32.958939 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.958868 main.go:568: 17:Accepted new Connection
-[peer] 00:15:32.959232 main.go:568: 17:Accepted new Connection
-[peer] 00:15:32.959288 main.go:568: 17:Accepted new Connection
-[peer] 00:15:32.959319 main.go:126: 17:Got block message, iteration 3
-[peer] 00:15:32.959737 main.go:568: 17:Accepted new Connection
-[peer] 00:15:32.969014 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.969498 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.969651 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.969669 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.969865 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.970015 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.970172 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.970452 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.970612 main.go:99: 17:Got update message, iteration 4
-[peer] 00:15:32.970834 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.970865 main.go:608: Chain Length:11
-[peer] 00:15:32.970884 blockchain.go:68: Returning a block
-[peer] 00:15:32.970897 main.go:610: Chain Length:11
-[peer] 00:15:32.970905 main.go:615: Already have block
-[peer] 00:15:32.970914 main.go:620: 17:Bool lock released
-[peer] 00:15:32.970921 blockchain.go:68: Returning a block
-[peer] 00:15:32.970929 main.go:647: 17:Equal block
-[peer] 00:15:32.970938 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.970945 main.go:608: Chain Length:11
-[peer] 00:15:32.970951 blockchain.go:68: Returning a block
-[peer] 00:15:32.970958 main.go:610: Chain Length:11
-[peer] 00:15:32.970965 main.go:615: Already have block
-[peer] 00:15:32.970973 main.go:620: 17:Bool lock released
-[peer] 00:15:32.970981 blockchain.go:68: Returning a block
-[peer] 00:15:32.970988 main.go:647: 17:Equal block
-[peer] 00:15:32.970997 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.971004 main.go:608: Chain Length:11
-[peer] 00:15:32.971011 blockchain.go:68: Returning a block
-[peer] 00:15:32.971018 main.go:610: Chain Length:11
-[peer] 00:15:32.971024 main.go:615: Already have block
-[peer] 00:15:32.971035 main.go:620: 17:Bool lock released
-[peer] 00:15:32.971042 blockchain.go:68: Returning a block
-[peer] 00:15:32.971049 main.go:647: 17:Equal block
-[peer] 00:15:32.971057 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.971064 main.go:608: Chain Length:11
-[peer] 00:15:32.971071 blockchain.go:68: Returning a block
-[peer] 00:15:32.971077 main.go:610: Chain Length:11
-[peer] 00:15:32.971084 main.go:615: Already have block
-[peer] 00:15:32.971092 main.go:620: 17:Bool lock released
-[peer] 00:15:32.971102 blockchain.go:68: Returning a block
-[peer] 00:15:32.971108 main.go:647: 17:Equal block
-[peer] 00:15:32.971116 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.971123 main.go:608: Chain Length:11
-[peer] 00:15:32.971130 blockchain.go:68: Returning a block
-[peer] 00:15:32.971137 main.go:610: Chain Length:11
-[peer] 00:15:32.971143 main.go:615: Already have block
-[peer] 00:15:32.971151 main.go:620: 17:Bool lock released
-[peer] 00:15:32.971158 blockchain.go:68: Returning a block
-[peer] 00:15:32.971163 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.971148 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.971165 main.go:647: 17:Equal block
-[peer] 00:15:32.971157 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.970851 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.970851 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.970844 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.971170 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.971461 main.go:608: Chain Length:11
-[peer] 00:15:32.971470 blockchain.go:68: Returning a block
-[peer] 00:15:32.971477 main.go:610: Chain Length:11
-[peer] 00:15:32.971487 main.go:615: Already have block
-[peer] 00:15:32.971496 main.go:620: 17:Bool lock released
-[peer] 00:15:32.971504 blockchain.go:68: Returning a block
-[peer] 00:15:32.971516 main.go:647: 17:Equal block
-[peer] 00:15:32.971526 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.971534 main.go:608: Chain Length:11
-[peer] 00:15:32.971541 blockchain.go:68: Returning a block
-[peer] 00:15:32.971547 main.go:610: Chain Length:11
-[peer] 00:15:32.971554 main.go:615: Already have block
-[peer] 00:15:32.971564 main.go:620: 17:Bool lock released
-[peer] 00:15:32.971571 blockchain.go:68: Returning a block
-[peer] 00:15:32.971577 main.go:647: 17:Equal block
-[peer] 00:15:32.971586 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.971595 main.go:608: Chain Length:11
-[peer] 00:15:32.971602 blockchain.go:68: Returning a block
-[peer] 00:15:32.971609 main.go:610: Chain Length:11
-[peer] 00:15:32.971616 main.go:615: Already have block
-[peer] 00:15:32.971625 main.go:620: 17:Bool lock released
-[peer] 00:15:32.971634 blockchain.go:68: Returning a block
-[peer] 00:15:32.971642 main.go:647: 17:Equal block
-[peer] 00:15:32.971655 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.971663 main.go:608: Chain Length:11
-[peer] 00:15:32.971671 blockchain.go:68: Returning a block
-[peer] 00:15:32.971678 main.go:610: Chain Length:11
-[peer] 00:15:32.971678 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.971685 main.go:615: Already have block
-[peer] 00:15:32.971715 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.971731 main.go:620: 17:Bool lock released
-[peer] 00:15:32.971848 blockchain.go:68: Returning a block
-[peer] 00:15:32.971855 main.go:647: 17:Equal block
-[peer] 00:15:32.971829 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.971396 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.970844 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.971172 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.971733 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.971881 main.go:608: Chain Length:11
-[peer] 00:15:32.971888 blockchain.go:68: Returning a block
-[peer] 00:15:32.971897 main.go:610: Chain Length:11
-[peer] 00:15:32.971904 main.go:615: Already have block
-[peer] 00:15:32.971907 main.go:103: RONI for update is 0.001556 
-[err] 00:15:32.971922 main.go:237: Update of previous iteration received, err = Stale Update/Block
-[peer] 00:15:32.971389 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.971913 main.go:620: 17:Bool lock released
-[peer] 00:15:32.971991 blockchain.go:68: Returning a block
-[peer] 00:15:32.972000 main.go:647: 17:Equal block
-[peer] 00:15:32.971915 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.972016 main.go:608: Chain Length:11
-[peer] 00:15:32.972024 blockchain.go:68: Returning a block
-[peer] 00:15:32.972031 main.go:610: Chain Length:11
-[peer] 00:15:32.972038 main.go:615: Already have block
-[peer] 00:15:32.972047 main.go:620: 17:Bool lock released
-[peer] 00:15:32.972056 blockchain.go:68: Returning a block
-[peer] 00:15:32.972063 main.go:647: 17:Equal block
-[peer] 00:15:32.972073 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.972080 main.go:608: Chain Length:11
-[peer] 00:15:32.972087 blockchain.go:68: Returning a block
-[peer] 00:15:32.972094 main.go:610: Chain Length:11
-[peer] 00:15:32.972101 main.go:615: Already have block
-[peer] 00:15:32.972109 main.go:620: 17:Bool lock released
-[peer] 00:15:32.972117 blockchain.go:68: Returning a block
-[peer] 00:15:32.972125 main.go:647: 17:Equal block
-[peer] 00:15:32.972136 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.972144 main.go:608: Chain Length:11
-[peer] 00:15:32.972196 blockchain.go:68: Returning a block
-[peer] 00:15:32.972207 main.go:610: Chain Length:11
-[peer] 00:15:32.972216 main.go:615: Already have block
-[peer] 00:15:32.972226 main.go:620: 17:Bool lock released
-[peer] 00:15:32.972234 blockchain.go:68: Returning a block
-[peer] 00:15:32.972242 main.go:647: 17:Equal block
-[peer] 00:15:32.972252 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.972260 main.go:608: Chain Length:11
-[peer] 00:15:32.972268 blockchain.go:68: Returning a block
-[peer] 00:15:32.972275 main.go:610: Chain Length:11
-[peer] 00:15:32.972283 main.go:615: Already have block
-[peer] 00:15:32.972292 main.go:620: 17:Bool lock released
-[peer] 00:15:32.972300 blockchain.go:68: Returning a block
-[peer] 00:15:32.972308 main.go:647: 17:Equal block
-[peer] 00:15:32.972318 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.972326 main.go:608: Chain Length:11
-[peer] 00:15:32.972334 blockchain.go:68: Returning a block
-[peer] 00:15:32.972341 main.go:610: Chain Length:11
-[peer] 00:15:32.972349 main.go:615: Already have block
-[peer] 00:15:32.972360 main.go:620: 17:Bool lock released
-[peer] 00:15:32.972368 blockchain.go:68: Returning a block
-[peer] 00:15:32.972376 main.go:647: 17:Equal block
-[peer] 00:15:32.972158 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.970839 main.go:126: 17:Got block message, iteration 9
-[peer] 00:15:32.972399 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.972453 main.go:608: Chain Length:11
-[peer] 00:15:32.972461 blockchain.go:68: Returning a block
-[peer] 00:15:32.972468 main.go:610: Chain Length:11
-[peer] 00:15:32.972475 main.go:615: Already have block
-[peer] 00:15:32.972484 main.go:620: 17:Bool lock released
-[peer] 00:15:32.972492 blockchain.go:68: Returning a block
-[peer] 00:15:32.972499 main.go:647: 17:Equal block
-[peer] 00:15:32.972515 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.972536 main.go:608: Chain Length:11
-[peer] 00:15:32.972543 blockchain.go:68: Returning a block
-[peer] 00:15:32.972550 main.go:610: Chain Length:11
-[peer] 00:15:32.972557 main.go:615: Already have block
-[peer] 00:15:32.972567 main.go:620: 17:Bool lock released
-[peer] 00:15:32.972575 blockchain.go:68: Returning a block
-[peer] 00:15:32.972594 main.go:647: 17:Equal block
-[peer] 00:15:32.972512 main.go:605: 17:Acquiring bool lock
-[peer] 00:15:32.972587 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.972610 main.go:608: Chain Length:11
-[peer] 00:15:32.972615 blockchain.go:68: Returning a block
-[peer] 00:15:32.972619 main.go:610: Chain Length:11
-[peer] 00:15:32.972623 main.go:615: Already have block
-[peer] 00:15:32.972628 main.go:620: 17:Bool lock released
-[peer] 00:15:32.972633 blockchain.go:68: Returning a block
-[peer] 00:15:32.972637 main.go:647: 17:Equal block
-[peer] 00:15:32.972643 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.972647 main.go:608: Chain Length:11
-[peer] 00:15:32.972651 blockchain.go:68: Returning a block
-[peer] 00:15:32.972658 main.go:610: Chain Length:11
-[peer] 00:15:32.972665 main.go:615: Already have block
-[peer] 00:15:32.972677 main.go:620: 17:Bool lock released
-[peer] 00:15:32.972686 blockchain.go:68: Returning a block
-[peer] 00:15:32.972693 main.go:647: 17:Equal block
-[peer] 00:15:32.972699 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.972703 main.go:608: Chain Length:11
-[peer] 00:15:32.972707 blockchain.go:68: Returning a block
-[peer] 00:15:32.972711 main.go:610: Chain Length:11
-[peer] 00:15:32.972716 main.go:615: Already have block
-[peer] 00:15:32.972721 main.go:620: 17:Bool lock released
-[peer] 00:15:32.972725 blockchain.go:68: Returning a block
-[peer] 00:15:32.972730 main.go:647: 17:Equal block
-[peer] 00:15:32.972740 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.972744 main.go:608: Chain Length:11
-[peer] 00:15:32.972749 blockchain.go:68: Returning a block
-[peer] 00:15:32.972753 main.go:610: Chain Length:11
-[peer] 00:15:32.972757 main.go:615: Already have block
-[peer] 00:15:32.972762 main.go:620: 17:Bool lock released
-[peer] 00:15:32.972767 blockchain.go:68: Returning a block
-[peer] 00:15:32.972771 main.go:647: 17:Equal block
-[peer] 00:15:32.972781 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.972785 main.go:608: Chain Length:11
-[peer] 00:15:32.972789 blockchain.go:68: Returning a block
-[peer] 00:15:32.972793 main.go:610: Chain Length:11
-[peer] 00:15:32.972797 main.go:615: Already have block
-[peer] 00:15:32.972802 main.go:620: 17:Bool lock released
-[peer] 00:15:32.972810 blockchain.go:68: Returning a block
-[peer] 00:15:32.972815 main.go:647: 17:Equal block
-[peer] 00:15:32.972821 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.972825 main.go:608: Chain Length:11
-[peer] 00:15:32.972829 blockchain.go:68: Returning a block
-[peer] 00:15:32.972834 main.go:610: Chain Length:11
-[peer] 00:15:32.972838 main.go:615: Already have block
-[peer] 00:15:32.972843 main.go:620: 17:Bool lock released
-[peer] 00:15:32.972847 blockchain.go:68: Returning a block
-[peer] 00:15:32.972851 main.go:647: 17:Equal block
-[peer] 00:15:32.972856 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.972861 main.go:608: Chain Length:11
-[peer] 00:15:32.972865 blockchain.go:68: Returning a block
-[peer] 00:15:32.972869 main.go:610: Chain Length:11
-[peer] 00:15:32.972873 main.go:615: Already have block
-[peer] 00:15:32.972878 main.go:620: 17:Bool lock released
-[peer] 00:15:32.972886 blockchain.go:68: Returning a block
-[peer] 00:15:32.972891 main.go:647: 17:Equal block
-[peer] 00:15:32.972897 main.go:607: 17:Acquired bool lock
-[peer] 00:15:32.972901 main.go:608: Chain Length:11
-[peer] 00:15:32.972905 blockchain.go:68: Returning a block
-[peer] 00:15:32.972909 main.go:610: Chain Length:11
-[peer] 00:15:32.972913 main.go:615: Already have block
-[peer] 00:15:32.972918 main.go:620: 17:Bool lock released
-[peer] 00:15:32.972922 blockchain.go:68: Returning a block
-[peer] 00:15:32.972926 main.go:647: 17:Equal block
+[peer] 00:22:48.848635 honest.go:122: 17Sucessfully pulled dataset. Features: 25
+[peer] 00:22:48.863077 main.go:422: 17:Announcing myself to network
+[peer] 00:22:48.863136 main.go:427: 17:Calling {198.162.52.126 %!s(int=8000) }
+[peer] 00:22:48.863151 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.863161 main.go:451: 17Making RPC call
+[peer] 00:22:48.863213 main.go:564: 17:Peer started. Receiving on 8017
+[peer] 00:22:48.863274 main.go:457: 17RPC dial successful
+[peer] 00:22:48.863291 main.go:460: 17:Calling RPC:198.162.52.126:8000
+[peer] 00:22:48.863305 main.go:462: 17:RPC called198.162.52.126:8000
+[peer] 00:22:48.865068 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.865089 main.go:476: Chain length received:2
+[peer] 00:22:48.865100 main.go:477: My chain length:1
+[peer] 00:22:48.865109 honest.go:340: Received chain length:2
+[peer] 00:22:48.865118 honest.go:341: Appended chain length:2
+[peer] 00:22:48.865127 main.go:490: 17Got lastest chain until iteration 0
+[peer] 00:22:48.865171 main.go:427: 17:Calling {198.162.52.126 %!s(int=8001) }
+[peer] 00:22:48.865185 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.865196 main.go:451: 17Making RPC call
+[peer] 00:22:48.865278 main.go:457: 17RPC dial successful
+[peer] 00:22:48.865322 main.go:460: 17:Calling RPC:198.162.52.126:8001
+[peer] 00:22:48.865357 main.go:462: 17:RPC called198.162.52.126:8001
+[peer] 00:22:48.866239 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.866280 main.go:476: Chain length received:4
+[peer] 00:22:48.866313 main.go:477: My chain length:2
+[peer] 00:22:48.866345 honest.go:340: Received chain length:4
+[peer] 00:22:48.866377 honest.go:341: Appended chain length:4
+[peer] 00:22:48.866408 main.go:490: 17Got lastest chain until iteration 2
+[peer] 00:22:48.866469 main.go:427: 17:Calling {198.162.52.126 %!s(int=8002) }
+[peer] 00:22:48.866546 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.866580 main.go:451: 17Making RPC call
+[err] 00:22:48.866661 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8002, err = dial tcp 198.162.52.126:8002: connect: connection refused
+[peer] 00:22:48.866714 main.go:427: 17:Calling {198.162.52.126 %!s(int=8003) }
+[peer] 00:22:48.866747 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.866779 main.go:451: 17Making RPC call
+[err] 00:22:48.866857 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8003, err = dial tcp 198.162.52.126:8003: connect: connection refused
+[peer] 00:22:48.866897 main.go:427: 17:Calling {198.162.52.126 %!s(int=8004) }
+[peer] 00:22:48.866929 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.866961 main.go:451: 17Making RPC call
+[err] 00:22:48.867034 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8004, err = dial tcp 198.162.52.126:8004: connect: connection refused
+[peer] 00:22:48.867074 main.go:427: 17:Calling {198.162.52.126 %!s(int=8005) }
+[peer] 00:22:48.867106 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.867137 main.go:451: 17Making RPC call
+[err] 00:22:48.867209 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8005, err = dial tcp 198.162.52.126:8005: connect: connection refused
+[peer] 00:22:48.867249 main.go:427: 17:Calling {198.162.52.126 %!s(int=8006) }
+[peer] 00:22:48.867281 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.867312 main.go:451: 17Making RPC call
+[peer] 00:22:48.867407 main.go:457: 17RPC dial successful
+[peer] 00:22:48.867579 main.go:460: 17:Calling RPC:198.162.52.126:8006
+[peer] 00:22:48.867621 main.go:462: 17:RPC called198.162.52.126:8006
+[peer] 00:22:48.868461 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.868517 main.go:476: Chain length received:4
+[peer] 00:22:48.868547 main.go:477: My chain length:4
+[peer] 00:22:48.868605 main.go:427: 17:Calling {198.162.52.126 %!s(int=8007) }
+[peer] 00:22:48.868680 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.868713 main.go:451: 17Making RPC call
+[err] 00:22:48.868800 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8007, err = dial tcp 198.162.52.126:8007: connect: connection refused
+[peer] 00:22:48.868841 main.go:427: 17:Calling {198.162.52.126 %!s(int=8008) }
+[peer] 00:22:48.868875 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.868905 main.go:451: 17Making RPC call
+[err] 00:22:48.868978 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8008, err = dial tcp 198.162.52.126:8008: connect: connection refused
+[peer] 00:22:48.869019 main.go:427: 17:Calling {198.162.52.126 %!s(int=8009) }
+[peer] 00:22:48.869051 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.869081 main.go:451: 17Making RPC call
+[err] 00:22:48.869153 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8009, err = dial tcp 198.162.52.126:8009: connect: connection refused
+[peer] 00:22:48.869193 main.go:427: 17:Calling {198.162.52.126 %!s(int=8010) }
+[peer] 00:22:48.869224 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.869253 main.go:451: 17Making RPC call
+[peer] 00:22:48.869341 main.go:457: 17RPC dial successful
+[peer] 00:22:48.869519 main.go:460: 17:Calling RPC:198.162.52.126:8010
+[peer] 00:22:48.869557 main.go:462: 17:RPC called198.162.52.126:8010
+[peer] 00:22:48.870487 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.870602 main.go:476: Chain length received:4
+[peer] 00:22:48.870653 main.go:477: My chain length:4
+[peer] 00:22:48.870740 main.go:427: 17:Calling {198.162.52.126 %!s(int=8011) }
+[peer] 00:22:48.870837 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.870895 main.go:451: 17Making RPC call
+[peer] 00:22:48.871140 main.go:457: 17RPC dial successful
+[peer] 00:22:48.871195 main.go:460: 17:Calling RPC:198.162.52.126:8011
+[peer] 00:22:48.871245 main.go:462: 17:RPC called198.162.52.126:8011
+[peer] 00:22:48.872048 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.872112 main.go:476: Chain length received:4
+[peer] 00:22:48.872162 main.go:477: My chain length:4
+[peer] 00:22:48.872407 main.go:427: 17:Calling {198.162.52.126 %!s(int=8012) }
+[peer] 00:22:48.872460 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.872517 main.go:451: 17Making RPC call
+[err] 00:22:48.872620 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8012, err = dial tcp 198.162.52.126:8012: connect: connection refused
+[peer] 00:22:48.872737 main.go:427: 17:Calling {198.162.52.126 %!s(int=8013) }
+[peer] 00:22:48.872787 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.872837 main.go:451: 17Making RPC call
+[peer] 00:22:48.872951 main.go:457: 17RPC dial successful
+[peer] 00:22:48.873137 main.go:460: 17:Calling RPC:198.162.52.126:8013
+[peer] 00:22:48.873190 main.go:462: 17:RPC called198.162.52.126:8013
+[peer] 00:22:48.874002 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.874070 main.go:476: Chain length received:4
+[peer] 00:22:48.874123 main.go:477: My chain length:4
+[peer] 00:22:48.874208 main.go:427: 17:Calling {198.162.52.126 %!s(int=8014) }
+[peer] 00:22:48.874306 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.874364 main.go:451: 17Making RPC call
+[peer] 00:22:48.874593 main.go:457: 17RPC dial successful
+[peer] 00:22:48.874667 main.go:460: 17:Calling RPC:198.162.52.126:8014
+[peer] 00:22:48.874719 main.go:462: 17:RPC called198.162.52.126:8014
+[peer] 00:22:48.875406 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.875456 main.go:476: Chain length received:4
+[peer] 00:22:48.875493 main.go:477: My chain length:4
+[peer] 00:22:48.875558 main.go:427: 17:Calling {198.162.52.126 %!s(int=8015) }
+[peer] 00:22:48.875639 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.875681 main.go:451: 17Making RPC call
+[err] 00:22:48.875773 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8015, err = dial tcp 198.162.52.126:8015: connect: connection refused
+[peer] 00:22:48.875814 main.go:427: 17:Calling {198.162.52.126 %!s(int=8016) }
+[peer] 00:22:48.875847 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.875878 main.go:451: 17Making RPC call
+[err] 00:22:48.875951 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8016, err = dial tcp 198.162.52.126:8016: connect: connection refused
+[peer] 00:22:48.875990 main.go:427: 17:Calling {198.162.52.126 %!s(int=8018) }
+[peer] 00:22:48.876022 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.876053 main.go:451: 17Making RPC call
+[peer] 00:22:48.876144 main.go:457: 17RPC dial successful
+[peer] 00:22:48.876311 main.go:460: 17:Calling RPC:198.162.52.126:8018
+[peer] 00:22:48.876351 main.go:462: 17:RPC called198.162.52.126:8018
+[peer] 00:22:48.877184 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.877226 main.go:476: Chain length received:4
+[peer] 00:22:48.877259 main.go:477: My chain length:4
+[peer] 00:22:48.877320 main.go:427: 17:Calling {198.162.52.126 %!s(int=8019) }
+[peer] 00:22:48.877396 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.877433 main.go:451: 17Making RPC call
+[err] 00:22:48.877527 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8019, err = dial tcp 198.162.52.126:8019: connect: connection refused
+[peer] 00:22:48.877569 main.go:427: 17:Calling {198.162.52.126 %!s(int=8020) }
+[peer] 00:22:48.877601 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.877633 main.go:451: 17Making RPC call
+[peer] 00:22:48.877725 main.go:457: 17RPC dial successful
+[peer] 00:22:48.877867 main.go:460: 17:Calling RPC:198.162.52.126:8020
+[peer] 00:22:48.877907 main.go:462: 17:RPC called198.162.52.126:8020
+[peer] 00:22:48.878613 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.878655 main.go:476: Chain length received:4
+[peer] 00:22:48.878692 main.go:477: My chain length:4
+[peer] 00:22:48.878801 main.go:427: 17:Calling {198.162.52.126 %!s(int=8021) }
+[peer] 00:22:48.878874 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.878907 main.go:451: 17Making RPC call
+[peer] 00:22:48.878998 main.go:457: 17RPC dial successful
+[peer] 00:22:48.879194 main.go:460: 17:Calling RPC:198.162.52.126:8021
+[peer] 00:22:48.879229 main.go:462: 17:RPC called198.162.52.126:8021
+[peer] 00:22:48.879940 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.880018 main.go:476: Chain length received:4
+[peer] 00:22:48.880075 main.go:477: My chain length:4
+[peer] 00:22:48.880131 main.go:427: 17:Calling {198.162.52.126 %!s(int=8022) }
+[peer] 00:22:48.880202 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.880396 main.go:451: 17Making RPC call
+[err] 00:22:48.880486 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8022, err = dial tcp 198.162.52.126:8022: connect: connection refused
+[peer] 00:22:48.880528 main.go:427: 17:Calling {198.162.52.126 %!s(int=8023) }
+[peer] 00:22:48.880560 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.880591 main.go:451: 17Making RPC call
+[err] 00:22:48.880664 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8023, err = dial tcp 198.162.52.126:8023: connect: connection refused
+[peer] 00:22:48.880705 main.go:427: 17:Calling {198.162.52.126 %!s(int=8024) }
+[peer] 00:22:48.880738 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.880770 main.go:451: 17Making RPC call
+[err] 00:22:48.880841 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8024, err = dial tcp 198.162.52.126:8024: connect: connection refused
+[peer] 00:22:48.880881 main.go:427: 17:Calling {198.162.52.126 %!s(int=8025) }
+[peer] 00:22:48.880913 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.880943 main.go:451: 17Making RPC call
+[err] 00:22:48.881014 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8025, err = dial tcp 198.162.52.126:8025: connect: connection refused
+[peer] 00:22:48.881075 main.go:427: 17:Calling {198.162.52.126 %!s(int=8026) }
+[peer] 00:22:48.881111 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.881150 main.go:451: 17Making RPC call
+[peer] 00:22:48.881297 main.go:457: 17RPC dial successful
+[peer] 00:22:48.881347 main.go:460: 17:Calling RPC:198.162.52.126:8026
+[peer] 00:22:48.881396 main.go:462: 17:RPC called198.162.52.126:8026
+[peer] 00:22:48.882276 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.882316 main.go:476: Chain length received:4
+[peer] 00:22:48.882347 main.go:477: My chain length:4
+[peer] 00:22:48.882405 main.go:427: 17:Calling {198.162.52.126 %!s(int=8027) }
+[peer] 00:22:48.882439 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.882469 main.go:451: 17Making RPC call
+[err] 00:22:48.882546 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8027, err = dial tcp 198.162.52.126:8027: connect: connection refused
+[peer] 00:22:48.882586 main.go:427: 17:Calling {198.162.52.126 %!s(int=8028) }
+[peer] 00:22:48.882617 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.882648 main.go:451: 17Making RPC call
+[peer] 00:22:48.882734 main.go:457: 17RPC dial successful
+[peer] 00:22:48.882877 main.go:460: 17:Calling RPC:198.162.52.126:8028
+[peer] 00:22:48.882919 main.go:462: 17:RPC called198.162.52.126:8028
+[peer] 00:22:48.883659 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.883696 main.go:476: Chain length received:4
+[peer] 00:22:48.883746 main.go:477: My chain length:4
+[peer] 00:22:48.883804 main.go:427: 17:Calling {198.162.52.126 %!s(int=8029) }
+[peer] 00:22:48.883913 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.883945 main.go:451: 17Making RPC call
+[err] 00:22:48.884024 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.126:8029, err = dial tcp 198.162.52.126:8029: connect: connection refused
+[peer] 00:22:48.884063 main.go:427: 17:Calling {198.162.52.57 %!s(int=8030) }
+[peer] 00:22:48.884095 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.884130 main.go:451: 17Making RPC call
+[peer] 00:22:48.884464 main.go:457: 17RPC dial successful
+[peer] 00:22:48.884501 main.go:460: 17:Calling RPC:198.162.52.57:8030
+[peer] 00:22:48.884559 main.go:462: 17:RPC called198.162.52.57:8030
+[peer] 00:22:48.886806 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.887103 main.go:476: Chain length received:4
+[peer] 00:22:48.887141 main.go:477: My chain length:4
+[peer] 00:22:48.887209 main.go:427: 17:Calling {198.162.52.57 %!s(int=8031) }
+[peer] 00:22:48.887245 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.887279 main.go:451: 17Making RPC call
+[peer] 00:22:48.887640 main.go:457: 17RPC dial successful
+[peer] 00:22:48.887681 main.go:460: 17:Calling RPC:198.162.52.57:8031
+[peer] 00:22:48.887717 main.go:462: 17:RPC called198.162.52.57:8031
+[peer] 00:22:48.889512 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.889565 main.go:476: Chain length received:4
+[peer] 00:22:48.889600 main.go:477: My chain length:4
+[peer] 00:22:48.889658 main.go:427: 17:Calling {198.162.52.57 %!s(int=8032) }
+[peer] 00:22:48.889698 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.889727 main.go:451: 17Making RPC call
+[peer] 00:22:48.890173 main.go:457: 17RPC dial successful
+[peer] 00:22:48.890233 main.go:460: 17:Calling RPC:198.162.52.57:8032
+[peer] 00:22:48.890267 main.go:462: 17:RPC called198.162.52.57:8032
+[peer] 00:22:48.892080 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.892141 main.go:476: Chain length received:4
+[peer] 00:22:48.892174 main.go:477: My chain length:4
+[peer] 00:22:48.892230 main.go:427: 17:Calling {198.162.52.57 %!s(int=8033) }
+[peer] 00:22:48.892269 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.892301 main.go:451: 17Making RPC call
+[peer] 00:22:48.892749 main.go:457: 17RPC dial successful
+[peer] 00:22:48.892812 main.go:460: 17:Calling RPC:198.162.52.57:8033
+[peer] 00:22:48.892858 main.go:462: 17:RPC called198.162.52.57:8033
+[peer] 00:22:48.894629 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.894675 main.go:476: Chain length received:4
+[peer] 00:22:48.894710 main.go:477: My chain length:4
+[peer] 00:22:48.895010 main.go:427: 17:Calling {198.162.52.57 %!s(int=8034) }
+[peer] 00:22:48.895056 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.895091 main.go:451: 17Making RPC call
+[peer] 00:22:48.895440 main.go:457: 17RPC dial successful
+[peer] 00:22:48.895483 main.go:460: 17:Calling RPC:198.162.52.57:8034
+[peer] 00:22:48.895518 main.go:462: 17:RPC called198.162.52.57:8034
+[peer] 00:22:48.897453 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.897501 main.go:476: Chain length received:4
+[peer] 00:22:48.897536 main.go:477: My chain length:4
+[peer] 00:22:48.897603 main.go:427: 17:Calling {198.162.52.57 %!s(int=8035) }
+[peer] 00:22:48.897641 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.897677 main.go:451: 17Making RPC call
+[peer] 00:22:48.898046 main.go:457: 17RPC dial successful
+[peer] 00:22:48.898111 main.go:460: 17:Calling RPC:198.162.52.57:8035
+[peer] 00:22:48.898147 main.go:462: 17:RPC called198.162.52.57:8035
+[peer] 00:22:48.899967 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.900005 main.go:476: Chain length received:4
+[peer] 00:22:48.900046 main.go:477: My chain length:4
+[peer] 00:22:48.900103 main.go:427: 17:Calling {198.162.52.57 %!s(int=8036) }
+[peer] 00:22:48.900145 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.900176 main.go:451: 17Making RPC call
+[peer] 00:22:48.900621 main.go:457: 17RPC dial successful
+[peer] 00:22:48.900687 main.go:460: 17:Calling RPC:198.162.52.57:8036
+[peer] 00:22:48.900727 main.go:462: 17:RPC called198.162.52.57:8036
+[peer] 00:22:48.902506 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.902549 main.go:476: Chain length received:4
+[peer] 00:22:48.902580 main.go:477: My chain length:4
+[peer] 00:22:48.902633 main.go:427: 17:Calling {198.162.52.57 %!s(int=8037) }
+[peer] 00:22:48.902672 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.902702 main.go:451: 17Making RPC call
+[peer] 00:22:48.903158 main.go:457: 17RPC dial successful
+[peer] 00:22:48.903220 main.go:460: 17:Calling RPC:198.162.52.57:8037
+[peer] 00:22:48.903253 main.go:462: 17:RPC called198.162.52.57:8037
+[peer] 00:22:48.905084 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.905122 main.go:476: Chain length received:4
+[peer] 00:22:48.905157 main.go:477: My chain length:4
+[peer] 00:22:48.905216 main.go:427: 17:Calling {198.162.52.57 %!s(int=8038) }
+[peer] 00:22:48.905254 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.905289 main.go:451: 17Making RPC call
+[peer] 00:22:48.905732 main.go:457: 17RPC dial successful
+[peer] 00:22:48.905798 main.go:460: 17:Calling RPC:198.162.52.57:8038
+[peer] 00:22:48.905834 main.go:462: 17:RPC called198.162.52.57:8038
+[peer] 00:22:48.907739 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.907787 main.go:476: Chain length received:4
+[peer] 00:22:48.907821 main.go:477: My chain length:4
+[peer] 00:22:48.907883 main.go:427: 17:Calling {198.162.52.57 %!s(int=8039) }
+[peer] 00:22:48.907919 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.907953 main.go:451: 17Making RPC call
+[peer] 00:22:48.908919 main.go:457: 17RPC dial successful
+[peer] 00:22:48.908989 main.go:460: 17:Calling RPC:198.162.52.57:8039
+[peer] 00:22:48.909029 main.go:462: 17:RPC called198.162.52.57:8039
+[peer] 00:22:48.910790 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.910839 main.go:476: Chain length received:4
+[peer] 00:22:48.910879 main.go:477: My chain length:4
+[peer] 00:22:48.910936 main.go:427: 17:Calling {198.162.52.57 %!s(int=8040) }
+[peer] 00:22:48.910979 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.911012 main.go:451: 17Making RPC call
+[peer] 00:22:48.911436 main.go:457: 17RPC dial successful
+[peer] 00:22:48.911501 main.go:460: 17:Calling RPC:198.162.52.57:8040
+[peer] 00:22:48.911541 main.go:462: 17:RPC called198.162.52.57:8040
+[peer] 00:22:48.913372 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.913415 main.go:476: Chain length received:4
+[peer] 00:22:48.913460 main.go:477: My chain length:4
+[peer] 00:22:48.913518 main.go:427: 17:Calling {198.162.52.57 %!s(int=8041) }
+[peer] 00:22:48.913563 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.913595 main.go:451: 17Making RPC call
+[peer] 00:22:48.914032 main.go:457: 17RPC dial successful
+[peer] 00:22:48.914095 main.go:460: 17:Calling RPC:198.162.52.57:8041
+[peer] 00:22:48.914132 main.go:462: 17:RPC called198.162.52.57:8041
+[peer] 00:22:48.915905 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.915948 main.go:476: Chain length received:4
+[peer] 00:22:48.915983 main.go:477: My chain length:4
+[peer] 00:22:48.916278 main.go:427: 17:Calling {198.162.52.57 %!s(int=8042) }
+[peer] 00:22:48.916319 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.916353 main.go:451: 17Making RPC call
+[peer] 00:22:48.916677 main.go:457: 17RPC dial successful
+[peer] 00:22:48.916720 main.go:460: 17:Calling RPC:198.162.52.57:8042
+[peer] 00:22:48.916754 main.go:462: 17:RPC called198.162.52.57:8042
+[peer] 00:22:48.918591 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.918633 main.go:476: Chain length received:4
+[peer] 00:22:48.918669 main.go:477: My chain length:4
+[peer] 00:22:48.918748 main.go:427: 17:Calling {198.162.52.57 %!s(int=8043) }
+[peer] 00:22:48.918992 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.919033 main.go:451: 17Making RPC call
+[peer] 00:22:48.919512 main.go:457: 17RPC dial successful
+[peer] 00:22:48.919556 main.go:460: 17:Calling RPC:198.162.52.57:8043
+[peer] 00:22:48.919590 main.go:462: 17:RPC called198.162.52.57:8043
+[peer] 00:22:48.921368 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.921422 main.go:476: Chain length received:4
+[peer] 00:22:48.921487 main.go:477: My chain length:4
+[peer] 00:22:48.921550 main.go:427: 17:Calling {198.162.52.57 %!s(int=8044) }
+[peer] 00:22:48.921593 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.921627 main.go:451: 17Making RPC call
+[peer] 00:22:48.922068 main.go:457: 17RPC dial successful
+[peer] 00:22:48.922135 main.go:460: 17:Calling RPC:198.162.52.57:8044
+[peer] 00:22:48.922171 main.go:462: 17:RPC called198.162.52.57:8044
+[peer] 00:22:48.924114 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.924165 main.go:476: Chain length received:4
+[peer] 00:22:48.924207 main.go:477: My chain length:4
+[peer] 00:22:48.924269 main.go:427: 17:Calling {198.162.52.57 %!s(int=8045) }
+[peer] 00:22:48.924315 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.924350 main.go:451: 17Making RPC call
+[peer] 00:22:48.924796 main.go:457: 17RPC dial successful
+[peer] 00:22:48.924838 main.go:460: 17:Calling RPC:198.162.52.57:8045
+[peer] 00:22:48.924872 main.go:462: 17:RPC called198.162.52.57:8045
+[peer] 00:22:48.926599 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.926624 main.go:476: Chain length received:4
+[peer] 00:22:48.926635 main.go:477: My chain length:4
+[peer] 00:22:48.926672 main.go:427: 17:Calling {198.162.52.57 %!s(int=8046) }
+[peer] 00:22:48.926686 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.926695 main.go:451: 17Making RPC call
+[peer] 00:22:48.927266 main.go:457: 17RPC dial successful
+[peer] 00:22:48.927310 main.go:460: 17:Calling RPC:198.162.52.57:8046
+[peer] 00:22:48.927353 main.go:462: 17:RPC called198.162.52.57:8046
+[peer] 00:22:48.929277 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.929329 main.go:476: Chain length received:4
+[peer] 00:22:48.929366 main.go:477: My chain length:4
+[peer] 00:22:48.929435 main.go:427: 17:Calling {198.162.52.57 %!s(int=8047) }
+[peer] 00:22:48.929492 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.929527 main.go:451: 17Making RPC call
+[peer] 00:22:48.929936 main.go:457: 17RPC dial successful
+[peer] 00:22:48.930005 main.go:460: 17:Calling RPC:198.162.52.57:8047
+[peer] 00:22:48.930049 main.go:462: 17:RPC called198.162.52.57:8047
+[peer] 00:22:48.931787 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.931807 main.go:476: Chain length received:4
+[peer] 00:22:48.931818 main.go:477: My chain length:4
+[peer] 00:22:48.931852 main.go:427: 17:Calling {198.162.52.57 %!s(int=8048) }
+[peer] 00:22:48.931866 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.931875 main.go:451: 17Making RPC call
+[peer] 00:22:48.932452 main.go:457: 17RPC dial successful
+[peer] 00:22:48.932499 main.go:460: 17:Calling RPC:198.162.52.57:8048
+[peer] 00:22:48.932543 main.go:462: 17:RPC called198.162.52.57:8048
+[peer] 00:22:48.934412 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.934437 main.go:476: Chain length received:4
+[peer] 00:22:48.934448 main.go:477: My chain length:4
+[peer] 00:22:48.934484 main.go:427: 17:Calling {198.162.52.57 %!s(int=8049) }
+[peer] 00:22:48.934499 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.934511 main.go:451: 17Making RPC call
+[peer] 00:22:48.935087 main.go:457: 17RPC dial successful
+[peer] 00:22:48.935156 main.go:460: 17:Calling RPC:198.162.52.57:8049
+[peer] 00:22:48.935204 main.go:462: 17:RPC called198.162.52.57:8049
+[peer] 00:22:48.937022 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.937098 main.go:476: Chain length received:4
+[peer] 00:22:48.937289 main.go:477: My chain length:4
+[peer] 00:22:48.937374 main.go:427: 17:Calling {198.162.52.57 %!s(int=8050) }
+[peer] 00:22:48.937484 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.937547 main.go:451: 17Making RPC call
+[peer] 00:22:48.937952 main.go:457: 17RPC dial successful
+[peer] 00:22:48.938013 main.go:460: 17:Calling RPC:198.162.52.57:8050
+[peer] 00:22:48.938075 main.go:462: 17:RPC called198.162.52.57:8050
+[peer] 00:22:48.939889 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.939963 main.go:476: Chain length received:4
+[peer] 00:22:48.940153 main.go:477: My chain length:4
+[peer] 00:22:48.940240 main.go:427: 17:Calling {198.162.52.57 %!s(int=8051) }
+[peer] 00:22:48.940333 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.940392 main.go:451: 17Making RPC call
+[peer] 00:22:48.940824 main.go:457: 17RPC dial successful
+[peer] 00:22:48.940887 main.go:460: 17:Calling RPC:198.162.52.57:8051
+[peer] 00:22:48.940951 main.go:462: 17:RPC called198.162.52.57:8051
+[peer] 00:22:48.943398 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.943479 main.go:476: Chain length received:4
+[peer] 00:22:48.943543 main.go:477: My chain length:4
+[peer] 00:22:48.943634 main.go:427: 17:Calling {198.162.52.57 %!s(int=8052) }
+[peer] 00:22:48.943703 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.943764 main.go:451: 17Making RPC call
+[peer] 00:22:48.944583 main.go:457: 17RPC dial successful
+[peer] 00:22:48.944649 main.go:460: 17:Calling RPC:198.162.52.57:8052
+[peer] 00:22:48.944711 main.go:462: 17:RPC called198.162.52.57:8052
+[peer] 00:22:48.946545 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.946620 main.go:476: Chain length received:4
+[peer] 00:22:48.946686 main.go:477: My chain length:4
+[peer] 00:22:48.946773 main.go:427: 17:Calling {198.162.52.57 %!s(int=8053) }
+[peer] 00:22:48.946836 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.946891 main.go:451: 17Making RPC call
+[err] 00:22:48.947322 main.go:237: Peer offline.Couldn't connect to peer: 198.162.52.57:8053, err = dial tcp 198.162.52.57:8053: connect: connection refused
+[peer] 00:22:48.947387 main.go:427: 17:Calling {198.162.52.57 %!s(int=8054) }
+[peer] 00:22:48.947441 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.947488 main.go:451: 17Making RPC call
+[peer] 00:22:48.947863 main.go:457: 17RPC dial successful
+[peer] 00:22:48.947954 main.go:460: 17:Calling RPC:198.162.52.57:8054
+[peer] 00:22:48.948016 main.go:462: 17:RPC called198.162.52.57:8054
+[peer] 00:22:48.949933 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.950008 main.go:476: Chain length received:4
+[peer] 00:22:48.950078 main.go:477: My chain length:4
+[peer] 00:22:48.950163 main.go:427: 17:Calling {198.162.52.57 %!s(int=8055) }
+[peer] 00:22:48.950228 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.950280 main.go:451: 17Making RPC call
+[peer] 00:22:48.950686 main.go:457: 17RPC dial successful
+[peer] 00:22:48.950772 main.go:460: 17:Calling RPC:198.162.52.57:8055
+[peer] 00:22:48.950834 main.go:462: 17:RPC called198.162.52.57:8055
+[peer] 00:22:48.952537 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.952613 main.go:476: Chain length received:4
+[peer] 00:22:48.952679 main.go:477: My chain length:4
+[peer] 00:22:48.952761 main.go:427: 17:Calling {198.162.52.57 %!s(int=8056) }
+[peer] 00:22:48.952823 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.952880 main.go:451: 17Making RPC call
+[peer] 00:22:48.953288 main.go:457: 17RPC dial successful
+[peer] 00:22:48.953376 main.go:460: 17:Calling RPC:198.162.52.57:8056
+[peer] 00:22:48.953438 main.go:462: 17:RPC called198.162.52.57:8056
+[peer] 00:22:48.955141 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.955217 main.go:476: Chain length received:4
+[peer] 00:22:48.955284 main.go:477: My chain length:4
+[peer] 00:22:48.955367 main.go:427: 17:Calling {198.162.52.57 %!s(int=8057) }
+[peer] 00:22:48.955429 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.955486 main.go:451: 17Making RPC call
+[peer] 00:22:48.955891 main.go:457: 17RPC dial successful
+[peer] 00:22:48.955980 main.go:460: 17:Calling RPC:198.162.52.57:8057
+[peer] 00:22:48.956042 main.go:462: 17:RPC called198.162.52.57:8057
+[peer] 00:22:48.957756 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.957832 main.go:476: Chain length received:4
+[peer] 00:22:48.957898 main.go:477: My chain length:4
+[peer] 00:22:48.957981 main.go:427: 17:Calling {198.162.52.57 %!s(int=8058) }
+[peer] 00:22:48.958044 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.958100 main.go:451: 17Making RPC call
+[peer] 00:22:48.958510 main.go:457: 17RPC dial successful
+[peer] 00:22:48.958600 main.go:460: 17:Calling RPC:198.162.52.57:8058
+[peer] 00:22:48.958665 main.go:462: 17:RPC called198.162.52.57:8058
+[peer] 00:22:48.960373 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.960451 main.go:476: Chain length received:4
+[peer] 00:22:48.960518 main.go:477: My chain length:4
+[peer] 00:22:48.960602 main.go:427: 17:Calling {198.162.52.57 %!s(int=8059) }
+[peer] 00:22:48.960664 main.go:446: 17:Inside callRegisterRPC
+[peer] 00:22:48.960722 main.go:451: 17Making RPC call
+[peer] 00:22:48.961129 main.go:457: 17RPC dial successful
+[peer] 00:22:48.961213 main.go:460: 17:Calling RPC:198.162.52.57:8059
+[peer] 00:22:48.961274 main.go:462: 17:RPC called198.162.52.57:8059
+[peer] 00:22:48.962979 main.go:469: 17:Announced myself to a fellow peer at port. Got lastest chain
+[peer] 00:22:48.963062 main.go:476: Chain length received:4
+[peer] 00:22:48.963128 main.go:477: My chain length:4
+[peer] 00:22:48.963205 main.go:437: 17:Bootstrapped Network. Calling signal
+[peer] 00:22:48.963271 main.go:439: 17:Bootstrapped Network. Signal called
+[peer] 00:22:48.963306 main.go:523: 17:Acquiring bool lock
+[peer] 00:22:48.963407 main.go:525: 17:Acquired bool lock
+[peer] 00:22:48.965064 main.go:544: 17:I am not verifier IterationCount:3
+[peer] 00:22:48.965130 main.go:549: 17:Bool lock released
+[peer] 00:22:48.965189 main.go:835: 17:Computing Update
+[peer] 00:22:48.965713 main.go:205: 17 : VRF returned ID map[32:{}]
+[peer] 00:22:48.965786 main.go:215: 17 :Verifiers [198.162.52.57:8032] returned.
+[peer] 00:22:48.966179 main.go:880: 17:Making RPC Call to Verifier. Sending Update, Iteration:3
+[peer] 00:22:48.967654 main.go:887: 17:Update sent successfully
+[peer] 00:22:49.078889 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.079217 main.go:148: 17:Registering peer:198.162.52.126:8012
+[peer] 00:22:49.079295 main.go:158: Advertising chain to peer with length 4
+[peer] 00:22:49.237923 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.238098 main.go:148: 17:Registering peer:198.162.52.126:8029
+[peer] 00:22:49.238117 main.go:158: Advertising chain to peer with length 4
+[peer] 00:22:49.287676 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.288027 main.go:148: 17:Registering peer:198.162.52.126:8002
+[peer] 00:22:49.288072 main.go:158: Advertising chain to peer with length 4
+[peer] 00:22:49.455769 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.456431 main.go:148: 17:Registering peer:198.162.52.126:8019
+[peer] 00:22:49.456474 main.go:158: Advertising chain to peer with length 4
+[peer] 00:22:49.482290 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.482464 main.go:148: 17:Registering peer:198.162.52.126:8015
+[peer] 00:22:49.482482 main.go:158: Advertising chain to peer with length 4
+[peer] 00:22:49.483414 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.483700 main.go:148: 17:Registering peer:198.162.52.126:8016
+[peer] 00:22:49.483721 main.go:158: Advertising chain to peer with length 4
+[peer] 00:22:49.484435 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.497167 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.497730 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.499550 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.499747 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.501338 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.501385 main.go:608: Chain Length:4
+[peer] 00:22:49.501414 blockchain.go:71: Returning nil
+[peer] 00:22:49.501450 main.go:610: Chain Length:4
+[peer] 00:22:49.503435 main.go:670: 17:Sent to channel
+[peer] 00:22:49.503475 main.go:672: 17:Sent to channel
+[peer] 00:22:49.503556 main.go:677: 17:Returning
+[peer] 00:22:49.503518 main.go:975: 17:Block Received. Appending to chain and moving on to the next iteration. 3
+[peer] 00:22:49.503592 main.go:788: 17:Adding block to chain
+[peer] 00:22:49.503742 honest.go:222: Trying to append block with iteration:3
+[peer] 00:22:49.503773 blockchain.go:71: Returning nil
+[peer] 00:22:49.503805 honest.go:238: Append successful
+[peer] 00:22:49.503832 main.go:792: 17:Adding block to chain
+[peer] 00:22:49.503856 main.go:798: 17:Checking convergence
+[peer] 00:22:49.506070 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.506102 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.519159 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.519512 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.519704 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.544935 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.544962 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.545223 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.545379 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.547543 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.547571 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.547865 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.548018 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.553415 honest.go:81: 17Train Error is 0.04781 in Iteration 3
+[peer] 00:22:49.553437 main.go:801: 17:Convergence checked
+[peer] 00:22:49.553460 main.go:804: 17:Bool lock released
+[peer] 00:22:49.553585 main.go:689: 17:Sending block. Iteration: 3
+[peer] 00:22:49.553694 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.553708 main.go:608: Chain Length:5
+[peer] 00:22:49.553716 blockchain.go:68: Returning a block
+[peer] 00:22:49.553724 main.go:610: Chain Length:5
+[peer] 00:22:49.553731 main.go:615: Already have block
+[peer] 00:22:49.553739 main.go:620: 17:Bool lock released
+[peer] 00:22:49.553747 blockchain.go:68: Returning a block
+[peer] 00:22:49.553755 main.go:647: 17:Equal block
+[peer] 00:22:49.553775 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.553783 main.go:608: Chain Length:5
+[peer] 00:22:49.553791 blockchain.go:68: Returning a block
+[peer] 00:22:49.553798 main.go:610: Chain Length:5
+[peer] 00:22:49.553805 main.go:615: Already have block
+[peer] 00:22:49.553814 main.go:620: 17:Bool lock released
+[peer] 00:22:49.553821 blockchain.go:68: Returning a block
+[peer] 00:22:49.553828 main.go:647: 17:Equal block
+[peer] 00:22:49.553841 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.553849 main.go:608: Chain Length:5
+[peer] 00:22:49.553856 blockchain.go:68: Returning a block
+[peer] 00:22:49.553864 main.go:610: Chain Length:5
+[peer] 00:22:49.553871 main.go:615: Already have block
+[peer] 00:22:49.553882 main.go:620: 17:Bool lock released
+[peer] 00:22:49.553890 blockchain.go:68: Returning a block
+[peer] 00:22:49.553898 main.go:647: 17:Equal block
+[peer] 00:22:49.567130 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.567296 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.567314 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.567321 main.go:608: Chain Length:5
+[peer] 00:22:49.567328 blockchain.go:68: Returning a block
+[peer] 00:22:49.567335 main.go:610: Chain Length:5
+[peer] 00:22:49.567341 main.go:615: Already have block
+[peer] 00:22:49.567349 main.go:620: 17:Bool lock released
+[peer] 00:22:49.567356 blockchain.go:68: Returning a block
+[peer] 00:22:49.567364 main.go:647: 17:Equal block
+[peer] 00:22:49.567388 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.567427 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.567579 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.567595 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.567602 main.go:608: Chain Length:5
+[peer] 00:22:49.567608 blockchain.go:68: Returning a block
+[peer] 00:22:49.567615 main.go:610: Chain Length:5
+[peer] 00:22:49.567622 main.go:615: Already have block
+[peer] 00:22:49.567630 main.go:620: 17:Bool lock released
+[peer] 00:22:49.567637 blockchain.go:68: Returning a block
+[peer] 00:22:49.567643 main.go:647: 17:Equal block
+[peer] 00:22:49.569628 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.570659 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.570803 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.570820 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.570828 main.go:608: Chain Length:5
+[peer] 00:22:49.570835 blockchain.go:68: Returning a block
+[peer] 00:22:49.570842 main.go:610: Chain Length:5
+[peer] 00:22:49.570848 main.go:615: Already have block
+[peer] 00:22:49.570856 main.go:620: 17:Bool lock released
+[peer] 00:22:49.570863 blockchain.go:68: Returning a block
+[peer] 00:22:49.570870 main.go:647: 17:Equal block
+[peer] 00:22:49.577435 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.577699 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.577951 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.597323 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.597960 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.598116 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.598129 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.598137 main.go:608: Chain Length:5
+[peer] 00:22:49.598145 blockchain.go:68: Returning a block
+[peer] 00:22:49.598153 main.go:610: Chain Length:5
+[peer] 00:22:49.598164 main.go:615: Already have block
+[peer] 00:22:49.598173 main.go:620: 17:Bool lock released
+[peer] 00:22:49.598181 blockchain.go:68: Returning a block
+[peer] 00:22:49.598192 main.go:647: 17:Equal block
+[peer] 00:22:49.598425 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.598614 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.602025 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.606341 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.606374 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.606398 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.606422 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.606444 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.606474 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.606499 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.606522 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.606545 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.606563 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.606582 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.606610 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.606636 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.606893 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.607059 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.607077 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.607085 main.go:608: Chain Length:5
+[peer] 00:22:49.607092 blockchain.go:68: Returning a block
+[peer] 00:22:49.607099 main.go:610: Chain Length:5
+[peer] 00:22:49.607106 main.go:615: Already have block
+[peer] 00:22:49.607114 main.go:620: 17:Bool lock released
+[peer] 00:22:49.607121 blockchain.go:68: Returning a block
+[peer] 00:22:49.607129 main.go:647: 17:Equal block
+[peer] 00:22:49.607824 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.607987 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.608002 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.608010 main.go:608: Chain Length:5
+[peer] 00:22:49.608017 blockchain.go:68: Returning a block
+[peer] 00:22:49.608025 main.go:610: Chain Length:5
+[peer] 00:22:49.608031 main.go:615: Already have block
+[peer] 00:22:49.608040 main.go:620: 17:Bool lock released
+[peer] 00:22:49.608052 blockchain.go:68: Returning a block
+[peer] 00:22:49.608079 main.go:647: 17:Equal block
+[peer] 00:22:49.608317 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.608510 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.608525 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.608532 main.go:608: Chain Length:5
+[peer] 00:22:49.608538 blockchain.go:68: Returning a block
+[peer] 00:22:49.608544 main.go:610: Chain Length:5
+[peer] 00:22:49.608551 main.go:615: Already have block
+[peer] 00:22:49.608559 main.go:620: 17:Bool lock released
+[peer] 00:22:49.608566 blockchain.go:68: Returning a block
+[peer] 00:22:49.608573 main.go:647: 17:Equal block
+[peer] 00:22:49.608827 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.608988 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.609000 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.609006 main.go:608: Chain Length:5
+[peer] 00:22:49.609013 blockchain.go:68: Returning a block
+[peer] 00:22:49.609020 main.go:610: Chain Length:5
+[peer] 00:22:49.609028 main.go:615: Already have block
+[peer] 00:22:49.609039 main.go:620: 17:Bool lock released
+[peer] 00:22:49.609049 blockchain.go:68: Returning a block
+[peer] 00:22:49.609056 main.go:647: 17:Equal block
+[peer] 00:22:49.609321 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.609469 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.609487 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.609495 main.go:608: Chain Length:5
+[peer] 00:22:49.609501 blockchain.go:68: Returning a block
+[peer] 00:22:49.609508 main.go:610: Chain Length:5
+[peer] 00:22:49.609515 main.go:615: Already have block
+[peer] 00:22:49.609523 main.go:620: 17:Bool lock released
+[peer] 00:22:49.609531 blockchain.go:68: Returning a block
+[peer] 00:22:49.609538 main.go:647: 17:Equal block
+[peer] 00:22:49.609804 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.610046 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.619228 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.619511 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.619664 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.619684 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.619692 main.go:608: Chain Length:5
+[peer] 00:22:49.619704 blockchain.go:68: Returning a block
+[peer] 00:22:49.619712 main.go:610: Chain Length:5
+[peer] 00:22:49.619719 main.go:615: Already have block
+[peer] 00:22:49.619727 main.go:620: 17:Bool lock released
+[peer] 00:22:49.619734 blockchain.go:68: Returning a block
+[peer] 00:22:49.619756 main.go:647: 17:Equal block
+[peer] 00:22:49.623574 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.623836 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.623854 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.623864 main.go:608: Chain Length:5
+[peer] 00:22:49.623871 blockchain.go:68: Returning a block
+[peer] 00:22:49.623878 main.go:610: Chain Length:5
+[peer] 00:22:49.623885 main.go:615: Already have block
+[peer] 00:22:49.623904 main.go:620: 17:Bool lock released
+[peer] 00:22:49.623913 blockchain.go:68: Returning a block
+[peer] 00:22:49.623921 main.go:647: 17:Equal block
+[peer] 00:22:49.627757 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.628006 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.630859 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.641433 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.649432 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.651603 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.651794 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.651812 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.651820 main.go:608: Chain Length:5
+[peer] 00:22:49.651828 blockchain.go:68: Returning a block
+[peer] 00:22:49.651836 main.go:610: Chain Length:5
+[peer] 00:22:49.651844 main.go:615: Already have block
+[peer] 00:22:49.651853 main.go:620: 17:Bool lock released
+[peer] 00:22:49.651861 blockchain.go:68: Returning a block
+[peer] 00:22:49.651869 main.go:647: 17:Equal block
+[peer] 00:22:49.654872 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.656224 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.657623 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.660219 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.670299 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.672683 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.673136 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.673154 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.673162 main.go:608: Chain Length:5
+[peer] 00:22:49.673169 blockchain.go:68: Returning a block
+[peer] 00:22:49.673176 main.go:610: Chain Length:5
+[peer] 00:22:49.673183 main.go:615: Already have block
+[peer] 00:22:49.673192 main.go:620: 17:Bool lock released
+[peer] 00:22:49.673199 blockchain.go:68: Returning a block
+[peer] 00:22:49.673206 main.go:647: 17:Equal block
+[peer] 00:22:49.673998 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.674165 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.674183 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.674192 main.go:608: Chain Length:5
+[peer] 00:22:49.674199 blockchain.go:68: Returning a block
+[peer] 00:22:49.674207 main.go:610: Chain Length:5
+[peer] 00:22:49.674215 main.go:615: Already have block
+[peer] 00:22:49.674224 main.go:620: 17:Bool lock released
+[peer] 00:22:49.674232 blockchain.go:68: Returning a block
+[peer] 00:22:49.674240 main.go:647: 17:Equal block
+[peer] 00:22:49.676776 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.676971 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.676990 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.677000 main.go:608: Chain Length:5
+[peer] 00:22:49.677009 blockchain.go:68: Returning a block
+[peer] 00:22:49.677018 main.go:610: Chain Length:5
+[peer] 00:22:49.677026 main.go:615: Already have block
+[peer] 00:22:49.677039 main.go:620: 17:Bool lock released
+[peer] 00:22:49.677050 blockchain.go:68: Returning a block
+[peer] 00:22:49.677058 main.go:647: 17:Equal block
+[peer] 00:22:49.702246 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.702469 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.702487 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.702497 main.go:608: Chain Length:5
+[peer] 00:22:49.702505 blockchain.go:68: Returning a block
+[peer] 00:22:49.702513 main.go:610: Chain Length:5
+[peer] 00:22:49.702521 main.go:615: Already have block
+[peer] 00:22:49.702531 main.go:620: 17:Bool lock released
+[peer] 00:22:49.702539 blockchain.go:68: Returning a block
+[peer] 00:22:49.702565 main.go:647: 17:Equal block
+[peer] 00:22:49.704973 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.705145 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.705162 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.705171 main.go:608: Chain Length:5
+[peer] 00:22:49.705179 blockchain.go:68: Returning a block
+[peer] 00:22:49.705187 main.go:610: Chain Length:5
+[peer] 00:22:49.705195 main.go:615: Already have block
+[peer] 00:22:49.705209 main.go:620: 17:Bool lock released
+[peer] 00:22:49.705217 blockchain.go:68: Returning a block
+[peer] 00:22:49.705225 main.go:647: 17:Equal block
+[peer] 00:22:49.723728 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.723911 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.723930 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.723940 main.go:608: Chain Length:5
+[peer] 00:22:49.723951 blockchain.go:68: Returning a block
+[peer] 00:22:49.723963 main.go:610: Chain Length:5
+[peer] 00:22:49.723973 main.go:615: Already have block
+[peer] 00:22:49.723985 main.go:620: 17:Bool lock released
+[peer] 00:22:49.723994 blockchain.go:68: Returning a block
+[peer] 00:22:49.724003 main.go:647: 17:Equal block
+[peer] 00:22:49.729231 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.729416 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.729436 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.729472 main.go:608: Chain Length:5
+[peer] 00:22:49.729481 blockchain.go:68: Returning a block
+[peer] 00:22:49.729493 main.go:610: Chain Length:5
+[peer] 00:22:49.729501 main.go:615: Already have block
+[peer] 00:22:49.729513 main.go:620: 17:Bool lock released
+[peer] 00:22:49.729524 blockchain.go:68: Returning a block
+[peer] 00:22:49.729532 main.go:647: 17:Equal block
+[peer] 00:22:49.745993 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.746172 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.746192 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.746201 main.go:608: Chain Length:5
+[peer] 00:22:49.746209 blockchain.go:68: Returning a block
+[peer] 00:22:49.746216 main.go:610: Chain Length:5
+[peer] 00:22:49.746224 main.go:615: Already have block
+[peer] 00:22:49.746237 main.go:620: 17:Bool lock released
+[peer] 00:22:49.746246 blockchain.go:68: Returning a block
+[peer] 00:22:49.746254 main.go:647: 17:Equal block
+[peer] 00:22:49.756416 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.763517 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.763742 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.763762 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.763772 main.go:608: Chain Length:5
+[peer] 00:22:49.763781 blockchain.go:68: Returning a block
+[peer] 00:22:49.763790 main.go:610: Chain Length:5
+[peer] 00:22:49.763803 main.go:615: Already have block
+[peer] 00:22:49.763813 main.go:620: 17:Bool lock released
+[peer] 00:22:49.763822 blockchain.go:68: Returning a block
+[peer] 00:22:49.763831 main.go:647: 17:Equal block
+[peer] 00:22:49.773566 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.773754 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.773769 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.773778 main.go:608: Chain Length:5
+[peer] 00:22:49.773786 blockchain.go:68: Returning a block
+[peer] 00:22:49.773794 main.go:610: Chain Length:5
+[peer] 00:22:49.773801 main.go:615: Already have block
+[peer] 00:22:49.773810 main.go:620: 17:Bool lock released
+[peer] 00:22:49.773818 blockchain.go:68: Returning a block
+[peer] 00:22:49.773826 main.go:647: 17:Equal block
+[peer] 00:22:49.782257 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.801938 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.802263 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.808870 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.809016 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.809025 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.809043 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.809051 main.go:608: Chain Length:5
+[peer] 00:22:49.809060 blockchain.go:68: Returning a block
+[peer] 00:22:49.809081 main.go:610: Chain Length:5
+[peer] 00:22:49.809089 main.go:615: Already have block
+[peer] 00:22:49.809104 main.go:620: 17:Bool lock released
+[peer] 00:22:49.809113 blockchain.go:68: Returning a block
+[peer] 00:22:49.809120 main.go:647: 17:Equal block
+[peer] 00:22:49.820512 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.828743 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.828911 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.828931 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.828940 main.go:608: Chain Length:5
+[peer] 00:22:49.828948 blockchain.go:68: Returning a block
+[peer] 00:22:49.828956 main.go:610: Chain Length:5
+[peer] 00:22:49.828964 main.go:615: Already have block
+[peer] 00:22:49.828974 main.go:620: 17:Bool lock released
+[peer] 00:22:49.828982 blockchain.go:68: Returning a block
+[peer] 00:22:49.828990 main.go:647: 17:Equal block
+[peer] 00:22:49.840278 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.840281 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.841249 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.842248 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.860507 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.861162 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.862067 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.863677 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.863953 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.863997 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.864036 main.go:608: Chain Length:5
+[peer] 00:22:49.864074 blockchain.go:68: Returning a block
+[peer] 00:22:49.864169 main.go:610: Chain Length:5
+[peer] 00:22:49.864209 main.go:615: Already have block
+[peer] 00:22:49.864248 main.go:620: 17:Bool lock released
+[peer] 00:22:49.864287 blockchain.go:68: Returning a block
+[peer] 00:22:49.864325 main.go:647: 17:Equal block
+[peer] 00:22:49.864955 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.892523 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.892687 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.892704 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.892712 main.go:608: Chain Length:5
+[peer] 00:22:49.892719 blockchain.go:68: Returning a block
+[peer] 00:22:49.892727 main.go:610: Chain Length:5
+[peer] 00:22:49.892734 main.go:615: Already have block
+[peer] 00:22:49.892742 main.go:620: 17:Bool lock released
+[peer] 00:22:49.892749 blockchain.go:68: Returning a block
+[peer] 00:22:49.892757 main.go:647: 17:Equal block
+[peer] 00:22:49.908240 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.909239 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.909382 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.909398 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.909405 main.go:608: Chain Length:5
+[peer] 00:22:49.909412 blockchain.go:68: Returning a block
+[peer] 00:22:49.909420 main.go:610: Chain Length:5
+[peer] 00:22:49.909426 main.go:615: Already have block
+[peer] 00:22:49.909434 main.go:620: 17:Bool lock released
+[peer] 00:22:49.909447 blockchain.go:68: Returning a block
+[peer] 00:22:49.909456 main.go:647: 17:Equal block
+[peer] 00:22:49.926330 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.927311 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.927502 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.927557 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.927587 main.go:608: Chain Length:5
+[peer] 00:22:49.927619 blockchain.go:68: Returning a block
+[peer] 00:22:49.927647 main.go:610: Chain Length:5
+[peer] 00:22:49.927684 main.go:615: Already have block
+[peer] 00:22:49.927718 main.go:620: 17:Bool lock released
+[peer] 00:22:49.927745 blockchain.go:68: Returning a block
+[peer] 00:22:49.927806 main.go:647: 17:Equal block
+[peer] 00:22:49.938593 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.949079 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.950772 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.952769 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.961673 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.969286 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.969573 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.969741 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.969775 main.go:608: Chain Length:5
+[peer] 00:22:49.969808 blockchain.go:68: Returning a block
+[peer] 00:22:49.969846 main.go:610: Chain Length:5
+[peer] 00:22:49.969877 main.go:615: Already have block
+[peer] 00:22:49.969911 main.go:620: 17:Bool lock released
+[peer] 00:22:49.969976 blockchain.go:68: Returning a block
+[peer] 00:22:49.970008 main.go:647: 17:Equal block
+[peer] 00:22:49.970560 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.974402 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:49.983717 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.990560 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.990874 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.991841 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.991901 main.go:608: Chain Length:5
+[peer] 00:22:49.991945 blockchain.go:68: Returning a block
+[peer] 00:22:49.992058 main.go:610: Chain Length:5
+[peer] 00:22:49.992107 main.go:615: Already have block
+[peer] 00:22:49.992157 main.go:620: 17:Bool lock released
+[peer] 00:22:49.992203 blockchain.go:68: Returning a block
+[peer] 00:22:49.992251 main.go:647: 17:Equal block
+[peer] 00:22:49.990941 main.go:568: 17:Accepted new Connection
+[peer] 00:22:49.994777 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:49.994987 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:49.995153 main.go:607: 17:Acquired bool lock
+[peer] 00:22:49.995186 main.go:608: Chain Length:5
+[peer] 00:22:49.995216 blockchain.go:68: Returning a block
+[peer] 00:22:49.995249 main.go:610: Chain Length:5
+[peer] 00:22:49.995277 main.go:615: Already have block
+[peer] 00:22:49.995436 main.go:620: 17:Bool lock released
+[peer] 00:22:49.995469 blockchain.go:68: Returning a block
+[peer] 00:22:49.995501 main.go:647: 17:Equal block
+[peer] 00:22:49.996029 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:50.022459 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:50.023436 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:50.029849 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:50.036991 main.go:754: 17:Block sent to peer successful
+[err] 00:22:50.037017 main.go:237: Error in sending block, err = read tcp 198.162.52.126:39890->198.162.52.57:8038: read: connection reset by peer
+[peer] 00:22:50.061837 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:50.145081 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:50.145355 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:50.145357 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:50.149117 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:50.180573 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:50.212331 main.go:754: 17:Block sent to peer successful
+[peer] 00:22:50.212375 main.go:709: 17:RPC calls successfully returned. Iteration: 3
+[peer] 00:22:50.213709 honest.go:81: 17Train Error is 0.04781 in Iteration 3
+[peer] 00:22:50.213732 main.go:717: 17:Preparing for next Iteration. Current Iteration: 3
+[peer] 00:22:50.631626 main.go:568: 17:Accepted new Connection
+[peer] 00:22:50.631656 main.go:568: 17:Accepted new Connection
+[peer] 00:22:50.653723 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:50.653889 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:50.653904 main.go:607: 17:Acquired bool lock
+[peer] 00:22:50.653911 main.go:608: Chain Length:5
+[peer] 00:22:50.653918 blockchain.go:68: Returning a block
+[peer] 00:22:50.653926 main.go:610: Chain Length:5
+[peer] 00:22:50.653933 main.go:615: Already have block
+[peer] 00:22:50.653943 main.go:620: 17:Bool lock released
+[peer] 00:22:50.653950 blockchain.go:68: Returning a block
+[peer] 00:22:50.653957 main.go:647: 17:Equal block
+[peer] 00:22:50.655485 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:50.655524 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:50.655537 main.go:607: 17:Acquired bool lock
+[peer] 00:22:50.655543 main.go:608: Chain Length:5
+[peer] 00:22:50.655547 blockchain.go:68: Returning a block
+[peer] 00:22:50.655552 main.go:610: Chain Length:5
+[peer] 00:22:50.655557 main.go:615: Already have block
+[peer] 00:22:50.655562 main.go:620: 17:Bool lock released
+[peer] 00:22:50.655567 blockchain.go:68: Returning a block
+[peer] 00:22:50.655572 main.go:647: 17:Equal block
+[peer] 00:22:50.677059 main.go:568: 17:Accepted new Connection
+[peer] 00:22:50.677089 main.go:568: 17:Accepted new Connection
+[peer] 00:22:50.677109 main.go:568: 17:Accepted new Connection
+[peer] 00:22:50.698412 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:50.698522 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:50.698540 main.go:607: 17:Acquired bool lock
+[peer] 00:22:50.698548 main.go:608: Chain Length:5
+[peer] 00:22:50.698556 blockchain.go:68: Returning a block
+[peer] 00:22:50.698563 main.go:610: Chain Length:5
+[peer] 00:22:50.698570 main.go:615: Already have block
+[peer] 00:22:50.698579 main.go:620: 17:Bool lock released
+[peer] 00:22:50.698585 blockchain.go:68: Returning a block
+[peer] 00:22:50.698593 main.go:647: 17:Equal block
+[peer] 00:22:50.710680 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:50.710782 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:50.710828 main.go:607: 17:Acquired bool lock
+[peer] 00:22:50.710929 main.go:608: Chain Length:5
+[peer] 00:22:50.710980 blockchain.go:68: Returning a block
+[peer] 00:22:50.711017 main.go:610: Chain Length:5
+[peer] 00:22:50.711054 main.go:615: Already have block
+[peer] 00:22:50.711094 main.go:620: 17:Bool lock released
+[peer] 00:22:50.711131 blockchain.go:68: Returning a block
+[peer] 00:22:50.711256 main.go:647: 17:Equal block
+[peer] 00:22:50.718614 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:50.718708 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:50.718723 main.go:607: 17:Acquired bool lock
+[peer] 00:22:50.718730 main.go:608: Chain Length:5
+[peer] 00:22:50.718736 blockchain.go:68: Returning a block
+[peer] 00:22:50.718743 main.go:610: Chain Length:5
+[peer] 00:22:50.718749 main.go:615: Already have block
+[peer] 00:22:50.718757 main.go:620: 17:Bool lock released
+[peer] 00:22:50.718763 blockchain.go:68: Returning a block
+[peer] 00:22:50.718770 main.go:647: 17:Equal block
+[peer] 00:22:50.727967 main.go:568: 17:Accepted new Connection
+[peer] 00:22:50.739022 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:50.739159 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:50.739174 main.go:607: 17:Acquired bool lock
+[peer] 00:22:50.739181 main.go:608: Chain Length:5
+[peer] 00:22:50.739188 blockchain.go:68: Returning a block
+[peer] 00:22:50.739195 main.go:610: Chain Length:5
+[peer] 00:22:50.739204 main.go:615: Already have block
+[peer] 00:22:50.739211 main.go:620: 17:Bool lock released
+[peer] 00:22:50.739218 blockchain.go:68: Returning a block
+[peer] 00:22:50.739224 main.go:647: 17:Equal block
+[peer] 00:22:50.791209 main.go:568: 17:Accepted new Connection
+[peer] 00:22:50.795931 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:50.796025 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:50.796060 main.go:607: 17:Acquired bool lock
+[peer] 00:22:50.796086 main.go:608: Chain Length:5
+[peer] 00:22:50.796111 blockchain.go:68: Returning a block
+[peer] 00:22:50.796135 main.go:610: Chain Length:5
+[peer] 00:22:50.796160 main.go:615: Already have block
+[peer] 00:22:50.796185 main.go:620: 17:Bool lock released
+[peer] 00:22:50.796209 blockchain.go:68: Returning a block
+[peer] 00:22:50.796234 main.go:647: 17:Equal block
+[peer] 00:22:50.799580 main.go:568: 17:Accepted new Connection
+[peer] 00:22:50.813459 main.go:126: 17:Got block message, iteration 3
+[peer] 00:22:50.813607 main.go:605: 17:Acquiring bool lock
+[peer] 00:22:50.813625 main.go:607: 17:Acquired bool lock
+[peer] 00:22:50.813634 main.go:608: Chain Length:5
+[peer] 00:22:50.813642 blockchain.go:68: Returning a block
+[peer] 00:22:50.813649 main.go:610: Chain Length:5
+[peer] 00:22:50.813667 main.go:615: Already have block
+[peer] 00:22:50.813679 main.go:620: 17:Bool lock released
+[peer] 00:22:50.813687 blockchain.go:68: Returning a block
+[peer] 00:22:50.813695 main.go:647: 17:Equal block
+[peer] 00:22:50.825935 main.go:568: 17:Accepted new Connection
+[peer] 00:22:50.826107 main.go:148: 17:Registering peer:198.162.52.126:8005
+[peer] 00:22:50.826124 main.go:158: Advertising chain to peer with length 5
+[peer] 00:22:50.827466 main.go:568: 17:Accepted new Connection
+[peer] 00:22:50.827638 main.go:148: 17:Registering peer:198.162.52.126:8004
+[peer] 00:22:50.827654 main.go:158: Advertising chain to peer with length 5
+[peer] 00:22:50.840849 main.go:568: 17:Accepted new Connection
+[peer] 00:22:50.841079 main.go:148: 17:Registering peer:198.162.52.126:8023
+[peer] 00:22:50.841094 main.go:158: Advertising chain to peer with length 5
+[peer] 00:22:50.844387 main.go:568: 17:Accepted new Connection
+[peer] 00:22:50.844554 main.go:148: 17:Registering peer:198.162.52.126:8022
+[peer] 00:22:50.844570 main.go:158: Advertising chain to peer with length 5
+[peer] 00:22:50.846869 main.go:568: 17:Accepted new Connection
+[peer] 00:22:50.847022 main.go:148: 17:Registering peer:198.162.52.126:8003
+[peer] 00:22:50.847040 main.go:158: Advertising chain to peer with length 5
+[peer] 00:22:50.847651 main.go:568: 17:Accepted new Connection
+[peer] 00:22:50.847796 main.go:148: 17:Registering peer:198.162.52.126:8007
+[peer] 00:22:50.847817 main.go:158: Advertising chain to peer with length 5
+[peer] 00:22:50.848436 main.go:568: 17:Accepted new Connection
+[peer] 00:22:50.848587 main.go:148: 17:Registering peer:198.162.52.126:8024
+[peer] 00:22:50.848606 main.go:158: Advertising chain to peer with length 5
+[peer] 00:22:50.849377 main.go:568: 17:Accepted new Connection
+[peer] 00:22:50.857848 main.go:568: 17:Accepted new Connection
+[peer] 00:22:50.857880 main.go:568: 17:Accepted new Connection
+[peer] 00:22:50.857900 main.go:568: 17:Accepted new Connection
+[peer] 00:22:50.858053 main.go:148: 17:Registering peer:198.162.52.126:8025
+[peer] 00:22:50.858073 main.go:158: Advertising chain to peer with length 5
+[peer] 00:22:50.858147 main.go:148: 17:Registering peer:198.162.52.126:8008
+[peer] 00:22:50.858195 main.go:158: Advertising chain to peer with length 5
+[peer] 00:22:50.858422 main.go:148: 17:Registering peer:198.162.52.126:8009
+[peer] 00:22:50.858439 main.go:158: Advertising chain to peer with length 5
+[peer] 00:22:50.858739 main.go:148: 17:Registering peer:198.162.52.126:8027
+[peer] 00:22:50.858751 main.go:158: Advertising chain to peer with length 5

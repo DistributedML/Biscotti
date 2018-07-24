@@ -23,7 +23,7 @@ for line in $(cat tempHosts);do
 
 	if [ $indexCount -eq $nodesInEachVM ]; then
 		echo "Sleeping. Allowing first set of nodes to get bootstrapped"
-		sleep 10
+		sleep 15
 	fi
 
 done
