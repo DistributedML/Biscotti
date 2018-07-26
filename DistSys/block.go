@@ -19,14 +19,26 @@ type Block struct {
 }
 
 func (b *Block) SetHash() {
-	timestamp := []byte(strconv.FormatInt(b.Timestamp, 10))
-	headers := bytes.Join([][]byte{b.PrevBlockHash, b.Data.ToByte(), timestamp}, []byte{})
+	timestamp := []byte(strconv.FormatInt(b.Timestamp, 10))	
+	headers := bytes.Join([][]byte{b.PrevBlockHash, timestamp, b.Data.ToByte()}, []byte{})
 	hash := sha256.Sum256(headers)
 	b.Hash = hash[:]
 }
 
 func NewBlock(data BlockData, prevBlockHash []byte) *Block {
-	block := &Block{time.Now().Unix(), data, prevBlockHash, []byte{}}
+	
+	block := &Block{};
+
+	if (len(data.Deltas) == 0) {		
+		
+		block = &Block{0, data, prevBlockHash, []byte{}}		
+	
+	}else{
+		
+		block = &Block{time.Now().Unix(), data, prevBlockHash, []byte{}}
+	
+	}
+	
 	block.SetHash()
 	return block
 }
