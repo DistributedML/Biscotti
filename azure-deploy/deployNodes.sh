@@ -35,6 +35,34 @@ myPrivateIp=$(ifconfig | grep -oE -m 1 "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | head 
 
 mkdir -p LogFiles
 
+# create new peers file
+
+rm peersfile.txt
+
+let hostindex=0
+
+for line in $(cat $GOPATH/src/simpleBlockChain/azure-deploy/tempHosts);do
+
+	tname=`echo $line | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'`
+
+	echo $tname
+
+	for (( myIndex = hostindex ; myIndex < hostindex + nodesToRun; myIndex++)); do
+
+		echo $myIndex
+		let myPort=8000+$myIndex
+		lineToWrite=$tname:$myPort
+		echo $lineToWrite >> peersfile.txt
+	
+	done
+
+	echo "I am here"
+
+	hostindex=$((hostindex + nodesToRun))
+
+done
+
+
 for (( index = startingIndex ; index < startingIndex + nodesToRun; index++ )); do
 	
 	thisLogFile=test1_$index\_$totalnodes.log

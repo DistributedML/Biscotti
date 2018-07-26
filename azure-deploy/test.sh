@@ -1,25 +1,32 @@
-startingIndex=$1
-nodesToRun=$2
+let nodesToRun=30
+let startingIndex=0
+let totalnodes=60
 
-for (( index = startingIndex ; index < startingIndex + nodesToRun; index++ )); do
-	
-	# thisLogFile=test1_$index\_$totalnodes.log
-	# thatLogFile=log_$index\_$totalnodes.log
-	
-	# let thisPort=8000+$index
+cd $GOPATH/src/simpleBlockChain/DistSys
 
-	# sudo timeout 120 $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
-	
+rm peersfile.txt
 
-	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
-	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile 2> outLog.log &
-	
-	echo $index
 
-	if [ $index -eq 0 ] 
-	then			
-		echo "Sleeping. Allowing node zero to be up and running"
-		sleep 5			
-	fi
+let hostindex=0
+
+for line in $(cat $GOPATH/src/simpleBlockChain/azure-deploy/tempHosts);do
+
+	tname=`echo $line | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'`
+
+	echo $tname
+
+	for (( myIndex = hostindex ; myIndex < hostindex + nodesToRun; myIndex++)); do
+
+		echo $myIndex
+		let myPort=8000+$myIndex
+		lineToWrite=$tname:$myPort
+		echo $lineToWrite >> peersfile.txt
+	
+	done
+
+	echo "I am here"
+
+	hostindex=$((hostindex + nodesToRun))
 
 done
+
