@@ -451,6 +451,20 @@ func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
 	outLog.Printf(strconv.Itoa(client.id)+"Making RPC call")
 	conn, err := rpc.Dial("tcp", peerAddress.String()) 
 	printError("Peer offline.Couldn't connect to peer: " + peerAddress.String(), err)
+
+	// Wait for node 0 to come online if it already hasn't"
+
+	if ( (peerLookup[peerAddress.String()] == 0) && err!=nil) {
+		
+		outLog.Printf("Waiting for node 0 to come online")		
+
+		for (err!=nil) {
+			time.Sleep(1000 * time.Millisecond)
+			conn, err = rpc.Dial("tcp", peerAddress.String()) 
+			printError("Peer offline.Couldn't connect to peer: " + peerAddress.String(), err)
+		}
+
+	} 
 	
 	if(err == nil){
 
