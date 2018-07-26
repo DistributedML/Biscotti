@@ -751,7 +751,7 @@ func callRegisterBlockRPC(block Block, peerAddress net.TCPAddr) {
 		select {
 		case err := <-c:
 
-			outLog.Printf(strconv.Itoa(client.id)+":Block sent to peer successful")
+			outLog.Printf(strconv.Itoa(client.id)+":Block sent to peer successful. Peer: " + peerAddress.String() + "Iteration:%d", block.Data.Iteration)
 			printError("Error in sending block", err)
 			// ensureRPC <- true
 
