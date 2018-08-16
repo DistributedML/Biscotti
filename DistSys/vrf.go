@@ -59,25 +59,46 @@ func (myvrf *VRF) verify(input []byte, theirPk vrf.PublicKey, inputVRF []byte, i
 } 
 
 // very inefficient helper function to get the verifier set
-// TODO: include proof of stake for a weighted selection scheme
-func (myvrf *VRF) getNodes(input []byte, size int, total int) ([]int, []byte, []byte) {
+// Based on stakeMap, nodes get lottery tickets proportional to their stake
+func (myvrf *VRF) getNodes(stakeMap map[int]int, input []byte, size int, totalNodes int) ([]int, []byte, []byte) {
 
     vrfOutput, vrfProof := myvrf.sk.Prove(input)
 
     nodesMap := make(map[int]bool)
-    out := make([]int, 0)
+    lottery := []int{}
+    verifiers := []int{}
     i := 0
 
-    for len(nodesMap) < size {
-        candidate := int(input[i]) % total
-        _, exists := nodesMap[candidate]
-        if !exists{
-            nodesMap[candidate] = true
-            out = append(out, candidate)
+    // Set up the lottery tickets
+    for nodeid := 0; nodeid < totalNodes; nodeid++ {
+        stake := stakeMap[nodeid]
+        for i := 0; i < stake; i++ {
+            lottery = append(lottery, nodeid)
         }
+    }
+
+    var winner int
+    fmt.Println(lottery)
+
+    for len(verifiers) < size {
+
+        /*fmt.Println(input)
+        fmt.Println(lottery)*/
+        winnerIdx := (int(input[i]) * 256 + int(input[i+1])) % len(lottery)
+        winner = lottery[winnerIdx]
+        
+        fmt.Print("Lottery winner is: ")
+        fmt.Println(winnerIdx)
+
+        _, exists := nodesMap[winner]
+        if !exists{
+            nodesMap[winner] = true
+            verifiers = append(verifiers, winner)
+        }
+        
         i++
     }
 
-    return out, vrfOutput, vrfProof
+    return verifiers, vrfOutput, vrfProof
 
 }

@@ -29,6 +29,7 @@ const (
 	timeoutUpdate 	time.Duration = 10000000000  
 	timeoutBlock 	time.Duration = 15000000000  
 	timeoutPeer 	time.Duration = 5000000000
+	DEFAULT_STAKE   int 		  = 10
 )
 
 type Peer int
@@ -53,6 +54,7 @@ var (
 	peerPorts   		[]string
     peerLookup          map[string]int
 	peerAddresses		map[int]net.TCPAddr
+	stakeMap			map[int]int
 
 	//Locks
 	updateLock    		sync.Mutex
@@ -148,6 +150,7 @@ func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, chain *Blockchain) error {
 	outLog.Printf(strconv.Itoa(client.id) + ":Registering peer:" + peerAddress.String())
 	peerLock.Lock()
 	peerAddresses[peerLookup[peerAddress.String()]] = peerAddress
+	stakeMap[peerLookup[peerAddress.String()]] = DEFAULT_STAKE
 	peerLock.Unlock()
 	// if I am first node (index:0) and I am waiting for a peer to join (iterationCount < 0) then send signal that I have atleast one peer.
 	if(myPort == strconv.Itoa(basePort) && iterationCount < 0){
@@ -162,28 +165,16 @@ func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, chain *Blockchain) error {
 
 
 // Basic check to see if you are the verifier in the next round
-
 func amVerifier(nodeNum int) bool {
-
 	_, exists := verifierIDs[client.id]
 	return exists
-
-	/*//TODO: THIS WILL CHANGE AS OUR VRF APPROACH MATURES.
-	if (iterationCount % numberOfNodes) == client.id {
-		outLog.Printf(strconv.Itoa(client.id)+" : amVerifier true")	
-		return true
-	} else {
-		outLog.Printf(strconv.Itoa(client.id)+" : amVerifier false")
-		return false
-	}*/
-
 }
 
 // Runs a single VRF to get verifierIDs. Don't rerun this.
 func getVerifierIDs() map[int]struct{} {
 
 	idMap := make(map[int]struct{})
-	ids, _, _ := myVRF.getNodes(client.bc.getLatestBlockHash(), numVerifiers, numberOfNodes)
+	ids, _, _ := myVRF.getNodes(stakeMap, client.bc.getLatestBlockHash(), numVerifiers, numberOfNodes)
 	var empty struct{}
 
 	for _, id := range ids {
@@ -202,10 +193,8 @@ func getVerifiers(iterationCount int) []string {
     // Find the address corresponding to the ID.
     // TODO: Make fault tolerant
     // TODO: Maybe implement inverted index
-    outLog.Printf(strconv.Itoa(client.id)+" : VRF returned ID %d", verifierIDs)
+    outLog.Printf(strconv.Itoa(client.id)+" :VRF returned ID %d on iteration %d", verifierIDs, iterationCount)
     for address, ID := range peerLookup {
-        // TODO: change this to if verifierIDs contains ID
-        // BUG ALERT: The verifiers string array is returning empty. THIS IS MESSING UP EVERYTHING. 
         _, exists := verifierIDs[ID]
         if exists {
             verifiers = append(verifiers, address)
@@ -213,10 +202,6 @@ func getVerifiers(iterationCount int) []string {
     }
 
     outLog.Printf(strconv.Itoa(client.id)+" :Verifiers %s returned.", verifiers)
-    // if(len(verifiers) == 0) {
-    // 	outLog.Printf("VRF BUG. Empty verifiers set.")
-    // 	// outLog.Printf(peerLookup)
-    // }
 	return verifiers
 
 }
@@ -288,6 +273,10 @@ func main() {
 
     // getports of all other clients in the system
     peerLookup = make(map[string]int)
+    
+    // Initialize default; uniform stake
+    stakeMap = make(map[int]int)
+        
     potentialPeerList := make([]net.TCPAddr, 0, numberOfNodes-1)
 
     // Running locally
@@ -302,14 +291,16 @@ func main() {
 
             if peerPort == myPort {
                 peerLookup[fmt.Sprintf(myIP + peerPort)] = i
+                stakeMap[i] = DEFAULT_STAKE
                 continue
             }
             
             peerPorts = append(peerPorts, peerPort)
             peerAddress, err := net.ResolveTCPAddr("tcp", fmt.Sprintf(myIP + peerPort))
-            handleErrorFatal("Unable to resolve a potentail peer address", err)
+            handleErrorFatal("Unable to resolve a potential peer address", err)
             potentialPeerList = append(potentialPeerList, *peerAddress)
             peerLookup[fmt.Sprintf(myIP + peerPort)] = i
+            stakeMap[i] = DEFAULT_STAKE
         }
         
         peerAddresses = make(map[int]net.TCPAddr)
@@ -338,6 +329,7 @@ func main() {
                strings.Contains(peerAddressStr, myPort) {
                 nodeInList = true
                 peerLookup[peerAddressStr] = i
+                stakeMap[i] = DEFAULT_STAKE
                 continue
             }
 
@@ -345,6 +337,7 @@ func main() {
             handleErrorFatal("Unable to resolve a potential peer address", err)
             potentialPeerList = append(potentialPeerList, *peerAddress)
             peerLookup[peerAddressStr] = i
+            stakeMap[i] = DEFAULT_STAKE
         }
 
         if !nodeInList {
@@ -533,10 +526,7 @@ func prepareForNextIteration() {
 	}
 
 	convergedLock.Unlock()
-
-	outLog.Printf(strconv.Itoa(client.id)+":Acquiring bool lock")
 	boolLock.Lock()
-	outLog.Printf(strconv.Itoa(client.id)+":Acquired bool lock")
 
 	if verifier {
 		updateLock.Lock()
@@ -551,16 +541,15 @@ func prepareForNextIteration() {
 	verifier = amVerifier(client.id)
 
 	if verifier {
-		outLog.Printf(strconv.Itoa(client.id)+":I am verifier. IterationCount:%d", iterationCount)
+		outLog.Printf(strconv.Itoa(client.id)+":I am verifier. Iteration:%d", iterationCount)
 		go startUpdateDeadlineTimer(iterationCount) //start timer for receiving updates
 		updateSent = true
 	} else {
-		outLog.Printf(strconv.Itoa(client.id)+":I am not verifier IterationCount:%d", iterationCount)
+		outLog.Printf(strconv.Itoa(client.id)+":I am not verifier. Iteration:%d", iterationCount)
 		updateSent = false
 	}
 
 	boolLock.Unlock()
-	outLog.Printf(strconv.Itoa(client.id)+":Bool lock released")
 
 	portsToConnect = make([]string, len(peerPorts))
 	copy(portsToConnect, peerPorts)
@@ -579,7 +568,6 @@ func messageListener(peerServer *rpc.Server, port string) {
 
 	for {
 		conn, _ := l.Accept()
-		outLog.Printf(strconv.Itoa(client.id)+":Accepted new Connection")
 		go peerServer.ServeConn(conn)
 	}
 
@@ -616,9 +604,7 @@ func processUpdate(update Update) {
 func processBlock(block Block) {
 
 	// Lock to ensure that iteration count doesn't change until I have appended block
-	outLog.Printf(strconv.Itoa(client.id)+":Acquiring bool lock")
 	boolLock.Lock()
-	outLog.Printf(strconv.Itoa(client.id)+":Acquired bool lock")
 	outLog.Printf("Chain Length:" + strconv.Itoa(len(client.bc.Blocks)))
 	hasBlock := client.hasBlock(block.Data.Iteration)
 	outLog.Printf("Chain Length:" + strconv.Itoa(len(client.bc.Blocks)))
@@ -630,8 +616,6 @@ func processBlock(block Block) {
 		}
 		
 		boolLock.Unlock()
-
-		outLog.Printf(strconv.Itoa(client.id)+":Bool lock released")		
 
 		if(iterationCount< 0){
 			return
@@ -680,15 +664,11 @@ func processBlock(block Block) {
 			
 	// if not empty and not verifier send signal to channel. Not verifier required because you are not waiting for a block if you are the verifier and if you receive an empty block and if you are currently busy bootstrapping yourself. 
 	if(len(block.Data.Deltas) != 0 && !verifier && iterationCount >= 0) {
-		
-		outLog.Printf(strconv.Itoa(client.id)+":Sent to channel")
 		blockReceived <- true
-		outLog.Printf(strconv.Itoa(client.id)+":Sent to channel")
 	}
 
 	
 	go addBlockToChain(block)
-	outLog.Printf(strconv.Itoa(client.id)+":Returning")
 
 }
 
@@ -803,28 +783,24 @@ func addBlockToChain(block Block) {
 	blockChainLock.Lock()
 	err := client.addBlock(block)
 	blockChainLock.Unlock()
-	outLog.Printf(strconv.Itoa(client.id)+":Adding block to chain")
+	// outLog.Printf(strconv.Itoa(client.id)+":Adding block to chain")
 	// TODO: check if this is required
 	// boolLock.Lock()
 	// boolLock Unlocked after lock in previous function
 
 	if ((block.Data.Iteration == iterationCount) && (err ==nil)){
-		outLog.Printf(strconv.Itoa(client.id)+":Checking convergence")
+	
 		convergedLock.Lock()
 		converged = client.checkConvergence()
-		outLog.Printf(strconv.Itoa(client.id)+":Convergence checked")
 		convergedLock.Unlock()
 		boolLock.Unlock()
-		outLog.Printf(strconv.Itoa(client.id)+":Bool lock released")				
 		go sendBlock(block)	
-	}else{
 	
+	} else {	
+
 		boolLock.Unlock()
-		outLog.Printf(strconv.Itoa(client.id)+":Bool lock released")	
-	
+
 	}
-
-
 
 }
 
@@ -841,7 +817,6 @@ func messageSender(ports []string) {
 			continue
 		}
 
-		// outLog.Printf(strconv.Itoa(client.id)+":Acquiring bool lock")
 		boolLock.Lock()
 
 		if !updateSent {
@@ -861,13 +836,10 @@ func messageSender(ports []string) {
 			}
 
 			boolLock.Unlock()
-			// outLog.Printf(strconv.Itoa(client.id)+":Bool lock released")
-
 
 		} else {
 
 			boolLock.Unlock()
-			// outLog.Printf(strconv.Itoa(client.id)+":Bool lock released")
 			time.Sleep(100 * time.Millisecond)
 
 		}
@@ -925,7 +897,6 @@ func sendUpdateToVerifier(address string) {
 		blockChainLock.Unlock()		
 		printError("Iteration: " + strconv.Itoa(iterationCount), err)
 		if(err==nil){
-			// outLog.Printf(strconv.Itoa(client.id)+":T")
 			outLog.Printf(strconv.Itoa(client.id)+":Will try and create an empty block")
 			go sendBlock(*blockToSend)
 		}
