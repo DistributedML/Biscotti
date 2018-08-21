@@ -12,6 +12,7 @@ import (
 type Update struct {
 	Iteration int
 	Delta     []float64
+	Accepted  bool
 }
 
 func (update Update) String() string {

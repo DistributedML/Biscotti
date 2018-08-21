@@ -78,8 +78,6 @@ func (myvrf *VRF) getNodes(stakeMap map[int]int, input []byte, size int, totalNo
     }
 
     var winner int
-    fmt.Println(lottery)
-
     for len(verifiers) < size {
 
         /*fmt.Println(input)
@@ -87,8 +85,7 @@ func (myvrf *VRF) getNodes(stakeMap map[int]int, input []byte, size int, totalNo
         winnerIdx := (int(input[i]) * 256 + int(input[i+1])) % len(lottery)
         winner = lottery[winnerIdx]
         
-        fmt.Print("Lottery winner is: ")
-        fmt.Println(winnerIdx)
+        outLog.Printf("Lottery winner is %d at %d \n", winner, winnerIdx)
 
         _, exists := nodesMap[winner]
         if !exists{

@@ -104,8 +104,13 @@ func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
 	roniScore := client.verifyUpdate(update)
 	outLog.Printf("RONI for update is %f \n", roniScore)
 
+	// Roni score measures change in local training error
+	if roniScore > 0.02 {
+		outLog.Printf("Rejecting update!")		
+		update.Accepted = false
+	}
+
 	// we can return the chain to the guy here instead of just leaving that guy with an error
-	
 	if update.Iteration < iterationCount {
 		printError("Update of previous iteration received", staleError)
 		return staleError
@@ -193,7 +198,6 @@ func getVerifiers(iterationCount int) []string {
     // Find the address corresponding to the ID.
     // TODO: Make fault tolerant
     // TODO: Maybe implement inverted index
-    outLog.Printf(strconv.Itoa(client.id)+" :VRF returned ID %d on iteration %d", verifierIDs, iterationCount)
     for address, ID := range peerLookup {
         _, exists := verifierIDs[ID]
         if exists {
@@ -373,8 +377,6 @@ func main() {
 	networkBootstrapped = make (chan bool)
 	blockReceived = make (chan bool)
 
-
-
 	// Initializing RPC Server
 	peer := new(Peer)
 	peerServer := rpc.NewServer()
@@ -382,10 +384,7 @@ func main() {
 
 	state := python.PyEval_SaveThread()
 	
-
 	go messageListener(peerServer, myPort)
-
-
 
 	// announce yourself to above calculated peers. The first node in the network doesn't need to do this. He waits for an incoming peer instead. 	
 	// whatever node you are you can't move on until you have announced yourself to your peers
@@ -395,16 +394,11 @@ func main() {
 	
 	<- networkBootstrapped
 
-
 	prepareForNextIteration()
-	
 	messageSender(peerPorts)
-
 	python.PyEval_RestoreThread(state)
 
-
 }
-
 
 
 // peers announce themselves to all other nodes when they come into the system 
@@ -605,9 +599,7 @@ func processBlock(block Block) {
 
 	// Lock to ensure that iteration count doesn't change until I have appended block
 	boolLock.Lock()
-	outLog.Printf("Chain Length:" + strconv.Itoa(len(client.bc.Blocks)))
 	hasBlock := client.hasBlock(block.Data.Iteration)
-	outLog.Printf("Chain Length:" + strconv.Itoa(len(client.bc.Blocks)))
 
 	if ((block.Data.Iteration < iterationCount) || hasBlock || iterationCount<0) {
 		
@@ -745,7 +737,7 @@ func callRegisterBlockRPC(block Block, peerAddress net.TCPAddr) {
 		select {
 		case err := <-c:
 
-			outLog.Printf(strconv.Itoa(client.id)+":Block sent to peer successful. Peer: " + peerAddress.String() + "Iteration:%d", block.Data.Iteration)
+			outLog.Printf(strconv.Itoa(client.id)+":Block sent to peer successful. Peer: " + peerAddress.String() + " Iteration: %d", block.Data.Iteration)
 			printError("Error in sending block", err)
 			// ensureRPC <- true
 
@@ -788,7 +780,7 @@ func addBlockToChain(block Block) {
 	// boolLock.Lock()
 	// boolLock Unlocked after lock in previous function
 
-	if ((block.Data.Iteration == iterationCount) && (err ==nil)){
+	if ((block.Data.Iteration == iterationCount) && (err == nil)){
 	
 		convergedLock.Lock()
 		converged = client.checkConvergence()
@@ -897,7 +889,7 @@ func sendUpdateToVerifier(address string) {
 		blockChainLock.Unlock()		
 		printError("Iteration: " + strconv.Itoa(iterationCount), err)
 		if(err==nil){
-			outLog.Printf(strconv.Itoa(client.id)+":Will try and create an empty block")
+			outLog.Printf(strconv.Itoa(client.id)+":Sending an empty block")
 			go sendBlock(*blockToSend)
 		}
 		// create Empty Block and Send

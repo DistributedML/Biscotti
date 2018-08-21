@@ -63,14 +63,15 @@ func (bc *Blockchain) AddBlockMsg(newBlock Block) {
 
 func (bc *Blockchain) getBlock(iterationCount int) (*Block) {
 
-	if(len(bc.Blocks) >= (iterationCount + 2)){
-
+	if (len(bc.Blocks) >= (iterationCount + 2)) {
+		
 		outLog.Printf("Returning a block")
 		return bc.Blocks[iterationCount+1]
-	}else{
+	
+	} else {
+	
 		outLog.Printf("Returning nil")
 		return nil 
 	}
 	
-
 }

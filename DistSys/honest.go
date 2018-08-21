@@ -93,7 +93,8 @@ func (honest *Honest) computeUpdate(iterationCount int, datasetName string) {
 	prevGradient := honest.bc.getLatestGradient()
 	deltas, err := oneGradientStep(prevGradient)
 	check(err)
-	honest.update = Update{Iteration: iterationCount, Delta: deltas}
+	honest.update = Update{Iteration: iterationCount, Delta: deltas,
+		Accepted: true}
 }
 
 // Initialize the python stuff using go-python
@@ -186,8 +187,13 @@ func (honest *Honest) createBlock(iterationCount int) (*Block,error) {
 
 	// Update Aggregation
 	for _, update := range honest.blockUpdates {
-		deltaM = mat.NewDense(1, honest.data.Ncol(), update.Delta)
-		pulledGradientM.Add(pulledGradientM, deltaM)
+		if update.Accepted {
+			deltaM = mat.NewDense(1, honest.data.Ncol(), update.Delta)
+			pulledGradientM.Add(pulledGradientM, deltaM)	
+		} else {
+			outLog.Printf("Skipping an update")
+		}
+		
 	}
 	mat.Row(updatedGradient, 0, pulledGradientM)
 
@@ -249,6 +255,10 @@ func (honest *Honest) flushUpdates(numberOfNodes int) {
 	honest.blockUpdates = honest.blockUpdates[:0]
 }
 
+
+/*
+	Runs RONI through python on the proposed update
+*/
 func (honest *Honest) verifyUpdate(update Update) float64 {
 
 	runtime.LockOSThread()
