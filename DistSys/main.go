@@ -31,6 +31,10 @@ const (
 	
 	NUM_VERIFIERS 	int           = 1
 	DEFAULT_STAKE   int 		  = 10
+
+	VERIFIER_PRIME 	int 		  = 2
+	MINER_PRIME 	int 		  = 3
+
 )
 
 type Peer int
@@ -40,6 +44,7 @@ var (
 	//Input arguments
 	datasetName   		string
 	numberOfNodes 		int
+	numberOfNodeUpdates int
 	myIP                string
     myPrivateIP         string
     myPort				string
@@ -48,14 +53,16 @@ var (
 	client 				Honest
 	myVRF				VRF
 	
-	allUpdatesReceived	chan bool
-	networkBootstrapped	chan bool
-	blockReceived 		chan bool
-	portsToConnect 		[]string
-	peerPorts   		[]string
-    peerLookup          map[string]int
-	peerAddresses		map[int]net.TCPAddr
-	stakeMap			map[int]int
+	allUpdatesReceived		chan bool
+	networkBootstrapped		chan bool
+	blockReceived 			chan bool
+	portsToConnect 			[]string
+	verifierPortsToConnect 	[]string
+	minerPortsToConnect 	[]string
+	peerPorts   			[]string
+    peerLookup          	map[string]int
+	peerAddresses			map[int]net.TCPAddr
+	stakeMap				map[int]int
 
 	//Locks
 	updateLock    		sync.Mutex
@@ -67,11 +74,14 @@ var (
 	ensureRPC      		sync.WaitGroup
 
 	// global shared variables
-	verifierIDs 		map[int]struct{} // this is a map since it optimizes contains()
     updateSent     		bool
 	converged      		bool
 	verifier       		bool
+	miner 				bool
 	iterationCount 		= -1
+
+	// these are maps since it optimizes contains()
+	roleIDs				map[int]int
 
 	//Logging
 	errLog *log.Logger = log.New(os.Stderr, "[err] ", log.Lshortfile|log.LUTC|log.Lmicroseconds)
@@ -79,6 +89,7 @@ var (
 
 	//Errors
 	staleError error = errors.New("Stale Update/Block")
+	roniError  error = errors.New("RONI Failed")
 )
 
 // Python init function for go-python
@@ -99,17 +110,41 @@ func init() {
 
 func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
 
-	outLog.Printf(strconv.Itoa(client.id)+":Got update message, iteration %d\n", update.Iteration)
+	outLog.Printf(strconv.Itoa(client.id)+":Got RONI message, iteration %d\n", update.Iteration)
 
-	// TODO: use the RONI score to actually reject bad updates
+	/*	// we can return the chain to the guy here instead of just leaving that guy with an error
+	if update.Iteration < iterationCount {
+		printError("Update of previous iteration received", staleError)
+		// sender is stale, return true here and let them catch up
+		return true
+	}*/
+
 	roniScore := client.verifyUpdate(update)
-	outLog.Printf("RONI for update is %f \n", roniScore)
+	outLog.Printf("RONI for update is %f. Iteration: %d\n", roniScore, client.update.Iteration)
 
 	// Roni score measures change in local training error
 	if roniScore > 0.02 {
 		outLog.Printf("Rejecting update!")		
-		update.Accepted = false
+		return roniError
 	}
+
+	// TODO: Instead of adding to a block, sign it and return to client
+	// Process update should be called on the miner nodes
+	// go processUpdate(update)
+
+	return nil
+
+}
+
+// The peer receives an update from another peer if its a verifier in that round.
+// The verifier peer takes in the update and returns immediately.
+// It calls a separate go-routine for collecting updates and sending updates when all updates have been collected
+// Returns:
+// - StaleError if its an update for a preceding round.
+
+func (s *Peer) RegisterUpdate(update Update, _ignored *bool) error {
+
+	outLog.Printf(strconv.Itoa(client.id)+":Got miner request, iteration %d\n", update.Iteration)
 
 	// we can return the chain to the guy here instead of just leaving that guy with an error
 	if update.Iteration < iterationCount {
@@ -117,6 +152,8 @@ func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
 		return staleError
 	}
 
+	// TODO: Instead of adding to a block, sign it and return to client
+	// Process update should be called on the miner nodes
 	go processUpdate(update)
 
 	return nil
@@ -172,45 +209,67 @@ func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, chain *Blockchain) error {
 
 // Basic check to see if you are the verifier in the next round
 func amVerifier(nodeNum int) bool {
-	_, exists := verifierIDs[client.id]
-	return exists
+	return roleIDs[client.id] % VERIFIER_PRIME == 0
 }
 
-// Runs a single VRF to get verifierIDs. Don't rerun this.
-func getVerifierIDs() map[int]struct{} {
+// Basic check to see if you are the verifier in the next round
+func amMiner(nodeNum int) bool {
+	return roleIDs[client.id] % MINER_PRIME == 0
+}
 
-	idMap := make(map[int]struct{})
-	ids, miners, noisers, _, _ := myVRF.getNodes(stakeMap, client.bc.getLatestBlockHash(), 
-		NUM_VERIFIERS, numberOfNodes)
-	var empty struct{}
-
-	outLog.Printf("Miners are %s", miners)
-	outLog.Printf("Noisers are %s", noisers)
-
-	for _, id := range ids {
-		idMap[id] = empty
+// Runs a single VRF to get roleIDs. Don't rerun this.
+func getRoles() map[int]int {
+	
+	roleMap := make(map[int]int)
+	for i := 0; i < numberOfNodes; i++ {
+		roleMap[i] = 1
 	}
 
-	return idMap
+	vIDs, mIDs, noisers, _, _ := myVRF.getNodes(stakeMap, client.bc.getLatestBlockHash(), 
+		NUM_VERIFIERS, numberOfNodes)
+
+	outLog.Printf("Verifiers are %s", vIDs)
+	outLog.Printf("Miners are %s", mIDs)
+	outLog.Printf("Noisers are %s", noisers)
+
+	for _, id := range vIDs {
+		roleMap[id] *= VERIFIER_PRIME
+	}
+
+	for _, id := range mIDs {
+		roleMap[id] *= MINER_PRIME
+	}
+
+	return roleMap
 }
 
-// Convert the verifierIDs to verifier strings 
-func getVerifiers(iterationCount int) []string {
+// Convert the roleIDs to verifier/miner strings 
+func getRoleNames(iterationCount int) ([]string, []string, int) {
 
 	verifiers := make([]string, 0)
+	miners := make([]string, 0)
+	numVanilla := 0
 
     // Find the address corresponding to the ID.
     // TODO: Make fault tolerant
     // TODO: Maybe implement inverted index
     for address, ID := range peerLookup {
-        _, exists := verifierIDs[ID]
-        if exists {
-            verifiers = append(verifiers, address)
-        }
+
+    	if (roleIDs[ID] == 1) {
+    		numVanilla++
+    	}
+        
+    	if (roleIDs[ID] % VERIFIER_PRIME) == 0 {
+    		verifiers = append(verifiers, address)
+    	}
+
+    	if (roleIDs[ID] % MINER_PRIME) == 0 {
+    		miners = append(miners, address)
+    	}
+
     }
 
-    outLog.Printf(strconv.Itoa(client.id)+" :Verifiers %s returned.", verifiers)
-	return verifiers
+	return verifiers, miners, numVanilla
 
 }
 
@@ -471,7 +530,7 @@ func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
 
 			if(err == nil){
 				
-				outLog.Printf(strconv.Itoa(client.id)+":Announced myself to a fellow peer at port. Got lastest chain")
+				outLog.Printf(strconv.Itoa(client.id)+":Announced myself to a fellow peer at port. Got latest chain")
 				
 				//Add peer
 				peerLock.Lock()
@@ -497,7 +556,6 @@ func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
 				}
 
 			}
-
 
 			// use err and result
 		case <-time.After(timeoutPeer):
@@ -526,24 +584,29 @@ func prepareForNextIteration() {
 	convergedLock.Unlock()
 	boolLock.Lock()
 
-	if verifier {
+	if miner {
 		updateLock.Lock()
 		client.flushUpdates(numberOfNodes)
 		updateLock.Unlock()
 	}
-
+	
 	iterationCount++
+	outLog.Printf("Moving on to next iteration %d", iterationCount)
 
 	// This runs the VRF and sets the verifiers for this iteration
-	verifierIDs = getVerifierIDs()
+	roleIDs = getRoles()
 	verifier = amVerifier(client.id)
+	miner = amMiner(client.id)
 
-	if verifier {
-		outLog.Printf(strconv.Itoa(client.id)+":I am verifier. Iteration:%d", iterationCount)
+	if miner {
+		outLog.Printf(strconv.Itoa(client.id)+":I am miner. Iteration:%d", iterationCount)
+		updateSent = true
 		go startUpdateDeadlineTimer(iterationCount) //start timer for receiving updates
+	} else if verifier {
+		outLog.Printf(strconv.Itoa(client.id)+":I am verifier. Iteration:%d", iterationCount)
 		updateSent = true
 	} else {
-		outLog.Printf(strconv.Itoa(client.id)+":I am not verifier. Iteration:%d", iterationCount)
+		outLog.Printf(strconv.Itoa(client.id)+":I am not miner or verifier. Iteration:%d", iterationCount)
 		updateSent = false
 	}
 
@@ -577,18 +640,18 @@ func processUpdate(update Update) {
 
 	for update.Iteration > iterationCount {
 		outLog.Printf(strconv.Itoa(client.id)+":Blocking. Got update for %d, I am at %d\n", update.Iteration, iterationCount)
-		time.Sleep(5000 * time.Millisecond)
+		time.Sleep(2000 * time.Millisecond)
 	}
 
 	// Might get an update while I am in the announceToNetwork phase and when I come out of it the update becomes redundant
-	if  ((iterationCount == update.Iteration) && verifier) {
+	if ((iterationCount == update.Iteration) && (verifier || miner)) {
 
 		updateLock.Lock()
 		numberOfUpdates := client.addBlockUpdate(update)
 		updateLock.Unlock()
 
 		//send signal to start sending Block if all updates Received
-		if numberOfUpdates == (numberOfNodes - 1) {			
+		if numberOfUpdates == (numberOfNodes - numberOfNodeUpdates) {			
 			allUpdatesReceived <- true 		 
 		}
 		
@@ -598,28 +661,33 @@ func processUpdate(update Update) {
 }
 
 
-// This is getting too complicated.
+// For all non-miners, accept the block
 func processBlock(block Block) {
-
+	
 	// Lock to ensure that iteration count doesn't change until I have appended block
+	outLog.Printf("Trying to acquire lock...")
 	boolLock.Lock()
+
+	outLog.Printf("Got lock, processing block")
+
 	hasBlock := client.hasBlock(block.Data.Iteration)
 
+	// Block is old, but could be better than my current block
 	if ((block.Data.Iteration < iterationCount) || hasBlock || iterationCount<0) {
-		
+				
+		boolLock.Unlock()
+
 		if hasBlock {
 			outLog.Printf("Already have block")
 		}
-		
-		boolLock.Unlock()
 
-		if(iterationCount< 0){
+		if (iterationCount < 0) {
 			return
 		}
 
 		better := client.evaluateBlockQuality(block) // check equality and some measure of 	
 
-		if(better){
+		if better {
 			
 			// TODO: If I receive a better block than my current one. Then I replace my block with this one.
 			// I request for all the next Blocks. I will also need to advertise new block or not?
@@ -630,12 +698,12 @@ func processBlock(block Block) {
 			if(block.Data.Iteration == len(client.bc.Blocks) - 2){
 				client.replaceBlock(block, block.Data.Iteration)
 				outLog.Printf("Chain Length:" + strconv.Itoa(len(client.bc.Blocks)))
-				outLog.Printf(strconv.Itoa(client.id)+":Received better  block")
+				outLog.Printf(strconv.Itoa(client.id)+":Received better block")
 				return 
 			}
 
 		
-		}else{
+		} else {
 			
 			// returnBlock = client.bc.getBlock(block.Data.Iteration)						
 			outLog.Printf(strconv.Itoa(client.id)+":Equal block")
@@ -643,40 +711,48 @@ func processBlock(block Block) {
 		
 		}
 
-		// handleErrorFatal("Block of previous iteration received", staleError)
-	}
+	// else, block should be accepted
+	} else {
 
-	if block.Data.Iteration > iterationCount {
+		// Add the block to chain
+		blockChainLock.Lock()
 		
-		boolLock.Unlock()
+		outLog.Printf(strconv.Itoa(client.id)+":Adding block for %d, I am at %d\n", 
+			block.Data.Iteration, iterationCount)
+		
+		err := client.addBlock(block)
+		blockChainLock.Unlock()
 
-		for block.Data.Iteration > iterationCount {
-			outLog.Printf(strconv.Itoa(client.id)+":Blocking. Got block for %d, I am at %d\n", block.Data.Iteration, iterationCount)
-			time.Sleep(1000 * time.Millisecond)
+		if ((block.Data.Iteration == iterationCount) && (err == nil)){
+		
+			// If block is current, notify channel waiting for it
+			if(len(block.Data.Deltas) != 0 && updateSent && !verifier && iterationCount >= 0) {
+				outLog.Printf(strconv.Itoa(client.id)+":Sending block to channel")
+				blockReceived <- true
+			
+			}
+
+			boolLock.Unlock()
+			go sendBlock(block)	
+		
+		} else {	
+
+			// Need to catch up to current iteration
+			boolLock.Unlock()
+			prepareForNextIteration()
+
 		}
 
-		boolLock.Lock()	
 	}
-			
-	// if not empty and not verifier send signal to channel. Not verifier required because you are not waiting for a block if you are the verifier and if you receive an empty block and if you are currently busy bootstrapping yourself. 
-	if(len(block.Data.Deltas) != 0 && !verifier && iterationCount >= 0) {
-		blockReceived <- true
-	}
-
-	
-	go addBlockToChain(block)
 
 }
 
 
 
-// Verifier broadcasts the block of this iteration to all peers
-
-// REMINDER: Figure out why checkConvergence is occuring twice for every call
-
+// Miner broadcasts the block of this iteration to all peers
 func sendBlock(block Block) {	
 
-	outLog.Printf(strconv.Itoa(client.id)+":Sending block. Iteration: %d\n", block.Data.Iteration)
+	outLog.Printf(strconv.Itoa(client.id)+":Sending block of iteration: %d\n", block.Data.Iteration)
 
 	// create a thread for separate calling
 	peerLock.Lock()
@@ -695,10 +771,7 @@ func sendBlock(block Block) {
 	peerLock.Unlock()
 
 	// You can only move to the next iteration by sending a block if you were the verifier for that iteration or if you are proposing an empty block
-
 	outLog.Printf(strconv.Itoa(client.id)+":RPC calls successfully returned. Iteration: %d", iterationCount)
-
-	// if(block.Data.Iteration == iterationCount && (verifier || len(block.Data.Deltas) == 0 )){
 
 	convergedLock.Lock()
 	converged = client.checkConvergence()
@@ -707,24 +780,10 @@ func sendBlock(block Block) {
 	outLog.Printf(strconv.Itoa(client.id)+":Preparing for next Iteration. Current Iteration: %d", iterationCount)
 
 	prepareForNextIteration()
-
-	// }
 		
-
 }
 
-// output from channel to ensure all RPC calls to broadcast block are successful
-
-// func ensureRPCCallsReturn() {
-
-// 	for i := 0; i < len(peerAddresses); i++ {
-// 		<-ensureRPC
-// 	}
-
-// }
-
 // RPC call to send block to one peer
-
 func callRegisterBlockRPC(block Block, peerAddress net.TCPAddr) {
 
 	defer ensureRPC.Done()
@@ -769,37 +828,6 @@ func callRegisterBlockRPC(block Block, peerAddress net.TCPAddr) {
 
 }
 
-
-// go-routine to process a block received and add to chain. 
-// Move to next iteration when done
-
-func addBlockToChain(block Block) {
-
-	outLog.Printf(strconv.Itoa(client.id)+":Adding block to chain")	
-	blockChainLock.Lock()
-	err := client.addBlock(block)
-	blockChainLock.Unlock()
-	// outLog.Printf(strconv.Itoa(client.id)+":Adding block to chain")
-	// TODO: check if this is required
-	// boolLock.Lock()
-	// boolLock Unlocked after lock in previous function
-
-	if ((block.Data.Iteration == iterationCount) && (err == nil)){
-	
-		convergedLock.Lock()
-		converged = client.checkConvergence()
-		convergedLock.Unlock()
-		boolLock.Unlock()
-		go sendBlock(block)	
-	
-	} else {	
-
-		boolLock.Unlock()
-
-	}
-
-}
-
 // Main sending thread. Checks if you are a non-verifier in the current itearation 
 // Sends update if thats the case.
 
@@ -807,8 +835,7 @@ func messageSender(ports []string) {
 
 	for {
 
-		if verifier {
-
+		if verifier || miner {
 			time.Sleep(100 * time.Millisecond)
 			continue
 		}
@@ -821,14 +848,21 @@ func messageSender(ports []string) {
 
 			client.computeUpdate(iterationCount, datasetName)
 
-			portsToConnect = getVerifiers(iterationCount)
+			verifierPortsToConnect, minerPortsToConnect, 
+				numberOfNodeUpdates = getRoleNames(iterationCount)
+			
+			outLog.Printf("Sending update to verifiers")
+			approved := sendUpdateToVerifiers(verifierPortsToConnect) 
 
-			for _, port := range portsToConnect {
+			if approved {
 				
-				sendUpdateToVerifier(port) 
+				outLog.Printf("Sending update to miners")
+				sendUpdateToMiners(minerPortsToConnect)
+			
 				if iterationCount == client.update.Iteration {
 					updateSent = true
 				}
+
 			}
 
 			boolLock.Unlock()
@@ -839,54 +873,55 @@ func messageSender(ports []string) {
 			time.Sleep(100 * time.Millisecond)
 
 		}
-
 	}
-
 }
 
 // Make RPC call to send update to verifier
 // If you cant connect to verifier or verifier fails midway RPC, then append an empty block and move on
 // Start timer for receiving registering block
 
-func sendUpdateToVerifier(address string) {
+func sendUpdateToVerifiers(addresses []string) bool {
 
 	var ign bool
 	c := make(chan error)
+	verified := false
 
-	conn, err := rpc.Dial("tcp", address)
-	printError("Unable to connect to verifier", err)
-	
-	if(err == nil){
+	for _, address := range addresses {
+
+		conn, err := rpc.Dial("tcp", address)
+		printError("Unable to connect to verifier", err)
 		
-		defer conn.Close()
-		outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Verifier. Sending Update, Iteration:%d\n", client.update.Iteration)
-		go func() { c <- conn.Call("Peer.VerifyUpdate", client.update, &ign) }()
-		select {
-		case err := <-c:
+		if(err == nil){
 			
-			printError("Error in sending update", err)
-			if(err==nil){
-				outLog.Printf(strconv.Itoa(client.id)+":Update sent successfully")
-			}
-			go startBlockDeadlineTimer(iterationCount)
-
+			defer conn.Close()
+			outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Verifier. Sending Update, Iteration:%d\n", client.update.Iteration)
+			go func() { c <- conn.Call("Peer.VerifyUpdate", client.update, &ign) }()
+			select {
+			case verifierError := <-c:
+				
+				printError("Error in sending update", err)
+				if (verifierError == nil) {
+					outLog.Printf(strconv.Itoa(client.id)+":Update verified. Iteration:%d\n", client.update.Iteration)
+					verified = true
+				}
 
 			// use err and result
-		case <-time.After(timeoutRPC):
-
-			// create Empty Block and Send
-			outLog.Printf(strconv.Itoa(client.id)+":Timeout. Sending Update. Retrying...")
-			blockChainLock.Lock()
-			blockToSend, err := client.createBlock(iterationCount)
-			blockChainLock.Unlock()
-			printError("Iteration: " + strconv.Itoa(iterationCount), err)
-			if(err == nil){
-				go sendBlock(*blockToSend)
+			case <-time.After(timeoutRPC):
+				continue
 			}
+		
+		} else {
+
+			outLog.Printf("GOT VERIFIER ERROR")
+			time.Sleep(1000 * time.Millisecond)
+
+			continue
 		}
 	
-	}else{
+	}
 
+	// Verification totally failed. Create empty block and send
+	if !verified {
 		outLog.Printf(strconv.Itoa(client.id)+":Will try and create an empty block")
 		blockChainLock.Lock()
 		blockToSend, err := client.createBlock(iterationCount)
@@ -896,8 +931,74 @@ func sendUpdateToVerifier(address string) {
 			outLog.Printf(strconv.Itoa(client.id)+":Sending an empty block")
 			go sendBlock(*blockToSend)
 		}
-		// create Empty Block and Send
+	} 
+
+	return verified
+
+}
+
+func sendUpdateToMiners(addresses []string) {
+
+	var ign bool
+	c := make(chan error)
+
+	mined := false
+
+	// TODO: For now, the first miner that gets the block done is good enough.
+	// We will need to use shamir secrets here later
+	for _, address := range addresses {
+
+		if !mined {
+
+			conn, err := rpc.Dial("tcp", address)
+			printError("Unable to connect to miner", err)
+			
+			if (err == nil) {
+				
+				defer conn.Close()
+				outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Miner. Sending Update, Iteration:%d\n", client.update.Iteration)
+				go func() { c <- conn.Call("Peer.RegisterUpdate", client.update, &ign) }()
+				select {
+				case err := <-c:
+					
+					printError("Error in sending update", err)
+					if(err==nil){
+						outLog.Printf(strconv.Itoa(client.id)+":Update mined. Iteration:%d\n", client.update.Iteration)
+						mined = true
+					}
+
+					go startBlockDeadlineTimer(iterationCount)
+
+					// use err and result
+				case <-time.After(timeoutRPC):
+					continue
+				}
+			
+			} else {
+				
+				outLog.Printf("GOT MINER ERROR")
+				time.Sleep(1000 * time.Millisecond)
+
+				continue
+			}
+
+		}
+
 	}
+
+	// Couldn't mine the block. Send empty block.
+	if !mined {
+		outLog.Printf(strconv.Itoa(client.id)+":Will try and create an empty block")
+		blockChainLock.Lock()
+		blockToSend, err := client.createBlock(iterationCount)
+		blockChainLock.Unlock()		
+		printError("Iteration: " + strconv.Itoa(iterationCount), err)
+		if(err==nil){
+			outLog.Printf(strconv.Itoa(client.id)+":Sending an empty block")
+			go sendBlock(*blockToSend)
+		}
+	}
+
 }
 
 // Timer started by the verifier to set a deadline until which he will receive updates
@@ -951,17 +1052,17 @@ func startBlockDeadlineTimer(timerForIteration int){
 		
 		case <- blockReceived:
 			
+			outLog.Printf(strconv.Itoa(client.id)+":Channel for block at iteration: %d", timerForIteration)
+
 			if (timerForIteration == iterationCount) {
-				
-				outLog.Printf(strconv.Itoa(client.id)+":Block Received. Appending to chain and moving on to the next iteration. %d", iterationCount)
+				outLog.Printf(strconv.Itoa(client.id)+":Block received at current iteration. Appending to chain and moving on to the next iteration. %d", iterationCount)
 			}
 
 		case <-time.After(timeoutBlock):
-			
-
+		
 			if (timerForIteration == iterationCount) {
 
-				outLog.Printf(strconv.Itoa(client.id)+":Timeout. Didn't receive block. Appending empty block. Iteration:%d ..", iterationCount)			
+				outLog.Printf(strconv.Itoa(client.id)+":Timeout. Didn't receive block. Appending empty block at iteration %d", timerForIteration)			
 				blockChainLock.Lock()
 				outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")
 				blockToSend, err := client.createBlock(iterationCount)

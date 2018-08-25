@@ -200,7 +200,6 @@ func (honest *Honest) createBlock(iterationCount int) (*Block,error) {
 	updatesGathered := make([]Update, len(honest.blockUpdates))
 	copy(updatesGathered, honest.blockUpdates)
 
-	// TODO: Insert RONI
 	bData := BlockData{iterationCount, updatedGradient, updatesGathered}
 	honest.bc.AddBlock(bData) 
 
