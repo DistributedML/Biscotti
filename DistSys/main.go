@@ -120,7 +120,7 @@ func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
 	}*/
 
 	roniScore := client.verifyUpdate(update)
-	outLog.Printf("RONI for update is %f. Iteration: %d\n", roniScore, client.update.Iteration)
+	outLog.Printf("RONI for update at iteration %d is %f.\n", client.update.Iteration, roniScore)
 
 	// Roni score measures change in local training error
 	if roniScore > 0.02 {
@@ -129,9 +129,6 @@ func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
 	}
 
 	// TODO: Instead of adding to a block, sign it and return to client
-	// Process update should be called on the miner nodes
-	// go processUpdate(update)
-
 	return nil
 
 }
@@ -152,8 +149,7 @@ func (s *Peer) RegisterUpdate(update Update, _ignored *bool) error {
 		return staleError
 	}
 
-	// TODO: Instead of adding to a block, sign it and return to client
-	// Process update should be called on the miner nodes
+	// Process update only called by the miner nodes
 	go processUpdate(update)
 
 	return nil
@@ -634,17 +630,18 @@ func messageListener(peerServer *rpc.Server, port string) {
 
 }
 
-// go routine to process the update received by non verifying nodes
-
+// go routine to process the update received by miner nodes
 func processUpdate(update Update) {
 
+	outLog.Printf(strconv.Itoa(client.id)+":Got update for %d, I am at %d\n", update.Iteration, iterationCount)
+
 	for update.Iteration > iterationCount {
-		outLog.Printf(strconv.Itoa(client.id)+":Blocking. Got update for %d, I am at %d\n", update.Iteration, iterationCount)
+		outLog.Printf(strconv.Itoa(client.id)+":Blocking for stale update. Update for %d, I am at %d\n", update.Iteration, iterationCount)
 		time.Sleep(2000 * time.Millisecond)
 	}
 
 	// Might get an update while I am in the announceToNetwork phase and when I come out of it the update becomes redundant
-	if ((iterationCount == update.Iteration) && (verifier || miner)) {
+	if ((iterationCount == update.Iteration)) {
 
 		updateLock.Lock()
 		numberOfUpdates := client.addBlockUpdate(update)
@@ -652,6 +649,7 @@ func processUpdate(update Update) {
 
 		//send signal to start sending Block if all updates Received
 		if numberOfUpdates == (numberOfNodes - numberOfNodeUpdates) {			
+			outLog.Printf(strconv.Itoa(client.id)+":All updates for iteration %d received. Notifying channel.", iterationCount)	
 			allUpdatesReceived <- true 		 
 		}
 		
@@ -907,6 +905,7 @@ func sendUpdateToVerifiers(addresses []string) bool {
 
 			// use err and result
 			case <-time.After(timeoutRPC):
+				outLog.Printf(strconv.Itoa(client.id)+":RPC Call timed out.")
 				continue
 			}
 		
@@ -971,6 +970,7 @@ func sendUpdateToMiners(addresses []string) {
 
 					// use err and result
 				case <-time.After(timeoutRPC):
+					outLog.Printf(strconv.Itoa(client.id)+":RPC Call timed out.")
 					continue
 				}
 			
@@ -1004,19 +1004,17 @@ func sendUpdateToMiners(addresses []string) {
 // Timer started by the verifier to set a deadline until which he will receive updates
 
 func startUpdateDeadlineTimer(timerForIteration int){
-
-	outLog.Printf(strconv.Itoa(client.id)+":Starting Update Deadline Timer. Iteration: %d", iterationCount)
 	
-	select{
+	select {
 		
 		case <- allUpdatesReceived:
-			outLog.Printf(strconv.Itoa(client.id)+":All Updates Received. Preparing to send block..")
+			outLog.Printf(strconv.Itoa(client.id)+":All Updates Received for timer on %d. I am at %d. Preparing to send block..", 
+				timerForIteration, iterationCount)
 
-		case <-time.After(timeoutUpdate):
+		case <- time.After(timeoutUpdate):
 			outLog.Printf(strconv.Itoa(client.id)+":Timeout. Didn't receive expected number of updates. Preparing to send block. Iteration: %d..", iterationCount)
 	
 	}
-
 	
 	if (timerForIteration == iterationCount) {
 		
@@ -1041,6 +1039,11 @@ func startUpdateDeadlineTimer(timerForIteration int){
 			os.Exit(1)
 		}
 
+	// An old timer was triggered, try to catch up
+	} else {
+		time.Sleep(1000 * time.Millisecond)
+		outLog.Printf(strconv.Itoa(client.id)+":Forwarding timer ahead.")
+		allUpdatesReceived <- true
 	}
 
 }
