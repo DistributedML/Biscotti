@@ -60,13 +60,22 @@ func (myvrf *VRF) verify(input []byte, theirPk vrf.PublicKey, inputVRF []byte, i
 
 // very inefficient helper function to get the verifier set
 // Based on stakeMap, nodes get lottery tickets proportional to their stake
-func (myvrf *VRF) getNodes(stakeMap map[int]int, input []byte, size int, totalNodes int) ([]int, []byte, []byte) {
+func (myvrf *VRF) getNodes(stakeMap map[int]int, input []byte, size int, 
+    totalNodes int) ([]int, []int, []int, []byte, []byte) {
 
     vrfOutput, vrfProof := myvrf.sk.Prove(input)
 
-    nodesMap := make(map[int]bool)
     lottery := []int{}
+
+    vNodesMap := make(map[int]bool)
     verifiers := []int{}
+
+    mNodesMap := make(map[int]bool)    
+    miners := []int{}
+    
+    nNodesMap := make(map[int]bool)
+    noisers := []int{}
+    
     i := 0
 
     // Set up the lottery tickets
@@ -77,6 +86,9 @@ func (myvrf *VRF) getNodes(stakeMap map[int]int, input []byte, size int, totalNo
         }
     }
 
+    fmt.Println(input)
+    fmt.Println(len(input))
+
     var winner int
     for len(verifiers) < size {
 
@@ -85,17 +97,48 @@ func (myvrf *VRF) getNodes(stakeMap map[int]int, input []byte, size int, totalNo
         winnerIdx := (int(input[i]) * 256 + int(input[i+1])) % len(lottery)
         winner = lottery[winnerIdx]
         
-        outLog.Printf("Lottery winner is %d at %d \n", winner, winnerIdx)
+        outLog.Printf("Verifier lottery winner is %d at %d \n", winner, winnerIdx)
 
-        _, exists := nodesMap[winner]
+        _, exists := vNodesMap[winner]
         if !exists{
-            nodesMap[winner] = true
+            vNodesMap[winner] = true
             verifiers = append(verifiers, winner)
         }
         
         i++
     }
 
-    return verifiers, vrfOutput, vrfProof
+    for len(miners) < size {
 
+        winnerIdx := (int(input[i]) * 256 + int(input[i+1])) % len(lottery)
+        winner = lottery[winnerIdx]
+
+        outLog.Printf("Miner lottery winner is %d at %d \n", winner, winnerIdx)
+
+        _, exists := mNodesMap[winner]
+        if !exists{
+            mNodesMap[winner] = true
+            miners = append(miners, winner)
+        }
+        
+        i++
+    }
+
+    for len(noisers) < size {
+
+        winnerIdx := (int(input[i]) * 256 + int(input[i+1])) % len(lottery)
+        winner = lottery[winnerIdx]
+
+        outLog.Printf("Noise lottery winner is %d at %d \n", winner, winnerIdx)
+
+        _, exists := nNodesMap[winner]
+        if !exists{
+            nNodesMap[winner] = true
+            noisers = append(noisers, winner)
+        }
+        
+        i++
+    }
+
+    return verifiers, miners, noisers, vrfOutput, vrfProof
 }

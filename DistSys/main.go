@@ -25,10 +25,11 @@ const (
 	basePort        int           = 8000
 	verifierIP   	string        = "127.0.0.1:"
 	timeoutRPC    	time.Duration = 10000000000
-	numVerifiers 	int           = 1
 	timeoutUpdate 	time.Duration = 10000000000  
 	timeoutBlock 	time.Duration = 15000000000  
 	timeoutPeer 	time.Duration = 5000000000
+	
+	NUM_VERIFIERS 	int           = 1
 	DEFAULT_STAKE   int 		  = 10
 )
 
@@ -179,8 +180,12 @@ func amVerifier(nodeNum int) bool {
 func getVerifierIDs() map[int]struct{} {
 
 	idMap := make(map[int]struct{})
-	ids, _, _ := myVRF.getNodes(stakeMap, client.bc.getLatestBlockHash(), numVerifiers, numberOfNodes)
+	ids, miners, noisers, _, _ := myVRF.getNodes(stakeMap, client.bc.getLatestBlockHash(), 
+		NUM_VERIFIERS, numberOfNodes)
 	var empty struct{}
+
+	outLog.Printf("Miners are %s", miners)
+	outLog.Printf("Noisers are %s", noisers)
 
 	for _, id := range ids {
 		idMap[id] = empty
@@ -192,7 +197,6 @@ func getVerifierIDs() map[int]struct{} {
 // Convert the verifierIDs to verifier strings 
 func getVerifiers(iterationCount int) []string {
 
-	// TODO: THIS WILL CHANGE AS THE VRF IMPLEMENTATION CHANGES
 	verifiers := make([]string, 0)
 
     // Find the address corresponding to the ID.

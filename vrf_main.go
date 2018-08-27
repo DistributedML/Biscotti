@@ -4,7 +4,6 @@ import (
     "bytes"
     "fmt"
     "github.com/coniks-sys/coniks-go/crypto/vrf"
-    "strconv"
 )
 
 func main() {
@@ -33,14 +32,30 @@ func main() {
     fmt.Print("VRF Byte comparison: ")
     fmt.Println(bytes.Equal(aliceVRF, aliceVRFFromProof))
 
-    stakeMap := make(map[string]int)
-    for i := 0; i < 10; i++ {
-        stakeMap[strconv.Itoa(i)] = i * 10
+    stakeMap := make(map[int]int)
+    for i := 0; i < 20; i++ {
+        stakeMap[i] = i * 10
     }
 
-    results := getNodeSet(stakeMap, aliceVRF, 3)
-    fmt.Print("I choose the nodes: ")
-    fmt.Println(results)
+    verif, miners, noisers := getNodeSet(stakeMap, aliceVRF, 3)
+    fmt.Print("Verifier nodes: ")
+    fmt.Println(verif)
+
+    fmt.Print("Miner nodes: ")
+    fmt.Println(miners)
+
+    fmt.Print("Noise nodes: ")
+    fmt.Println(noisers)
+
+    verif, miners, noisers = getNodeSet(stakeMap, aliceVRF, 3)
+    fmt.Print("Verifier nodes: ")
+    fmt.Println(verif)
+
+    fmt.Print("Miner nodes: ")
+    fmt.Println(miners)
+
+    fmt.Print("Noise nodes: ")
+    fmt.Println(noisers)
 
     /*
     
@@ -56,47 +71,83 @@ func main() {
 }
 
 // very inefficient helper function to get the verifier set
-// TODO: include proof of stake for a weighted selection scheme
-func getNodeSet(stakeMap map[string]int, input []byte, size int) []string {
+// returns verifiers, miners, noise providers
+func getNodeSet(stakeMap map[int]int, input []byte, 
+    size int) ([]int, []int, []int) {
 
-    lottery := []string{}
-    verifiers := []string{}
+    lottery := []int{}
+    verifiers := []int{}
+    miners := []int{}
+    noisers := []int{}
 
-    for node, stake := range stakeMap {
+    // Set up the lottery tickets
+    for nodeid := 0; nodeid < len(stakeMap); nodeid++ {
+        stake := stakeMap[nodeid]
         for i := 0; i < stake; i++ {
-            lottery = append(lottery, node)
+            lottery = append(lottery, nodeid)
         }
     }
 
-    fmt.Println(lottery)
+    // fmt.Println(lottery)
 
-    nodesMap := make(map[string]bool)
+    vNodesMap := make(map[int]bool)
+    nNodesMap := make(map[int]bool)
+    mNodesMap := make(map[int]bool)
     i := 0
 
-    var winner string
+    var winner int
 
     for len(verifiers) < size {
 
         winnerIdx := (int(input[i]) * 256 + int(input[i+1])) % len(lottery)
         
-        fmt.Print("Lottery winner is: ")
-        fmt.Print(winnerIdx)
-        fmt.Print(" out of ")
-        fmt.Println(len(lottery))
+        fmt.Printf("Lottery winner is: %d \n", winnerIdx)
 
         winner = lottery[winnerIdx]
         
-        fmt.Println(winner)
+        // fmt.Println(winner)
 
-        _, exists := nodesMap[winner]
+        _, exists := vNodesMap[winner]
         if !exists{
-            nodesMap[winner] = true
+            vNodesMap[winner] = true
             verifiers = append(verifiers, winner)
         }
         
         i++
     }
 
-    return verifiers
+    for len(miners) < size {
+
+        winnerIdx := (int(input[i]) * 256 + int(input[i+1])) % len(lottery)
+        winner = lottery[winnerIdx]
+
+        fmt.Printf("Lottery winner is: %d \n", winnerIdx)
+
+        _, exists := mNodesMap[winner]
+        if !exists{
+            mNodesMap[winner] = true
+            miners = append(miners, winner)
+        }
+        
+        i++
+    }
+
+    for len(noisers) < size {
+
+        winnerIdx := (int(input[i]) * 256 + int(input[i+1])) % len(lottery)
+        winner = lottery[winnerIdx]
+
+        fmt.Printf("Lottery winner is: %d \n", winnerIdx)
+
+        _, exists := nNodesMap[winner]
+        if !exists{
+            nNodesMap[winner] = true
+            noisers = append(noisers, winner)
+        }
+        
+        i++
+    }
+
+    return verifiers, miners, noisers
 
 }
