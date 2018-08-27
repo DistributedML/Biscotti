@@ -112,6 +112,7 @@ func pyInit(datasetName string) {
 	pyRoniModule = python.PyImport_ImportModule("logistic_validator")
 
 	pyLogInitFunc = pyLogModule.GetAttrString("init")
+
 	pyLogPrivFunc = pyLogModule.GetAttrString("privateFun")
 	pyTrainFunc = pyTestModule.GetAttrString("train_error")
 	pyTestFunc = pyTestModule.GetAttrString("test_error")
@@ -159,7 +160,6 @@ func oneGradientStep(globalW []float64) ([]float64, error) {
 	return goFloatArray, nil
 }
 
-// getIterationBlock
 
 
 // add an update to the record of updates received for the current iteration
