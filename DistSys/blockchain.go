@@ -47,6 +47,7 @@ func (bc *Blockchain) PrintChain() {
 
 // Get hash of the last block
 func (bc *Blockchain) getLatestBlockHash() []byte {
+	outLog.Printf("Latest Block Hash is: %x", bc.Blocks[len(bc.Blocks)-1].Hash)
 	return bc.Blocks[len(bc.Blocks)-1].Hash
 }
 

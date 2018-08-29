@@ -16,16 +16,18 @@ do
 	break
 done
 
-echo "Pulling latest source code from github"
+# echo "Pulling latest source code from github"
 
-git reset --hard
-git pull origin master
+# git reset --hard
+# git pull origin master
 
 rm -r LogFiles
 
 echo "Compiling go"
 
-go install
+sudo go install
+
+stat $GOPATH/bin/DistSys
 
 myPrivateIp=$(ifconfig | grep -oE -m 1 "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | head -1)
 
