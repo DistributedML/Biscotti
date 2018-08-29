@@ -79,13 +79,12 @@ class Client():
     # Used in BlockML when gradient is aggregated in Go
     def simpleStep(self, gradient):
         print("Simple step")
-        # TODO: Reshape gradient
-
+        layers = self.model.reshape(gradient)
         # Manually updates parameter gradients
         layer = 0
         for name, param in self.model.named_parameters():
             if param.requires_grad:
-                param.grad = gradient[layer]
+                param.grad = layers[layer]
                 layer += 1
 
         # Step in direction of parameter gradients
