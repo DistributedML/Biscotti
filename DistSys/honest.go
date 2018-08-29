@@ -249,7 +249,7 @@ func (honest *Honest) addBlock(newBlock Block) error {
 
 // Empty the updates recorded at the start of each iteration
 
-func (honest *Honest) flushUpdates(numberOfNodes int) {
+func (honest *Honest) flushUpdates() {
 
 	honest.blockUpdates = honest.blockUpdates[:0]
 }
@@ -289,13 +289,15 @@ func (honest *Honest) evaluateBlockQuality(block Block) bool {
 
 	//TODO: This is just a simple equality check comparing the hashes. 
 	myBlock := honest.bc.getBlock(block.Data.Iteration)
+	previousBlock := honest.bc.getBlock(block.Data.Iteration-1)
 
 	// check equality
-	if(string(block.PrevBlockHash[:]) == string(myBlock.PrevBlockHash[:]) && string(block.Hash[:]) == string(myBlock.Hash[:])) {
+	if(string(block.PrevBlockHash[:]) != string(previousBlock.Hash[:])) {		
+		outLog.Printf("Inconsistent hashes. ThisHash:" + string(block.PrevBlockHash[:]) +".Previous Hash:" + string(previousBlock.Hash[:]) )
 		return false
 	}else{
 		
-		if (len(block.Data.Deltas) == 0){
+		if (len(block.Data.Deltas) == 0 || len(myBlock.Data.Deltas) != 0){
 
 			return false
 		}
@@ -308,7 +310,7 @@ func (honest *Honest) evaluateBlockQuality(block Block) bool {
 
 func (honest *Honest) replaceBlock(block Block, iterationCount int){
 
-	*honest.bc.Blocks[iterationCount] = block
+	*honest.bc.Blocks[iterationCount+1] = block
 
 }
 

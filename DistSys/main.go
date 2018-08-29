@@ -30,6 +30,7 @@ const (
 	timeoutPeer 	time.Duration = 5000000000
 	
 	NUM_VERIFIERS 	int           = 1
+	NUM_MINERS 		int           = 1
 	DEFAULT_STAKE   int 		  = 10
 
 	VERIFIER_PRIME 	int 		  = 2
@@ -577,15 +578,19 @@ func prepareForNextIteration() {
 		os.Exit(1)
 	}
 
+	updateLock.Lock()
+	client.flushUpdates()
+	updateLock.Unlock()
+
 	convergedLock.Unlock()
 	boolLock.Lock()
 
-	if miner {
-		updateLock.Lock()
-		client.flushUpdates(numberOfNodes)
-		updateLock.Unlock()
-	}
-	
+	// if miner {
+
+
+	// }
+
+
 	iterationCount++
 	outLog.Printf("Moving on to next iteration %d", iterationCount)
 
@@ -647,8 +652,8 @@ func processUpdate(update Update) {
 		numberOfUpdates := client.addBlockUpdate(update)
 		updateLock.Unlock()
 
-		//send signal to start sending Block if all updates Received
-		if numberOfUpdates == (numberOfNodes - numberOfNodeUpdates) {			
+		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
+		if numberOfUpdates == (numberOfNodeUpdates) {			
 			outLog.Printf(strconv.Itoa(client.id)+":All updates for iteration %d received. Notifying channel.", iterationCount)	
 			allUpdatesReceived <- true 		 
 		}
@@ -659,10 +664,80 @@ func processUpdate(update Update) {
 }
 
 
-// For all non-miners, accept the block
-func processBlock(block Block) {
+// // For all non-miners, accept the block
+// func processBlock(block Block) {
 	
+// 	// Lock to ensure that iteration count doesn't change until I have appended block
+// 	outLog.Printf("Trying to acquire lock...")
+// 	boolLock.Lock()
+
+// 	outLog.Printf("Got lock, processing block")
+
+// 	hasBlock := client.hasBlock(block.Data.Iteration)
+
+// 	// Block is old, but could be better than my current block
+// 	if ((block.Data.Iteration < iterationCount) || hasBlock || iterationCount<0) {
+				
+// 		boolLock.Unlock()
+
+// 		if hasBlock {
+// 			outLog.Printf("Already have block")
+// 		}
+
+// 		if (iterationCount < 0) {
+// 			return
+// 		}
+
+// 		better := client.evaluateBlockQuality(block) // check equality and some measure of 	
+
+// 		if better {
+			
+// 			// TODO: If I receive a better block than my current one. Then I replace my block with this one.
+// 			// I request for all the next Blocks. I will also need to advertise new block or not?
+// 			// go callRequestChainRPC(same conn) // returns whole chain. Is it longer than mine?
+// 			// go evaluateReceivedChain() // if chain longer than mine and checks out replace mine with his
+			
+// 			outLog.Printf("Chain Length:" + strconv.Itoa(len(client.bc.Blocks)))
+// 			if(block.Data.Iteration == len(client.bc.Blocks) - 2){
+// 				client.replaceBlock(block, block.Data.Iteration)
+// 				outLog.Printf("Chain Length:" + strconv.Itoa(len(client.bc.Blocks)))
+// 				outLog.Printf(strconv.Itoa(client.id)+":Received better block")
+// 				return 
+// 			}
+
+		
+// 		} else {
+			
+// 			// returnBlock = client.bc.getBlock(block.Data.Iteration)						
+// 			outLog.Printf(strconv.Itoa(client.id)+":Equal block")
+// 			return 
+		
+// 		}
+
+	 
+// 	}
+
+// 	if block.Data.Iteration > iterationCount {
+		
+// 		boolLock.Unlock()
+
+// 		for block.Data.Iteration > iterationCount {
+// 			outLog.Printf(strconv.Itoa(client.id)+":Blocking. Got block for %d, I am at %d\n", block.Data.Iteration, iterationCount)
+// 			time.Sleep(1000 * time.Millisecond)
+// 		}
+
+// 		boolLock.Lock()
+// 	}
+	
+// 	go addBlockToChain(block)
+
+
+// }
+
+func processBlock(block Block) {
+
 	// Lock to ensure that iteration count doesn't change until I have appended block
+
 	outLog.Printf("Trying to acquire lock...")
 	boolLock.Lock()
 
@@ -670,22 +745,22 @@ func processBlock(block Block) {
 
 	hasBlock := client.hasBlock(block.Data.Iteration)
 
-	// Block is old, but could be better than my current block
 	if ((block.Data.Iteration < iterationCount) || hasBlock || iterationCount<0) {
-				
-		boolLock.Unlock()
-
+		
 		if hasBlock {
 			outLog.Printf("Already have block")
 		}
+		
+		boolLock.Unlock()
+		outLog.Printf("Released bool lock")
 
-		if (iterationCount < 0) {
+		if(iterationCount< 0){
 			return
 		}
 
 		better := client.evaluateBlockQuality(block) // check equality and some measure of 	
 
-		if better {
+		if(better){
 			
 			// TODO: If I receive a better block than my current one. Then I replace my block with this one.
 			// I request for all the next Blocks. I will also need to advertise new block or not?
@@ -696,12 +771,13 @@ func processBlock(block Block) {
 			if(block.Data.Iteration == len(client.bc.Blocks) - 2){
 				client.replaceBlock(block, block.Data.Iteration)
 				outLog.Printf("Chain Length:" + strconv.Itoa(len(client.bc.Blocks)))
-				outLog.Printf(strconv.Itoa(client.id)+":Received better block")
-				return 
+				outLog.Printf(strconv.Itoa(client.id)+":Received better  block")
 			}
+			return 
+
 
 		
-		} else {
+		}else{
 			
 			// returnBlock = client.bc.getBlock(block.Data.Iteration)						
 			outLog.Printf(strconv.Itoa(client.id)+":Equal block")
@@ -709,42 +785,77 @@ func processBlock(block Block) {
 		
 		}
 
-	// else, block should be accepted
-	} else {
+		// handleErrorFatal("Block of previous iteration received", staleError)
+	}
 
-		// Add the block to chain
-		blockChainLock.Lock()
+	if block.Data.Iteration > iterationCount {
 		
-		outLog.Printf(strconv.Itoa(client.id)+":Adding block for %d, I am at %d\n", 
-			block.Data.Iteration, iterationCount)
-		
-		err := client.addBlock(block)
-		blockChainLock.Unlock()
+		boolLock.Unlock()
+		outLog.Printf("Released bool lock")
 
-		if ((block.Data.Iteration == iterationCount) && (err == nil)){
-		
-			// If block is current, notify channel waiting for it
-			if(len(block.Data.Deltas) != 0 && updateSent && !verifier && iterationCount >= 0) {
-				outLog.Printf(strconv.Itoa(client.id)+":Sending block to channel")
-				blockReceived <- true
-			
-			}
+		for block.Data.Iteration > iterationCount {
+			outLog.Printf(strconv.Itoa(client.id)+":Blocking. Got block for %d, I am at %d\n", block.Data.Iteration, iterationCount)
+			time.Sleep(1000 * time.Millisecond)
+		}
 
-			boolLock.Unlock()
-			go sendBlock(block)	
 		
-		} else {	
 
-			// Need to catch up to current iteration
-			boolLock.Unlock()
-			prepareForNextIteration()
+		if ((block.Data.Iteration == iterationCount) || client.evaluateBlockQuality(block)){
+
+			outLog.Printf("Acquiring bool lock")
+			boolLock.Lock()	
+
+			go addBlockToChain(block)
 
 		}
 
+		return
 	}
+			
+	// // if not empty and not verifier send signal to channel. Not verifier required because you are not waiting for a block if you are the verifier and if you receive an empty block and if you are currently busy bootstrapping yourself. 
+	// if(len(block.Data.Deltas) != 0 && !verifier && iterationCount >= 0) {
+	// 	blockReceived <- true
+	// }
+
+	
+	go addBlockToChain(block)
 
 }
 
+// go-routine to process a block received and add to chain. 
+// Move to next iteration when done
+
+func addBlockToChain(block Block) {
+
+	// Add the block to chain
+	blockChainLock.Lock()
+	
+	outLog.Printf(strconv.Itoa(client.id)+":Adding block for %d, I am at %d\n", 
+		block.Data.Iteration, iterationCount)
+	
+	err := client.addBlock(block)
+	blockChainLock.Unlock()
+
+	if ((block.Data.Iteration == iterationCount) && (err == nil)){
+	
+		// If block is current, notify channel waiting for it
+		if(len(block.Data.Deltas) != 0 && updateSent && !verifier && iterationCount >= 0) {
+			outLog.Printf(strconv.Itoa(client.id)+":Sending block to channel")
+			blockReceived <- true
+		
+		}
+
+		boolLock.Unlock()
+		go sendBlock(block)	
+	
+	}else{
+	
+		boolLock.Unlock()
+		outLog.Printf(strconv.Itoa(client.id)+":Bool lock released")	
+	
+	}
+
+}
 
 
 // Miner broadcasts the block of this iteration to all peers
@@ -768,7 +879,6 @@ func sendBlock(block Block) {
 	// ensureRPCCallsReturn()
 	peerLock.Unlock()
 
-	// You can only move to the next iteration by sending a block if you were the verifier for that iteration or if you are proposing an empty block
 	outLog.Printf(strconv.Itoa(client.id)+":RPC calls successfully returned. Iteration: %d", iterationCount)
 
 	convergedLock.Lock()
@@ -965,6 +1075,9 @@ func sendUpdateToMiners(addresses []string) {
 						outLog.Printf(strconv.Itoa(client.id)+":Update mined. Iteration:%d\n", client.update.Iteration)
 						mined = true
 					}
+					if(err==staleError){
+						mined = true
+					}
 
 					go startBlockDeadlineTimer(iterationCount)
 
@@ -986,7 +1099,7 @@ func sendUpdateToMiners(addresses []string) {
 
 	}
 
-	// Couldn't mine the block. Send empty block.
+	// Couldn't mine the block. Send empty block. // Why do we need this?
 	if !mined {
 		outLog.Printf(strconv.Itoa(client.id)+":Will try and create an empty block")
 		blockChainLock.Lock()
