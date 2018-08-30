@@ -85,10 +85,7 @@ func (myvrf *VRF) getNodes(stakeMap map[int]int, input []byte, size int,
             lottery = append(lottery, nodeid)
         }
     }
-
-    fmt.Println(input)
-    fmt.Println(len(input))
-
+    
     var winner int
     for len(verifiers) < size {
 

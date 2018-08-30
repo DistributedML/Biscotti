@@ -26,6 +26,11 @@ var (
 	pyRoniModule  *python.PyObject
 	pyRoniFunc    *python.PyObject
 
+	pyTorchModule 		*python.PyObject
+	pyTorchInitFunc     *python.PyObject
+	pyTorchPrivFunc     *python.PyObject
+	pyTorchErrFunc      *python.PyObject
+
 	//Errors
 	 blockExistsError = errors.New("Forbidden overwrite of block foiled")
 )
@@ -37,6 +42,7 @@ const (
 	epsilon         = 1.0
 	datasetPath     = "../ML/data/"
 	codePath        = "../ML/code"
+	torchPath       = "../ML/Pytorch"
 	convThreshold   = 0.05
 )
 
@@ -103,6 +109,14 @@ func pyInit(datasetName string) {
 
 	sysPath := python.PySys_GetObject("path")
 	python.PyList_Insert(sysPath, 0, python.PyString_FromString("./"))
+	
+	python.PyList_Insert(sysPath, 0, python.PyString_FromString(torchPath))
+    pyTorchModule = python.PyImport_ImportModule("client_obj")
+
+	pyTorchInitFunc = pyTorchModule.GetAttrString("init")
+	pyTorchPrivFunc = pyTorchModule.GetAttrString("privateFun")
+	pyTorchErrFunc = pyTorchModule.GetAttrString("getTestErr")
+
 	python.PyList_Insert(sysPath, 0, python.PyString_FromString(codePath))
 
     outLog.Printf(strconv.Itoa(client.id)+"Importing modules...")
@@ -112,12 +126,12 @@ func pyInit(datasetName string) {
 	pyRoniModule = python.PyImport_ImportModule("logistic_validator")
 
 	pyLogInitFunc = pyLogModule.GetAttrString("init")
-
 	pyLogPrivFunc = pyLogModule.GetAttrString("privateFun")
 	pyTrainFunc = pyTestModule.GetAttrString("train_error")
 	pyTestFunc = pyTestModule.GetAttrString("test_error")
 	pyRoniFunc = pyRoniModule.GetAttrString("roni")
 
+	pyNumFeatures = pyTorchInitFunc.CallFunction(python.PyString_FromString("lfw"), python.PyString_FromString("lfw_maleness_train0"))
 	pyNumFeatures = pyLogInitFunc.CallFunction(python.PyString_FromString(datasetName), python.PyFloat_FromDouble(epsilon))
 	numFeatures := python.PyInt_AsLong(pyNumFeatures)
 

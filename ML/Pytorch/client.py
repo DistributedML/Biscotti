@@ -18,17 +18,17 @@ class Client():
         self.batch_size=4
         Dataset = datasets.get_dataset(dataset)
         transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
-        self.trainset = Dataset(filename, "data/" + dataset, is_train=True, train_cut=train_cut, transform=transform)
-        self.testset = Dataset(filename, "data/" + dataset, is_train=False, train_cut=train_cut, transform=transform)
+        self.trainset = Dataset(filename, "../ML/Pytorch/data/" + dataset, is_train=True, train_cut=train_cut, transform=transform)
+        self.testset = Dataset(filename, "../ML/Pytorch/data/" + dataset, is_train=False, train_cut=train_cut, transform=transform)
         self.trainloader = torch.utils.data.DataLoader(self.trainset, batch_size=self.batch_size, shuffle=True)
         self.testloader = torch.utils.data.DataLoader(self.testset, batch_size=len(self.testset), shuffle=False)
 
         D_in = datasets.get_num_features(dataset)
         D_out = datasets.get_num_classes(dataset)
 
-        self.model = SoftmaxModel(D_in, D_out)
+        # self.model = SoftmaxModel(D_in, D_out)
         # self.model = MNISTCNNModel()
-        # self.model = LFWCNNModel()
+        self.model = LFWCNNModel()
 
         # self.model = SVMModel(D_in, D_out)
         # self.criterion = nn.MultiLabelMarginLoss()
@@ -116,10 +116,11 @@ class Client():
 
     # Called when the aggregator shares the updated model
     def updateModel(self, modelWeights):
+        layers = self.model.reshape(modelWeights)
         layer = 0
         for name, param in self.model.named_parameters():
             if param.requires_grad:
-                param.data = modelWeights[layer]
+                param.data = layers[layer]
                 layer += 1
 
     def getModelWeights(self):
