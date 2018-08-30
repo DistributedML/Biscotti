@@ -39,8 +39,6 @@ class LFWCNNModel(nn.Module):
         l5 = 2*5940
         l6 = 2
 
-        print l1 + l2 + l3 + l4 + l5 + l6
-
         layers.append( torch.from_numpy(np.reshape(flat_gradient[0:l1], (18, 3, 3, 3))).type(torch.FloatTensor) )
         layers.append( torch.from_numpy( np.reshape(flat_gradient[l1:l1+l2], (18, ))).type(torch.FloatTensor) )
         layers.append( torch.from_numpy( np.reshape(flat_gradient[l1+l2: l1+l2+l3], (36,18,3,3))).type(torch.FloatTensor))
