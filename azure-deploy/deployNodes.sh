@@ -16,16 +16,18 @@ do
 	break
 done
 
-echo "Pulling latest source code from github"
+# echo "Pulling latest source code from github"
 
-git reset --hard
-git pull origin master
+# git reset --hard
+# git pull origin master
 
 rm -r LogFiles
 
 echo "Compiling go"
 
-go install
+sudo go install
+
+stat $GOPATH/bin/DistSys
 
 myPrivateIp=$(ifconfig | grep -oE -m 1 "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | head -1)
 
@@ -37,30 +39,30 @@ mkdir -p LogFiles
 
 # create new peers file
 
-rm peersfile.txt
+# rm peersfile.txt
 
 let hostindex=0
 
-for line in $(cat $GOPATH/src/simpleBlockChain/azure-deploy/tempHosts);do
+# for line in $(cat $GOPATH/src/simpleBlockChain/azure-deploy/tempHosts);do
 
-	tname=`echo $line | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'`
+# 	tname=`echo $line | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'`
 
-	echo $tname
+# 	echo $tname
 
-	for (( myIndex = hostindex ; myIndex < hostindex + nodesToRun; myIndex++)); do
+# 	for (( myIndex = hostindex ; myIndex < hostindex + nodesToRun; myIndex++)); do
 
-		echo $myIndex
-		let myPort=8000+$myIndex
-		lineToWrite=$tname:$myPort
-		echo $lineToWrite >> peersfile.txt
+# 		echo $myIndex
+# 		let myPort=8000+$myIndex
+# 		lineToWrite=$tname:$myPort
+# 		echo $lineToWrite >> peersfile.txt
 	
-	done
+# 	done
 
-	echo "I am here"
+# 	echo "I am here"
 
-	hostindex=$((hostindex + nodesToRun))
+# 	hostindex=$((hostindex + nodesToRun))
 
-done
+# done
 
 
 for (( index = startingIndex ; index < startingIndex + nodesToRun; index++ )); do

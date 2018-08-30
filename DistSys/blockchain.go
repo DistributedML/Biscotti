@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 )
 
 type Blockchain struct {
@@ -47,6 +48,7 @@ func (bc *Blockchain) PrintChain() {
 
 // Get hash of the last block
 func (bc *Blockchain) getLatestBlockHash() []byte {
+	outLog.Printf("Latest Block Hash is: %x", bc.Blocks[len(bc.Blocks)-1].Hash)
 	return bc.Blocks[len(bc.Blocks)-1].Hash
 }
 
@@ -66,6 +68,12 @@ func (bc *Blockchain) getBlock(iterationCount int) (*Block) {
 	if (len(bc.Blocks) >= (iterationCount + 2)) {
 		
 		outLog.Printf("Returning a block")
+		if(bc.Blocks[iterationCount+1].Data.Iteration != iterationCount){
+
+			outLog.Printf("Something's fishy. Blocks for multiple iterations have been appended")
+			bc.PrintChain()
+			os.Exit(1)
+		}
 		return bc.Blocks[iterationCount+1]
 	
 	} else {
