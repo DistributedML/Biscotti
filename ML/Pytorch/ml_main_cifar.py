@@ -7,30 +7,31 @@ from client import Client
 from softmax_model import SoftmaxModel
 from mnist_cnn_model import MNISTCNNModel
 from lfw_cnn_model import LFWCNNModel
+from cifar_cnn_model import CIFARCNNModel
 from svm_model import SVMModel
 import datasets
 
 def returnModel(D_in, D_out):
     # model = SoftmaxModel(D_in, D_out)
-    model = LFWCNNModel()
+    model = CIFARCNNModel()
     return model
 
 # Initialize Clients
 # First Client is the aggregator
 def main():
     clients = []
-    D_in = datasets.get_num_features("lfw")
-    D_out = datasets.get_num_classes("lfw")
+    D_in = datasets.get_num_features("cifar")
+    D_out = datasets.get_num_classes("cifar")
     batch_size = 4
     train_cut = 0.8
 
     print("Creating clients")
     for i in range(10):
         model = returnModel(D_in, D_out)    
-        clients.append(Client("lfw", "lfw_maleness_train" + str(i), batch_size, model, train_cut))
+        clients.append(Client("cifar", "cifar" + str(i), batch_size, model, train_cut))
 
     model = returnModel(D_in, D_out)
-    test_client = Client("lfw", "lfw_maleness_test", batch_size, model, 0)
+    test_client = Client("cifar", "cifar_test", batch_size, model, 0)
 
     
     print("Training for iterations")
