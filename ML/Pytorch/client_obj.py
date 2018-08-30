@@ -1,10 +1,24 @@
 import numpy as np
 import client
 import pdb
+from softmax_model import SoftmaxModel
+from mnist_cnn_model import MNISTCNNModel
+from lfw_cnn_model import LFWCNNModel
+from svm_model import SVMModel
+import datasets
+
 
 def init(dataset, filename):
     global Client
-    Client = client.Client(dataset, filename, 0.8)
+
+    D_in = datasets.get_num_features(dataset)
+    D_out = datasets.get_num_classes(dataset)
+    
+    batch_size = 4
+    model = SoftmaxModel(D_in, D_out)
+    train_cut = 0.8
+    
+    Client = client.Client(dataset, filename, batch_size, model, train_cut)
     
     if dataset == "mnist":
     	return 7850

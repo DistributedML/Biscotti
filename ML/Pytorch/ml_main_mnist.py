@@ -1,13 +1,31 @@
 import pdb
 from client import Client
+from softmax_model import SoftmaxModel
+from mnist_cnn_model import MNISTCNNModel
+from lfw_cnn_model import LFWCNNModel
+from svm_model import SVMModel
+import datasets
+
+def returnModel(D_in, D_out):
+    # model = SoftmaxModel(D_in, D_out)
+    model = MNISTCNNModel()
+    return model
 
 # Initialize Clients
 # First Client is the aggregator
 def main():
     clients = []
+    D_in = datasets.get_num_features("mnist")
+    D_out = datasets.get_num_classes("mnist")
+    batch_size = 4
+    train_cut = 0.8
+
     for i in range(10):
-        clients.append(Client("mnist", "mnist" + str(i)))
-    test_client = Client("mnist", "mnist_test", 0)
+        model = returnModel(D_in, D_out)    
+        clients.append(Client("mnist", "mnist" + str(i), batch_size, model, train_cut))
+
+    model = returnModel(D_in, D_out)
+    test_client = Client("mnist", "mnist_test", batch_size, model, 0)
 
     for iter in range(1000):
         # Calculate and aggregaate gradients    

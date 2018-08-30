@@ -13,7 +13,7 @@ class SoftmaxModel(nn.Module):
 
     def forward(self, x):
         # TODO: fix hardcoded
-        x = np.reshape(x, (x.shape[0], 784))
+        x = np.reshape(x, (x.shape[0], self.D_in))
         return self.linear(x)
     
     # Unflattens flattened gradient

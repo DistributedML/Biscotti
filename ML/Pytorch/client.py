@@ -1,7 +1,3 @@
-from softmax_model import SoftmaxModel
-from mnist_cnn_model import MNISTCNNModel
-from lfw_cnn_model import LFWCNNModel
-from svm_model import SVMModel
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -13,9 +9,9 @@ import pdb
 import datasets
 
 class Client():
-    def __init__(self, dataset, filename, train_cut=.80):
+    def __init__(self, dataset, filename, batch_size, model, train_cut=.80):
         # initializes dataset
-        self.batch_size=4
+        self.batch_size=batch_size
         Dataset = datasets.get_dataset(dataset)
         transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
         self.trainset = Dataset(filename, "../ML/Pytorch/data/" + dataset, is_train=True, train_cut=train_cut, transform=transform)
@@ -23,15 +19,8 @@ class Client():
         self.trainloader = torch.utils.data.DataLoader(self.trainset, batch_size=self.batch_size, shuffle=True)
         self.testloader = torch.utils.data.DataLoader(self.testset, batch_size=len(self.testset), shuffle=False)
 
-        D_in = datasets.get_num_features(dataset)
-        D_out = datasets.get_num_classes(dataset)
+        self.model = model
 
-        # self.model = SoftmaxModel(D_in, D_out)
-        # self.model = MNISTCNNModel()
-        self.model = LFWCNNModel()
-
-        # self.model = SVMModel(D_in, D_out)
-        # self.criterion = nn.MultiLabelMarginLoss()
         ### Tunables ###
         self.criterion = nn.CrossEntropyLoss()
         self.optimizer = optim.SGD(self.model.parameters(), lr=0.001, momentum=0.9, weight_decay=0.001)
