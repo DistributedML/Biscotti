@@ -1,6 +1,3 @@
-import sys
-sys.path.append('datasets')
-sys.path.append('models')
 import pdb
 from client import Client
 
