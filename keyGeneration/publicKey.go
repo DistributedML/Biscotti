@@ -97,3 +97,10 @@ func (pkey *PublicKey) GenerateClientKey() kyber.Scalar {
 		return privateKey
 
 }
+
+func (pkey *PublicKey) SetG1Key(key kyber.Point) {
+
+	pkey.PKG1 = make([]kyber.Point , 1)
+	pkey.PKG1[0] = key
+
+}

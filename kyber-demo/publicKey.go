@@ -78,3 +78,11 @@ func (pkey *PublicKey) GetFirstPKG2() kyber.Point{
 	return pkey.PKG2[1]
 
 }
+
+func (pkey *PublicKey) SetG1Key(key kyber.Point) {
+
+	return pkey.PKG1[0] = key
+
+}
+
+
