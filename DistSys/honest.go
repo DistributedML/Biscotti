@@ -30,6 +30,9 @@ var (
 	pyTorchInitFunc     *python.PyObject
 	pyTorchPrivFunc     *python.PyObject
 	pyTorchErrFunc      *python.PyObject
+	pyTorchRoniFunc 	*python.PyObject
+
+	useTorch	   bool
 
 	//Errors
 	 blockExistsError = errors.New("Forbidden overwrite of block foiled")
@@ -48,7 +51,8 @@ const (
 
 type Honest struct {
 	id           int
-	data         dataframe.DataFrame
+	dataset 	 string
+	ncol 	     int
 	update       Update
 	blockUpdates []Update
 	bc           *Blockchain
@@ -66,15 +70,15 @@ func init() {
 
 func (honest *Honest) initializeData(datasetName string, numberOfNodes int) {
 
-	fullData := getData(datasetPath + datasetName + ".csv")
+	if datasetName == "creditcard" {
+		useTorch = false
+	} else {
+		useTorch = true
+	}
 
-	honest.data = divideData(fullData, numberOfNodes)[honest.id]
-
-	createCSVs(honest.data, datasetName, honest.id)
-
-	honest.bc = NewBlockchain(honest.data.Ncol())
-
-	pyInit(datasetName + strconv.Itoa(honest.id))
+	honest.ncol = pyInit(datasetName, datasetName + strconv.Itoa(honest.id))
+	honest.dataset = datasetName
+	honest.bc = NewBlockchain(honest.ncol)
 
 }
 
@@ -86,7 +90,7 @@ func (honest *Honest) checkConvergence() bool {
 
 	outLog.Printf(strconv.Itoa(client.id)+"Train Error is %.5f in Iteration %d", trainError, honest.bc.Blocks[len(honest.bc.Blocks)-1].Data.Iteration)
 
-	if trainError < convThreshold {
+	if trainError < convThreshold && trainError > 0 {
 		return true
 	}
 
@@ -105,21 +109,24 @@ func (honest *Honest) computeUpdate(iterationCount int, datasetName string) {
 
 // Initialize the python stuff using go-python
 
-func pyInit(datasetName string) {
+func pyInit(datasetName string, dataFile string) int {
 
 	sysPath := python.PySys_GetObject("path")
 	python.PyList_Insert(sysPath, 0, python.PyString_FromString("./"))
 	
+	outLog.Printf(strconv.Itoa(client.id)+"Importing modules...")
+
+	// Get all PyTorch related
 	python.PyList_Insert(sysPath, 0, python.PyString_FromString(torchPath))
     pyTorchModule = python.PyImport_ImportModule("client_obj")
 
 	pyTorchInitFunc = pyTorchModule.GetAttrString("init")
 	pyTorchPrivFunc = pyTorchModule.GetAttrString("privateFun")
 	pyTorchErrFunc = pyTorchModule.GetAttrString("getTestErr")
+	pyTorchRoniFunc = pyTorchModule.GetAttrString("roni")
 
+	// Get all others
 	python.PyList_Insert(sysPath, 0, python.PyString_FromString(codePath))
-
-    outLog.Printf(strconv.Itoa(client.id)+"Importing modules...")
 
 	pyLogModule = python.PyImport_ImportModule("logistic_model")
 	pyTestModule = python.PyImport_ImportModule("logistic_model_test")
@@ -131,11 +138,21 @@ func pyInit(datasetName string) {
 	pyTestFunc = pyTestModule.GetAttrString("test_error")
 	pyRoniFunc = pyRoniModule.GetAttrString("roni")
 
-	pyNumFeatures = pyTorchInitFunc.CallFunction(python.PyString_FromString("lfw"), python.PyString_FromString("lfw_maleness_train0"))
-	pyNumFeatures = pyLogInitFunc.CallFunction(python.PyString_FromString(datasetName), python.PyFloat_FromDouble(epsilon))
+	// TODO: clean up
+	// We currently support creditcard for logreg, and mnist/lfw for pytorch
+	if useTorch {
+		pyNumFeatures = pyTorchInitFunc.CallFunction(python.PyString_FromString(datasetName), 
+			python.PyString_FromString(dataFile))
+	} else {
+		pyNumFeatures = pyLogInitFunc.CallFunction(python.PyString_FromString(dataFile), 
+			python.PyFloat_FromDouble(epsilon))
+	}
+	
 	numFeatures := python.PyInt_AsLong(pyNumFeatures)
 
 	outLog.Printf(strconv.Itoa(client.id)+"Sucessfully pulled dataset. Features: %d\n", numFeatures)
+
+	return numFeatures
 
 }
 
@@ -154,7 +171,13 @@ func oneGradientStep(globalW []float64) ([]float64, error) {
 	}
 	
 	// Either use full GD or SGD here
-	result := pyLogPrivFunc.CallFunction(python.PyInt_FromLong(1), argArray, python.PyInt_FromLong(batch_size))
+	var result *python.PyObject
+	if useTorch {
+		result = pyTorchPrivFunc.CallFunction(argArray)
+	} else { 
+		result = pyLogPrivFunc.CallFunction(python.PyInt_FromLong(1), 
+			argArray, python.PyInt_FromLong(batch_size))
+	}
 
 	// Convert the resulting array to a go byte array
 	pyByteArray := python.PyByteArray_FromObject(result)
@@ -193,16 +216,16 @@ func (honest *Honest) createBlock(iterationCount int) (*Block,error) {
 		return nil, blockExistsError
 	}
 
-	pulledGradient := make([]float64, honest.data.Ncol())
+	pulledGradient := make([]float64, honest.ncol)
 	pulledGradient = honest.bc.getLatestGradient()
-	updatedGradient := make([]float64, honest.data.Ncol())
-	deltaM := mat.NewDense(1, honest.data.Ncol(), make([]float64, honest.data.Ncol()))
-	pulledGradientM := mat.NewDense(1, honest.data.Ncol(), pulledGradient)
+	updatedGradient := make([]float64, honest.ncol)
+	deltaM := mat.NewDense(1, honest.ncol, make([]float64, honest.ncol))
+	pulledGradientM := mat.NewDense(1, honest.ncol, pulledGradient)
 
 	// Update Aggregation
 	for _, update := range honest.blockUpdates {
 		if update.Accepted {
-			deltaM = mat.NewDense(1, honest.data.Ncol(), update.Delta)
+			deltaM = mat.NewDense(1, honest.ncol, update.Delta)
 			pulledGradientM.Add(pulledGradientM, deltaM)	
 		} else {
 			outLog.Printf("Skipping an update")
@@ -290,9 +313,18 @@ func (honest *Honest) verifyUpdate(update Update) float64 {
 		python.PyList_SetItem(updateArray, i, python.PyFloat_FromDouble(deltas[i]))
 	}
 
-	pyRoni := pyRoniFunc.CallFunction(truthArray, updateArray)
-	score := python.PyFloat_AsDouble(pyRoni)
+	outLog.Println(truthModel[0:10])
+	outLog.Println(deltas[0:10])
 
+	var score float64
+	if useTorch {
+		pyRoni := pyTorchRoniFunc.CallFunction(truthArray, updateArray)
+		score = python.PyFloat_AsDouble(pyRoni)
+	} else {
+		pyRoni := pyRoniFunc.CallFunction(truthArray, updateArray)
+		score = python.PyFloat_AsDouble(pyRoni)		
+	}
+	
 	python.PyGILState_Release(_gstate)	
 
 	return score
@@ -309,15 +341,10 @@ func (honest *Honest) evaluateBlockQuality(block Block) bool {
 	if(string(block.PrevBlockHash[:]) != string(previousBlock.Hash[:])) {		
 		outLog.Printf("Inconsistent hashes. ThisHash:" + string(block.PrevBlockHash[:]) +".Previous Hash:" + string(previousBlock.Hash[:]) )
 		return false
-	}else{
-		
-		if (len(block.Data.Deltas) == 0 || len(myBlock.Data.Deltas) != 0){
-
-			return false
-		}
-	
+	} else if (len(block.Data.Deltas) == 0 || len(myBlock.Data.Deltas) != 0) {
+		return false
 	}
-
+	
 	return true
 	
 }
@@ -329,7 +356,6 @@ func (honest *Honest) replaceBlock(block Block, iterationCount int){
 }
 
 //Test the current global model. Determine training and test error to see if model has converged 
-
 func testModel(weights []float64, node string) (float64, float64) {
 
 	runtime.LockOSThread()
@@ -342,14 +368,19 @@ func testModel(weights []float64, node string) (float64, float64) {
 		python.PyList_SetItem(argArray, i, python.PyFloat_FromDouble(weights[i]))
 	}
 
+	var trainErr, testErr float64
+	if useTorch {
+		pyTrainResult := pyTorchErrFunc.CallFunction(argArray)
+		trainErr = python.PyFloat_AsDouble(pyTrainResult)
+		testErr = trainErr
 
-	pyTrainResult := pyTrainFunc.CallFunction(argArray)
+	} else {
+		pyTrainResult := pyTrainFunc.CallFunction(argArray)
+		trainErr = python.PyFloat_AsDouble(pyTrainResult)
 
-	trainErr := python.PyFloat_AsDouble(pyTrainResult)
-
-	pyTestResult := pyTestFunc.CallFunction(argArray)
-
-	testErr := python.PyFloat_AsDouble(pyTestResult)
+		pyTestResult := pyTestFunc.CallFunction(argArray)
+		testErr = python.PyFloat_AsDouble(pyTestResult)
+	}
 
 	python.PyGILState_Release(_gstate)	
 
@@ -358,7 +389,6 @@ func testModel(weights []float64, node string) (float64, float64) {
 }
 
 // replace the current chain with the one input and return the latest iteration count
-
 func (honest *Honest) replaceChain(chain Blockchain) int {
 	
 	*honest.bc = chain
@@ -367,8 +397,7 @@ func (honest *Honest) replaceChain(chain Blockchain) int {
 	return chain.Blocks[len(chain.Blocks) - 1].Data.Iteration
 }
 
-// Divide the dataset equally among the number of nodes
-
+// DEPRECATED: Divide the dataset equally among the number of nodes
 func divideData(data dataframe.DataFrame, numberOfNodes int) []dataframe.DataFrame {
 
 
@@ -412,8 +441,7 @@ func divideData(data dataframe.DataFrame, numberOfNodes int) []dataframe.DataFra
 }
 
 
-// creates a CSV for your part of the data
-
+// DEPRECATED: creates a CSV for your part of the data
 func createCSVs(nodeData dataframe.DataFrame, datasetName string, nodeID int) {
 
 	filename := datasetName + strconv.Itoa(nodeID) + ".csv"
@@ -423,8 +451,7 @@ func createCSVs(nodeData dataframe.DataFrame, datasetName string, nodeID int) {
 
 }
 
-// reads data into dataframe
-
+// DEPRECATED: reads data into dataframe
 func getData(filePath string) dataframe.DataFrame {
 
 	f, err := os.Open(filePath)
@@ -434,9 +461,7 @@ func getData(filePath string) dataframe.DataFrame {
 
 }
 
-
 // Error - checking
-
 func check(e error) {
 
 	if e != nil {
