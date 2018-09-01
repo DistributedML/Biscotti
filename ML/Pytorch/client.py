@@ -22,6 +22,7 @@ class Client():
         self.model = model
 
         ### Tunables ###
+        # self.criterion = nn.MultiLabelMarginLoss()
         self.criterion = nn.CrossEntropyLoss()
         self.optimizer = optim.SGD(self.model.parameters(), lr=0.001, momentum=0.9, weight_decay=0.001)
         self.aggregatedGradients = []
@@ -35,7 +36,7 @@ class Client():
             labels = data['label'].long()
 
             # for svm
-            # padded_labels = torch.zeros(self.batch_size,10).long()
+            # padded_labels = torch.zeros(self.batch_size,2).long()
             # padded_labels.transpose(0,1)[labels] = 1
             # labels = padded_labels 
 
