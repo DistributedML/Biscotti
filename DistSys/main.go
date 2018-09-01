@@ -64,9 +64,9 @@ var (
     peerLookup          	map[string]int
 	peerAddresses			map[int]net.TCPAddr
 	stakeMap				map[int]int
-	pkMap					map[int]PublicKey
-	commitKey 				PublicKey
-	sKey 					kyber.Scalar
+	// pkMap					map[int]PublicKey
+	// commitKey 				PublicKey
+	// sKey 					kyber.Scalar
 
 	//Locks
 	updateLock    		sync.Mutex
@@ -300,23 +300,6 @@ func exitOnError(prefix string, err error) {
 	}
 }
 
-// TODO:
-func extractPublicKeys() map[int]PublicKey{
-
-}
-
-// TODO:
-func extractSecretKey(int nodeNum) map[int]PublicKey{
-	
-}
-
-// TODO:
-func extractCommitmentKey(){
-
-}
-
-
-
 // Parse args, read dataset and initialize separate threads for listening for updates/Blocks and sending updates
 
 func main() {
@@ -432,11 +415,6 @@ func main() {
 
     // init peer addresses list
     peerAddresses = make(map[int]net.TCPAddr)
-
-    pkMap := extractPublicKeys()
-    commitKey := extractCommitmentKey()
-    sKey := extractSecretkey(nodeNum)
-
 
 	//Initialize a honest client
 	client = Honest{id: nodeNum, blockUpdates: make([]Update, 0, 5)}
