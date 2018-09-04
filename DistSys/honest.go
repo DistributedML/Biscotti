@@ -16,6 +16,7 @@ import (
 	"github.com/dedis/kyber/pairing/bn256"
 	"encoding/json"
 	"fmt"
+	"sort"
 
 )
 
@@ -298,7 +299,7 @@ func (honest *Honest) createBlock(iterationCount int) (*Block,error) {
 
 // creates a block from all the updates recorded.
 
-func (honest *Honest) createBlockSecureAgg(iterationCount int) (*Block,error) {
+func (honest *Honest) createBlockSecAgg(iteration int, nodeList []int) (*Block,error) {
 
 	// Has block already been appended from advertisements by other client?
 	if(honest.bc.getBlock(iterationCount) != nil){
@@ -313,25 +314,32 @@ func (honest *Honest) createBlockSecureAgg(iterationCount int) (*Block,error) {
 
 		
 
-	// // Update Aggregation
-	// for _, update := range honest.blockUpdates {
-	// 	if update.Accepted {
-	// 		deltaM = mat.NewDense(1, honest.ncol, update.Delta)
-	// 		pulledGradientM.Add(pulledGradientM, deltaM)	
-	// 	} else {
-	// 		outLog.Printf("Skipping an update")
-	// 	}
+
+	// Recover Secret Secure Aggregation
+	
+	if (len(nodeList) > 0){
+
+		aggregateUpdate := honest.recoverAggregateUpdates()	
+		deltaM = mat.NewDense(1, honest.ncol, aggregateUpdate)
+		pulledGradientM.Add(pulledGradientM, deltaM)
+
+	}
+	
+
+	// Update Aggregation
+	for _, nodeIndex := range nodeList {
 		
-	// }
-	//Recover Secret Secure Aggregation
-	recoverAggregateUpdates()
+		thisNodeUpdate := Update{Iteration:iteration, Commitment: honest.secretList[nodeIndex].CommitmentUpdate, Accepted:true}
+		honest.blockUpdates = append(honest.blockUpdates, thisNodeUpdate)
+	
+	}
 
 	mat.Row(updatedGradient, 0, pulledGradientM)
 
 	updatesGathered := make([]Update, len(honest.blockUpdates))
 	copy(updatesGathered, honest.blockUpdates)
 
-	bData := BlockData{iterationCount, updatedGradient, updatesGathered}
+	bData := BlockData{iteration, updatedGradient, updatesGathered}
 	honest.bc.AddBlock(bData) 
 
 	newBlock := honest.bc.Blocks[len(honest.bc.Blocks)-1]
@@ -340,34 +348,32 @@ func (honest *Honest) createBlockSecureAgg(iterationCount int) (*Block,error) {
 
 }
 
-func recoverAggregateUpdates() []float64{
+func (honest *Honest) recoverAggregateUpdates() []float64{
 
 	 myIndex := 0
 
-	 polySecretMap := make(map[int][]Share)
-
-	 for index, subPolyPart := range aggregateSecrets[myIndex].PolyMap{
+	 for index, subPolyPart := range honest.aggregatedSecrets[myIndex].PolyMap{
 
 		 listOfShares := make([]Share,0)
 
-		 for i := 0; i < len(aggregatedSecrets); i++ {
+		 for i := 0; i < len(honest.aggregatedSecrets); i++ {
 		 	
-		 	for _, share := range aggregatedSecrets[i].PolyMap[index].Secrets{
+		 	for _, share := range honest.aggregatedSecrets[i].PolyMap[index].Secrets{
 
 		 		listOfShares = append(listOfShares, share)	
 		 	}	 	
 		 	
 		 }
 
-		 subPolyPart.Polynomial = recoverSecret(listOfShares, maxPolynomialdegree-1)
-		 fmt.Println(subPolyPart.Polynomial)	 
+		 subPolyPart.Polynomial = recoverSecret(listOfShares, POLY_SIZE-1)
+		 // fmt.Println(subPolyPart.Polynomial)	 
 
 	 }
 
 	 reconstructedUpdate := make([]int64,0)
 	 indexes := make([]int, 0)
 
-	 for k, _ := range minerSecrets[myIndex].PolyMap {
+	 for k, _ := range honest.aggregatedSecrets[myIndex].PolyMap {
 	    indexes = append(indexes, k)
 	}
 	
@@ -375,11 +381,11 @@ func recoverAggregateUpdates() []float64{
 
 	for _, index := range indexes{
 
-		subPolyPart := minerSecrets[myIndex].PolyMap[index]
+		subPolyPart := honest.aggregatedSecrets[myIndex].PolyMap[index]
 
 		for i := len(reconstructedUpdate); i < index; i++ {
  			
- 			reconstructedUpdate = append(reconstructedUpdate, subPolyPart.Polynomial[i%maxPolynomialdegree])
+ 			reconstructedUpdate = append(reconstructedUpdate, subPolyPart.Polynomial[i%POLY_SIZE])
  		
  		}
 
@@ -387,9 +393,10 @@ func recoverAggregateUpdates() []float64{
 	 
     fmt.Println(reconstructedUpdate)
 
-	aggregatedVectorFloat := updateIntToFloat(reconstructedUpdate, precision)
+	aggregatedVectorFloat := updateIntToFloat(reconstructedUpdate, PRECISION)
 
-	fmt.Println(aggregatedVectorFloat)
+	return aggregatedVectorFloat
+
 
 
 }
@@ -444,6 +451,9 @@ func (honest *Honest) flushSecrets() {
 
 	// IFFY. How to empty a map, I don't know
 	honest.secretList = make(map[int]MinerPart)
+	honest.blockUpdates = honest.blockUpdates[:0]
+	honest.aggregatedSecrets = honest.aggregatedSecrets[:0]
+
 
 }
 

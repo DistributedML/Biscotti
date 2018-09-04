@@ -749,8 +749,10 @@ func prepareForNextIteration() {
 		}
 
 	} else if verifier {
+
 		outLog.Printf(strconv.Itoa(client.id)+":I am verifier. Iteration:%d", iterationCount)
 		updateSent = true
+	
 	} else {
 		outLog.Printf(strconv.Itoa(client.id)+":I am not miner or verifier. Iteration:%d", iterationCount)
 		updateSent = false
@@ -1438,25 +1440,46 @@ func startShareDeadlineTimer(timerForIteration int){
 					outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")
 					
 					// //TODO:
-					// blockToSend, err := client.createBlockSecAgg(iterationCount)
+					blockToSend, err := client.createBlockSecAgg(iterationCount, finalNodeList)
 				
 					blockChainLock.Unlock()		
 
-					// printError("Iteration: " + strconv.Itoa(iterationCount), err)
+					printError("Iteration: " + strconv.Itoa(iterationCount), err)
 				
-					// if (err == nil) {
-					// 	sendBlock(*blockToSend)
-					// }					
+					if (err == nil) {
+						sendBlock(*blockToSend)
+					}					
 
 				}else{
 					outLog.Printf(strconv.Itoa(client.id)+":Creating empty block")
+					dummyNodeList := make([]int,0)
 					//create empty block
+					blockChainLock.Lock()				
+					outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")					
+					// //TODO:
+					blockToSend, err := client.createBlockSecAgg(iterationCount, dummyNodeList)				
+					blockChainLock.Unlock()	
+
+					if (err == nil) {
+						sendBlock(*blockToSend)
+					}				
 				}
 
 				
 			}else{
 					outLog.Printf(strconv.Itoa(client.id)+":Creating empty block")
-				// create empty block
+					// create empty block
+					outLog.Printf(strconv.Itoa(client.id)+":Creating empty block")
+					dummyNodeList := make([]int,0)
+					//create empty block
+					blockChainLock.Lock()				
+					outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")					
+					// //TODO:
+					blockToSend, err := client.createBlockSecAgg(iterationCount, dummyNodeList)				
+					blockChainLock.Unlock()	
+					if (err == nil) {
+						sendBlock(*blockToSend)
+					}
 			}
 		
 
@@ -1481,13 +1504,17 @@ func getSecretShares(minerList map[string][]int, nodeList []int) []MinerPart{
 
 	minerShares := make([]MinerPart, 0)
 
-	(myMinerPart) = client.secretList[nodeList[0]]
+	// aggreegating and appending my own list
+
+	myMinerPart := client.secretList[nodeList[0]]
 
 	for i := 1; i < len(nodeList); i++ {
 		
-		(myMinerPart) = aggregateSecret((myMinerPart), client.secretList[nodeList[i]])
+		myMinerPart = aggregateSecret(myMinerPart, client.secretList[nodeList[i]])
 
-	}	
+	}
+
+	minerShares = append(minerShares, myMinerPart)	
 
 	for address, _ := range minerList {
 		

@@ -4,15 +4,17 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"github.com/dedis/kyber"
 	// "encoding/binary"
 	// "bytes"
 )
 
 // Update - data object representing a single update
 type Update struct {
-	Iteration int
-	Delta     []float64
-	Accepted  bool
+	Iteration 	int
+	Delta     	[]float64
+	Commitment  kyber.Point
+	Accepted  	bool
 }
 
 func (update Update) String() string {
