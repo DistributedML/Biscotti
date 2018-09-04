@@ -60,7 +60,7 @@ func (myvrf *VRF) verify(input []byte, theirPk vrf.PublicKey, inputVRF []byte, i
 
 // very inefficient helper function to get the verifier set
 // Based on stakeMap, nodes get lottery tickets proportional to their stake
-func (myvrf *VRF) getNodes(stakeMap map[int]int, input []byte, size int, 
+func (myvrf *VRF) getNodes(stakeMap map[int]int, input []byte, size int, numMiners int, 
     totalNodes int) ([]int, []int, []int, []byte, []byte) {
 
     vrfOutput, vrfProof := myvrf.sk.Prove(input)
@@ -105,7 +105,7 @@ func (myvrf *VRF) getNodes(stakeMap map[int]int, input []byte, size int,
         i++
     }
 
-    for len(miners) < size {
+    for len(miners) < numMiners {
 
         winnerIdx := (int(input[i]) * 256 + int(input[i+1])) % len(lottery)
         winner = lottery[winnerIdx]

@@ -1,6 +1,7 @@
 package main
 
 import (
+	
 	"bufio"
     "errors"
 	"fmt"
@@ -15,6 +16,8 @@ import (
 	"os"
 	"flag"
 	"encoding/gob"
+	
+
 )
 
 // Timeout for block should be more than timeout for update because nodes should be more patients for the block to come through
@@ -30,11 +33,16 @@ const (
 	timeoutPeer 	time.Duration = 5000000000
 	
 	NUM_VERIFIERS 	int           = 1
-	NUM_MINERS 		int           = 1
+	NUM_MINERS 		int           = 2
 	DEFAULT_STAKE   int 		  = 10
 
 	VERIFIER_PRIME 	int 		  = 2
 	MINER_PRIME 	int 		  = 3
+
+	PRECISION       int 		  = 4
+	POLY_SIZE 		int 		  = 10
+	TOTAL_SHARES 	int 		  = 10
+	SECURE_AGG  	bool 		  = true
 
 )
 
@@ -54,6 +62,7 @@ var (
 	client 				Honest
 	myVRF				VRF
 	
+	allSharesReceived		chan bool
 	allUpdatesReceived		chan bool
 	networkBootstrapped		chan bool
 	blockReceived 			chan bool
@@ -67,6 +76,7 @@ var (
 	// pkMap					map[int]PublicKey
 	// commitKey 				PublicKey
 	// sKey 					kyber.Scalar
+
 
 	//Locks
 	updateLock    		sync.Mutex
@@ -94,6 +104,8 @@ var (
 	//Errors
 	staleError error = errors.New("Stale Update/Block")
 	roniError  error = errors.New("RONI Failed")
+	rpcError  error = errors.New("RPC Timeout")
+
 )
 
 // Python init function for go-python
@@ -134,6 +146,57 @@ func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
 
 	// TODO: Instead of adding to a block, sign it and return to client
 	return nil
+
+}
+
+// The peer receives an update from another peer if its a verifier in that round.
+// The verifier peer takes in the update and returns immediately.
+// It calls a separate go-routine for collecting updates and sending updates when all updates have been collected
+// Returns:
+// - StaleError if its an update for a preceding round.
+
+func (s *Peer) RegisterSecret(share MinerPart, _ignored *bool) error {
+
+	outLog.Printf(strconv.Itoa(client.id)+":Got miner request, iteration %d\n", share.Iteration)
+
+	// we can return the chain to the guy here instead of just leaving that guy with an error
+	if share.Iteration < iterationCount {
+		printError("Share of previous iteration received", staleError)
+		return staleError
+	}
+
+	// Process update only called by the miner nodes
+	go processShare(share)
+
+	return nil
+
+}
+
+
+// go routine to process the update received by miner nodes
+func processShare(share MinerPart) {
+
+	outLog.Printf(strconv.Itoa(client.id)+":Got update for %d, I am at %d\n", share.Iteration, iterationCount)
+
+	for share.Iteration > iterationCount {
+		outLog.Printf(strconv.Itoa(client.id)+":Blocking for stale update. Update for %d, I am at %d\n", share.Iteration, iterationCount)
+		time.Sleep(2000 * time.Millisecond)
+	}
+
+	// Might get an update while I am in the announceToNetwork phase and when I come out of it the update becomes redundant
+	if ((iterationCount == share.Iteration)) {
+
+		updateLock.Lock()
+		numberOfShares := client.addSecretShare(share)
+		updateLock.Unlock()
+
+		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
+		if numberOfShares == numberOfNodeUpdates {			
+			outLog.Printf(strconv.Itoa(client.id)+":All shares for iteration %d received. Notifying channel.", iterationCount)	
+			allSharesReceived <- true 		 
+		}
+		
+	}
 
 }
 
@@ -206,7 +269,52 @@ func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, chain *Blockchain) error {
 	return  nil 
 }
 
+func (s *Peer) GetUpdateList(iteration int, nodeList *([]int)) error {
 
+	outLog.Printf(strconv.Itoa(client.id) + ":Giving update list")
+	
+	if(iteration == iterationCount){
+
+		// might need to & it
+		for nodeID, _ := range client.secretList {
+			*(nodeList) = append((*nodeList), nodeID)
+		}
+	
+	}else{
+		
+		return staleError
+	
+	}
+
+	return nil
+
+}
+
+func (s *Peer) GetMinerPart(nodeList []int, myMinerPart *MinerPart) error {
+
+	outLog.Printf(strconv.Itoa(client.id) + ":Giving my aggregated share")
+	
+	*(myMinerPart) = MinerPart{}
+	// Might need this condition
+	if(miner && (client.secretList[nodeList[0]].Iteration == iterationCount)){
+
+		*(myMinerPart) = client.secretList[nodeList[0]]
+
+		for i := 1; i < len(nodeList); i++ {
+			
+			*(myMinerPart) = aggregateSecret(*(myMinerPart), client.secretList[nodeList[i]])
+		}
+
+	
+	}else{
+		
+		return staleError
+	
+	}
+
+	return nil
+
+}
 // Basic check to see if you are the verifier in the next round
 func amVerifier(nodeNum int) bool {
 	return roleIDs[client.id] % VERIFIER_PRIME == 0
@@ -226,7 +334,7 @@ func getRoles() map[int]int {
 	}
 
 	vIDs, mIDs, noisers, _, _ := myVRF.getNodes(stakeMap, client.bc.getLatestBlockHash(), 
-		NUM_VERIFIERS, numberOfNodes)
+		NUM_VERIFIERS, NUM_MINERS, numberOfNodes)
 
 	outLog.Printf("Verifiers are %s", vIDs)
 	outLog.Printf("Miners are %s", mIDs)
@@ -299,6 +407,23 @@ func exitOnError(prefix string, err error) {
 		os.Exit(1)
 	}
 }
+
+// // TODO:
+// func extractPublicKeys() map[int]PublicKey{
+
+// }
+
+// // TODO:
+// func extractSecretKey(int nodeNum) map[int]PublicKey{
+	
+// }
+
+// // TODO:
+// func extractCommitmentKey(){
+
+// }
+
+
 
 // Parse args, read dataset and initialize separate threads for listening for updates/Blocks and sending updates
 
@@ -416,12 +541,18 @@ func main() {
     // init peer addresses list
     peerAddresses = make(map[int]net.TCPAddr)
 
+    // pkMap := extractPublicKeys()
+    // commitKey := extractCommitmentKey()
+    // sKey := extractSecretkey(nodeNum)
+
+
 	//Initialize a honest client
 	client = Honest{id: nodeNum, blockUpdates: make([]Update, 0, 5)}
 
 	
 	// Reading data and declaring some global locks to be used later
 	client.initializeData(datasetName, numberOfNodes)
+	client.bootstrapKeys()
 
 	// initialize the VRF
 	myVRF = VRF{}
@@ -439,6 +570,8 @@ func main() {
 	allUpdatesReceived = make (chan bool)
 	networkBootstrapped = make (chan bool)
 	blockReceived = make (chan bool)
+	allSharesReceived = make (chan bool)
+
 
 	// Initializing RPC Server
 	peer := new(Peer)
@@ -581,19 +714,23 @@ func prepareForNextIteration() {
 		os.Exit(1)
 	}
 
-	updateLock.Lock()
-	client.flushUpdates()
-	updateLock.Unlock()
+	if(SECURE_AGG) {
+
+		updateLock.Lock()
+		client.flushSecrets()
+		updateLock.Unlock()
+	
+	}else{
+
+		updateLock.Lock()
+		client.flushUpdates()
+		updateLock.Unlock()	
+	}	
 
 	convergedLock.Unlock()
 	boolLock.Lock()
 
-	// if miner {
-
-
-	// }
-
-
+	
 	iterationCount++
 	outLog.Printf("Moving on to next iteration %d", iterationCount)
 
@@ -605,7 +742,12 @@ func prepareForNextIteration() {
 	if miner {
 		outLog.Printf(strconv.Itoa(client.id)+":I am miner. Iteration:%d", iterationCount)
 		updateSent = true
-		go startUpdateDeadlineTimer(iterationCount) //start timer for receiving updates
+		if (SECURE_AGG) {
+			go startShareDeadlineTimer(iterationCount)
+		}else{
+			go startUpdateDeadlineTimer(iterationCount) //start timer for receiving updates
+		}
+
 	} else if verifier {
 		outLog.Printf(strconv.Itoa(client.id)+":I am verifier. Iteration:%d", iterationCount)
 		updateSent = true
@@ -659,10 +801,9 @@ func processUpdate(update Update) {
 		if numberOfUpdates == (numberOfNodeUpdates) {			
 			outLog.Printf(strconv.Itoa(client.id)+":All updates for iteration %d received. Notifying channel.", iterationCount)	
 			allUpdatesReceived <- true 		 
-		}
-		
+		}	
+	
 	}
-
 
 }
 
@@ -965,11 +1106,16 @@ func messageSender(ports []string) {
 				numberOfNodeUpdates = getRoleNames(iterationCount)
 			
 			outLog.Printf("Sending update to verifiers")
-			approved := sendUpdateToVerifiers(verifierPortsToConnect) 
+			approved := sendUpdateToVerifiers(verifierPortsToConnect)			 
 
 			if approved {
 				
+				// break update down into secrets
+				// send secrets to miners
+
 				outLog.Printf("Sending update to miners")
+				sendUpdateSecretsToMiners(minerPortsToConnect)
+				
 				sendUpdateToMiners(minerPortsToConnect)
 			
 				if iterationCount == client.update.Iteration {
@@ -1080,10 +1226,12 @@ func sendUpdateToMiners(addresses []string) {
 						outLog.Printf(strconv.Itoa(client.id)+":Update mined. Iteration:%d\n", client.update.Iteration)
 						mined = true
 					}
+
 					if(err==staleError){
+						outLog.Printf(strconv.Itoa(client.id)+"Stale error:Update mined. Iteration:%d\n", client.update.Iteration)
 						mined = true
 					}
-
+					
 					go startBlockDeadlineTimer(iterationCount)
 
 					// use err and result
@@ -1101,6 +1249,93 @@ func sendUpdateToMiners(addresses []string) {
 			}
 
 		}
+
+	}
+
+	// Couldn't mine the block. Send empty block. // Why do we need this?
+	if !mined {
+		outLog.Printf(strconv.Itoa(client.id)+":Will try and create an empty block")
+		blockChainLock.Lock()
+		blockToSend, err := client.createBlock(iterationCount)
+		blockChainLock.Unlock()		
+		printError("Iteration: " + strconv.Itoa(iterationCount), err)
+		if(err==nil){
+			outLog.Printf(strconv.Itoa(client.id)+":Sending an empty block")
+			go sendBlock(*blockToSend)
+		}
+	}
+
+}
+
+func sendUpdateSecretsToMiners(addresses []string) {
+
+	var ign bool
+	c := make(chan error)
+
+	mined := false
+
+	// generate secrets here
+	minerSecrets := generateMinerSecretShares(client.update.Delta, PRECISION, client.Keys.CommitmentKey, NUM_MINERS, POLY_SIZE, TOTAL_SHARES)
+
+	// fmt.Println(minerSecrets)
+	// fmt.Println(minerSecrets[0].PolyMap[10].Secrets)
+	// fmt.Println(minerSecrets[1].PolyMap[10].Secrets)
+	// os.Exit(1)
+
+
+	// // TODO: For now, the first miner that gets the block done is good enough.
+	// // We will need to use shamir secrets here later
+
+	minerIndex := 0
+
+	for _, address := range addresses {
+
+		if !mined {
+
+			conn, err := rpc.Dial("tcp", address)
+			printError("Unable to connect to miner", err)
+			
+			if (err == nil) {
+				
+				minerSecrets[minerIndex].Iteration = client.update.Iteration
+				minerSecrets[minerIndex].NodeID = client.id
+				
+				defer conn.Close()
+				outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Miner. Sending Update Share, Iteration:%d\n", client.update.Iteration)
+				go func() { c <- conn.Call("Peer.RegisterSecret", minerSecrets[minerIndex], &ign) }()
+				select {
+				case err := <-c:
+					
+					printError("Error in sending secret share", err)
+					if(err==nil){
+						outLog.Printf(strconv.Itoa(client.id)+":Secret shared. Iteration:%d\n", client.update.Iteration)
+						mined = true
+					}
+
+					if(err==staleError){
+						outLog.Printf(strconv.Itoa(client.id)+"Stale error:Secret shared. Iteration:%d\n", client.update.Iteration)
+						mined = true
+					}
+					
+					go startBlockDeadlineTimer(iterationCount)
+
+					// use err and result
+				case <-time.After(timeoutRPC):
+					outLog.Printf(strconv.Itoa(client.id)+":RPC Call timed out.")
+					continue
+				}
+			
+			} else { 
+				
+				outLog.Printf("GOT MINER ERROR. Unable to share secret")
+				time.Sleep(1000 * time.Millisecond)
+
+				continue
+			}
+
+		}
+
+		minerIndex++
 
 	}
 
@@ -1157,7 +1392,7 @@ func startUpdateDeadlineTimer(timerForIteration int){
 			os.Exit(1)
 		}
 
-	// An old timer was triggered, try to catch up
+	// An old timer was triggered, try to catch up. HOW DOES THIS HELP YOU CATCH UP
 	} else {
 		time.Sleep(1000 * time.Millisecond)
 		outLog.Printf(strconv.Itoa(client.id)+":Forwarding timer ahead.")
@@ -1165,9 +1400,246 @@ func startUpdateDeadlineTimer(timerForIteration int){
 	}
 
 }
+
+// Timer started by the verifier to set a deadline until which he will receive updates
+
+func startShareDeadlineTimer(timerForIteration int){
+	
+	select {
+		
+		case <- allSharesReceived:
+			outLog.Printf(strconv.Itoa(client.id)+":All Shares Received for timer on %d. I am at %d. Preparing to send block..", 
+				timerForIteration, iterationCount)
+
+		case <- time.After(timeoutUpdate):
+			outLog.Printf(strconv.Itoa(client.id)+":Timeout. Didn't receive expected number of shares. Preparing to send block. Iteration: %d..", iterationCount)
+	
+	}
+	
+	// If I am on the current iteration and am the CHOSEN ONE among the miners
+
+	if (timerForIteration == iterationCount)   {
+
+		if ((myIP+myPort) == minerPortsToConnect[0]) {
+
+			minerMap, finalNodeList := getNodesList(minerPortsToConnect)
+
+			sharesPerMiner := TOTAL_SHARES/NUM_MINERS
+
+			if (sharesPerMiner * len(minerMap) >= maxPolynomialdegree ) {
+
+				client.aggregatedSecrets = getSecretShares(minerMap, finalNodeList)
+
+				if (sharesPerMiner * len(minerMap) >= maxPolynomialdegree ) {
+
+					outLog.Printf(strconv.Itoa(client.id)+":Acquiring chain lock")
+					blockChainLock.Lock()
+				
+					outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")
+					
+					// //TODO:
+					// blockToSend, err := client.createBlockSecAgg(iterationCount)
+				
+					blockChainLock.Unlock()		
+
+					// printError("Iteration: " + strconv.Itoa(iterationCount), err)
+				
+					// if (err == nil) {
+					// 	sendBlock(*blockToSend)
+					// }					
+
+				}else{
+					outLog.Printf(strconv.Itoa(client.id)+":Creating empty block")
+					//create empty block
+				}
+
+				
+			}else{
+					outLog.Printf(strconv.Itoa(client.id)+":Creating empty block")
+				// create empty block
+			}
+		
+
+		}else{
+
+			go startBlockDeadlineTimer(iterationCount)
+
+		} 
+
+	// An old timer was triggered, try to catch up
+	} else {
+
+		time.Sleep(1000 * time.Millisecond)
+		outLog.Printf(strconv.Itoa(client.id)+":Forwarding timer ahead.")
+		allSharesReceived <- true
+	
+	}
+
+}
+
+func getSecretShares(minerList map[string][]int, nodeList []int) []MinerPart{
+
+	minerShares := make([]MinerPart, 0)
+
+	(myMinerPart) = client.secretList[nodeList[0]]
+
+	for i := 1; i < len(nodeList); i++ {
+		
+		(myMinerPart) = aggregateSecret((myMinerPart), client.secretList[nodeList[i]])
+
+	}	
+
+	for address, _ := range minerList {
+		
+		outLog.Printf(strconv.Itoa(client.id)+":Calling %s", address)
+		thisMinerSecret, err := callGetMinerShareRPC(address, nodeList)		    
+		
+		if err == nil{
+			minerShares = append(minerShares, thisMinerSecret)
+		}
+
+	}
+
+	return minerShares
+	
+}
+
+
+func callGetMinerShareRPC(address string, nodeList []int) (MinerPart, error){
+
+	thisMinerPart := MinerPart{}
+	
+	c := make(chan error)
+
+	// TODO: For now, the first miner that gets the block done is good enough.
+	// We will need to use shamir secrets here later
+
+	conn, err := rpc.Dial("tcp", address)
+	printError("Unable to connect to fellow miner", err)
+	
+	if (err == nil) {
+		
+		defer conn.Close()
+		outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Fellow Miner. Getting NodeList, Iteration:%d\n", client.update.Iteration)
+		go func() { c <- conn.Call("Peer.GetMinerPart", nodeList, &thisMinerPart) }()
+		select {
+		case err := <-c:
+			
+			printError("Error in getting miner part", err)
+			
+			if(err==nil){
+				outLog.Printf(strconv.Itoa(client.id)+":Update mined. Iteration:%d\n", client.update.Iteration)
+				return thisMinerPart, nil
+			}else{
+				return thisMinerPart, err
+			}		
+
+			// use err and result
+		case <-time.After(timeoutRPC):
+			outLog.Printf(strconv.Itoa(client.id)+":RPC Call timed out.")
+			return thisMinerPart, rpcError
+		}
+	
+	} else {
+		
+		outLog.Printf("Unable to connect to fellow miner")
+		time.Sleep(1000 * time.Millisecond)
+		return thisMinerPart, err
+	}
+
+}
+
+func getNodesList(minerList []string) (map[string][]int, []int) {
+	
+	listOfUpdates := make(map[string][]int, 0)
+
+	myNodeList := make([]int, 0, len(client.secretList))
+
+	for nodeID := range myNodeList {
+		listOfUpdates[myIP+myPort] = append(listOfUpdates[myIP+myPort], nodeID)
+	}
+
+
+	// popuate list of updates with node list of each online and synchronous miner
+
+	for _, address := range minerList {
+        
+        if (address == myIP+myPort){
+        	continue
+        }
+
+        outLog.Printf(strconv.Itoa(client.id)+":Calling %s", address)
+		thisNodesList, err := callGetUpdateListRPC(address)
+		if err == nil {
+			listOfUpdates[address] = thisNodesList	
+			
+		}
+
+	}
+
+	// find node ids whose updates are available with all online miners.
+
+	intersectionList := listOfUpdates[myIP+myPort]
+
+	for _, nodeList := range listOfUpdates {
+
+		intersectionList = Intersection(intersectionList, nodeList)
+
+	}
+
+	return listOfUpdates, intersectionList
+
+}
+
+
+func callGetUpdateListRPC(address string) ([]int, error){
+
+	nodeList := []int{}
+	
+	c := make(chan error)
+
+	// TODO: For now, the first miner that gets the block done is good enough.
+	// We will need to use shamir secrets here later
+	
+
+	conn, err := rpc.Dial("tcp", address)
+	printError("Unable to connect to fellow miner", err)
+	
+	if (err == nil) {
+		
+		defer conn.Close()
+		outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Fellow Miner. Getting NodeList, Iteration:%d\n", client.update.Iteration)
+		go func() { c <- conn.Call("Peer.GetUpdateList", client.update.Iteration, &nodeList) }()
+		select {
+		case err := <-c:
+			
+			printError("Error in sending update", err)
+			
+			if(err==nil){
+				outLog.Printf(strconv.Itoa(client.id)+":Update mined. Iteration:%d\n", client.update.Iteration)
+				return nodeList, nil
+			}else{
+				return nodeList, err
+			}		
+
+			// use err and result
+		case <-time.After(timeoutRPC):
+			outLog.Printf(strconv.Itoa(client.id)+":RPC Call timed out.")
+			return nodeList, rpcError
+		}
+	
+	} else {
+		
+		outLog.Printf("Unable to connect to fellow miner")
+		time.Sleep(1000 * time.Millisecond)
+		return nodeList, err
+
+
+	}
+
+}
 	
 func startBlockDeadlineTimer(timerForIteration int){
-
 	
 	select{
 		
@@ -1198,3 +1670,17 @@ func startBlockDeadlineTimer(timerForIteration int){
 
 }
 
+func Intersection(a, b []int) (c []int) {
+      m := make(map[int]bool)
+
+      for _, item := range a {
+              m[item] = true
+      }
+
+      for _, item := range b {
+              if _, ok := m[item]; ok {
+                      c = append(c, item)
+              }
+      }
+      return
+}
