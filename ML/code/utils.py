@@ -91,7 +91,7 @@ def load_dataset(dataset_name):
         nn, dd = df.shape
 
         # Need to remove the first column and first row
-        credit = df.ix[1:nn, 1:dd].as_matrix()
+        credit = df.ix[1:nn, 1:dd].values
         nn, dd = credit.shape
 
         datay = credit[:, dd - 1].astype(int)

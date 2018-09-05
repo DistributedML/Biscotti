@@ -144,6 +144,8 @@ func (honest *Honest) checkConvergence() bool {
 func (honest *Honest) computeUpdate(iterationCount int, datasetName string) {
 	prevGradient := honest.bc.getLatestGradient()
 	deltas, err := oneGradientStep(prevGradient)
+	outLog.Println("Locally computing deltas!")
+	outLog.Println(deltas[0:10])
 	check(err)
 	honest.update = Update{Iteration: iterationCount, Delta: deltas,
 		Accepted: true}

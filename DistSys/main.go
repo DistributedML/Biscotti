@@ -66,6 +66,7 @@ var (
 	allUpdatesReceived		chan bool
 	networkBootstrapped		chan bool
 	blockReceived 			chan bool
+	quitRoutine 			chan bool
 	portsToConnect 			[]string
 	verifierPortsToConnect 	[]string
 	minerPortsToConnect 	[]string
@@ -571,7 +572,7 @@ func main() {
 	networkBootstrapped = make (chan bool)
 	blockReceived = make (chan bool)
 	allSharesReceived = make (chan bool)
-
+	quitRoutine = make (chan bool)
 
 	// Initializing RPC Server
 	peer := new(Peer)
@@ -993,6 +994,11 @@ func addBlockToChain(block Block) {
 		
 		}
 
+		if(miner){
+			quitRoutine <- true
+		}
+
+
 		boolLock.Unlock()
 		go sendBlock(block)	
 	
@@ -1368,7 +1374,10 @@ func startUpdateDeadlineTimer(timerForIteration int){
 
 		case <- time.After(timeoutUpdate):
 			outLog.Printf(strconv.Itoa(client.id)+":Timeout. Didn't receive expected number of updates. Preparing to send block. Iteration: %d..", iterationCount)
-	
+		
+		case <- quitRoutine:
+			outLog.Printf(strconv.Itoa(client.id)+"Already appended block. Quitting routine. Iteration: %d..", iterationCount)			
+			return 
 	}
 	
 	if (timerForIteration == iterationCount) {
@@ -1393,13 +1402,13 @@ func startUpdateDeadlineTimer(timerForIteration int){
 			outLog.Printf(strconv.Itoa(client.id)+":Received no updates from peers. I WILL DIE")
 			os.Exit(1)
 		}
-
-	// An old timer was triggered, try to catch up. HOW DOES THIS HELP YOU CATCH UP
-	} else {
-		time.Sleep(1000 * time.Millisecond)
-		outLog.Printf(strconv.Itoa(client.id)+":Forwarding timer ahead.")
-		allUpdatesReceived <- true
-	}
+	// An old timer was triggered, try to catch up
+	} 
+	// else {
+	// 	time.Sleep(1000 * time.Millisecond)
+	// 	outLog.Printf(strconv.Itoa(client.id)+":Forwarding timer ahead.")
+	// 	allUpdatesReceived <- true
+	// }
 
 }
 
