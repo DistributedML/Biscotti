@@ -113,3 +113,8 @@ def privateFun(theta, ww, batch_size=0):
     iteration = iteration + 1
 
     return delta
+
+if __name__ == '__main__':
+    
+    pdb.set_trace()
+
