@@ -57,6 +57,7 @@ var (
 	allUpdatesReceived		chan bool
 	networkBootstrapped		chan bool
 	blockReceived 			chan bool
+	quitRoutine 			chan bool
 	portsToConnect 			[]string
 	verifierPortsToConnect 	[]string
 	minerPortsToConnect 	[]string
@@ -439,6 +440,7 @@ func main() {
 	allUpdatesReceived = make (chan bool)
 	networkBootstrapped = make (chan bool)
 	blockReceived = make (chan bool)
+	quitRoutine = make (chan bool)
 
 	// Initializing RPC Server
 	peer := new(Peer)
@@ -850,6 +852,11 @@ func addBlockToChain(block Block) {
 		
 		}
 
+		if(miner){
+			quitRoutine <- true
+		}
+
+
 		boolLock.Unlock()
 		go sendBlock(block)	
 	
@@ -1131,7 +1138,10 @@ func startUpdateDeadlineTimer(timerForIteration int){
 
 		case <- time.After(timeoutUpdate):
 			outLog.Printf(strconv.Itoa(client.id)+":Timeout. Didn't receive expected number of updates. Preparing to send block. Iteration: %d..", iterationCount)
-	
+		
+		case <- quitRoutine:
+			outLog.Printf(strconv.Itoa(client.id)+"Already appended block. Quitting routine. Iteration: %d..", iterationCount)			
+			return 
 	}
 	
 	if (timerForIteration == iterationCount) {
@@ -1158,11 +1168,12 @@ func startUpdateDeadlineTimer(timerForIteration int){
 		}
 
 	// An old timer was triggered, try to catch up
-	} else {
-		time.Sleep(1000 * time.Millisecond)
-		outLog.Printf(strconv.Itoa(client.id)+":Forwarding timer ahead.")
-		allUpdatesReceived <- true
-	}
+	} 
+	// else {
+	// 	time.Sleep(1000 * time.Millisecond)
+	// 	outLog.Printf(strconv.Itoa(client.id)+":Forwarding timer ahead.")
+	// 	allUpdatesReceived <- true
+	// }
 
 }
 	
