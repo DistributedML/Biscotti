@@ -86,11 +86,12 @@ func (honest *Honest) initializeData(datasetName string, numberOfNodes int) {
 
 func (honest *Honest) checkConvergence() bool {
 
-	trainError, _ := testModel(honest.bc.getLatestGradient(), "global")
+	// outLog.Println(honest.bc.getLatestGradient()[4000:4010])
+	trainError, _ := testModel(honest.bc.getLatestGradient())
 
-	outLog.Printf(strconv.Itoa(client.id)+"Train Error is %.5f in Iteration %d", trainError, honest.bc.Blocks[len(honest.bc.Blocks)-1].Data.Iteration)
+	outLog.Printf(strconv.Itoa(client.id)+":Train Error is %.5f in Iteration %d", trainError, honest.bc.Blocks[len(honest.bc.Blocks)-1].Data.Iteration)
 
-	if trainError < convThreshold && trainError > 0 {
+	if trainError < convThreshold {
 		return true
 	}
 
@@ -100,10 +101,8 @@ func (honest *Honest) checkConvergence() bool {
 // calculates update by calling oneGradientStep function that invokes python and passing latest global model from the chain to it.
 
 func (honest *Honest) computeUpdate(iterationCount int, datasetName string) {
-	prevGradient := honest.bc.getLatestGradient()
-	deltas, err := oneGradientStep(prevGradient)
-	outLog.Println("Locally computing deltas!")
-	outLog.Println(deltas[0:10])
+	prevModel := honest.bc.getLatestGradient()
+	deltas, err := oneGradientStep(prevModel)
 	check(err)
 	honest.update = Update{Iteration: iterationCount, Delta: deltas,
 		Accepted: true}
@@ -264,6 +263,7 @@ func (honest *Honest) addBlock(newBlock Block) error {
 
 	// if already exists don't create/replace it
 	outLog.Printf("Trying to append block with iteration:%d", newBlock.Data.Iteration)
+	// outLog.Println(honest.bc.getLatestGradient()[4000:4010])
 
 	if(honest.bc.getBlock(newBlock.Data.Iteration) != nil){
 		
@@ -280,10 +280,12 @@ func (honest *Honest) addBlock(newBlock Block) error {
 	}else{
 		
 		outLog.Printf("Append successful")
-		client.bc.AddBlockMsg(newBlock)
+		honest.bc.AddBlockMsg(newBlock)
+		// outLog.Println(honest.bc.getLatestGradient()[4000:4010])
 		return nil
 
 	}
+
 }
 
 // Empty the updates recorded at the start of each iteration
@@ -304,7 +306,7 @@ func (honest *Honest) verifyUpdate(update Update) float64 {
 	_gstate := python.PyGILState_Ensure()
 
 	deltas := update.Delta
-	truthModel := honest.bc.getLatestBlockModel()
+	truthModel := honest.bc.getLatestGradient()
 
 	truthArray := python.PyList_New(len(truthModel))
 	updateArray := python.PyList_New(len(truthModel))
@@ -314,9 +316,6 @@ func (honest *Honest) verifyUpdate(update Update) float64 {
 		python.PyList_SetItem(truthArray, i, python.PyFloat_FromDouble(truthModel[i]))
 		python.PyList_SetItem(updateArray, i, python.PyFloat_FromDouble(deltas[i]))
 	}
-
-	outLog.Println(truthModel[0:10])
-	outLog.Println(deltas[0:10])
 
 	var score float64
 	if useTorch {
@@ -358,7 +357,7 @@ func (honest *Honest) replaceBlock(block Block, iterationCount int){
 }
 
 //Test the current global model. Determine training and test error to see if model has converged 
-func testModel(weights []float64, node string) (float64, float64) {
+func testModel(weights []float64) (float64, float64) {
 
 	runtime.LockOSThread()
 

@@ -590,12 +590,6 @@ func prepareForNextIteration() {
 	convergedLock.Unlock()
 	boolLock.Lock()
 
-	// if miner {
-
-
-	// }
-
-
 	iterationCount++
 	outLog.Printf("Moving on to next iteration %d", iterationCount)
 
@@ -603,6 +597,8 @@ func prepareForNextIteration() {
 	roleIDs = getRoles()
 	verifier = amVerifier(client.id)
 	miner = amMiner(client.id)
+
+	verifierPortsToConnect, minerPortsToConnect, numberOfNodeUpdates = getRoleNames(iterationCount)
 
 	if miner {
 		outLog.Printf(strconv.Itoa(client.id)+":I am miner. Iteration:%d", iterationCount)
@@ -656,6 +652,8 @@ func processUpdate(update Update) {
 		updateLock.Lock()
 		numberOfUpdates := client.addBlockUpdate(update)
 		updateLock.Unlock()
+
+		outLog.Printf("As miner, I expect %d updates, I have gotten %d", numberOfNodeUpdates, numberOfUpdates)
 
 		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
 		if numberOfUpdates == (numberOfNodeUpdates) {			
@@ -968,9 +966,6 @@ func messageSender(ports []string) {
 
 			client.computeUpdate(iterationCount, datasetName)
 
-			verifierPortsToConnect, minerPortsToConnect, 
-				numberOfNodeUpdates = getRoleNames(iterationCount)
-			
 			outLog.Printf("Sending update to verifiers")
 			approved := sendUpdateToVerifiers(verifierPortsToConnect) 
 
