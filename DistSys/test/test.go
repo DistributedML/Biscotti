@@ -6,13 +6,14 @@ import (
     // "fmt"
     "log"
     "github.com/dedis/kyber/pairing/bn256"
-    // "github.com/dedis/kyber"
+    "github.com/dedis/kyber"
 )
 
 func main() {
     // Initialize the encoder and decoder.  Normally enc and dec would be
     // bound to network connections and the encoder and decoder would
     // run in different processes.
+	gob.Register(kyber.Point{suite.G1()})
 	gob.Register(MinerPart{})
 
     suite := bn256.NewSuite()
@@ -21,8 +22,7 @@ func main() {
     dec := gob.NewDecoder(&network) // Will read from network.
     // Encode (send) the value.
 
-    commit1 := (suite.G1().Point().Mul(suite.G1().Scalar().One(),nil))
-    commit := &commit1
+    commit := (suite.G1().Point().Mul(suite.G1().Scalar().One(),nil))
     // commit2 := suite.G1().Point().Mul(suite.G1().Scalar().One(),commit)
     iteration := 0
     nodeId := 0

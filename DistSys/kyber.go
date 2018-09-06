@@ -29,8 +29,8 @@ var (
 
 type Share struct {
 	
-	x int64
-	y int64
+	X int64
+	Y int64
 
 }
 
@@ -48,8 +48,26 @@ type MinerPart struct {
 	CommitmentUpdate	kyber.Point
 	Iteration 			int
 	NodeID 				int
-	SignatureList		[]kyber.Point
+	// SignatureList		[]kyber.Point
 	PolyMap 		    PolynomialMap	
+}
+
+type MinerPartRPC struct {
+
+	CommitmentUpdate	[]byte
+	Iteration 			int
+	NodeID 				int
+	// SignatureList		[]kyber.Point
+	PolyMap 		    PolynomialMapRPC	
+}
+
+type PolynomialPartRPC struct {
+
+	Polynomial 	[]int64
+	Commitment  []byte
+	Secrets 	[]Share
+	Witnesses 	[][]byte
+
 }
 
 
@@ -60,7 +78,75 @@ type PolynomialCommitment struct {
 	PolyMap 		    PolynomialMap
 }
 
-type PolynomialMap map[int]*PolynomialPart
+type PolynomialMap map[int]PolynomialPart
+
+type PolynomialMapRPC map[int]PolynomialPartRPC
+
+func converttoRPC(minerPart MinerPart) MinerPartRPC{
+
+	byteCommitment, _ := minerPart.CommitmentUpdate.MarshalBinary()
+
+	polyMapRPC := PolynomialMapRPC{}
+
+	for index, subPolyPart := range minerPart.PolyMap{
+	
+		thisPolynomial := subPolyPart.Polynomial
+		thisCommitment, _ := subPolyPart.Commitment.MarshalBinary()
+		thisSecrets := subPolyPart.Secrets
+		thisWitnesses := make([][]byte, len(subPolyPart.Witnesses))
+
+		for indexW := range thisWitnesses{
+
+			thisWitnesses[indexW], _ = subPolyPart.Witnesses[indexW].MarshalBinary()
+		}
+
+		polyMapRPC[index] = PolynomialPartRPC{Polynomial: thisPolynomial, Commitment: thisCommitment, Secrets: thisSecrets, Witnesses: thisWitnesses}
+		
+	} 
+
+	minerPartRPC := MinerPartRPC{CommitmentUpdate: byteCommitment, Iteration: minerPart.Iteration, NodeID: minerPart.NodeID, PolyMap: polyMapRPC} 
+
+	return minerPartRPC
+}
+
+func converttoMinerPart(minerPartRPC MinerPartRPC) MinerPart{
+
+	// byteCommitment := minerPart.CommitmentUpdate.MarshalBinary()
+	commitment := suite.G1().Point().Null()
+
+	err := commitment.UnmarshalBinary(minerPartRPC.CommitmentUpdate)
+
+	check(err)
+
+	polyMap := PolynomialMap{}
+
+	for index, subPolyPart := range minerPartRPC.PolyMap{
+
+		thisPolynomial := subPolyPart.Polynomial
+		
+		thisCommitment := suite.G1().Point().Null()
+		err := thisCommitment.UnmarshalBinary(subPolyPart.Commitment)
+
+		thisSecrets := subPolyPart.Secrets
+		thisWitnesses := make([]kyber.Point, len(subPolyPart.Witnesses))
+
+		for indexW := range polyMap[index].Witnesses{
+
+			partCommitment := suite.G1().Point().Null()
+			err = partCommitment.UnmarshalBinary(subPolyPart.Witnesses[indexW])
+			check(err)
+			thisWitnesses[indexW] = partCommitment.Clone()
+		}
+
+		polyMap[index] = PolynomialPart{Polynomial: thisPolynomial, Commitment: thisCommitment, Secrets: thisSecrets, Witnesses: thisWitnesses}		
+	} 
+
+	minerPart := MinerPart{CommitmentUpdate: commitment, Iteration: minerPartRPC.Iteration, NodeID: minerPartRPC.NodeID, PolyMap: polyMap} 
+
+	return minerPart
+
+}
+
 
 
 func (pComm *PolynomialCommitment) fillPolynomialMap(pkey PublicKey, maxPolyDegree int, precision int, totalShares int){
@@ -84,14 +170,12 @@ func (pComm *PolynomialCommitment) fillPolynomialMap(pkey PublicKey, maxPolyDegr
 		
 		subPolynomial := polynomialMap[index]
 
-		////fmt.Println(prevIndex)
-		//fmt.Println(index)
 
 		commitment := createCommitment(subPolynomial, pkey.PKG1[prevIndex:index])
 		shares, witnesses :=  createSharesAndWitnesses(totalShares, subPolynomial, pkey.PKG1[prevIndex:index])		
 		prevIndex = index
 
-		pComm.PolyMap[index] = &PolynomialPart{Polynomial: subPolynomial, Commitment: commitment, Secrets: shares, Witnesses: witnesses}
+		pComm.PolyMap[index] = PolynomialPart{Polynomial: subPolynomial, Commitment: commitment, Secrets: shares, Witnesses: witnesses}
 
 		//fmt.Println(pComm.PolyMap[index].Polynomial)
 		//fmt.Println(pComm.PolyMap[index].Commitment)
@@ -109,7 +193,7 @@ func extractMinerSecret(pComm PolynomialCommitment, minerIndex int, totalShares 
 
 	minerPart.CommitmentUpdate = pComm.CommitmentUpdate
 	
-	minerPart.SignatureList = make([]kyber.Point, 10) // TODO: Include the signature list her
+	// minerPart.SignatureList = make([]kyber.Point, 10) // TODO: Include the signature list her
 
 	// secretWitnessMap := map[int]*PolynomialPart(pComm.PolyMap)
 
@@ -126,12 +210,7 @@ func extractMinerSecret(pComm PolynomialCommitment, minerIndex int, totalShares 
 
 	for index, subPolyPart := range pComm.PolyMap{
 
-		//fmt.Println(startIndex)
-		//fmt.Println(endIndex)
-		//fmt.Println(len(subPolyPart.Secrets))		
-		//fmt.Println("here")
-		minerPart.PolyMap[index] = &PolynomialPart{Commitment: subPolyPart.Commitment , Secrets: subPolyPart.Secrets[startIndex:endIndex], Witnesses: subPolyPart.Witnesses[startIndex:endIndex] }
-		//fmt.Println(minerPart.PolyMap[index])
+		minerPart.PolyMap[index] = PolynomialPart{Commitment: subPolyPart.Commitment , Secrets: subPolyPart.Secrets[startIndex:endIndex], Witnesses: subPolyPart.Witnesses[startIndex:endIndex] }
 
 	}
 
@@ -152,19 +231,11 @@ func aggregateSecret(previousAggregate MinerPart, newSecret MinerPart) MinerPart
 	for index, subPolyPart := range previousAggregate.PolyMap{
 
 		for i := 0; i < len(subPolyPart.Secrets); i++ {			
-			subPolyPart.Secrets[i].x = subPolyPart.Secrets[i].x
-			subPolyPart.Secrets[i].y = subPolyPart.Secrets[i].y +  newSecret.PolyMap[index].Secrets[i].y
+			subPolyPart.Secrets[i].X = subPolyPart.Secrets[i].X
+			subPolyPart.Secrets[i].Y = subPolyPart.Secrets[i].Y +  newSecret.PolyMap[index].Secrets[i].Y
 			subPolyPart.Witnesses[i].Add(subPolyPart.Witnesses[i], newSecret.PolyMap[index].Witnesses[i]) 
-		}
-
-		//fmt.Println("Index:", index)
-		//fmt.Println(subPolyPart.Secrets)
-	
+		}	
 	}
-
-	// //fmt.Println("Index 10:",previousAggregate.PolyMap[10].Secrets)
-	// //fmt.Println("Index 20:"previousAggregate.PolyMap[20].Secrets)
-	// //fmt.Println(previousAggregate.PolyMap[26].Secrets)	
 
 	return previousAggregate
 
@@ -686,8 +757,8 @@ func recoverSecret2(shares []Share, degree int) []int64{
 
 	for i := 0; i < len(shares); i++ {
 		
-		x[i] = shares[i].x
-		y[i] = shares[i].y
+		x[i] = shares[i].X
+		y[i] = shares[i].Y
 	}
 
 	//fmt.Println(x)
@@ -737,8 +808,8 @@ func recoverSecret(shares []Share, degree int) []int64{
 
 	for i := 0; i < len(shares); i++ {
 		
-		xInt[i] = shares[i].x
-		yInt[i] = shares[i].y
+		xInt[i] = shares[i].X
+		yInt[i] = shares[i].Y
 	}
 
 	x := updateIntToFloat(xInt,0)

@@ -4,6 +4,7 @@ import (
 	
 	"github.com/dedis/kyber/pairing/bn256"	
 	"github.com/dedis/kyber"
+	"reflect"
 	// "github.com/dedis/kyber/share"
 	// "fmt"
 	// "crypto/sha256"
@@ -23,6 +24,7 @@ var (
 	maxPolynomialdegree = 10
 	maxXValue = 25 
 	totalShares = 10
+	thisType = reflect.TypeOf(suite.G1().Point().Null())
 
 )
 
@@ -45,7 +47,7 @@ type PolynomialPart struct {
 
 type MinerPart struct {
 
-	CommitmentUpdate	*kyber.Point
+	CommitmentUpdate	bn256.pointG1
 	Iteration 			int
 	NodeID 				int
 	// SignatureList		[]kyber.Point

@@ -19,11 +19,15 @@ done
 
 go install
 
+cd LogFiles
+
+rm *.log
+
 # #---------------------------------------------------Test 1: All nodes online--------------------------------------------------------------------
 
 echo "Running tests: No failure case. All nodes online"
 
-for (( totalnodes = 20; totalnodes < 21; totalnodes++ )); do
+for (( totalnodes = 4; totalnodes < 5; totalnodes++ )); do
 	
 	echo "Running with " $totalnodes "nodes"
 

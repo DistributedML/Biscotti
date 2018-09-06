@@ -156,7 +156,7 @@ func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
 // Returns:
 // - StaleError if its an update for a preceding round.
 
-func (s *Peer) RegisterSecret(share MinerPart, _ignored *bool) error {
+func (s *Peer) RegisterSecret(share MinerPartRPC, _ignored *bool) error {
 
 	outLog.Printf(strconv.Itoa(client.id)+":Got miner request, iteration %d\n", share.Iteration)
 
@@ -167,7 +167,9 @@ func (s *Peer) RegisterSecret(share MinerPart, _ignored *bool) error {
 	}
 
 	// Process update only called by the miner nodes
-	go processShare(share)
+	realShare := converttoMinerPart(share) 
+
+	go processShare(realShare)
 
 	return nil
 
@@ -177,7 +179,7 @@ func (s *Peer) RegisterSecret(share MinerPart, _ignored *bool) error {
 // go routine to process the update received by miner nodes
 func processShare(share MinerPart) {
 
-	outLog.Printf(strconv.Itoa(client.id)+":Got update for %d, I am at %d\n", share.Iteration, iterationCount)
+	outLog.Printf(strconv.Itoa(client.id)+":Got share for %d, I am at %d\n", share.Iteration, iterationCount)
 
 	for share.Iteration > iterationCount {
 		outLog.Printf(strconv.Itoa(client.id)+":Blocking for stale update. Update for %d, I am at %d\n", share.Iteration, iterationCount)
@@ -1122,9 +1124,12 @@ func messageSender(ports []string) {
 				// send secrets to miners
 
 				outLog.Printf("Sending update to miners")
-				sendUpdateSecretsToMiners(minerPortsToConnect)
+				if SECURE_AGG {
+					sendUpdateSecretsToMiners(minerPortsToConnect)									
+				}else{
+					sendUpdateToMiners(minerPortsToConnect)
+				}
 				
-				sendUpdateToMiners(minerPortsToConnect)
 			
 				if iterationCount == client.update.Iteration {
 					updateSent = true
@@ -1309,8 +1314,13 @@ func sendUpdateSecretsToMiners(addresses []string) {
 				minerSecrets[minerIndex].NodeID = client.id
 				
 				defer conn.Close()
+
+				minerSecretRPC := converttoRPC(minerSecrets[minerIndex])				
+
 				outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Miner. Sending Update Share, Iteration:%d\n", client.update.Iteration)
-				go func() { c <- conn.Call("Peer.RegisterSecret", minerSecrets[minerIndex], &ign) }()
+
+				go func() { c <- conn.Call("Peer.RegisterSecret", minerSecretRPC, &ign) }()
+				
 				select {
 				case err := <-c:
 					

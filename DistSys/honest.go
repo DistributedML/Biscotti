@@ -117,10 +117,10 @@ func (honest *Honest) bootstrapKeys() {
 
 	honest.Keys.CommitmentKey = extractCommitmentKey(honest.ncol)
 	honest.Keys.PubKeyMap, honest.Keys.Skey, honest.Keys.PubKey = extractKeys(honest.id)
-	fmt.Println(honest.Keys.PubKeyMap)
-	fmt.Println(honest.Keys.Skey)
-	fmt.Println(honest.Keys.PubKey)
-	fmt.Println(honest.Keys.CommitmentKey)
+	// fmt.Println(honest.Keys.PubKeyMap)
+	// fmt.Println(honest.Keys.Skey)
+	// fmt.Println(honest.Keys.PubKey)
+	// fmt.Println(honest.Keys.CommitmentKey)
 
 }
 
