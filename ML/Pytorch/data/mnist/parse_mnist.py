@@ -235,6 +235,6 @@ def standardize_cols(X, mu=None, sigma=None):
 
 
 if __name__ == "__main__":
-    slice_uniform(5)
+    slice_uniform(10)
     # for i in range(1, 10):
     #     slice_for_iid(i)

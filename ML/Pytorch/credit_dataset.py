@@ -31,7 +31,7 @@ class CreditDataset(Dataset):
         datay = credit[:, dd - 1].astype(int)
         datay[np.where(datay == -1)] = 0
         idx = np.arange(nn)
-        data = credit[idx, :].astype(float)
+        data = credit[idx, :(dd - 1)].astype(float)
 
         cut = int(nn*train_cut)
         if is_train:
@@ -41,7 +41,7 @@ class CreditDataset(Dataset):
         else:
             self.X = data[cut:, :]
             self.y = datay[cut:]
-    
+
     def __len__(self):
         return len(self.y)
 

@@ -13,9 +13,50 @@ def returnModel(D_in, D_out):
 
 # Initialize Clients
 # First Client is the aggregator
+def centralize_test():
+    clients = []
+    dataset = "creditcard"
+    D_in = datasets.get_num_features(dataset)
+    D_out = datasets.get_num_classes(dataset)
+    batch_size = 4
+    train_cut = 0.8
+    
+    model = returnModel(D_in, D_out)    
+    my_client = Client(dataset, dataset + "train", batch_size, model, train_cut)
+
+    model = returnModel(D_in, D_out)
+    test_client = Client(dataset, dataset+"test", batch_size, model, 0)
+
+    modelWeights = my_client.getModelWeights()
+
+    for iter in range(1001):
+        
+        # Calculate and aggregaate gradients    
+        grad = my_client.getGrad()
+        
+        # Share updated model
+        modelWeights = modelWeights - grad
+        my_client.updateModel(modelWeights)
+
+        # modelWeights = my_client.getModelWeights()
+        # for i in range(1):
+        #     clients[i].updateModel(modelWeights)
+        
+        # Print average loss across clients
+        if iter % 100 == 0:
+            loss = my_client.getLoss()
+            print("Average loss is " + str(loss))
+
+            test_client.updateModel(modelWeights)
+            test_err = test_client.getTestErr()
+            print("Test error: " + str(test_err) + "\n")
+
+    pdb.set_trace()
+
+
 def main():
     clients = []
-    dataset = "credit"
+    dataset = "creditcard"
     D_in = datasets.get_num_features(dataset)
     D_out = datasets.get_num_classes(dataset)
     batch_size = 4
@@ -46,10 +87,13 @@ def main():
                 loss += clients[i].getLoss()
             print("Average loss is " + str(loss / len(clients)))
 
+            test_client.updateModel(modelWeights)
+            test_err = test_client.getTestErr()
+            print("Test error: " + str(test_err) + "\n")
+
     test_client.updateModel(modelWeights)
     test_err = test_client.getTestErr()
-    print("Test error: " + str(test_err))
     pdb.set_trace()
 
 if __name__ == "__main__":
-    main()
+    centralize_test()

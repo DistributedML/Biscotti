@@ -17,7 +17,7 @@ def main():
     clients = []
     D_in = datasets.get_num_features("mnist")
     D_out = datasets.get_num_classes("mnist")
-    batch_size = 4
+    batch_size = 10
     train_cut = 0.8
 
     for i in range(10):
@@ -40,10 +40,15 @@ def main():
         
         # Print average loss across clients
         if iter % 100 == 0:
+            
             loss = 0.0
             for i in range(10):
                 loss += clients[i].getLoss()
+
             print("Average loss is " + str(loss / len(clients)))
+            test_client.updateModel(modelWeights)
+            test_err = test_client.getTestErr()
+            print("Test error: " + str(test_err) + "\n")
 
     test_client.updateModel(modelWeights)
     test_err = test_client.getTestErr()

@@ -9,65 +9,72 @@ import datasets
 
 
 def init(dataset, filename):
-    global Client
+    global myclient
 
     D_in = datasets.get_num_features(dataset)
     D_out = datasets.get_num_classes(dataset)
-    
+    params = datasets.get_num_params(dataset)
+
     batch_size = 4
     model = SoftmaxModel(D_in, D_out)
     train_cut = 0.8
     
-    Client = client.Client(dataset, filename, batch_size, model, train_cut)
-    
-    if dataset == "mnist":
-    	return 7850
-    elif dataset == "lfw":
-    	return 18254
+    myclient = client.Client(dataset, filename, batch_size, model, train_cut)
 
-    return -50
+    return params
 
 # returns flattened gradient
 def privateFun(ww):
-	weights = np.array(ww)
-	Client.updateModel(weights)
-	return Client.getGrad()
+    global myclient
+    weights = np.array(ww)
+    myclient.updateModel(weights)
+    return -1 * myclient.getGrad()
 
 def simpleStep(gradient):
-    Client.simpleStep(gradient)
-
+    global myclient
+    myclient.simpleStep(gradient)
 
 ### Extra functions
 def updateModel(modelWeights):
-    Client.updateModel(modelWeights)
+    global myclient
+    myclient.updateModel(modelWeights)
 
 def getModel():
-    return Client.getModel()
+    return myclient.getModel()
 
 def getTestErr(ww):
-	weights = np.array(ww)
-	Client.updateModel(weights)
-	return Client.getTestErr()
+    global myclient
+    weights = np.array(ww)
+    myclient.updateModel(weights)
+    return myclient.getTestErr()
 
 def roni(ww, delta):
-    
+    global myclient
     weights = np.array(ww)
     update = np.array(delta)
 
     # Get original score
-    Client.updateModel(weights)
-    original = Client.getTestErr()
+    myclient.updateModel(weights)
+    original = myclient.getTestErr()
 
-    Client.updateModel(weights + update)
-    after = Client.getTestErr()
+    myclient.updateModel(weights + update)
+    after = myclient.getTestErr()
 
     return after - original
 
 if __name__ == '__main__':
     
-    dim = init("mnist", "mnist_train")
+    dim = init("creditcard", "creditcardtrain")
     ww = np.zeros(dim)
 
-    grad = privateFun(ww)
+    for i in range(1000):
+        #print(ww)
+        if i % 10 == 0:
+            print("Test err: " + str(getTestErr(ww)))
+
+        grad = privateFun(ww)
+        ww = ww + grad
+
+    print(getTestErr(ww))
 
     pdb.set_trace()

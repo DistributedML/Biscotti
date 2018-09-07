@@ -54,11 +54,22 @@ sudo  apt-get install -y pkg-config
 echo "pip"
 sudo  apt-get install -y python-pip
 echo "pandas"
+sudo apt-get install -y python-tk
+echo "pandas"
 pip install pandas
 echo "emcee"
 pip install emcee
 echo "utils"
 pip install utils
+echo "torch"
+pip install torch
+pip install torchvision
+echo "sklearn"
+pip install sklearn
+pip install scipy
+pip install scikit-image
+echo "mnist"
+pip install python-mnist
 
 cd $HOME/gopath/src/simpleBlockChain/DistSys
 go install

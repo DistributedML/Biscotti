@@ -82,11 +82,10 @@ func (honest *Honest) initializeData(datasetName string, numberOfNodes int) {
 
 }
 
-// check for Convergence by calling TestModel that invokes puython to compute train and test error 
+// check for Convergence by calling TestModel that invokes python to compute train and test error 
 
 func (honest *Honest) checkConvergence() bool {
 
-	// outLog.Println(honest.bc.getLatestGradient()[4000:4010])
 	trainError, _ := testModel(honest.bc.getLatestGradient())
 
 	outLog.Printf(strconv.Itoa(client.id)+":Train Error is %.5f in Iteration %d", trainError, honest.bc.Blocks[len(honest.bc.Blocks)-1].Data.Iteration)
@@ -263,7 +262,6 @@ func (honest *Honest) addBlock(newBlock Block) error {
 
 	// if already exists don't create/replace it
 	outLog.Printf("Trying to append block with iteration:%d", newBlock.Data.Iteration)
-	// outLog.Println(honest.bc.getLatestGradient()[4000:4010])
 
 	if(honest.bc.getBlock(newBlock.Data.Iteration) != nil){
 		
@@ -281,7 +279,6 @@ func (honest *Honest) addBlock(newBlock Block) error {
 		
 		outLog.Printf("Append successful")
 		honest.bc.AddBlockMsg(newBlock)
-		// outLog.Println(honest.bc.getLatestGradient()[4000:4010])
 		return nil
 
 	}
