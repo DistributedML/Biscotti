@@ -735,8 +735,6 @@ func processBlock(block Block) {
 				outLog.Printf(strconv.Itoa(client.id)+":Received better  block")
 			}
 			return 
-
-
 		
 		}else{
 			
@@ -925,12 +923,14 @@ func messageSender(ports []string) {
 			outLog.Printf(strconv.Itoa(client.id)+":Getting noise from %s\n", noiserPortsToConnect)
 
 			noise := requestNoiseFromNoisers(noiserPortsToConnect)
-
-			outLog.Println(noise)
+			noiseDelta := make([]float64, len(noise))
 
 			for i := 0; i < len(noise); i++ {
-				client.update.NoisedDelta[i] = client.update.Delta[i] + noise[i]
+				noiseDelta[i] = client.update.Delta[i] + noise[i]
 			}
+
+			client.update.Noise = noise
+			client.update.NoisedDelta = noiseDelta
 
 			outLog.Printf("Sending update to verifiers")
 			approved := sendUpdateToVerifiers(verifierPortsToConnect) 

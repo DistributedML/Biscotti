@@ -103,7 +103,10 @@ func (honest *Honest) computeUpdate(iterationCount int) {
 	prevModel := honest.bc.getLatestGradient()
 	deltas, err := oneGradientStep(prevModel)
 	check(err)
-	honest.update = Update{Iteration: iterationCount, Delta: deltas, NoisedDelta: deltas,
+	honest.update = Update{Iteration: iterationCount, 
+		Delta: deltas, 
+		NoisedDelta: deltas, 
+		Noise: deltas,
 		Accepted: true}
 }
 
@@ -231,8 +234,8 @@ func (honest *Honest) createBlock(iterationCount int) (*Block,error) {
 		} else {
 			outLog.Printf("Skipping an update")
 		}
-		
 	}
+
 	mat.Row(updatedGradient, 0, pulledGradientM)
 
 	updatesGathered := make([]Update, len(honest.blockUpdates))

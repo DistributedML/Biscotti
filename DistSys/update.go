@@ -12,6 +12,7 @@ import (
 type Update struct {
 	Iteration 	int
 	Delta     	[]float64
+	Noise 		[]float64
 	NoisedDelta []float64
 	Accepted  	bool
 }
