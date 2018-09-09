@@ -10,9 +10,10 @@ import (
 
 // Update - data object representing a single update
 type Update struct {
-	Iteration int
-	Delta     []float64
-	Accepted  bool
+	Iteration 	int
+	Delta     	[]float64
+	NoisedDelta []float64
+	Accepted  	bool
 }
 
 func (update Update) String() string {

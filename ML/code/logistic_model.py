@@ -14,12 +14,13 @@ alpha = 1e-2
 d = 0
 hist_grad = 0
 epsilon = 0
+batch_size = 10
 
 scale = False
 diffpriv = False
 
 
-def init(dataset, epsilon):
+def init(dataset, filename, epsilon):
 
     passedEpsilon = epsilon
     data = utils.load_dataset(dataset)
@@ -74,17 +75,18 @@ def funObj(ww, X, y, batch_size):
 
     return f, g
 
+def getNoise(iteration):
+    return (-alpha / batch_size) * samples[iteration % len(samples)]
 
 # Reports the direct change to w, based on the given one.
 # Batch size could be 1 for SGD, or 0 for full gradient.
-def privateFun(theta, ww, batch_size=0):
+def privateFun(ww, batch_size):
 
     global iteration
     ww = np.array(ww)
 
     # Define constants and params
     nn, dd = X.shape
-    threshold = int(d * theta)
 
     if batch_size > 0 and batch_size < nn:
         idx = np.random.choice(nn, batch_size, replace=False)
@@ -97,16 +99,9 @@ def privateFun(theta, ww, batch_size=0):
     d1, _ = samples.shape
 
     if diffpriv:
-        Z = samples[np.random.randint(0, d1)]
-        delta = -alpha * (g + (1 / batch_size) * Z)
+        delta = -alpha * g + getNoise(np.random.randint(0, d1))
     else:
         delta = -alpha * g
-
-    # Weird way to get NON top k values
-    if theta < 1:
-        param_filter = np.argpartition(
-            abs(delta), -threshold)[:d - threshold]
-        delta[param_filter] = 0
 
     w_new = ww + delta
     f_new, g_new = funObj(w_new, X[idx, :], y[idx], batch_size)
@@ -116,5 +111,18 @@ def privateFun(theta, ww, batch_size=0):
 
 if __name__ == '__main__':
     
+    init("creditcard0", 1)
+    ww = np.zeros(d)
+
+    for i in range(3000):
+    
+        grad = privateFun(ww, 10)
+        delta = grad
+
+        if (np.any(np.isnan(delta))):
+            pdb.set_trace()
+
+        ww = ww + delta
+
     pdb.set_trace()
 

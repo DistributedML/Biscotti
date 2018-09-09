@@ -9,7 +9,7 @@ import pdb
 import datasets
 
 class Client():
-    def __init__(self, dataset, filename, batch_size, model, train_cut=.80):
+    def __init__(self, dataset, filename, batch_size, lr, model, train_cut=.80):
         # initializes dataset
         self.batch_size=batch_size
         Dataset = datasets.get_dataset(dataset)
@@ -24,7 +24,7 @@ class Client():
         ### Tunables ###
         # self.criterion = nn.MultiLabelMarginLoss()
         self.criterion = nn.CrossEntropyLoss()
-        self.optimizer = optim.SGD(self.model.parameters(), lr=0.01, momentum=0.5, weight_decay=0.001)
+        self.optimizer = optim.SGD(self.model.parameters(), lr=lr, momentum=0.5, weight_decay=0.001)
         self.aggregatedGradients = []
         self.loss = 0.0
 

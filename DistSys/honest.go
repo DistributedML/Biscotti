@@ -16,21 +16,22 @@ import (
 )
 
 var (
+	
 	pyLogModule   *python.PyObject
-	pyLogInitFunc *python.PyObject
-	pyLogPrivFunc *python.PyObject
+	pyTorchModule 		*python.PyObject
+
+	pyInitFunc *python.PyObject
+	pyPrivFunc *python.PyObject
 	pyNumFeatures *python.PyObject
 	pyTestModule  *python.PyObject
 	pyTestFunc    *python.PyObject
 	pyTrainFunc   *python.PyObject
 	pyRoniModule  *python.PyObject
 	pyRoniFunc    *python.PyObject
+	pyNoiseFunc	  *python.PyObject
 
-	pyTorchModule 		*python.PyObject
-	pyTorchInitFunc     *python.PyObject
-	pyTorchPrivFunc     *python.PyObject
-	pyTorchErrFunc      *python.PyObject
-	pyTorchRoniFunc 	*python.PyObject
+	
+	
 
 	useTorch	   bool
 
@@ -59,7 +60,6 @@ type Honest struct {
 }
 
 func init() {
-
 	err := python.Initialize()
 	if err != nil {
 		panic(err.Error())
@@ -86,7 +86,7 @@ func (honest *Honest) initializeData(datasetName string, numberOfNodes int) {
 
 func (honest *Honest) checkConvergence() bool {
 
-	trainError, _ := testModel(honest.bc.getLatestGradient())
+	trainError := testModel(honest.bc.getLatestGradient())
 
 	outLog.Printf(strconv.Itoa(client.id)+":Train Error is %.5f in Iteration %d", trainError, honest.bc.Blocks[len(honest.bc.Blocks)-1].Data.Iteration)
 
@@ -99,11 +99,11 @@ func (honest *Honest) checkConvergence() bool {
 
 // calculates update by calling oneGradientStep function that invokes python and passing latest global model from the chain to it.
 
-func (honest *Honest) computeUpdate(iterationCount int, datasetName string) {
+func (honest *Honest) computeUpdate(iterationCount int) {
 	prevModel := honest.bc.getLatestGradient()
 	deltas, err := oneGradientStep(prevModel)
 	check(err)
-	honest.update = Update{Iteration: iterationCount, Delta: deltas,
+	honest.update = Update{Iteration: iterationCount, Delta: deltas, NoisedDelta: deltas,
 		Accepted: true}
 }
 
@@ -116,38 +116,42 @@ func pyInit(datasetName string, dataFile string) int {
 	
 	outLog.Printf(strconv.Itoa(client.id)+"Importing modules...")
 
-	// Get all PyTorch related
-	python.PyList_Insert(sysPath, 0, python.PyString_FromString(torchPath))
-    pyTorchModule = python.PyImport_ImportModule("client_obj")
-
-	pyTorchInitFunc = pyTorchModule.GetAttrString("init")
-	pyTorchPrivFunc = pyTorchModule.GetAttrString("privateFun")
-	pyTorchErrFunc = pyTorchModule.GetAttrString("getTestErr")
-	pyTorchRoniFunc = pyTorchModule.GetAttrString("roni")
-
-	// Get all others
-	python.PyList_Insert(sysPath, 0, python.PyString_FromString(codePath))
-
-	pyLogModule = python.PyImport_ImportModule("logistic_model")
-	pyTestModule = python.PyImport_ImportModule("logistic_model_test")
-	pyRoniModule = python.PyImport_ImportModule("logistic_validator")
-
-	pyLogInitFunc = pyLogModule.GetAttrString("init")
-	pyLogPrivFunc = pyLogModule.GetAttrString("privateFun")
-	pyTrainFunc = pyTestModule.GetAttrString("train_error")
-	pyTestFunc = pyTestModule.GetAttrString("test_error")
-	pyRoniFunc = pyRoniModule.GetAttrString("roni")
-
-	// TODO: clean up
 	// We currently support creditcard for logreg, and mnist/lfw for pytorch
 	if useTorch {
-		pyNumFeatures = pyTorchInitFunc.CallFunction(python.PyString_FromString(datasetName), 
-			python.PyString_FromString(dataFile))
+	
+		// Get all PyTorch related
+		python.PyList_Insert(sysPath, 0, python.PyString_FromString(torchPath))
+	    
+	    pyTorchModule = python.PyImport_ImportModule("client_obj")
+
+		pyInitFunc = pyTorchModule.GetAttrString("init")
+		pyPrivFunc = pyTorchModule.GetAttrString("privateFun")
+		pyTrainFunc = pyTorchModule.GetAttrString("getTestErr")
+		pyTestFunc = pyTorchModule.GetAttrString("getTestErr")
+		pyRoniFunc = pyTorchModule.GetAttrString("roni")
+		pyNoiseFunc = pyTorchModule.GetAttrString("getNoise")
+
 	} else {
-		pyNumFeatures = pyLogInitFunc.CallFunction(python.PyString_FromString(dataFile), 
-			python.PyFloat_FromDouble(epsilon))
+		
+		// Get all others
+		python.PyList_Insert(sysPath, 0, python.PyString_FromString(codePath))
+
+		pyLogModule = python.PyImport_ImportModule("logistic_model")
+		pyTestModule = python.PyImport_ImportModule("logistic_model_test")
+		pyRoniModule = python.PyImport_ImportModule("logistic_validator")
+
+		pyInitFunc = pyLogModule.GetAttrString("init")
+		pyPrivFunc = pyLogModule.GetAttrString("privateFun")
+		pyNoiseFunc = pyLogModule.GetAttrString("getNoise")
+		pyTrainFunc = pyTestModule.GetAttrString("train_error")
+		pyTestFunc = pyTestModule.GetAttrString("test_error")
+		pyRoniFunc = pyRoniModule.GetAttrString("roni")
+
 	}
 	
+	pyNumFeatures = pyInitFunc.CallFunction(python.PyString_FromString(datasetName), 
+			python.PyString_FromString(dataFile), python.PyFloat_FromDouble(epsilon))
+
 	numFeatures := python.PyInt_AsLong(pyNumFeatures)
 
 	outLog.Printf(strconv.Itoa(client.id)+"Sucessfully pulled dataset. Features: %d\n", numFeatures)
@@ -172,12 +176,7 @@ func oneGradientStep(globalW []float64) ([]float64, error) {
 	
 	// Either use full GD or SGD here
 	var result *python.PyObject
-	if useTorch {
-		result = pyTorchPrivFunc.CallFunction(argArray)
-	} else { 
-		result = pyLogPrivFunc.CallFunction(python.PyInt_FromLong(1), 
-			argArray, python.PyInt_FromLong(batch_size))
-	}
+	result = pyPrivFunc.CallFunction(argArray, python.PyInt_FromLong(batch_size))
 
 	// Convert the resulting array to a go byte array
 	pyByteArray := python.PyByteArray_FromObject(result)
@@ -194,7 +193,9 @@ func oneGradientStep(globalW []float64) ([]float64, error) {
 		aFloat := math.Float64frombits(bits)
 		goFloatArray = append(goFloatArray, aFloat)
 	}
+
 	return goFloatArray, nil
+
 }
 
 
@@ -294,6 +295,40 @@ func (honest *Honest) flushUpdates() {
 
 
 /*
+	Return noise to a requesting client 
+*/
+func (honest *Honest) requestNoise(iterationCount int) ([]float64, error) {
+
+	runtime.LockOSThread()
+
+	_gstate := python.PyGILState_Ensure()
+
+	// Either use full GD or SGD here
+	var result *python.PyObject
+	result = pyNoiseFunc.CallFunction(python.PyInt_FromLong(iterationCount))
+
+	// Convert the resulting array to a go byte array
+	pyByteArray := python.PyByteArray_FromObject(result)
+	goByteArray := python.PyByteArray_AsBytes(pyByteArray)
+
+	python.PyGILState_Release(_gstate)
+
+	var goFloatArray []float64
+	size := len(goByteArray) / 8
+
+	for i := 0; i < size; i++ {
+		currIndex := i * 8
+		bits := binary.LittleEndian.Uint64(goByteArray[currIndex : currIndex+8])
+		aFloat := math.Float64frombits(bits)
+		goFloatArray = append(goFloatArray, aFloat)
+	}
+
+	return goFloatArray, nil
+
+}
+
+
+/*
 	Runs RONI through python on the proposed update
 */
 func (honest *Honest) verifyUpdate(update Update) float64 {
@@ -302,7 +337,7 @@ func (honest *Honest) verifyUpdate(update Update) float64 {
 
 	_gstate := python.PyGILState_Ensure()
 
-	deltas := update.Delta
+	deltas := update.NoisedDelta
 	truthModel := honest.bc.getLatestGradient()
 
 	truthArray := python.PyList_New(len(truthModel))
@@ -315,13 +350,8 @@ func (honest *Honest) verifyUpdate(update Update) float64 {
 	}
 
 	var score float64
-	if useTorch {
-		pyRoni := pyTorchRoniFunc.CallFunction(truthArray, updateArray)
-		score = python.PyFloat_AsDouble(pyRoni)
-	} else {
-		pyRoni := pyRoniFunc.CallFunction(truthArray, updateArray)
-		score = python.PyFloat_AsDouble(pyRoni)		
-	}
+	pyRoni := pyRoniFunc.CallFunction(truthArray, updateArray)
+	score = python.PyFloat_AsDouble(pyRoni)		
 	
 	python.PyGILState_Release(_gstate)	
 
@@ -354,7 +384,7 @@ func (honest *Honest) replaceBlock(block Block, iterationCount int){
 }
 
 //Test the current global model. Determine training and test error to see if model has converged 
-func testModel(weights []float64) (float64, float64) {
+func testModel(weights []float64) float64 {
 
 	runtime.LockOSThread()
 
@@ -366,23 +396,13 @@ func testModel(weights []float64) (float64, float64) {
 		python.PyList_SetItem(argArray, i, python.PyFloat_FromDouble(weights[i]))
 	}
 
-	var trainErr, testErr float64
-	if useTorch {
-		pyTrainResult := pyTorchErrFunc.CallFunction(argArray)
-		trainErr = python.PyFloat_AsDouble(pyTrainResult)
-		testErr = trainErr
-
-	} else {
-		pyTrainResult := pyTrainFunc.CallFunction(argArray)
-		trainErr = python.PyFloat_AsDouble(pyTrainResult)
-
-		pyTestResult := pyTestFunc.CallFunction(argArray)
-		testErr = python.PyFloat_AsDouble(pyTestResult)
-	}
+	var trainErr float64
+	pyTrainResult := pyTrainFunc.CallFunction(argArray)
+	trainErr = python.PyFloat_AsDouble(pyTrainResult)
 
 	python.PyGILState_Release(_gstate)	
 
-	return trainErr, testErr
+	return trainErr
 
 }
 

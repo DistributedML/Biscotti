@@ -1,34 +1,62 @@
+from __future__ import division
 import numpy as np
 import client
 import pdb
+import emcee
 from softmax_model import SoftmaxModel
 from mnist_cnn_model import MNISTCNNModel
 from lfw_cnn_model import LFWCNNModel
 from svm_model import SVMModel
 import datasets
 
+batch_size = 10
+learning_rate = 1e-2
 
-def init(dataset, filename):
+diffPriv = False
+
+def init(dataset, filename, epsilon):
+    
     global myclient
 
     D_in = datasets.get_num_features(dataset)
     D_out = datasets.get_num_classes(dataset)
-    params = datasets.get_num_params(dataset)
+    nParams = datasets.get_num_params(dataset)
 
-    batch_size = 4
     model = SoftmaxModel(D_in, D_out)
     train_cut = 0.8
     
-    myclient = client.Client(dataset, filename, batch_size, model, train_cut)
+    myclient = client.Client(dataset, filename, batch_size, learning_rate, model, train_cut)
 
-    return params
+    global samples
+    samples = []
+
+    def lnprob(x, alpha):
+        return -(alpha / 2) * np.linalg.norm(x)
+
+    if diffPriv:
+
+        nwalkers = max(4 * nParams, 250)
+        sampler = emcee.EnsembleSampler(nwalkers, nParams, lnprob, args=[epsilon])
+
+        p0 = [np.random.rand(nParams) for i in range(nwalkers)]
+        pos, _, state = sampler.run_mcmc(p0, 100)
+
+        sampler.reset()
+        sampler.run_mcmc(pos, 1000, rstate0=state)
+
+        print("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
+
+        samples = sampler.flatchain
+
+    return nParams
 
 # returns flattened gradient
-def privateFun(ww):
+# Keep batch_size for API compliance
+def privateFun(ww, batch_size):
     global myclient
     weights = np.array(ww)
     myclient.updateModel(weights)
-    return -1 * myclient.getGrad()
+    return (-1) * myclient.getGrad()
 
 def simpleStep(gradient):
     global myclient
@@ -48,6 +76,9 @@ def getTestErr(ww):
     myclient.updateModel(weights)
     return myclient.getTestErr()
 
+def getNoise(iteration):
+    return (learning_rate / batch_size) * samples[iteration]
+
 def roni(ww, delta):
     global myclient
     weights = np.array(ww)
@@ -64,17 +95,29 @@ def roni(ww, delta):
 
 if __name__ == '__main__':
     
-    dim = init("creditcard", "creditcardtrain")
+    epsilon = 1
+    dim = init("creditcard", "creditcardtrain", epsilon)
     ww = np.zeros(dim)
+    numRejected = 0
 
-    for i in range(1000):
-        #print(ww)
-        if i % 10 == 0:
+    for i in range(3000):
+    
+        grad = privateFun(ww, batch_size)
+
+        if diffPriv:
+            delta = grad + getNoise(i)
+        else:
+            delta = grad
+
+        if (np.any(np.isnan(delta))):
+            pdb.set_trace()
+
+        if i % 50 == 0:
             print("Test err: " + str(getTestErr(ww)))
 
-        grad = privateFun(ww)
-        ww = ww + grad
+        ww = ww + delta
 
     print(getTestErr(ww))
+    # print("Num rejected by RONI: " + str(numRejected))
 
     pdb.set_trace()
