@@ -12,6 +12,11 @@ import (
 	"bufio"
 	"errors"
 	"runtime"
+	"github.com/dedis/kyber"
+	"github.com/dedis/kyber/pairing/bn256"
+	"encoding/json"
+	// "fmt"
+	"sort"
 
 )
 
@@ -47,15 +52,39 @@ const (
 	codePath        = "../ML/code"
 	torchPath       = "../ML/Pytorch"
 	convThreshold   = 0.05
+
+	// Crypto constants
+	commitKeyPath = "commitKey.json"
+	pKeyG1Path = "pKeyG1.json"	
+
 )
 
 type Honest struct {
-	id           int
-	dataset 	 string
-	ncol 	     int
-	update       Update
-	blockUpdates []Update
-	bc           *Blockchain
+	id           		int
+	dataset 	 		string
+	ncol 	     		int
+	update       		Update
+	blockUpdates 		[]Update
+	bc           		*Blockchain
+	Keys 		 		EncryptionKeys
+	secretList	        map[int]MinerPart	
+	aggregatedSecrets   []MinerPart
+}
+
+type EncryptionKeys struct{
+
+	CommitmentKey PublicKey
+	PubKey  	  kyber.Point 
+	PubKeyMap     map[int]PublicKey
+	Skey 		  kyber.Scalar
+} 
+
+type PkeyG1 struct{
+
+	Id 		int
+	Pkey 	[]byte
+	Skey 	[]byte
+
 }
 
 func init() {
@@ -82,8 +111,20 @@ func (honest *Honest) initializeData(datasetName string, numberOfNodes int) {
 
 }
 
-// check for Convergence by calling TestModel that invokes python to compute train and test error 
+// Load all the public and private keys
 
+func (honest *Honest) bootstrapKeys() {
+
+	honest.Keys.CommitmentKey = extractCommitmentKey(honest.ncol)
+	honest.Keys.PubKeyMap, honest.Keys.Skey, honest.Keys.PubKey = extractKeys(honest.id)
+	// fmt.Println(honest.Keys.PubKeyMap)
+	// fmt.Println(honest.Keys.Skey)
+	// fmt.Println(honest.Keys.PubKey)
+	// fmt.Println(honest.Keys.CommitmentKey)
+
+}
+
+// check for Convergence by calling TestModel that invokes puython to compute train and test error 
 func (honest *Honest) checkConvergence() bool {
 
 	trainError, _ := testModel(honest.bc.getLatestGradient())
@@ -100,11 +141,19 @@ func (honest *Honest) checkConvergence() bool {
 // calculates update by calling oneGradientStep function that invokes python and passing latest global model from the chain to it.
 
 func (honest *Honest) computeUpdate(iterationCount int, datasetName string) {
+
 	prevModel := honest.bc.getLatestGradient()
-	deltas, err := oneGradientStep(prevModel)
+	deltas, err := oneGradientStep(prevModel) // TODO: Create commitment here
+	outLog.Printf("This update float:%s", deltas)
+	check(err)	
+	deltasInt := updateFloatToInt(deltas, PRECISION)
+	outLog.Printf("This update:%s", deltasInt)
+	updateCommitment := createCommitment(deltasInt, client.Keys.CommitmentKey.PKG1)
+	byteCommitment, err := updateCommitment.MarshalBinary()
 	check(err)
-	honest.update = Update{Iteration: iterationCount, Delta: deltas,
+	honest.update = Update{Iteration: iterationCount, Delta: deltas, Commitment: byteCommitment,
 		Accepted: true}
+
 }
 
 // Initialize the python stuff using go-python
@@ -207,6 +256,14 @@ func (honest *Honest) addBlockUpdate(update Update) int {
 	return len(honest.blockUpdates)
 }
 
+// add an update to the record of updates received for the current iteration
+
+func (honest *Honest) addSecretShare(share MinerPart) int {
+
+	honest.secretList[share.NodeID] = share
+	return len(honest.secretList)
+}
+
 // creates a block from all the updates recorded.
 
 func (honest *Honest) createBlock(iterationCount int) (*Block,error) {
@@ -243,6 +300,125 @@ func (honest *Honest) createBlock(iterationCount int) (*Block,error) {
 	newBlock := honest.bc.Blocks[len(honest.bc.Blocks)-1]
 
 	return newBlock,nil
+
+
+}
+
+// creates a block from all the updates recorded.
+
+func (honest *Honest) createBlockSecAgg(iteration int, nodeList []int) (*Block,error) {
+
+	// Has block already been appended from advertisements by other client?
+	if(honest.bc.getBlock(iterationCount) != nil){
+		return nil, blockExistsError
+	}
+
+	pulledGradient := make([]float64, honest.ncol)
+	pulledGradient = honest.bc.getLatestGradient()
+	updatedGradient := make([]float64, honest.ncol)
+	deltaM := mat.NewDense(1, honest.ncol, make([]float64, honest.ncol))
+	pulledGradientM := mat.NewDense(1, honest.ncol, pulledGradient)
+
+		
+
+
+	// Recover Secret Secure Aggregation
+	
+	if (len(nodeList) > 0){
+
+		aggregateUpdate := honest.recoverAggregateUpdates()	
+		deltaM = mat.NewDense(1, honest.ncol, aggregateUpdate)
+		pulledGradientM.Add(pulledGradientM, deltaM)
+
+	}
+	
+
+	// Update Aggregation
+	for _, nodeIndex := range nodeList {
+		
+		byteCommitment, _ := honest.secretList[nodeIndex].CommitmentUpdate.MarshalBinary()
+		thisNodeUpdate := Update{Iteration:iteration, Commitment: byteCommitment, Accepted:true}
+		honest.blockUpdates = append(honest.blockUpdates, thisNodeUpdate)
+
+		outLog.Printf("Update:%s", thisNodeUpdate)
+		outLog.Printf("List of Updates:%s", honest.blockUpdates)
+	
+	}
+
+
+
+	mat.Row(updatedGradient, 0, pulledGradientM)
+
+	updatesGathered := make([]Update, len(honest.blockUpdates))
+	copy(updatesGathered, honest.blockUpdates)
+
+	bData := BlockData{iteration, updatedGradient, updatesGathered}
+	honest.bc.AddBlock(bData) 
+
+	newBlock := honest.bc.Blocks[len(honest.bc.Blocks)-1]
+
+	return newBlock,nil
+
+}
+
+func (honest *Honest) recoverAggregateUpdates() []float64{
+
+	 myIndex := 0
+
+	 for index, subPolyPart := range honest.aggregatedSecrets[myIndex].PolyMap{
+
+		 listOfShares := make([]Share,0)
+
+		 for i := 0; i < len(honest.aggregatedSecrets); i++ {
+		 	
+		 	for _, share := range honest.aggregatedSecrets[i].PolyMap[index].Secrets{
+
+		 		listOfShares = append(listOfShares, share)	
+		 	}	 	
+		 	
+		 }
+
+		 outLog.Printf("List of shares for index %d: %s", index, listOfShares)
+
+		 subPolyPart.Polynomial = recoverSecret(listOfShares, POLY_SIZE-1)
+		 honest.aggregatedSecrets[myIndex].PolyMap[index] = subPolyPart
+		 outLog.Printf("Polynomial: %s" , subPolyPart.Polynomial)
+		 outLog.Printf("Polynomial2: %s" , honest.aggregatedSecrets[myIndex].PolyMap[index].Polynomial)	 
+
+	 }
+
+	 reconstructedUpdate := make([]int64,0)
+	 indexes := make([]int, 0)
+
+	 for k, _ := range honest.aggregatedSecrets[myIndex].PolyMap {
+	    indexes = append(indexes, k)
+	}
+	
+	sort.Ints(indexes)	
+
+	for _, index := range indexes{
+
+		subPolyPart := honest.aggregatedSecrets[myIndex].PolyMap[index]
+
+		outLog.Printf("Index:%d", index)
+		outLog.Printf("Length:%d", len(reconstructedUpdate))
+		outLog.Printf("Polynomial:%s", subPolyPart.Polynomial)
+
+
+		for i := len(reconstructedUpdate); i < index; i++ {
+ 			
+ 			reconstructedUpdate = append(reconstructedUpdate, subPolyPart.Polynomial[i%POLY_SIZE])
+ 		
+ 		}
+
+	}	 
+	 
+    // fmt.Println(reconstructedUpdate)
+
+	aggregatedVectorFloat := updateIntToFloat(reconstructedUpdate, PRECISION)
+
+	return aggregatedVectorFloat
+
 
 
 }
@@ -290,6 +466,18 @@ func (honest *Honest) addBlock(newBlock Block) error {
 func (honest *Honest) flushUpdates() {
 
 	honest.blockUpdates = honest.blockUpdates[:0]
+}
+
+// Empty the updates recorded at the start of each iteration
+
+func (honest *Honest) flushSecrets() {
+
+	// IFFY. How to empty a map, I don't know
+	honest.secretList = make(map[int]MinerPart)
+	honest.blockUpdates = honest.blockUpdates[:0]
+	honest.aggregatedSecrets = honest.aggregatedSecrets[:0]
+
+
 }
 
 
@@ -369,7 +557,7 @@ func testModel(weights []float64) (float64, float64) {
 	var trainErr, testErr float64
 	if useTorch {
 		pyTrainResult := pyTorchErrFunc.CallFunction(argArray)
-		trainErr = python.PyFloat_AsDouble(pyTrainResult)
+			trainErr = python.PyFloat_AsDouble(pyTrainResult)
 		testErr = trainErr
 
 	} else {
@@ -465,6 +653,118 @@ func check(e error) {
 	if e != nil {
 		panic(e)
 	}
+
+}
+
+func extractKeys(nodeNum int) (map[int]PublicKey, kyber.Scalar, kyber.Point){
+	
+	pubKeyMap := make(map[int]PublicKey)
+
+	suite := bn256.NewSuite()
+
+	mySkey := suite.G1().Scalar().One()
+
+	myPubKey := suite.G1().Point()
+
+	thisPoint := suite.G1().Point().Null()
+
+	pKeyG1File, err := os.Open(pKeyG1Path)
+	check(err)
+
+	defer pKeyG1File.Close()
+
+	scanner := bufio.NewScanner(pKeyG1File)
+
+	for scanner.Scan() {
+
+		thisKeyBytes := scanner.Bytes()
+		
+		thisKey := PkeyG1{}
+
+		json.Unmarshal(thisKeyBytes, &thisKey)		
+
+		err = thisPoint.UnmarshalBinary(thisKey.Pkey)
+
+		check(err)
+
+		thisPubKey := PublicKey{}
+
+		thisPubKey.SetG1Key(thisPoint.Clone())
+
+		pubKeyMap[thisKey.Id] = thisPubKey 	
+
+		// Write Set Key function for this 
+
+		// pubKeyMap[thisKey.Id].PKG1[0] = thisPoint
+
+		// fmt.Println(thisPoint)
+		
+
+		if(thisKey.Id == nodeNum){
+
+			mySkey.UnmarshalBinary(thisKey.Skey)
+			myPubKey = thisPoint.Clone()			
+		
+		}
+
+
+	}
+
+	return pubKeyMap, mySkey, myPubKey	
+
+}
+
+func extractCommitmentKey(dimensions int) PublicKey {	
+
+	suite := bn256.NewSuite()
+
+	commitKey := PublicKey{PKG1:make([]kyber.Point, dimensions), PKG2:make([]kyber.Point, dimensions)}
+
+	// commitKey.GenerateKey()
+
+
+	commitKeyFile, err := os.Open(commitKeyPath)
+
+	check(err)
+
+	scanner := bufio.NewScanner(commitKeyFile)
+
+	// index:=0
+
+	for scanner.Scan() {
+						
+		thisKeyBytes := scanner.Bytes()
+		
+		thisKey := PkeyG1{}
+
+		json.Unmarshal(thisKeyBytes, &thisKey)		
+
+		thisPointG1 := suite.G1().Point()	
+
+		err = thisPointG1.UnmarshalBinary(thisKey.Pkey)
+
+		check(err)
+
+		thisPointG2 := suite.G2().Point()
+
+		// fmt.Println(len(thisKey))
+
+		err = thisPointG2.UnmarshalBinary(thisKey.Skey)
+
+		check(err)
+
+		// fmt.Println(thisKey.Id)
+		// fmt.Println(thisPointG1)
+		// fmt.Println(thisPointG2)
+
+		commitKey.PKG1[thisKey.Id] = thisPointG1.Clone()
+
+		commitKey.PKG2[thisKey.Id] = thisPointG2.Clone()	
+
+
+	}
+
+	return commitKey	
 
 }
 

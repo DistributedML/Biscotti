@@ -9,8 +9,8 @@ import (
 	// "crypto/sha256"
 	// "encoding/binary"
 	"math"
-	// "github.com/DzananGanic/numericalgo"
-	// "github.com/DzananGanic/numericalgo/fit/poly"
+	"github.com/DzananGanic/numericalgo"
+	"github.com/DzananGanic/numericalgo/fit/poly"
 	"sort"
 	"github.com/gonum/matrix/mat64"
 	// "bytes"
@@ -125,7 +125,8 @@ func converttoMinerPart(minerPartRPC MinerPartRPC) MinerPart{
 
 	err := commitment.UnmarshalBinary(minerPartRPC.CommitmentUpdate)
 
-	check(err)
+	fmt.Println(err)
+	// check(err)
 
 	polyMap := PolynomialMap{}
 
@@ -143,7 +144,7 @@ func converttoMinerPart(minerPartRPC MinerPartRPC) MinerPart{
 
 			partCommitment := suite.G1().Point().Null()
 			err = partCommitment.UnmarshalBinary(subPolyPart.Witnesses[indexW])
-			check(err)
+			fmt.Println(err)
 			thisWitnesses[indexW] = partCommitment.Clone()
 		}
 
@@ -764,6 +765,57 @@ func degree(p []float64) int {
     return -1
 }
 
+func recoverSecret2(shares []Share, degree int) []int64{
+
+	x := make([]int64, len(shares))
+
+	y := make([]int64, len(shares))
+
+	for i := 0; i < len(shares); i++ {
+		
+		x[i] = shares[i].X
+		y[i] = shares[i].Y
+	}
+
+	//fmt.Println(x)
+	//fmt.Println(y)
+
+	xFloat := updateIntToFloat(x,0) // standard int to float conversion
+
+	yFloat := make([]float64, len(y))
+
+	// yFloat := updateIntToFloat(y,0)
+
+	for i := 0; i < len(y); i++ {
+		
+		yFloat[i] = float64(y[i])
+
+	}
+
+	//fmt.Println(xFloat)
+	//fmt.Println(yFloat)
+
+	xVector := numericalgo.Vector(xFloat)
+
+	yVector := numericalgo.Vector(yFloat)
+
+	mypolynomial := poly.New()
+
+	mypolynomial.Fit(xVector,yVector, degree)
+
+	//fmt.Println("Print coeff")
+	//fmt.Println(mypolynomial.Coeff)
+
+	//fmt.Println("Predicting value:", xFloat[0])
+	//fmt.Println(mypolynomial.Predict(xFloat[0]))
+
+	aggregatedVectorInt := updateFloatToInt([]float64(mypolynomial.Coeff),0)
+
+
+	return aggregatedVectorInt
+
+}
+
 func recoverSecret(shares []Share, degree int) []int64{
 
 	xInt := make([]int64, len(shares))
@@ -789,7 +841,7 @@ func recoverSecret(shares []Share, degree int) []int64{
     err := c.SolveQR(qr, false, b)
 
     if err != nil {
-        fmt.Println(err)
+        //fmt.Println(err)
     } 
 
     coeff := make([]float64, degree+1)
@@ -797,9 +849,9 @@ func recoverSecret(shares []Share, degree int) []int64{
 
     coeff = mat64.Col(coeff, 0, c)
 
-    // fmt.Println("Result:")
+    //fmt.Println("Result:")
 
-    // fmt.Println(coeff)
+    //fmt.Println(coeff)
 
     coeffInt := make([]int64, len(coeff))
 
@@ -813,8 +865,6 @@ func recoverSecret(shares []Share, degree int) []int64{
    
 
 }
-
-
 
 
 func Vandermonde(a []float64, degree int) *mat64.Dense {

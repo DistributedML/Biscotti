@@ -47,6 +47,7 @@ go get github.com/kniren/gota/dataframe
 go get github.com/sbinet/go-python
 go get gonum.org/v1/gonum/mat
 go get github.com/coniks-sys/coniks-go/crypto/vrf
+go get github.com/dedis/kyber
 
 ##TODO Probably install python
 echo "pkg-config"

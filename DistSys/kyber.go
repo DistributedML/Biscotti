@@ -237,22 +237,46 @@ func extractMinerSecret(pComm PolynomialCommitment, minerIndex int, totalShares 
 
 func aggregateSecret(previousAggregate MinerPart, newSecret MinerPart) MinerPart{
 
+	aggregatedMinerPart := MinerPart{CommitmentUpdate:newSecret.CommitmentUpdate, Iteration: newSecret.Iteration, NodeID: newSecret.NodeID, PolyMap: make(map[int]PolynomialPart)}	
+	aggregatedMinerPart.CommitmentUpdate.Add(aggregatedMinerPart.CommitmentUpdate, previousAggregate.CommitmentUpdate)
+
 	for index, subPolyPart := range previousAggregate.PolyMap{
 
-		//outLog.Printf("PreviousSubPolyPart:%s",subPolyPart)
-		//outLog.Printf("NewSubPolyPart:%s",newSecret.PolyMap[index])
-		for i := 0; i < len(subPolyPart.Secrets); i++ {			
-			subPolyPart.Secrets[i].X = subPolyPart.Secrets[i].X
-			subPolyPart.Secrets[i].Y = subPolyPart.Secrets[i].Y +  newSecret.PolyMap[index].Secrets[i].Y
-			//outLog.Printf("Index:%d", index)
-			//outLog.Printf("I:%d", i)
+		thisIndexCommitment := subPolyPart.Commitment.Clone()
 
+		thisIndexCommitment.Add(thisIndexCommitment, newSecret.PolyMap[index].Commitment)
+
+		secrets := make([]Share,0)
+
+		witnesses := make([]kyber.Point, 0)
+
+		sort.Slice(subPolyPart.Secrets, func(i, j int) bool { return subPolyPart.Secrets[i].X < subPolyPart.Secrets[j].X })
+		sort.Slice(newSecret.PolyMap[index].Secrets, func(i, j int) bool { return newSecret.PolyMap[index].Secrets[i].X < newSecret.PolyMap[index].Secrets[i].X})
+
+		for i := 0; i < len(subPolyPart.Secrets); i++ {			
+			
+			thisXValue := subPolyPart.Secrets[i].X
+
+			previousYValue:= subPolyPart.Secrets[i].Y
+			newYValue := newSecret.PolyMap[index].Secrets[i].Y
+			finalYValue := previousYValue + newYValue
+			
+			secrets = append(secrets, Share{thisXValue, finalYValue})
+
+			thisWitness := subPolyPart.Witnesses[i].Clone()
+
+			thisWitness.Add(thisWitness, newSecret.PolyMap[index].Witnesses[i])
+
+			witnesses = append(witnesses, thisWitness)
 
 			subPolyPart.Witnesses[i].Add(subPolyPart.Witnesses[i], newSecret.PolyMap[index].Witnesses[i]) 
-		}	
+		}
+
+		aggregatedMinerPart.PolyMap[index] = PolynomialPart{Polynomial:subPolyPart.Polynomial, Commitment:thisIndexCommitment, Secrets: secrets, Witnesses:witnesses}
+
 	}
 
-	return previousAggregate
+	return aggregatedMinerPart
 
 }
 
@@ -587,6 +611,14 @@ func createShareAndWitness(minerPubKey int, update []int64, pkeyG1 []kyber.Point
 	qInt := updateFloatToInt(quotient,0)
     rInt := updateFloatToInt(remainder,0)
 
+    if rInt[0] > 0 {
+    	
+    	outLog.Printf("Evaluated Value:%d", evaluatedValue)
+    	outLog.Printf("Remainder:%d", remainder)
+    	outLog.Printf("New evaluatedValue:%d", evaluatedValue + rInt[0])
+
+    }
+
 	evaluatedValue = evaluatedValue + rInt[0]
 
 	qInt = append(qInt, 0)
@@ -680,14 +712,18 @@ func makePolynomialMap(updateInt []int64, maxPolynomialdegree int) (map[int][]in
 	for i := 0; i < len(updateInt); i=i+maxPolynomialdegree {
 		
 		stopIndex := i+maxPolynomialdegree
+		// length := maxPolynomialdegree
 		
 		if (i+maxPolynomialdegree) > len(updateInt) {
 			
 			stopIndex = len(updateInt)
+			// length = len(updateInt)%maxPolynomialdegree
 
 		}
 
-		polynomialMap[stopIndex] = make([]int64, maxPolynomialdegree)		
+		// polynomialMap[stopIndex] = make([]int64, length)// TODO: Make this equal to the length		
+
+		polynomialMap[stopIndex] = make([]int64, maxPolynomialdegree)// TODO: Make this equal to the length		
 		polynomialMap[stopIndex] = updateInt[i:stopIndex]		
 		// //fmt.Println(polynomialMap[i])
 
