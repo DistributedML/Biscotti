@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-	"github.com/dedis/kyber"
+	"github.com/dedis/kyber/pairing/bn256"
 	// "encoding/binary"
 	// "bytes"
 )
@@ -13,12 +13,22 @@ import (
 type Update struct {
 	Iteration 	int
 	Delta     	[]float64
-	Commitment  kyber.Point
+	Commitment  []byte // can't be kyber.Point
 	Accepted  	bool
 }
 
 func (update Update) String() string {
-	return fmt.Sprintf("{Iteration:" + strconv.Itoa(update.Iteration) + ", " + "Deltas:" + arrayToString(update.Delta, ",") + "}")
+
+	suite := bn256.NewSuite()
+	byteCommitment := update.Commitment
+
+	pointCommitment := suite.G1().Point().Null()
+
+	err := pointCommitment.UnmarshalBinary(byteCommitment)
+	check(err)
+
+	return fmt.Sprintf("{Iteration:" + strconv.Itoa(update.Iteration) + ", " + "Commitment:" + pointCommitment.String() + "}")
+
 }
 
 func arrayToString(a []float64, delim string) string {
@@ -26,5 +36,9 @@ func arrayToString(a []float64, delim string) string {
 	return str
 
 }
+
+
+
+
 
 

@@ -15,7 +15,7 @@ import (
 	"github.com/dedis/kyber"
 	"github.com/dedis/kyber/pairing/bn256"
 	"encoding/json"
-	"fmt"
+	// "fmt"
 	"sort"
 
 )
@@ -143,11 +143,19 @@ func (honest *Honest) checkConvergence() bool {
 // calculates update by calling oneGradientStep function that invokes python and passing latest global model from the chain to it.
 
 func (honest *Honest) computeUpdate(iterationCount int, datasetName string) {
+
 	prevModel := honest.bc.getLatestGradient()
-	deltas, err := oneGradientStep(prevModel)
+	deltas, err := oneGradientStep(prevModel) // TODO: Create commitment here
+	outLog.Printf("This update float:%s", deltas)
+	check(err)	
+	deltasInt := updateFloatToInt(deltas, PRECISION)
+	outLog.Printf("This update:%s", deltasInt)
+	updateCommitment := createCommitment(deltasInt, client.Keys.CommitmentKey.PKG1)
+	byteCommitment, err := updateCommitment.MarshalBinary()
 	check(err)
-	honest.update = Update{Iteration: iterationCount, Delta: deltas,
+	honest.update = Update{Iteration: iterationCount, Delta: deltas, Commitment: byteCommitment,
 		Accepted: true}
+
 }
 
 // Initialize the python stuff using go-python
@@ -330,10 +338,16 @@ func (honest *Honest) createBlockSecAgg(iteration int, nodeList []int) (*Block,e
 	// Update Aggregation
 	for _, nodeIndex := range nodeList {
 		
-		thisNodeUpdate := Update{Iteration:iteration, Commitment: honest.secretList[nodeIndex].CommitmentUpdate, Accepted:true}
+		byteCommitment, _ := honest.secretList[nodeIndex].CommitmentUpdate.MarshalBinary()
+		thisNodeUpdate := Update{Iteration:iteration, Commitment: byteCommitment, Accepted:true}
 		honest.blockUpdates = append(honest.blockUpdates, thisNodeUpdate)
+
+		outLog.Printf("Update:%s", thisNodeUpdate)
+		outLog.Printf("List of Updates:%s", honest.blockUpdates)
 	
 	}
+
+
 
 	mat.Row(updatedGradient, 0, pulledGradientM)
 
@@ -366,8 +380,12 @@ func (honest *Honest) recoverAggregateUpdates() []float64{
 		 	
 		 }
 
+		 outLog.Printf("List of shares for index %d: %s", index, listOfShares)
+
 		 subPolyPart.Polynomial = recoverSecret(listOfShares, POLY_SIZE-1)
-		 // fmt.Println(subPolyPart.Polynomial)	 
+		 honest.aggregatedSecrets[myIndex].PolyMap[index] = subPolyPart
+		 outLog.Printf("Polynomial: %s" , subPolyPart.Polynomial)
+		 outLog.Printf("Polynomial2: %s" , honest.aggregatedSecrets[myIndex].PolyMap[index].Polynomial)	 
 
 	 }
 
@@ -384,6 +402,11 @@ func (honest *Honest) recoverAggregateUpdates() []float64{
 
 		subPolyPart := honest.aggregatedSecrets[myIndex].PolyMap[index]
 
+		outLog.Printf("Index:%d", index)
+		outLog.Printf("Length:%d", len(reconstructedUpdate))
+		outLog.Printf("Polynomial:%s", subPolyPart.Polynomial)
+
+
 		for i := len(reconstructedUpdate); i < index; i++ {
  			
  			reconstructedUpdate = append(reconstructedUpdate, subPolyPart.Polynomial[i%POLY_SIZE])
@@ -392,7 +415,7 @@ func (honest *Honest) recoverAggregateUpdates() []float64{
 
 	}	 
 	 
-    fmt.Println(reconstructedUpdate)
+    // fmt.Println(reconstructedUpdate)
 
 	aggregatedVectorFloat := updateIntToFloat(reconstructedUpdate, PRECISION)
 

@@ -16,6 +16,7 @@ import (
 	"os"
 	"flag"
 	"encoding/gob"
+	"sort"
 	
 
 )
@@ -137,7 +138,7 @@ func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
 	}*/
 
 	roniScore := client.verifyUpdate(update)
-	outLog.Printf("RONI for update at iteration %d is %f.\n", client.update.Iteration, roniScore)
+	outLog.Printf("RONI for update at iteration %d is %f.\n", update.Iteration, roniScore)
 
 	// Roni score measures change in local training error
 	if roniScore > 0.02 {
@@ -158,7 +159,7 @@ func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
 
 func (s *Peer) RegisterSecret(share MinerPartRPC, _ignored *bool) error {
 
-	outLog.Printf(strconv.Itoa(client.id)+":Got miner request, iteration %d\n", share.Iteration)
+	outLog.Printf(strconv.Itoa(client.id)+":Got secret share, iteration %d\n", share.Iteration)
 
 	// we can return the chain to the guy here instead of just leaving that guy with an error
 	if share.Iteration < iterationCount {
@@ -188,6 +189,8 @@ func processShare(share MinerPart) {
 
 	// Might get an update while I am in the announceToNetwork phase and when I come out of it the update becomes redundant
 	if ((iterationCount == share.Iteration)) {
+
+		outLog.Printf(strconv.Itoa(client.id)+":Appending secret share, iteration %d\n", share.Iteration)	
 
 		updateLock.Lock()
 		numberOfShares := client.addSecretShare(share)
@@ -293,20 +296,22 @@ func (s *Peer) GetUpdateList(iteration int, nodeList *([]int)) error {
 
 }
 
-func (s *Peer) GetMinerPart(nodeList []int, myMinerPart *MinerPart) error {
+func (s *Peer) GetMinerPart(nodeList []int, myMinerPartRPC *MinerPartRPC) error {
 
 	outLog.Printf(strconv.Itoa(client.id) + ":Giving my aggregated share")
 	
-	*(myMinerPart) = MinerPart{}
+	myMinerPart := MinerPart{}
 	// Might need this condition
 	if(miner && (client.secretList[nodeList[0]].Iteration == iterationCount)){
 
-		*(myMinerPart) = client.secretList[nodeList[0]]
+		myMinerPart = client.secretList[nodeList[0]]
 
 		for i := 1; i < len(nodeList); i++ {
 			
-			*(myMinerPart) = aggregateSecret(*(myMinerPart), client.secretList[nodeList[i]])
+			myMinerPart = aggregateSecret(myMinerPart, client.secretList[nodeList[i]])
 		}
+
+		*(myMinerPartRPC) = converttoRPC(myMinerPart)
 
 	
 	}else{
@@ -717,7 +722,6 @@ func prepareForNextIteration() {
 		os.Exit(1)
 	}
 
-
 	if(SECURE_AGG) {
 
 		updateLock.Lock()
@@ -732,8 +736,8 @@ func prepareForNextIteration() {
 	}	
 
 
+	convergedLock.Unlock()		
 	boolLock.Lock()
-	convergedLock.Unlock()	
 	
 
 	iterationCount++
@@ -1002,10 +1006,10 @@ func addBlockToChain(block Block) {
 		
 		}
 
-		if(miner){
+		if(miner && getLeaderAddress() == (myIP+myPort) && len(block.Data.Deltas) == 0){
+			outLog.Printf("Blocking here")
 			quitRoutine <- true
 		}
-
 
 		boolLock.Unlock()
 		go sendBlock(block)	
@@ -1293,6 +1297,14 @@ func sendUpdateSecretsToMiners(addresses []string) {
 	// generate secrets here
 	minerSecrets := generateMinerSecretShares(client.update.Delta, PRECISION, client.Keys.CommitmentKey, NUM_MINERS, POLY_SIZE, TOTAL_SHARES)
 
+	outLog.Printf("My secret share:%s", minerSecrets)
+
+	for i := 0; i < len(minerSecrets); i++ {
+		outLog.Printf("My secret share 10:%s", minerSecrets[i].PolyMap[10].Secrets)		
+		outLog.Printf("My secret share 20:%s", minerSecrets[i].PolyMap[20].Secrets)
+		outLog.Printf("My secret share 20:%s", minerSecrets[i].PolyMap[25].Secrets)		
+	}
+
 	// fmt.Println(minerSecrets)
 	// fmt.Println(minerSecrets[0].PolyMap[10].Secrets)
 	// fmt.Println(minerSecrets[1].PolyMap[10].Secrets)
@@ -1302,11 +1314,13 @@ func sendUpdateSecretsToMiners(addresses []string) {
 	// // TODO: For now, the first miner that gets the block done is good enough.
 	// // We will need to use shamir secrets here later
 
+	sort.Strings(addresses)
+
 	minerIndex := 0
 
 	for _, address := range addresses {
 
-		if !mined {
+		// if !mined {
 
 			conn, err := rpc.Dial("tcp", address)
 			printError("Unable to connect to miner", err)
@@ -1354,7 +1368,7 @@ func sendUpdateSecretsToMiners(addresses []string) {
 				continue
 			}
 
-		}
+		// }
 
 		minerIndex++
 
@@ -1426,7 +1440,25 @@ func startUpdateDeadlineTimer(timerForIteration int){
 }
 
 // Timer started by the verifier to set a deadline until which he will receive updates
+func getLeaderAddress() string{
 
+	maxId := -1
+	maxAddress := "Nil"
+
+	for _, address := range minerPortsToConnect{
+
+		thisID := peerLookup[address]
+		
+		if (thisID > maxId) {
+			maxAddress = address
+			maxId = thisID
+		}
+
+	}
+
+	return maxAddress
+
+}
 func startShareDeadlineTimer(timerForIteration int){
 	
 	select {
@@ -1437,77 +1469,99 @@ func startShareDeadlineTimer(timerForIteration int){
 
 		case <- time.After(timeoutUpdate):
 			outLog.Printf(strconv.Itoa(client.id)+":Timeout. Didn't receive expected number of shares. Preparing to send block. Iteration: %d..", iterationCount)
+
+		case <- quitRoutine:
+			outLog.Printf(strconv.Itoa(client.id)+"Already appended block. Quitting routine. Iteration: %d..", iterationCount)			
+			return	
 	
 	}
 	
 	// If I am on the current iteration and am the CHOSEN ONE among the miners
 
+	outLog.Printf("Here")
 	if (timerForIteration == iterationCount)   {
 
-		if ((myIP+myPort) == minerPortsToConnect[0]) {
+		outLog.Printf("Here2")
+
+		leaderAddress := getLeaderAddress()
+
+		outLog.Printf("MinerAddress:%s", leaderAddress)
+		outLog.Printf("My Address:%s", myIP+myPort)
+
+
+		if ((myIP+myPort) == leaderAddress && len(client.secretList) > 0) {
 
 			minerMap, finalNodeList := getNodesList(minerPortsToConnect)
 
 			sharesPerMiner := TOTAL_SHARES/NUM_MINERS
 
-			if (sharesPerMiner * len(minerMap) >= maxPolynomialdegree ) {
+			// collected sufficient shares and there are more than one 
+			if ((sharesPerMiner * len(minerMap) >= maxPolynomialdegree) && len(finalNodeList) > 1) {
 
 				client.aggregatedSecrets = getSecretShares(minerMap, finalNodeList)
 
-				if (sharesPerMiner * len(minerMap) >= maxPolynomialdegree ) {
+				// if (sharesPerMiner * len(minerMap) >= maxPolynomialdegree ) {
 
-					outLog.Printf(strconv.Itoa(client.id)+":Acquiring chain lock")
-					blockChainLock.Lock()
+				outLog.Printf(strconv.Itoa(client.id)+":Acquiring chain lock")
+				blockChainLock.Lock()
+			
+				outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")
 				
-					outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")
-					
-					// //TODO:
-					blockToSend, err := client.createBlockSecAgg(iterationCount, finalNodeList)
-				
-					blockChainLock.Unlock()		
+				// //TODO:
+				blockToSend, err := client.createBlockSecAgg(iterationCount, finalNodeList)
+			
+				blockChainLock.Unlock()		
 
-					printError("Iteration: " + strconv.Itoa(iterationCount), err)
-				
-					if (err == nil) {
-						sendBlock(*blockToSend)
-					}					
-
-				}else{
-					outLog.Printf(strconv.Itoa(client.id)+":Creating empty block")
-					dummyNodeList := make([]int,0)
-					//create empty block
-					blockChainLock.Lock()				
-					outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")					
-					// //TODO:
-					blockToSend, err := client.createBlockSecAgg(iterationCount, dummyNodeList)				
-					blockChainLock.Unlock()	
-
-					if (err == nil) {
-						sendBlock(*blockToSend)
-					}				
-				}
-
+				printError("Iteration: " + strconv.Itoa(iterationCount), err)
+			
+				if (err == nil) {
+					sendBlock(*blockToSend)
+				}			
 				
 			}else{
-					outLog.Printf(strconv.Itoa(client.id)+":Creating empty block")
-					// create empty block
-					outLog.Printf(strconv.Itoa(client.id)+":Creating empty block")
-					dummyNodeList := make([]int,0)
-					//create empty block
-					blockChainLock.Lock()				
-					outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")					
-					// //TODO:
-					blockToSend, err := client.createBlockSecAgg(iterationCount, dummyNodeList)				
-					blockChainLock.Unlock()	
-					if (err == nil) {
-						sendBlock(*blockToSend)
-					}
+
+				outLog.Printf(strconv.Itoa(client.id)+":Creating empty block2")
+				// create empty block
+				outLog.Printf(strconv.Itoa(client.id)+":Creating empty block")
+				dummyNodeList := make([]int,0)
+				//create empty block
+				blockChainLock.Lock()				
+				outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")					
+				// //TODO:
+				blockToSend, err := client.createBlockSecAgg(iterationCount, dummyNodeList)				
+				blockChainLock.Unlock()	
+				outLog.Printf(strconv.Itoa(client.id)+":chain lock released")
+
+				if (err == nil) {
+					sendBlock(*blockToSend)
+				}
+			
 			}
 		
 
 		}else{
 
-			go startBlockDeadlineTimer(iterationCount)
+			if ((myIP+myPort) != leaderAddress) {
+
+				go startBlockDeadlineTimer(iterationCount)							
+			
+			}else{
+				
+				outLog.Printf(strconv.Itoa(client.id)+":Creating empty block3")					
+				// create empty block
+				outLog.Printf(strconv.Itoa(client.id)+":Creating empty block")
+				dummyNodeList := make([]int,0)
+				//create empty block
+				blockChainLock.Lock()				
+				outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")					
+				// //TODO:
+				blockToSend, err := client.createBlockSecAgg(iterationCount, dummyNodeList)				
+				blockChainLock.Unlock()	
+				if (err == nil) {
+					sendBlock(*blockToSend)
+				}
+
+			}
 
 		} 
 
@@ -1536,10 +1590,16 @@ func getSecretShares(minerList map[string][]int, nodeList []int) []MinerPart{
 
 	}
 
+	outLog.Printf("My miner share:%s", myMinerPart)
+
 	minerShares = append(minerShares, myMinerPart)	
 
 	for address, _ := range minerList {
 		
+		if address == myIP+myPort {
+			continue
+		}
+
 		outLog.Printf(strconv.Itoa(client.id)+":Calling %s", address)
 		thisMinerSecret, err := callGetMinerShareRPC(address, nodeList)		    
 		
@@ -1556,6 +1616,7 @@ func getSecretShares(minerList map[string][]int, nodeList []int) []MinerPart{
 
 func callGetMinerShareRPC(address string, nodeList []int) (MinerPart, error){
 
+	thisMinerPartRPC := MinerPartRPC{}
 	thisMinerPart := MinerPart{}
 	
 	c := make(chan error)
@@ -1569,15 +1630,15 @@ func callGetMinerShareRPC(address string, nodeList []int) (MinerPart, error){
 	if (err == nil) {
 		
 		defer conn.Close()
-		outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Fellow Miner. Getting NodeList, Iteration:%d\n", client.update.Iteration)
-		go func() { c <- conn.Call("Peer.GetMinerPart", nodeList, &thisMinerPart) }()
+		outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Fellow Miner. Getting MinerShare, Iteration:%d\n", client.update.Iteration)
+		go func() { c <- conn.Call("Peer.GetMinerPart", nodeList, &thisMinerPartRPC) }()
 		select {
 		case err := <-c:
 			
 			printError("Error in getting miner part", err)
-			
+			thisMinerPart = converttoMinerPart(thisMinerPartRPC)
 			if(err==nil){
-				outLog.Printf(strconv.Itoa(client.id)+":Update mined. Iteration:%d\n", client.update.Iteration)
+				outLog.Printf(strconv.Itoa(client.id)+":Got secret share. Iteration:%d\n", iterationCount)
 				return thisMinerPart, nil
 			}else{
 				return thisMinerPart, err
@@ -1600,11 +1661,11 @@ func callGetMinerShareRPC(address string, nodeList []int) (MinerPart, error){
 
 func getNodesList(minerList []string) (map[string][]int, []int) {
 	
-	listOfUpdates := make(map[string][]int, 0)
+	listOfUpdates := make(map[string][]int)
 
-	myNodeList := make([]int, 0, len(client.secretList))
+	listOfUpdates[myIP+myPort] = make([]int, 0, len(client.secretList))
 
-	for nodeID := range myNodeList {
+	for nodeID, _ := range client.secretList {
 		listOfUpdates[myIP+myPort] = append(listOfUpdates[myIP+myPort], nodeID)
 	}
 
@@ -1619,7 +1680,7 @@ func getNodesList(minerList []string) (map[string][]int, []int) {
 
         outLog.Printf(strconv.Itoa(client.id)+":Calling %s", address)
 		thisNodesList, err := callGetUpdateListRPC(address)
-		if err == nil {
+		if ((err == nil) && (len(thisNodesList) > 0)) {
 			listOfUpdates[address] = thisNodesList	
 			
 		}
@@ -1635,6 +1696,9 @@ func getNodesList(minerList []string) (map[string][]int, []int) {
 		intersectionList = Intersection(intersectionList, nodeList)
 
 	}
+
+	outLog.Printf("Intersection List: %s", intersectionList)
+	outLog.Printf("Node List: %s",listOfUpdates)
 
 	return listOfUpdates, intersectionList
 
@@ -1657,15 +1721,15 @@ func callGetUpdateListRPC(address string) ([]int, error){
 	if (err == nil) {
 		
 		defer conn.Close()
-		outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Fellow Miner. Getting NodeList, Iteration:%d\n", client.update.Iteration)
-		go func() { c <- conn.Call("Peer.GetUpdateList", client.update.Iteration, &nodeList) }()
+		outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Fellow Miner. Getting NodeList, Iteration:%d\n", iterationCount)
+		go func() { c <- conn.Call("Peer.GetUpdateList", iterationCount, &nodeList) }()
 		select {
 		case err := <-c:
 			
 			printError("Error in sending update", err)
 			
 			if(err==nil){
-				outLog.Printf(strconv.Itoa(client.id)+":Update mined. Iteration:%d\n", client.update.Iteration)
+				outLog.Printf(strconv.Itoa(client.id)+":List received. List:%s. Iteration:%d\n", nodeList, iterationCount)
 				return nodeList, nil
 			}else{
 				return nodeList, err

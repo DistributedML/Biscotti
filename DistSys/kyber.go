@@ -5,12 +5,12 @@ import (
 	"github.com/dedis/kyber/pairing/bn256"	
 	"github.com/dedis/kyber"
 	// "github.com/dedis/kyber/share"
-	// "fmt"
+	"fmt"
 	// "crypto/sha256"
 	// "encoding/binary"
 	"math"
-	"github.com/DzananGanic/numericalgo"
-	"github.com/DzananGanic/numericalgo/fit/poly"
+	// "github.com/DzananGanic/numericalgo"
+	// "github.com/DzananGanic/numericalgo/fit/poly"
 	"sort"
 	"github.com/gonum/matrix/mat64"
 	// "bytes"
@@ -95,10 +95,19 @@ func converttoRPC(minerPart MinerPart) MinerPartRPC{
 		thisSecrets := subPolyPart.Secrets
 		thisWitnesses := make([][]byte, len(subPolyPart.Witnesses))
 
-		for indexW := range thisWitnesses{
 
-			thisWitnesses[indexW], _ = subPolyPart.Witnesses[indexW].MarshalBinary()
+		//outLog.Printf("Witnesses:%s",subPolyPart.Witnesses)
+
+		for i := 0; i < len(subPolyPart.Witnesses); i++ {
+			thisWitnesses[i] =[]byte{}						
+			thisWitnesses[i], _ = subPolyPart.Witnesses[i].MarshalBinary()
 		}
+
+		// for indexW := range thisWitnesses{
+
+		// 	thisWitnesses[indexW] = make([]byte, 64)
+		// 	thisWitnesses[indexW], _ = subPolyPart.Witnesses[indexW].MarshalBinary()
+		// }
 
 		polyMapRPC[index] = PolynomialPartRPC{Polynomial: thisPolynomial, Commitment: thisCommitment, Secrets: thisSecrets, Witnesses: thisWitnesses}
 		
@@ -130,7 +139,7 @@ func converttoMinerPart(minerPartRPC MinerPartRPC) MinerPart{
 		thisSecrets := subPolyPart.Secrets
 		thisWitnesses := make([]kyber.Point, len(subPolyPart.Witnesses))
 
-		for indexW := range polyMap[index].Witnesses{
+		for indexW := range thisWitnesses{
 
 			partCommitment := suite.G1().Point().Null()
 			err = partCommitment.UnmarshalBinary(subPolyPart.Witnesses[indexW])
@@ -228,16 +237,46 @@ func extractMinerSecret(pComm PolynomialCommitment, minerIndex int, totalShares 
 
 func aggregateSecret(previousAggregate MinerPart, newSecret MinerPart) MinerPart{
 
+	aggregatedMinerPart := MinerPart{CommitmentUpdate:newSecret.CommitmentUpdate, Iteration: newSecret.Iteration, NodeID: newSecret.NodeID, PolyMap: make(map[int]PolynomialPart)}	
+	aggregatedMinerPart.CommitmentUpdate.Add(aggregatedMinerPart.CommitmentUpdate, previousAggregate.CommitmentUpdate)
+
 	for index, subPolyPart := range previousAggregate.PolyMap{
 
+		thisIndexCommitment := subPolyPart.Commitment.Clone()
+
+		thisIndexCommitment.Add(thisIndexCommitment, newSecret.PolyMap[index].Commitment)
+
+		secrets := make([]Share,0)
+
+		witnesses := make([]kyber.Point, 0)
+
+		sort.Slice(subPolyPart.Secrets, func(i, j int) bool { return subPolyPart.Secrets[i].X < subPolyPart.Secrets[j].X })
+		sort.Slice(newSecret.PolyMap[index].Secrets, func(i, j int) bool { return newSecret.PolyMap[index].Secrets[i].X < newSecret.PolyMap[index].Secrets[i].X})
+
 		for i := 0; i < len(subPolyPart.Secrets); i++ {			
-			subPolyPart.Secrets[i].X = subPolyPart.Secrets[i].X
-			subPolyPart.Secrets[i].Y = subPolyPart.Secrets[i].Y +  newSecret.PolyMap[index].Secrets[i].Y
+			
+			thisXValue := subPolyPart.Secrets[i].X
+
+			previousYValue:= subPolyPart.Secrets[i].Y
+			newYValue := newSecret.PolyMap[index].Secrets[i].Y
+			finalYValue := previousYValue + newYValue
+			
+			secrets = append(secrets, Share{thisXValue, finalYValue})
+
+			thisWitness := subPolyPart.Witnesses[i].Clone()
+
+			thisWitness.Add(thisWitness, newSecret.PolyMap[index].Witnesses[i])
+
+			witnesses = append(witnesses, thisWitness)
+
 			subPolyPart.Witnesses[i].Add(subPolyPart.Witnesses[i], newSecret.PolyMap[index].Witnesses[i]) 
-		}	
+		}
+
+		aggregatedMinerPart.PolyMap[index] = PolynomialPart{Polynomial:subPolyPart.Polynomial, Commitment:thisIndexCommitment, Secrets: secrets, Witnesses:witnesses}
+
 	}
 
-	return previousAggregate
+	return aggregatedMinerPart
 
 }
 
@@ -572,6 +611,14 @@ func createShareAndWitness(minerPubKey int, update []int64, pkeyG1 []kyber.Point
 	qInt := updateFloatToInt(quotient,0)
     rInt := updateFloatToInt(remainder,0)
 
+    if rInt[0] > 0 {
+    	
+    	outLog.Printf("Evaluated Value:%d", evaluatedValue)
+    	outLog.Printf("Remainder:%d", remainder)
+    	outLog.Printf("New evaluatedValue:%d", evaluatedValue + rInt[0])
+
+    }
+
 	evaluatedValue = evaluatedValue + rInt[0]
 
 	qInt = append(qInt, 0)
@@ -665,14 +712,18 @@ func makePolynomialMap(updateInt []int64, maxPolynomialdegree int) (map[int][]in
 	for i := 0; i < len(updateInt); i=i+maxPolynomialdegree {
 		
 		stopIndex := i+maxPolynomialdegree
+		// length := maxPolynomialdegree
 		
 		if (i+maxPolynomialdegree) > len(updateInt) {
 			
 			stopIndex = len(updateInt)
+			// length = len(updateInt)%maxPolynomialdegree
 
 		}
 
-		polynomialMap[stopIndex] = make([]int64, maxPolynomialdegree)		
+		// polynomialMap[stopIndex] = make([]int64, length)// TODO: Make this equal to the length		
+
+		polynomialMap[stopIndex] = make([]int64, maxPolynomialdegree)// TODO: Make this equal to the length		
 		polynomialMap[stopIndex] = updateInt[i:stopIndex]		
 		// //fmt.Println(polynomialMap[i])
 
@@ -749,57 +800,6 @@ func degree(p []float64) int {
     return -1
 }
 
-func recoverSecret2(shares []Share, degree int) []int64{
-
-	x := make([]int64, len(shares))
-
-	y := make([]int64, len(shares))
-
-	for i := 0; i < len(shares); i++ {
-		
-		x[i] = shares[i].X
-		y[i] = shares[i].Y
-	}
-
-	//fmt.Println(x)
-	//fmt.Println(y)
-
-	xFloat := updateIntToFloat(x,0) // standard int to float conversion
-
-	yFloat := make([]float64, len(y))
-
-	// yFloat := updateIntToFloat(y,0)
-
-	for i := 0; i < len(y); i++ {
-		
-		yFloat[i] = float64(y[i])
-
-	}
-
-	//fmt.Println(xFloat)
-	//fmt.Println(yFloat)
-
-	xVector := numericalgo.Vector(xFloat)
-
-	yVector := numericalgo.Vector(yFloat)
-
-	mypolynomial := poly.New()
-
-	mypolynomial.Fit(xVector,yVector, degree)
-
-	//fmt.Println("Print coeff")
-	//fmt.Println(mypolynomial.Coeff)
-
-	//fmt.Println("Predicting value:", xFloat[0])
-	//fmt.Println(mypolynomial.Predict(xFloat[0]))
-
-	aggregatedVectorInt := updateFloatToInt([]float64(mypolynomial.Coeff),0)
-
-
-	return aggregatedVectorInt
-
-}
-
 func recoverSecret(shares []Share, degree int) []int64{
 
 	xInt := make([]int64, len(shares))
@@ -825,7 +825,7 @@ func recoverSecret(shares []Share, degree int) []int64{
     err := c.SolveQR(qr, false, b)
 
     if err != nil {
-        //fmt.Println(err)
+        fmt.Println(err)
     } 
 
     coeff := make([]float64, degree+1)
@@ -833,9 +833,9 @@ func recoverSecret(shares []Share, degree int) []int64{
 
     coeff = mat64.Col(coeff, 0, c)
 
-    //fmt.Println("Result:")
+    // fmt.Println("Result:")
 
-    //fmt.Println(coeff)
+    // fmt.Println(coeff)
 
     coeffInt := make([]int64, len(coeff))
 
@@ -849,6 +849,8 @@ func recoverSecret(shares []Share, degree int) []int64{
    
 
 }
+
+
 
 
 func Vandermonde(a []float64, degree int) *mat64.Dense {

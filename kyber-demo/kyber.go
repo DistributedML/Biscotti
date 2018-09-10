@@ -9,8 +9,8 @@ import (
 	// "crypto/sha256"
 	// "encoding/binary"
 	"math"
-	"github.com/DzananGanic/numericalgo"
-	"github.com/DzananGanic/numericalgo/fit/poly"
+	// "github.com/DzananGanic/numericalgo"
+	// "github.com/DzananGanic/numericalgo/fit/poly"
 	"sort"
 	"github.com/gonum/matrix/mat64"
 	// "bytes"
@@ -18,7 +18,7 @@ import (
 
 var (
 
-	suite *bn256.Suite	
+	suite *bn256.Suite = bn256.NewSuite()	
 	precision = 4
 	maxPolynomialdegree = 10
 	maxXValue = 25 
@@ -29,8 +29,8 @@ var (
 
 type Share struct {
 	
-	x int64
-	y int64
+	X int64
+	Y int64
 
 }
 
@@ -46,8 +46,28 @@ type PolynomialPart struct {
 type MinerPart struct {
 
 	CommitmentUpdate	kyber.Point
-	SignatureList		[]kyber.Point
+	Iteration 			int
+	NodeID 				int
+	// SignatureList		[]kyber.Point
 	PolyMap 		    PolynomialMap	
+}
+
+type MinerPartRPC struct {
+
+	CommitmentUpdate	[]byte
+	Iteration 			int
+	NodeID 				int
+	// SignatureList		[]kyber.Point
+	PolyMap 		    PolynomialMapRPC	
+}
+
+type PolynomialPartRPC struct {
+
+	Polynomial 	[]int64
+	Commitment  []byte
+	Secrets 	[]Share
+	Witnesses 	[][]byte
+
 }
 
 
@@ -58,10 +78,87 @@ type PolynomialCommitment struct {
 	PolyMap 		    PolynomialMap
 }
 
-type PolynomialMap map[int]*PolynomialPart
+type PolynomialMap map[int]PolynomialPart
+
+type PolynomialMapRPC map[int]PolynomialPartRPC
+
+func converttoRPC(minerPart MinerPart) MinerPartRPC{
+
+	byteCommitment, _ := minerPart.CommitmentUpdate.MarshalBinary()
+
+	polyMapRPC := PolynomialMapRPC{}
+
+	for index, subPolyPart := range minerPart.PolyMap{
+	
+		thisPolynomial := subPolyPart.Polynomial
+		thisCommitment, _ := subPolyPart.Commitment.MarshalBinary()
+		thisSecrets := subPolyPart.Secrets
+		thisWitnesses := make([][]byte, len(subPolyPart.Witnesses))
 
 
-func (pComm *PolynomialCommitment) fillPolynomialMap(pkey PublicKey, minerKeys []PublicKey, maxPolyDegree int, precision int){
+		//outLog.Printf("Witnesses:%s",subPolyPart.Witnesses)
+
+		for i := 0; i < len(subPolyPart.Witnesses); i++ {
+			thisWitnesses[i] =[]byte{}						
+			thisWitnesses[i], _ = subPolyPart.Witnesses[i].MarshalBinary()
+		}
+
+		// for indexW := range thisWitnesses{
+
+		// 	thisWitnesses[indexW] = make([]byte, 64)
+		// 	thisWitnesses[indexW], _ = subPolyPart.Witnesses[indexW].MarshalBinary()
+		// }
+
+		polyMapRPC[index] = PolynomialPartRPC{Polynomial: thisPolynomial, Commitment: thisCommitment, Secrets: thisSecrets, Witnesses: thisWitnesses}
+		
+	} 
+
+	minerPartRPC := MinerPartRPC{CommitmentUpdate: byteCommitment, Iteration: minerPart.Iteration, NodeID: minerPart.NodeID, PolyMap: polyMapRPC} 
+
+	return minerPartRPC
+}
+
+func converttoMinerPart(minerPartRPC MinerPartRPC) MinerPart{
+
+	// byteCommitment := minerPart.CommitmentUpdate.MarshalBinary()
+	commitment := suite.G1().Point().Null()
+
+	err := commitment.UnmarshalBinary(minerPartRPC.CommitmentUpdate)
+
+	check(err)
+
+	polyMap := PolynomialMap{}
+
+	for index, subPolyPart := range minerPartRPC.PolyMap{
+
+		thisPolynomial := subPolyPart.Polynomial
+		
+		thisCommitment := suite.G1().Point().Null()
+		err := thisCommitment.UnmarshalBinary(subPolyPart.Commitment)
+
+		thisSecrets := subPolyPart.Secrets
+		thisWitnesses := make([]kyber.Point, len(subPolyPart.Witnesses))
+
+		for indexW := range thisWitnesses{
+
+			partCommitment := suite.G1().Point().Null()
+			err = partCommitment.UnmarshalBinary(subPolyPart.Witnesses[indexW])
+			check(err)
+			thisWitnesses[indexW] = partCommitment.Clone()
+		}
+
+		polyMap[index] = PolynomialPart{Polynomial: thisPolynomial, Commitment: thisCommitment, Secrets: thisSecrets, Witnesses: thisWitnesses}		
+	} 
+
+	minerPart := MinerPart{CommitmentUpdate: commitment, Iteration: minerPartRPC.Iteration, NodeID: minerPartRPC.NodeID, PolyMap: polyMap} 
+
+	return minerPart
+
+}
+
+
+
+func (pComm *PolynomialCommitment) fillPolynomialMap(pkey PublicKey, maxPolyDegree int, precision int, totalShares int){
 
 	updateInt := updateFloatToInt(pComm.Update, precision)
 
@@ -82,19 +179,17 @@ func (pComm *PolynomialCommitment) fillPolynomialMap(pkey PublicKey, minerKeys [
 		
 		subPolynomial := polynomialMap[index]
 
-		fmt.Println(prevIndex)
-		fmt.Println(index)
 
 		commitment := createCommitment(subPolynomial, pkey.PKG1[prevIndex:index])
-		shares, witnesses :=  createSharesAndWitnesses(totalShares, subPolynomial, minerKeys, pkey.PKG1[prevIndex:index])		
+		shares, witnesses :=  createSharesAndWitnesses(totalShares, subPolynomial, pkey.PKG1[prevIndex:index])		
 		prevIndex = index
 
-		pComm.PolyMap[index] = &PolynomialPart{Polynomial: subPolynomial, Commitment: commitment, Secrets: shares, Witnesses: witnesses}
+		pComm.PolyMap[index] = PolynomialPart{Polynomial: subPolynomial, Commitment: commitment, Secrets: shares, Witnesses: witnesses}
 
-		fmt.Println(pComm.PolyMap[index].Polynomial)
-		fmt.Println(pComm.PolyMap[index].Commitment)
-		fmt.Println(pComm.PolyMap[index].Secrets)
-		fmt.Println(pComm.PolyMap[index].Witnesses)
+		//fmt.Println(pComm.PolyMap[index].Polynomial)
+		//fmt.Println(pComm.PolyMap[index].Commitment)
+		//fmt.Println(pComm.PolyMap[index].Secrets)
+		//fmt.Println(pComm.PolyMap[index].Witnesses)
 
 	}
 
@@ -107,11 +202,13 @@ func extractMinerSecret(pComm PolynomialCommitment, minerIndex int, totalShares 
 
 	minerPart.CommitmentUpdate = pComm.CommitmentUpdate
 	
-	minerPart.SignatureList = make([]kyber.Point, 10) // TODO: Include the signature list her
+	// minerPart.SignatureList = make([]kyber.Point, 10) // TODO: Include the signature list her
 
 	// secretWitnessMap := map[int]*PolynomialPart(pComm.PolyMap)
 
-	sharesPerMiner := totalShares/totalMiners
+
+
+	sharesPerMiner := int(math.Ceil(float64(totalShares)/float64(totalMiners)))
 
 	startIndex := sharesPerMiner*minerIndex
 	endIndex := sharesPerMiner*(minerIndex + 1)
@@ -122,21 +219,15 @@ func extractMinerSecret(pComm PolynomialCommitment, minerIndex int, totalShares 
 
 	for index, subPolyPart := range pComm.PolyMap{
 
-		fmt.Println(startIndex)
-		fmt.Println(endIndex)
-		fmt.Println(len(subPolyPart.Secrets))		
-		fmt.Println("here")
-		minerPart.PolyMap[index] = &PolynomialPart{Commitment: subPolyPart.Commitment , Secrets: subPolyPart.Secrets[startIndex:endIndex], Witnesses: subPolyPart.Witnesses[startIndex:endIndex] }
-		fmt.Println(minerPart.PolyMap[index])
-
+		minerPart.PolyMap[index] = PolynomialPart{Commitment: subPolyPart.Commitment , Secrets: subPolyPart.Secrets[startIndex:endIndex], Witnesses: subPolyPart.Witnesses[startIndex:endIndex] }
 
 	}
 
 	
-	// fmt.Println(minerPart.PolyMap[20])
-	// fmt.Println(minerPart.PolyMap[26])
+	// //fmt.Println(minerPart.PolyMap[20])
+	// //fmt.Println(minerPart.PolyMap[26])
 
-	fmt.Println(minerPart)	
+	//fmt.Println(minerPart)	
 
 
 	return minerPart
@@ -148,125 +239,121 @@ func aggregateSecret(previousAggregate MinerPart, newSecret MinerPart) MinerPart
 
 	for index, subPolyPart := range previousAggregate.PolyMap{
 
+		//outLog.Printf("PreviousSubPolyPart:%s",subPolyPart)
+		//outLog.Printf("NewSubPolyPart:%s",newSecret.PolyMap[index])
 		for i := 0; i < len(subPolyPart.Secrets); i++ {			
-			subPolyPart.Secrets[i].x = subPolyPart.Secrets[i].x
-			subPolyPart.Secrets[i].y = subPolyPart.Secrets[i].y +  newSecret.PolyMap[index].Secrets[i].y
+			subPolyPart.Secrets[i].X = subPolyPart.Secrets[i].X
+			subPolyPart.Secrets[i].Y = subPolyPart.Secrets[i].Y +  newSecret.PolyMap[index].Secrets[i].Y
+			//outLog.Printf("Index:%d", index)
+			//outLog.Printf("I:%d", i)
+
+
 			subPolyPart.Witnesses[i].Add(subPolyPart.Witnesses[i], newSecret.PolyMap[index].Witnesses[i]) 
-		}
-
-		fmt.Println("Index:", index)
-		fmt.Println(subPolyPart.Secrets)
-	
+		}	
 	}
-
-	// fmt.Println("Index 10:",previousAggregate.PolyMap[10].Secrets)
-	// fmt.Println("Index 20:"previousAggregate.PolyMap[20].Secrets)
-	// fmt.Println(previousAggregate.PolyMap[26].Secrets)	
 
 	return previousAggregate
 
 }
 
-func main() {
+// func main() {
 	
-	suite = bn256.NewSuite()
+// 	suite = bn256.NewSuite()
 
-	deltaw := []float64{-0.010521993075977404,-0.01661607867341372,0.004996034130283805,-0.008155197968922704,0.008865055379273375,0.03812612569032836,0.02647248247415979,0.02278481207585922,0.02755816067341541,2.304,0.015136136175728015,0.010715115686446194,0.006171690049045976,0.010516143459950953,0.007760037020031965,0.00662185649157663,0.004544836244807698,0.004645047625730867,0.00016865983006748256,-0.008058385441209603,0.0023729020797505084,-0.007314085162704469,0.005490980060098083,0.0025286602301143562,0.15069781017821887,2.304}
-	deltaw1 := []float64{-0.010521993075977404,-0.01661607867341372,0.004996034130283805,-0.008155197968922704,0.008865055379273375,0.03812612569032836,0.02647248247415979,0.02278481207585922,0.02755816067341541,2.304,0.015136136175728015,0.010715115686446194,0.006171690049045976,0.010516143459950953,0.007760037020031965,0.00662185649157663,0.004544836244807698,0.004645047625730867,0.00016865983006748256,-0.008058385441209603,0.0023729020797505084,-0.007314085162704469,0.005490980060098083,0.0025286602301143562,0.15069781017821887,2.304}
+// 	deltaw := []float64{-0.010521993075977404,-0.01661607867341372,0.004996034130283805,-0.008155197968922704,0.008865055379273375,0.03812612569032836,0.02647248247415979,0.02278481207585922,0.02755816067341541,2.304,0.015136136175728015,0.010715115686446194,0.006171690049045976,0.010516143459950953,0.007760037020031965,0.00662185649157663,0.004544836244807698,0.004645047625730867,0.00016865983006748256,-0.008058385441209603,0.0023729020797505084,-0.007314085162704469,0.005490980060098083,0.0025286602301143562,0.15069781017821887,2.304}
+// 	deltaw1 := []float64{-0.010521993075977404,-0.01661607867341372,0.004996034130283805,-0.008155197968922704,0.008865055379273375,0.03812612569032836,0.02647248247415979,0.02278481207585922,0.02755816067341541,2.304,0.015136136175728015,0.010715115686446194,0.006171690049045976,0.010516143459950953,0.007760037020031965,0.00662185649157663,0.004544836244807698,0.004645047625730867,0.00016865983006748256,-0.008058385441209603,0.0023729020797505084,-0.007314085162704469,0.005490980060098083,0.0025286602301143562,0.15069781017821887,2.304}
 
-	// client generates public key
+// 	// client generates public key
 
-	pkey := PublicKey{}
+// 	pkey := PublicKey{}
 
-	pkey.GenerateKey(len(deltaw))
+// 	pkey.GenerateKey(len(deltaw))
 
-	fmt.Println(pkey)
+// 	//fmt.Println(pkey)
 
-	pkey1 := PublicKey{}
+// 	pkey1 := PublicKey{}
 
-	pkey1.GenerateKey(len(deltaw))
+// 	pkey1.GenerateKey(len(deltaw))
 
-	fmt.Println(pkey1)
+// 	//fmt.Println(pkey1)
 
-	// client generates miner keys	
+// 	// client generates miner keys	
 
-	minerKeys := generateNKeys(totalShares, len(deltaw))
+// 	minerKeys := generateNKeys(totalShares, len(deltaw))
 
-	minerSecrets := generateMinerSecretShares(deltaw, precision, pkey, minerKeys)
+// 	minerSecrets := generateMinerSecretShares(deltaw, precision, pkey, len(minerKeys), maxPolynomialdegree, totalShares)
 	
-	minerSecrets1 := generateMinerSecretShares(deltaw1, precision, pkey, minerKeys)
+// 	minerSecrets1 := generateMinerSecretShares(deltaw, precision, pkey, len(minerKeys), maxPolynomialdegree, totalShares)
 
-	fmt.Println(minerSecrets)
-	fmt.Println(minerSecrets1)
+// 	//fmt.Println(minerSecrets)
+// 	//fmt.Println(minerSecrets1)
 
-	// wrap the following in a function
+// 	// wrap the following in a function
 
-	aggregatedSecrets := make([]MinerPart, len(minerKeys))
+// 	aggregatedSecrets := make([]MinerPart, len(minerKeys))
 
-	for i := 0; i < len(minerSecrets); i++ {
+// 	for i := 0; i < len(minerSecrets); i++ {
 
-		aggregatedSecrets[i] = minerSecrets[i]
-		aggregatedSecrets[i] = aggregateSecret(aggregatedSecrets[i], minerSecrets1[i])
+// 		aggregatedSecrets[i] = minerSecrets[i]
+// 		aggregatedSecrets[i] = aggregateSecret(aggregatedSecrets[i], minerSecrets1[i])
 
-		// fmt.Println(aggregatedSecrets[i].PolyMap[10].Secrets)
-		// fmt.Println(aggregatedSecrets[i].PolyMap[20].Secrets)
-		// fmt.Println(aggregatedSecrets[i].PolyMap[26].Secrets)
+// 		// //fmt.Println(aggregatedSecrets[i].PolyMap[10].Secrets)
+// 		// //fmt.Println(aggregatedSecrets[i].PolyMap[20].Secrets)
+// 		// //fmt.Println(aggregatedSecrets[i].PolyMap[26].Secrets)
 
 	 
-	 } 
+// 	 } 
 
-	 myIndex := 0
+// 	 myIndex := 0
 
-	 // polySecretMap := make(map[int][]Share)
+// 	 // polySecretMap := make(map[int][]Share)
 
-	 for index, subPolyPart := range minerSecrets[myIndex].PolyMap{
+// 	 for index, subPolyPart := range minerSecrets[myIndex].PolyMap{
 
-		 listOfShares := make([]Share,0)
+// 		 listOfShares := make([]Share,0)
 
-		 for i := 0; i < len(aggregatedSecrets); i++ {
+// 		 for i := 0; i < len(aggregatedSecrets); i++ {
 		 	
-		 	for _, share := range aggregatedSecrets[i].PolyMap[index].Secrets{
+// 		 	for _, share := range aggregatedSecrets[i].PolyMap[index].Secrets{
 
-		 		listOfShares = append(listOfShares, share)	
-		 	}	 	
+// 		 		listOfShares = append(listOfShares, share)	
+// 		 	}	 	
 		 	
-		 }
+// 		 }
 
-		 // recoverSecret2(listOfShares, maxPolynomialdegree-1)
+// 		 // recoverSecret2(listOfShares, maxPolynomialdegree-1)
 	 
-		 subPolyPart.Polynomial = recoverSecret(listOfShares, maxPolynomialdegree-1)
-		 fmt.Println(subPolyPart.Polynomial)	 
+// 		 subPolyPart.Polynomial = recoverSecret(listOfShares, maxPolynomialdegree-1)
+// 		 //fmt.Println(subPolyPart.Polynomial)	 
 
-	 }
+// 	 }
 
-	 reconstructedUpdate := make([]int64,0)
-	 indexes := make([]int, 0)
+// 	 reconstructedUpdate := make([]int64,0)
+// 	 indexes := make([]int, 0)
 
-	 for k, _ := range minerSecrets[myIndex].PolyMap {
-	    indexes = append(indexes, k)
-	}
+// 	 for k, _ := range minerSecrets[myIndex].PolyMap {
+// 	    indexes = append(indexes, k)
+// 	}
 	
-	sort.Ints(indexes)	
+// 	sort.Ints(indexes)	
 
-	for _, index := range indexes{
+// 	for _, index := range indexes{
 
-		subPolyPart := minerSecrets[myIndex].PolyMap[index]
+// 		subPolyPart := minerSecrets[myIndex].PolyMap[index]
 
-		for i := len(reconstructedUpdate); i < index; i++ {
+// 		for i := len(reconstructedUpdate); i < index; i++ {
  			
- 			reconstructedUpdate = append(reconstructedUpdate, subPolyPart.Polynomial[i%maxPolynomialdegree])
+//  			reconstructedUpdate = append(reconstructedUpdate, subPolyPart.Polynomial[i%maxPolynomialdegree])
  		
- 		}
+//  		}
 
-	}	 
+// 	}	 
 	 
-    fmt.Println(reconstructedUpdate)
+//     //fmt.Println(reconstructedUpdate)
 
-	aggregatedVectorFloat := updateIntToFloat(reconstructedUpdate, precision)
+// 	aggregatedVectorFloat := updateIntToFloat(reconstructedUpdate, precision)
 
-	fmt.Println(aggregatedVectorFloat)
-
-
+// 	//fmt.Println(aggregatedVectorFloat)
 
 
 
@@ -278,63 +365,65 @@ func main() {
 
 
 
-	 // fmt.Println(aggregatedSecrets)
+
+
+// 	 // //fmt.Println(aggregatedSecrets)
 
 
 
 
-	// some networking to distribute the secrets
+// 	// some networking to distribute the secrets
 
-	// TODO: aggregate the received secrets
-	// TODO: recover the aggregated polynomial
-	// TODO: aggregate the received secrets
+// 	// TODO: aggregate the received secrets
+// 	// TODO: recover the aggregated polynomial
+// 	// TODO: aggregate the received secrets
 	
 	
 
 
-	// sum the secrets
-	// recoverSecret
+// 	// sum the secrets
+// 	// recoverSecret
 
-	// polynomialMap := makePolynomialMap(updateInt, maxPolynomialdegree)
+// 	// polynomialMap := makePolynomialMap(updateInt, maxPolynomialdegree)
 
-	// prevIndex := 0
+// 	// prevIndex := 0
 
-	// for index, subPolynomial := range polynomialMap{
+// 	// for index, subPolynomial := range polynomialMap{
 
-	// 	commitment := createCommitment(subPolynomial, pkey.PKG1[prevIndex:index])
-	// 	shares, witnesses :=  createSharesAndWitnesses(totalShares, subPolynomial, minerKeys, pkey.PKG1[prevIndex:index])		
-	// 	prevIndex = index
+// 	// 	commitment := createCommitment(subPolynomial, pkey.PKG1[prevIndex:index])
+// 	// 	shares, witnesses :=  createSharesAndWitnesses(totalShares, subPolynomial, minerKeys, pkey.PKG1[prevIndex:index])		
+// 	// 	prevIndex = index
 
-	// 	fmt.Println(commitment)
-	// 	fmt.Println(shares)
-	// 	fmt.Println(witnesses)
+// 	// 	//fmt.Println(commitment)
+// 	// 	//fmt.Println(shares)
+// 	// 	//fmt.Println(witnesses)
 
-	// }
-
-
-
-	// commitment:= createCommitment(updateInt[0:maxPolynomialdegree], publicKeyG1)
-
-	// fmt.Println("Update Commitment:",commitment) // Commitment to the complete update
-
-	// isCommitment := verifyCommitment(updateInt, publicKeyG1, commitment)
-
-	// fmt.Println(isCommitment)
-
-	// secretValue, evaluatedValue, witness := createWitness(publicKeyG1[2],polynomialMap[0], publicKeyG1)
-
-	// fmt.Println("X value: " , secretValue)
-	// fmt.Println("Y value: ", evaluatedValue)
-	// fmt.Println("Witness: ", witness)
-
-	// isValidSecret := verifySecret(commitment, witness, publicKeyG2, publicKeyG1, publicKeyG2 , secretValue, evaluatedValue)
-
-	// fmt.Println(isValidSecret)
+// 	// }
 
 
-}
 
-func generateMinerSecretShares(deltaw []float64, precision int, pkey PublicKey, minerKeys []PublicKey) []MinerPart {
+// 	// commitment:= createCommitment(updateInt[0:maxPolynomialdegree], publicKeyG1)
+
+// 	// //fmt.Println("Update Commitment:",commitment) // Commitment to the complete update
+
+// 	// isCommitment := verifyCommitment(updateInt, publicKeyG1, commitment)
+
+// 	// //fmt.Println(isCommitment)
+
+// 	// secretValue, evaluatedValue, witness := createWitness(publicKeyG1[2],polynomialMap[0], publicKeyG1)
+
+// 	// //fmt.Println("X value: " , secretValue)
+// 	// //fmt.Println("Y value: ", evaluatedValue)
+// 	// //fmt.Println("Witness: ", witness)
+
+// 	// isValidSecret := verifySecret(commitment, witness, publicKeyG2, publicKeyG1, publicKeyG2 , secretValue, evaluatedValue)
+
+// 	// //fmt.Println(isValidSecret)
+
+
+// }
+
+func generateMinerSecretShares(deltaw []float64, precision int, pkey PublicKey, numMiners int, maxPolynomialdegree int, totalShares int) []MinerPart {
 
 	// create all the secrets and witnesses
 
@@ -342,18 +431,18 @@ func generateMinerSecretShares(deltaw []float64, precision int, pkey PublicKey, 
 
 	polynomialCommitment := PolynomialCommitment{Update: deltaw, CommitmentUpdate: createCommitment(updateInt, pkey.PKG1), PolyMap: make(PolynomialMap)}
 
-	polynomialCommitment.fillPolynomialMap(pkey, minerKeys, maxPolynomialdegree, precision)
+	polynomialCommitment.fillPolynomialMap(pkey,maxPolynomialdegree, precision, totalShares)
 	
-	minerSecrets := make([]MinerPart, len(minerKeys))
+	minerSecrets := make([]MinerPart, numMiners)
 
-	fmt.Println(len(minerKeys))
+	// //fmt.Println(len(minerKeys))
 
 
 	// distribute the secrets
-	for i := 0; i < len(minerKeys); i++ {
+	for i := 0; i < numMiners; i++ {
 		
 		// extract secret share for miner i
-		minerSecrets[i] = extractMinerSecret(polynomialCommitment, i, totalShares, len(minerKeys))
+		minerSecrets[i] = extractMinerSecret(polynomialCommitment, i, totalShares, numMiners)
 		// TODO: verify the share
 
 	}
@@ -362,7 +451,7 @@ func generateMinerSecretShares(deltaw []float64, precision int, pkey PublicKey, 
 
 }
 
-func createSharesAndWitnesses(numberOfShares int, update []int64, minerKeys []PublicKey, pkeyG1 []kyber.Point) ([]Share, []kyber.Point) {
+func createSharesAndWitnesses(numberOfShares int, update []int64, pkeyG1 []kyber.Point) ([]Share, []kyber.Point) {
 
 	shares := make([]Share, numberOfShares)
 	witnesses := make([]kyber.Point, numberOfShares)	
@@ -463,7 +552,7 @@ func createShareAndWitness(minerPubKey int, update []int64, pkeyG1 []kyber.Point
 
     for i := 0; i < len(update); i++ {
     	updateFloat[i] = float64(update[i])
-    	// fmt.Println(update[i])
+    	// //fmt.Println(update[i])
     }
 
 	minerSecretX := int64(minerPubKey - 10)
@@ -472,20 +561,20 @@ func createShareAndWitness(minerPubKey int, update []int64, pkeyG1 []kyber.Point
 
 	thisTerm := int64(0)
 
-	fmt.Println("Polynomial:", updateFloat)
+	//fmt.Println("Polynomial:", updateFloat)
 
-	fmt.Println("Secret X:", minerSecretX)
+	//fmt.Println("Secret X:", minerSecretX)
 
 	for i := 0; i < len(updateFloat); i++ {
 		
 		thisTerm = int64(math.Pow(float64(minerSecretX),float64(i))*updateFloat[i])
 		evaluatedValue = evaluatedValue + thisTerm
 
-		// fmt.Println(thisTerm)
+		// //fmt.Println(thisTerm)
 
 	}
 
-	// fmt.Println(evaluatedValue)
+	// //fmt.Println(evaluatedValue)
 
 	evaluatedValue = evaluatedValue
 
@@ -502,15 +591,15 @@ func createShareAndWitness(minerPubKey int, update []int64, pkeyG1 []kyber.Point
 
 	qInt = append(qInt, 0)
 
-	// fmt.Println("Numerator:",updateFloat)
-	// fmt.Println("Denominator:",divisor)
+	// //fmt.Println("Numerator:",updateFloat)
+	// //fmt.Println("Denominator:",divisor)
 	
-	fmt.Println("Witness polynomial:",qInt)
-	fmt.Println("Witness remainder:",rInt)
+	//fmt.Println("Witness polynomial:",qInt)
+	//fmt.Println("Witness remainder:",rInt)
 
-	// fmt.Println(evaluatedValue + rInt[0])
+	// //fmt.Println(evaluatedValue + rInt[0])
 
-	// fmt.Println(qInt)
+	// //fmt.Println(qInt)
 	
 	witness :=  createCommitment(qInt, pkeyG1)
 
@@ -555,7 +644,7 @@ func pointToHashVal(minerPubKey int) int64{
 
 	// md := hash.Sum(nil)
 
-	// // fmt.Println(len(md))
+	// // //fmt.Println(len(md))
 
 	// secretPoint := int64((binary.BigEndian.Uint64(md))) % int64(maxXValue)
 	// secretPointbits := binary.LittleEndian.Uint64(md)
@@ -600,11 +689,11 @@ func makePolynomialMap(updateInt []int64, maxPolynomialdegree int) (map[int][]in
 
 		polynomialMap[stopIndex] = make([]int64, maxPolynomialdegree)		
 		polynomialMap[stopIndex] = updateInt[i:stopIndex]		
-		// fmt.Println(polynomialMap[i])
+		// //fmt.Println(polynomialMap[i])
 
 	}
 
-	// fmt.Println(polynomialMap)
+	// //fmt.Println(polynomialMap)
 
 	return polynomialMap
 
@@ -675,57 +764,6 @@ func degree(p []float64) int {
     return -1
 }
 
-func recoverSecret2(shares []Share, degree int) []int64{
-
-	x := make([]int64, len(shares))
-
-	y := make([]int64, len(shares))
-
-	for i := 0; i < len(shares); i++ {
-		
-		x[i] = shares[i].x
-		y[i] = shares[i].y
-	}
-
-	fmt.Println(x)
-	fmt.Println(y)
-
-	xFloat := updateIntToFloat(x,0) // standard int to float conversion
-
-	yFloat := make([]float64, len(y))
-
-	// yFloat := updateIntToFloat(y,0)
-
-	for i := 0; i < len(y); i++ {
-		
-		yFloat[i] = float64(y[i])
-
-	}
-
-	fmt.Println(xFloat)
-	fmt.Println(yFloat)
-
-	xVector := numericalgo.Vector(xFloat)
-
-	yVector := numericalgo.Vector(yFloat)
-
-	mypolynomial := poly.New()
-
-	mypolynomial.Fit(xVector,yVector, degree)
-
-	fmt.Println("Print coeff")
-	fmt.Println(mypolynomial.Coeff)
-
-	fmt.Println("Predicting value:", xFloat[0])
-	fmt.Println(mypolynomial.Predict(xFloat[0]))
-
-	aggregatedVectorInt := updateFloatToInt([]float64(mypolynomial.Coeff),0)
-
-
-	return aggregatedVectorInt
-
-}
-
 func recoverSecret(shares []Share, degree int) []int64{
 
 	xInt := make([]int64, len(shares))
@@ -734,8 +772,8 @@ func recoverSecret(shares []Share, degree int) []int64{
 
 	for i := 0; i < len(shares); i++ {
 		
-		xInt[i] = shares[i].x
-		yInt[i] = shares[i].y
+		xInt[i] = shares[i].X
+		yInt[i] = shares[i].Y
 	}
 
 	x := updateIntToFloat(xInt,0)
@@ -759,9 +797,9 @@ func recoverSecret(shares []Share, degree int) []int64{
 
     coeff = mat64.Col(coeff, 0, c)
 
-    fmt.Println("Result:")
+    // fmt.Println("Result:")
 
-    fmt.Println(coeff)
+    // fmt.Println(coeff)
 
     coeffInt := make([]int64, len(coeff))
 
@@ -775,6 +813,8 @@ func recoverSecret(shares []Share, degree int) []int64{
    
 
 }
+
+
 
 
 func Vandermonde(a []float64, degree int) *mat64.Dense {

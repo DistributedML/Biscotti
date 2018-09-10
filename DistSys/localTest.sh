@@ -23,6 +23,8 @@ cd LogFiles
 
 rm *.log
 
+cd ..
+
 # #---------------------------------------------------Test 1: All nodes online--------------------------------------------------------------------
 
 echo "Running tests: No failure case. All nodes online"
@@ -42,19 +44,21 @@ for (( totalnodes = 4; totalnodes < 5; totalnodes++ )); do
 		echo $thisPort
 		echo $myAddress
 
-		sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile 2> ./LogFiles/$thatLogFile & 
+		sudo timeout 400 $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile & 
 		# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile 2> /dev/null &
-		if [ $index -eq 0 ] 
-		then			
-			sleep 10			
-		fi
+		# if [ $index -eq 0 ] 
+		# then			
+		# 	sleep 10			
+		# fi
 	done	
 
 	wait
 
 	echo "Running with " $totalnodes "nodes complete. Testing similarity of blockchain"
 	
-	for (( outernode = 0; outernode < totalnodes; outernode++ )); do	
+	cd LogFiles
+	
+	for (( outernode = 0; outernode < (totalnodes-1); outernode++ )); do	
 		
 		outerLogFile=test1_$outernode\_$totalnodes.log
 		for (( innernode = 0; innernode < totalnodes ; innernode++ )); do
