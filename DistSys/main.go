@@ -247,13 +247,15 @@ func getRoles() map[int]int {
 		roleMap[i] = 1
 	}
 
-	vIDs, mIDs, noisers, _, _ := myVRF.getNodes(stakeMap, client.bc.getLatestBlockHash(), 
+	vIDs, mIDs, _, _ := myVRF.getVRFRoles(stakeMap, client.bc.getLatestBlockHash(), 
 		NUM_VERIFIERS, numberOfNodes)
+
+	nIDs, _, _ := myVRF.getVRFNoisers(stakeMap, client.bc.getLatestBlockHash(), 
+		client.id, NUM_VERIFIERS, numberOfNodes)
 
 	outLog.Printf("Verifiers are %s", vIDs)
 	outLog.Printf("Miners are %s", mIDs)
-	outLog.Printf("Actual Noisers are %s", noisers)
-	outLog.Printf("Sim Noisers are %s", vIDs)
+	outLog.Printf("Noisers are %s", nIDs)
 
 	for _, id := range vIDs {
 		roleMap[id] *= VERIFIER_PRIME
@@ -261,6 +263,10 @@ func getRoles() map[int]int {
 
 	for _, id := range mIDs {
 		roleMap[id] *= MINER_PRIME
+	}
+
+	for _, id := range mIDs {
+		roleMap[id] *= NOISER_PRIME
 	}
 
 	return roleMap
@@ -297,31 +303,25 @@ func getRoleNames(iterationCount int) ([]string, []string, []string, int) {
 
     }
 
-	return verifiers, miners, verifiers, numVanilla
+	return verifiers, miners, noisers, numVanilla
 
 }
 
 // Error handling
-
 func handleErrorFatal(msg string, e error) {
-
 	if e != nil {
 		errLog.Fatalf("%s, err = %s\n", msg, e.Error())
 	}
-
 }
 
 func printError(msg string, e error) {
-
 	if e != nil {
 		errLog.Printf("%s, err = %s\n", msg, e.Error())
 	}
-
 }
 
 
 func exitOnError(prefix string, err error) {
-
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s, err = %s\n", prefix, err.Error())
 		os.Exit(1)

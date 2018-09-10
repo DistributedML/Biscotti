@@ -6,73 +6,57 @@ import (
 )
 
 type VRF struct {
-    sk vrf.PrivateKey
-    pk vrf.PublicKey
+    rolesSk vrf.PrivateKey // Used for the verifier and miner VRF
+    rolesPk vrf.PublicKey
+    noiseSk vrf.PrivateKey // personal, used for selecting noisers
+    noisePk vrf.PublicKey
 }
 
 func (myvrf *VRF) init() {
 
     var err error
-    myvrf.sk, err = vrf.GenerateKey(nil)
+    myvrf.rolesSk, err = vrf.GenerateKey(nil)
     if err != nil {
-        fmt.Println("Error! Could not generate secret key")
+        fmt.Println("Error! Could not generate secret key for roles")
     }
 
-    myvrf.pk, _ = myvrf.sk.Public()
+    myvrf.noiseSk, err = vrf.GenerateKey(nil)
+    if err != nil {
+        fmt.Println("Error! Could not generate secret key for noise")
+    }
+
+    myvrf.rolesPk, _ = myvrf.rolesSk.Public()
+    myvrf.noisePk, _ = myvrf.noiseSk.Public()
 
 }
 
-func (myvrf *VRF) getPublicKey() vrf.PublicKey {
-    return myvrf.pk
+func (myvrf *VRF) getRolesPublicKey() vrf.PublicKey {
+    return myvrf.noisePk
 }
 
-func (myvrf *VRF) compute(input []byte) ([]byte, []byte) {
- 
-    // inputVRF := sk.Compute(input)
-    // inputVRFFromProof, inputProof := sk.Prove(input)
+func (myvrf *VRF) getNoisePublicKey() vrf.PublicKey {
+    return myvrf.noisePk
+}
 
-    /*fmt.Printf("pk:           %X\n", pk)
-    fmt.Printf("sk:           %X\n", sk)
-    fmt.Printf("input(bytes): %X\n", input)
-    fmt.Printf("inputVRF:     %X\n", inputVRF)
-    fmt.Printf("inputProof:   %X\n", inputProof)
-    fmt.Printf("inputVRFProof:   %X\n", inputVRFFromProof)
+func (myvrf *VRF) rolesCompute(input []byte) ([]byte, []byte) {
+    return myvrf.rolesSk.Prove(input)
+}
 
-    fmt.Print("Public Key Verification: ")
-    fmt.Println(pk.Verify(input, inputVRF, inputProof))
-    
-    fmt.Print("VRF Byte comparison: ")
-    fmt.Println(bytes.Equal(inputVRF, inputVRFFromProof))
-
-    fmt.Print("I choose the nodes: ")
-    fmt.Println(getNodeSet(inputVRF, 5))
-    
-    fmt.Print("The VRF proof gets the nodes: ")
-    fmt.Println(getNodeSet(inputVRFFromProof, 5)) */
-
-    return myvrf.sk.Prove(input)
-
+func (myvrf *VRF) noiseCompute(input []byte) ([]byte, []byte) {
+    return myvrf.noiseSk.Prove(input)
 }
 
 func (myvrf *VRF) verify(input []byte, theirPk vrf.PublicKey, inputVRF []byte, inputProof []byte) bool {
     return theirPk.Verify(input, inputVRF, inputProof)
 } 
 
-// very inefficient helper function to get the verifier set
-// Based on stakeMap, nodes get lottery tickets proportional to their stake
-func (myvrf *VRF) getNodes(stakeMap map[int]int, input []byte, size int, 
-    totalNodes int) ([]int, []int, []int, []byte, []byte) {
+func (myvrf *VRF) getVRFNoisers(stakeMap map[int]int, input []byte, sourceID int, 
+    numRequested int, totalNodes int) ([]int, []byte, []byte) {
 
-    vrfOutput, vrfProof := myvrf.sk.Prove(input)
+    vrfOutput, vrfProof := myvrf.noiseSk.Prove(input)
 
     lottery := []int{}
 
-    vNodesMap := make(map[int]bool)
-    verifiers := []int{}
-
-    mNodesMap := make(map[int]bool)    
-    miners := []int{}
-    
     nNodesMap := make(map[int]bool)
     noisers := []int{}
     
@@ -87,7 +71,52 @@ func (myvrf *VRF) getNodes(stakeMap map[int]int, input []byte, size int,
     }
 
     var winner int
-    for len(verifiers) < size {
+    for len(noisers) < numRequested {
+
+        winnerIdx := (int(vrfOutput[i]) * 256 + int(vrfOutput[i+1])) % len(lottery)
+        winner = lottery[winnerIdx]
+        
+        outLog.Printf("Verifier lottery winner is %d at %d \n", winner, winnerIdx)
+
+        _, exists := nNodesMap[winner]
+        if !exists && winner != sourceID {
+            nNodesMap[winner] = true
+            noisers = append(noisers, winner)
+        }
+        
+        i++
+    }
+
+    return noisers, vrfOutput, vrfProof
+
+}
+
+// Based on stakeMap, nodes get lottery tickets proportional to their stake
+func (myvrf *VRF) getVRFRoles(stakeMap map[int]int, input []byte, numRequested int, 
+    totalNodes int) ([]int, []int, []byte, []byte) {
+
+    vrfOutput, vrfProof := myvrf.rolesSk.Prove(input)
+
+    lottery := []int{}
+
+    vNodesMap := make(map[int]bool)
+    verifiers := []int{}
+
+    mNodesMap := make(map[int]bool)    
+    miners := []int{}
+    
+    i := 0
+
+    // Set up the lottery tickets
+    for nodeid := 0; nodeid < totalNodes; nodeid++ {
+        stake := stakeMap[nodeid]
+        for i := 0; i < stake; i++ {
+            lottery = append(lottery, nodeid)
+        }
+    }
+
+    var winner int
+    for len(verifiers) < numRequested {
 
         /*fmt.Println(input)
         fmt.Println(lottery)*/
@@ -105,7 +134,7 @@ func (myvrf *VRF) getNodes(stakeMap map[int]int, input []byte, size int,
         i++
     }
 
-    for len(miners) < size {
+    for len(miners) < numRequested {
 
         winnerIdx := (int(input[i]) * 256 + int(input[i+1])) % len(lottery)
         winner = lottery[winnerIdx]
@@ -121,21 +150,5 @@ func (myvrf *VRF) getNodes(stakeMap map[int]int, input []byte, size int,
         i++
     }
 
-    for len(noisers) < size {
-
-        winnerIdx := (int(input[i]) * 256 + int(input[i+1])) % len(lottery)
-        winner = lottery[winnerIdx]
-
-        outLog.Printf("Noise lottery winner is %d at %d \n", winner, winnerIdx)
-
-        _, exists := nNodesMap[winner]
-        if !exists{
-            nNodesMap[winner] = true
-            noisers = append(noisers, winner)
-        }
-        
-        i++
-    }
-
-    return verifiers, miners, noisers, vrfOutput, vrfProof
+    return verifiers, miners, vrfOutput, vrfProof
 }
