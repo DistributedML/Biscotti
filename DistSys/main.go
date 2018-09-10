@@ -763,6 +763,7 @@ func prepareForNextIteration() {
 
 		outLog.Printf(strconv.Itoa(client.id)+":I am verifier. Iteration:%d", iterationCount)
 		updateSent = true
+		// startBlockDeadlineTimer(iterationCount)
 	
 	} else {
 		outLog.Printf(strconv.Itoa(client.id)+":I am not miner or verifier. Iteration:%d", iterationCount)
@@ -1000,18 +1001,43 @@ func addBlockToChain(block Block) {
 	if ((block.Data.Iteration == iterationCount) && (err == nil)){
 	
 		// If block is current, notify channel waiting for it
-		if(len(block.Data.Deltas) != 0 && updateSent && !verifier && iterationCount >= 0) {
-			outLog.Printf(strconv.Itoa(client.id)+":Sending block to channel")
-			blockReceived <- true
+		if(len(block.Data.Deltas) != 0 && updateSent && !verifier  && iterationCount >= 0) {
+			
+			if SECURE_AGG {
+
+				outLog.Printf(strconv.Itoa(client.id)+":Sending block to channel")
+				blockReceived <- true
+				
+			}else{
+
+				if(!miner) {
+
+					outLog.Printf(strconv.Itoa(client.id)+":Sending block to channel")
+					blockReceived <- true
+
+				}else{
+
+					outLog.Printf("Blocking here")				
+					quitRoutine <- true	
+				}
+			}
+
 		
 		}
 
-		if(miner && getLeaderAddress() == (myIP+myPort) && len(block.Data.Deltas) == 0){
-			outLog.Printf("Blocking here")
-			quitRoutine <- true
+		if SECURE_AGG {
+			
+			if(miner && getLeaderAddress() == (myIP+myPort) && len(block.Data.Deltas) == 0){
+				outLog.Printf("Blocking here")
+				quitRoutine <- true
+			}
+		
 		}
+		
 
 		boolLock.Unlock()
+
+		outLog.Printf("Bool lock released")
 		go sendBlock(block)	
 	
 	}else{
@@ -1430,12 +1456,11 @@ func startUpdateDeadlineTimer(timerForIteration int){
 			os.Exit(1)
 		}
 	// An old timer was triggered, try to catch up
-	} 
-	// else {
-	// 	time.Sleep(1000 * time.Millisecond)
-	// 	outLog.Printf(strconv.Itoa(client.id)+":Forwarding timer ahead.")
-	// 	allUpdatesReceived <- true
-	// }
+	} else {
+		time.Sleep(1000 * time.Millisecond)
+		outLog.Printf(strconv.Itoa(client.id)+":Forwarding timer ahead.")
+		allUpdatesReceived <- true
+	}
 
 }
 

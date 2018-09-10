@@ -29,7 +29,7 @@ cd ..
 
 echo "Running tests: No failure case. All nodes online"
 
-for (( totalnodes = 4; totalnodes < 5; totalnodes++ )); do
+for (( totalnodes = 10; totalnodes < 11; totalnodes++ )); do
 	
 	echo "Running with " $totalnodes "nodes"
 
@@ -57,7 +57,7 @@ for (( totalnodes = 4; totalnodes < 5; totalnodes++ )); do
 	echo "Running with " $totalnodes "nodes complete. Testing similarity of blockchain"
 	
 	cd LogFiles
-	
+
 	for (( outernode = 0; outernode < (totalnodes-1); outernode++ )); do	
 		
 		outerLogFile=test1_$outernode\_$totalnodes.log
