@@ -14,6 +14,8 @@ type Update struct {
 	Iteration 	int
 	Delta     	[]float64
 	Commitment  []byte // can't be kyber.Point
+	Noise 		[]float64
+	NoisedDelta []float64
 	Accepted  	bool
 }
 

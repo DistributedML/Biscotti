@@ -39,6 +39,7 @@ const (
 
 	VERIFIER_PRIME 	int 		  = 2
 	MINER_PRIME 	int 		  = 3
+	NOISER_PRIME 	int 		  = 5
 
 	PRECISION       int 		  = 4
 	POLY_SIZE 		int 		  = 10
@@ -49,6 +50,10 @@ const (
 
 type Peer int
 
+type NoiseVector struct {
+	noise []float64
+}
+
 var (
 
 	//Input arguments
@@ -56,7 +61,7 @@ var (
 	numberOfNodes 		int
 	numberOfNodeUpdates int
 	myIP                string
-    myPrivateIP         string
+	myPrivateIP         string
     myPort				string
     peersFileName       string
 
@@ -71,6 +76,7 @@ var (
 	portsToConnect 			[]string
 	verifierPortsToConnect 	[]string
 	minerPortsToConnect 	[]string
+	noiserPortsToConnect 	[]string
 	peerPorts   			[]string
     peerLookup          	map[string]int
 	peerAddresses			map[int]net.TCPAddr
@@ -143,11 +149,26 @@ func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
 	// Roni score measures change in local training error
 	if roniScore > 0.02 {
 		outLog.Printf("Rejecting update!")		
-		return roniError
+		return nil
 	}
 
 	// TODO: Instead of adding to a block, sign it and return to client
 	return nil
+
+}
+
+// The peer receives an update from another peer if its a noiser in that round.
+// The noiser peer returns their noise at the given iteration value
+// Returns:
+// - roniError if it fails
+func (s *Peer) RequestNoise(iterationCount int, returnNoise *[]float64) error {
+
+	outLog.Printf(strconv.Itoa(client.id)+":Got noise message, iteration %d\n", iterationCount)
+
+	noise, err := client.requestNoise(iterationCount)
+	*returnNoise = noise
+
+	return err
 
 }
 
@@ -341,12 +362,15 @@ func getRoles() map[int]int {
 		roleMap[i] = 1
 	}
 
-	vIDs, mIDs, noisers, _, _ := myVRF.getNodes(stakeMap, client.bc.getLatestBlockHash(), 
+	vIDs, mIDs, _, _ := myVRF.getVRFRoles(stakeMap, client.bc.getLatestBlockHash(), 
 		NUM_VERIFIERS, NUM_MINERS, numberOfNodes)
+
+	nIDs, _, _ := myVRF.getVRFNoisers(stakeMap, client.bc.getLatestBlockHash(), 
+		client.id, NUM_VERIFIERS, numberOfNodes)
 
 	outLog.Printf("Verifiers are %s", vIDs)
 	outLog.Printf("Miners are %s", mIDs)
-	outLog.Printf("Noisers are %s", noisers)
+	outLog.Printf("Noisers are %s", nIDs)
 
 	for _, id := range vIDs {
 		roleMap[id] *= VERIFIER_PRIME
@@ -356,14 +380,19 @@ func getRoles() map[int]int {
 		roleMap[id] *= MINER_PRIME
 	}
 
+	for _, id := range mIDs {
+		roleMap[id] *= NOISER_PRIME
+	}
+
 	return roleMap
 }
 
 // Convert the roleIDs to verifier/miner strings 
-func getRoleNames(iterationCount int) ([]string, []string, int) {
+func getRoleNames(iterationCount int) ([]string, []string, []string, int) {
 
 	verifiers := make([]string, 0)
 	miners := make([]string, 0)
+	noisers := make([]string, 0)
 	numVanilla := 0
 
     // Find the address corresponding to the ID.
@@ -383,33 +412,31 @@ func getRoleNames(iterationCount int) ([]string, []string, int) {
     		miners = append(miners, address)
     	}
 
+    	if (roleIDs[ID] % NOISER_PRIME) == 0 {
+    		noisers = append(noisers, address)
+    	}
+
     }
 
-	return verifiers, miners, numVanilla
+	return verifiers, miners, noisers, numVanilla
 
 }
 
 // Error handling
-
 func handleErrorFatal(msg string, e error) {
-
 	if e != nil {
 		errLog.Fatalf("%s, err = %s\n", msg, e.Error())
 	}
-
 }
 
 func printError(msg string, e error) {
-
 	if e != nil {
 		errLog.Printf("%s, err = %s\n", msg, e.Error())
 	}
-
 }
 
 
 func exitOnError(prefix string, err error) {
-
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%s, err = %s\n", prefix, err.Error())
 		os.Exit(1)
@@ -748,7 +775,7 @@ func prepareForNextIteration() {
 	verifier = amVerifier(client.id)
 	miner = amMiner(client.id)
 
-	verifierPortsToConnect, minerPortsToConnect, numberOfNodeUpdates = getRoleNames(iterationCount)
+	verifierPortsToConnect, minerPortsToConnect, noiserPortsToConnect, numberOfNodeUpdates = getRoleNames(iterationCount)
 
 	if miner {
 		outLog.Printf(strconv.Itoa(client.id)+":I am miner. Iteration:%d", iterationCount)
@@ -823,77 +850,6 @@ func processUpdate(update Update) {
 
 }
 
-
-
-// func processBlock(block Block) {
-	
-// 	// Lock to ensure that iteration count doesn't change until I have appended block
-// 	outLog.Printf("Trying to acquire lock...")
-// 	boolLock.Lock()
-
-// 	outLog.Printf("Got lock, processing block")
-
-// 	hasBlock := client.hasBlock(block.Data.Iteration)
-
-// 	// Block is old, but could be better than my current block
-// 	if ((block.Data.Iteration < iterationCount) || hasBlock || iterationCount<0) {
-				
-// 		boolLock.Unlock()
-
-// 		if hasBlock {
-// 			outLog.Printf("Already have block")
-// 		}
-
-// 		if (iterationCount < 0) {
-// 			return
-// 		}
-
-// 		better := client.evaluateBlockQuality(block) // check equality and some measure of 	
-
-// 		if better {
-			
-// 			// TODO: If I receive a better block than my current one. Then I replace my block with this one.
-// 			// I request for all the next Blocks. I will also need to advertise new block or not?
-// 			// go callRequestChainRPC(same conn) // returns whole chain. Is it longer than mine?
-// 			// go evaluateReceivedChain() // if chain longer than mine and checks out replace mine with his
-			
-// 			outLog.Printf("Chain Length:" + strconv.Itoa(len(client.bc.Blocks)))
-// 			if(block.Data.Iteration == len(client.bc.Blocks) - 2){
-// 				client.replaceBlock(block, block.Data.Iteration)
-// 				outLog.Printf("Chain Length:" + strconv.Itoa(len(client.bc.Blocks)))
-// 				outLog.Printf(strconv.Itoa(client.id)+":Received better block")
-// 				return 
-// 			}
-
-		
-// 		} else {
-			
-// 			// returnBlock = client.bc.getBlock(block.Data.Iteration)						
-// 			outLog.Printf(strconv.Itoa(client.id)+":Equal block")
-// 			return 
-		
-// 		}
-
-	 
-// 	}
-
-// 	if block.Data.Iteration > iterationCount {
-		
-// 		boolLock.Unlock()
-
-// 		for block.Data.Iteration > iterationCount {
-// 			outLog.Printf(strconv.Itoa(client.id)+":Blocking. Got block for %d, I am at %d\n", block.Data.Iteration, iterationCount)
-// 			time.Sleep(1000 * time.Millisecond)
-// 		}
-
-// 		boolLock.Lock()
-// 	}
-	
-// 	go addBlockToChain(block)
-
-
-// }
-
 // // For all non-miners, accept the block
 
 func processBlock(block Block) {
@@ -936,8 +892,6 @@ func processBlock(block Block) {
 				outLog.Printf(strconv.Itoa(client.id)+":Received better  block")
 			}
 			return 
-
-
 		
 		}else{
 			
@@ -1146,7 +1100,19 @@ func messageSender(ports []string) {
 
 			outLog.Printf(strconv.Itoa(client.id)+":Computing Update\n")
 
-			client.computeUpdate(iterationCount, datasetName)
+			client.computeUpdate(iterationCount)
+
+			outLog.Printf(strconv.Itoa(client.id)+":Getting noise from %s\n", noiserPortsToConnect)
+
+			noise := requestNoiseFromNoisers(noiserPortsToConnect)
+			noiseDelta := make([]float64, len(noise))
+
+			for i := 0; i < len(noise); i++ {
+				noiseDelta[i] = client.update.Delta[i] + noise[i]
+			}
+
+			client.update.Noise = noise
+			client.update.NoisedDelta = noiseDelta
 
 			outLog.Printf("Sending update to verifiers")
 			approved := sendUpdateToVerifiers(verifierPortsToConnect)			 
@@ -1179,6 +1145,52 @@ func messageSender(ports []string) {
 
 		}
 	}
+}
+
+// RPC call to send block to one peer
+func requestNoiseFromNoisers(addresses []string) []float64 {
+
+	var noiseVec []float64
+	c := make(chan error)
+
+	// TODO: incorporate multiple noise vec at once
+	for _, address := range addresses {
+
+		conn, err := rpc.Dial("tcp", address)
+		printError("Unable to connect to noiser", err)
+	
+		if(err == nil){
+			
+			defer conn.Close()
+			outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Noiser. Iteration:%d\n", client.update.Iteration)
+			go func() { c <- conn.Call("Peer.RequestNoise", client.update.Iteration, &noiseVec) }()
+			
+			select {
+			case noiseError := <-c:
+				
+				printError("Error in sending update", err)
+				if (noiseError == nil) {
+					outLog.Printf(strconv.Itoa(client.id)+":Got noise. Iteration:%d\n", client.update.Iteration)
+				}
+
+			// use err and result
+			case <-time.After(timeoutRPC):
+				outLog.Printf(strconv.Itoa(client.id)+":RPC Call timed out.")
+				continue
+			}
+		
+		} else {
+
+			outLog.Printf("GOT NOISER ERROR")
+			time.Sleep(1000 * time.Millisecond)
+
+			continue
+		}
+
+	}
+
+	return noiseVec
+
 }
 
 // Make RPC call to send update to verifier
@@ -1451,6 +1463,9 @@ func startUpdateDeadlineTimer(timerForIteration int){
 			}
 
 		} else {
+
+			outLog.Printf("Timer is for %d", timerForIteration)
+			outLog.Printf("I am on %d", iterationCount)
 
 			outLog.Printf(strconv.Itoa(client.id)+":Received no updates from peers. I WILL DIE")
 			os.Exit(1)
