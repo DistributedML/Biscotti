@@ -44,7 +44,7 @@ const (
 	PRECISION       int 		  = 4
 	POLY_SIZE 		int 		  = 10
 	TOTAL_SHARES 	int 		  = 10
-	SECURE_AGG  	bool 		  = true
+	SECURE_AGG  	bool 		  = false
 
 )
 
@@ -968,15 +968,13 @@ func addBlockToChain(block Block) {
 
 					outLog.Printf(strconv.Itoa(client.id)+":Sending block to channel")
 					blockReceived <- true
-
-				}else{
-
-					outLog.Printf("Blocking here")				
-					quitRoutine <- true	
 				}
-			}
 
-		
+				if(miner && getLeaderAddress() == (myIP+myPort)) {
+					outLog.Printf("Blocking here")
+					quitRoutine <- true
+				}
+			}		
 		}
 
 		if SECURE_AGG {
@@ -1447,35 +1445,47 @@ func startUpdateDeadlineTimer(timerForIteration int){
 	
 	if (timerForIteration == iterationCount) {
 		
-		if (len(client.blockUpdates) > 0) {
-	
-			outLog.Printf(strconv.Itoa(client.id)+":Acquiring chain lock")
-			blockChainLock.Lock()
+		leaderAddress := getLeaderAddress()	
+
+		if (myIP+myPort) == leaderAddress {
 			
-			outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")
-			blockToSend, err := client.createBlock(iterationCount)
-			
-			blockChainLock.Unlock()		
-			printError("Iteration: " + strconv.Itoa(iterationCount), err)
-			
-			if (err == nil) {
-				sendBlock(*blockToSend)
+			if (len(client.blockUpdates) > 0 && (myIP+myPort) == leaderAddress) {
+		
+				outLog.Printf(strconv.Itoa(client.id)+":Acquiring chain lock")
+				blockChainLock.Lock()
+				
+				outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")
+				blockToSend, err := client.createBlock(iterationCount)
+				
+				blockChainLock.Unlock()		
+				printError("Iteration: " + strconv.Itoa(iterationCount), err)
+				
+				if (err == nil) {
+					sendBlock(*blockToSend)
+				}
+
+			} else {
+
+				outLog.Printf("Timer is for %d", timerForIteration)
+				outLog.Printf("I am on %d", iterationCount)
+
+				outLog.Printf(strconv.Itoa(client.id)+":Received no updates from peers. I WILL DIE")
+				os.Exit(1)
 			}
+				
+		}else {
 
-		} else {
-
-			outLog.Printf("Timer is for %d", timerForIteration)
-			outLog.Printf("I am on %d", iterationCount)
-
-			outLog.Printf(strconv.Itoa(client.id)+":Received no updates from peers. I WILL DIE")
-			os.Exit(1)
+			go startBlockDeadlineTimer(iterationCount)
+		
 		}
-	// An old timer was triggered, try to catch up
-	} else {
-		time.Sleep(1000 * time.Millisecond)
-		outLog.Printf(strconv.Itoa(client.id)+":Forwarding timer ahead.")
-		allUpdatesReceived <- true
+
 	}
+	// An old timer was triggered, try to catch up
+	// } else {
+	// 	time.Sleep(1000 * time.Millisecond)
+	// 	outLog.Printf(strconv.Itoa(client.id)+":Forwarding timer ahead.")
+	// 	allUpdatesReceived <- true
+	// }
 
 }
 
