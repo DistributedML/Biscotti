@@ -14,12 +14,14 @@ alpha = 1e-2
 d = 0
 hist_grad = 0
 epsilon = 0
+batch_size = 10
 
 scale = False
-diffpriv = False
+diffPriv13 = False
+diffPriv16 = True
 
 
-def init(dataset, epsilon):
+def init(dataset, filename, epsilon):
 
     passedEpsilon = epsilon
     data = utils.load_dataset(dataset)
@@ -42,18 +44,39 @@ def init(dataset, epsilon):
     def lnprob(x, alpha):
         return -(alpha / 2) * np.linalg.norm(x)
 
-    nwalkers = max(4 * d, 250)
-    sampler = emcee.EnsembleSampler(nwalkers, d, lnprob, args=[passedEpsilon])
+    # nwalkers = max(4 * d, 250)
+    # sampler = emcee.EnsembleSampler(nwalkers, d, lnprob, args=[passedEpsilon])
 
-    p0 = [np.random.rand(d) for i in range(nwalkers)]
-    pos, _, state = sampler.run_mcmc(p0, 100)
+    # p0 = [np.random.rand(d) for i in range(nwalkers)]
+    # pos, _, state = sampler.run_mcmc(p0, 100)
 
-    sampler.reset()
-    sampler.run_mcmc(pos, 1000, rstate0=state)
+    # sampler.reset()
+    # sampler.run_mcmc(pos, 1000, rstate0=state)
 
-    print("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
+    # print("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
 
-    samples = sampler.flatchain
+    # samples = sampler.flatchain
+
+    if diffPriv13:
+
+        nwalkers = max(4 * d, 250)
+        sampler = emcee.EnsembleSampler(nwalkers, d, lnprob, args=[epsilon])
+
+        p0 = [np.random.rand(d) for i in range(nwalkers)]
+        pos, _, state = sampler.run_mcmc(p0, 100)
+
+        sampler.reset()
+        sampler.run_mcmc(pos, 1000, rstate0=state)
+
+        print("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
+
+        samples = sampler.flatchain
+
+    elif diffPriv16:
+        expected_iters = 5000
+        sigma = np.sqrt(2 * np.log(1.25)) / epsilon
+        noise = sigma * np.random.randn(batch_size, expected_iters, d)
+        samples = np.sum(noise, axis=0)
 
     return d
 
@@ -74,17 +97,18 @@ def funObj(ww, X, y, batch_size):
 
     return f, g
 
+def getNoise(iteration):
+    return (-alpha / batch_size) * samples[iteration % len(samples)]
 
 # Reports the direct change to w, based on the given one.
 # Batch size could be 1 for SGD, or 0 for full gradient.
-def privateFun(theta, ww, batch_size=0):
+def privateFun(ww, batch_size):
 
     global iteration
     ww = np.array(ww)
 
     # Define constants and params
     nn, dd = X.shape
-    threshold = int(d * theta)
 
     if batch_size > 0 and batch_size < nn:
         idx = np.random.choice(nn, batch_size, replace=False)
@@ -96,17 +120,10 @@ def privateFun(theta, ww, batch_size=0):
 
     d1, _ = samples.shape
 
-    if diffpriv:
-        Z = samples[np.random.randint(0, d1)]
-        delta = -alpha * (g + (1 / batch_size) * Z)
+    if diffPriv13 or diffPriv16:
+        delta = -alpha * g + getNoise(iteration)
     else:
         delta = -alpha * g
-
-    # Weird way to get NON top k values
-    if theta < 1:
-        param_filter = np.argpartition(
-            abs(delta), -threshold)[:d - threshold]
-        delta[param_filter] = 0
 
     w_new = ww + delta
     f_new, g_new = funObj(w_new, X[idx, :], y[idx], batch_size)
@@ -116,5 +133,18 @@ def privateFun(theta, ww, batch_size=0):
 
 if __name__ == '__main__':
     
+    init("creditcard0", "creditcard0", 1)
+    ww = np.zeros(d)
+
+    for i in range(3000):
+    
+        grad = privateFun(ww, batch_size)
+        delta = grad
+
+        if (np.any(np.isnan(delta))):
+            pdb.set_trace()
+
+        ww = ww + delta
+
     pdb.set_trace()
 
