@@ -24,7 +24,7 @@ class Client():
         ### Tunables ###
         # self.criterion = nn.MultiLabelMarginLoss()
         self.criterion = nn.CrossEntropyLoss()
-        self.optimizer = optim.SGD(self.model.parameters(), lr=0.01, momentum=0.5, weight_decay=0.001)
+        self.optimizer = optim.SGD(self.model.parameters(), lr=0.001, momentum=0.75, weight_decay=0.001) # mnist_cnn
         self.aggregatedGradients = []
         self.loss = 0.0
 
@@ -68,6 +68,7 @@ class Client():
     # Step in the direction of provided gradient. 
     # Used in BlockML when gradient is aggregated in Go
     def simpleStep(self, gradient):
+        print("Simple step")
         layers = self.model.reshape(gradient)
         # Manually updates parameter gradients
         layer = 0
@@ -134,7 +135,7 @@ class Client():
             inputs, labels = Variable(inputs), Variable(labels)
             out = self.model(inputs)
             pred = np.argmax(out.detach().numpy(), axis=1)
-            return 1 - accuracy_score(pred, labels)
+        return 1 - accuracy_score(pred, labels)
 
         # X, y = self.testset.getData()
         # X, y = Variable(torch.from_numpy(X)), Variable(torch.from_numpy(y))
