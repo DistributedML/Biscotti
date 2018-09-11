@@ -21,7 +21,7 @@ go install
 
 cd LogFiles
 
-rm *.log
+rm -f *.log
 
 cd ..
 

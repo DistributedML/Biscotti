@@ -142,10 +142,8 @@ func (honest *Honest) checkConvergence() bool {
 func (honest *Honest) computeUpdate(iterationCount int) {
 	prevModel := honest.bc.getLatestGradient()
 	deltas, err := oneGradientStep(prevModel) // TODO: Create commitment here
-	outLog.Printf("This update float:%s", deltas)
 	check(err)	
 	deltasInt := updateFloatToInt(deltas, PRECISION)
-	outLog.Printf("This update:%s", deltasInt)
 	updateCommitment := createCommitment(deltasInt, client.Keys.CommitmentKey.PKG1)
 	byteCommitment, err := updateCommitment.MarshalBinary()
 	check(err)

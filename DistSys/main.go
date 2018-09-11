@@ -34,7 +34,7 @@ const (
 	timeoutPeer 	time.Duration = 5000000000
 	
 	NUM_VERIFIERS 	int           = 1
-	NUM_MINERS 		int           = 2
+	NUM_MINERS 		int           = 1
 	DEFAULT_STAKE   int 		  = 10
 
 	VERIFIER_PRIME 	int 		  = 2
@@ -44,7 +44,9 @@ const (
 	PRECISION       int 		  = 4
 	POLY_SIZE 		int 		  = 10
 	TOTAL_SHARES 	int 		  = 10
+
 	SECURE_AGG  	bool 		  = false
+	NOISY_VERIF		bool 		  = false
 
 )
 
@@ -1103,14 +1105,19 @@ func messageSender(ports []string) {
 			outLog.Printf(strconv.Itoa(client.id)+":Getting noise from %s\n", noiserPortsToConnect)
 
 			noise := requestNoiseFromNoisers(noiserPortsToConnect)
-			noiseDelta := make([]float64, len(noise))
 
-			for i := 0; i < len(noise); i++ {
-				noiseDelta[i] = client.update.Delta[i] + noise[i]
+			if (len(noise) > 0) {
+				noiseDelta := make([]float64, len(noise))
+
+				for i := 0; i < len(noise); i++ {
+					noiseDelta[i] = client.update.Delta[i] + noise[i]
+				}
+
+				// The default is if no noise being used, NoisedDelta will just be Delta.
+				client.update.Noise = noise
+				client.update.NoisedDelta = noiseDelta
+
 			}
-
-			client.update.Noise = noise
-			client.update.NoisedDelta = noiseDelta
 
 			outLog.Printf("Sending update to verifiers")
 			approved := sendUpdateToVerifiers(verifierPortsToConnect)			 
@@ -1149,6 +1156,12 @@ func messageSender(ports []string) {
 func requestNoiseFromNoisers(addresses []string) []float64 {
 
 	var noiseVec []float64
+
+	// Just return a blank noise vector, case is handled downstream.
+	if !NOISY_VERIF {
+		return noiseVec
+	}
+
 	c := make(chan error)
 
 	// TODO: incorporate multiple noise vec at once
@@ -1161,7 +1174,7 @@ func requestNoiseFromNoisers(addresses []string) []float64 {
 			
 			defer conn.Close()
 			outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Noiser. Iteration:%d\n", client.update.Iteration)
-			go func() { c <- conn.Call("Peer.RequestNoise", client.update.Iteration, &noiseVec) }()
+			go func() { c <- conn.Call("Peer.RequestNoise", client.update.Iteration, &noiseVec) } ()
 			
 			select {
 			case noiseError := <-c:

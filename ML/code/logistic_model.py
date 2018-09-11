@@ -17,7 +17,8 @@ epsilon = 0
 batch_size = 10
 
 scale = False
-diffpriv = False
+diffPriv13 = False
+diffPriv16 = True
 
 
 def init(dataset, filename, epsilon):
@@ -43,18 +44,39 @@ def init(dataset, filename, epsilon):
     def lnprob(x, alpha):
         return -(alpha / 2) * np.linalg.norm(x)
 
-    nwalkers = max(4 * d, 250)
-    sampler = emcee.EnsembleSampler(nwalkers, d, lnprob, args=[passedEpsilon])
+    # nwalkers = max(4 * d, 250)
+    # sampler = emcee.EnsembleSampler(nwalkers, d, lnprob, args=[passedEpsilon])
 
-    p0 = [np.random.rand(d) for i in range(nwalkers)]
-    pos, _, state = sampler.run_mcmc(p0, 100)
+    # p0 = [np.random.rand(d) for i in range(nwalkers)]
+    # pos, _, state = sampler.run_mcmc(p0, 100)
 
-    sampler.reset()
-    sampler.run_mcmc(pos, 1000, rstate0=state)
+    # sampler.reset()
+    # sampler.run_mcmc(pos, 1000, rstate0=state)
 
-    print("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
+    # print("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
 
-    samples = sampler.flatchain
+    # samples = sampler.flatchain
+
+    if diffPriv13:
+
+        nwalkers = max(4 * d, 250)
+        sampler = emcee.EnsembleSampler(nwalkers, d, lnprob, args=[epsilon])
+
+        p0 = [np.random.rand(d) for i in range(nwalkers)]
+        pos, _, state = sampler.run_mcmc(p0, 100)
+
+        sampler.reset()
+        sampler.run_mcmc(pos, 1000, rstate0=state)
+
+        print("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
+
+        samples = sampler.flatchain
+
+    elif diffPriv16:
+        expected_iters = 5000
+        sigma = np.sqrt(2 * np.log(1.25)) / epsilon
+        noise = sigma * np.random.randn(batch_size, expected_iters, d)
+        samples = np.sum(noise, axis=0)
 
     return d
 
@@ -98,8 +120,8 @@ def privateFun(ww, batch_size):
 
     d1, _ = samples.shape
 
-    if diffpriv:
-        delta = -alpha * g + getNoise(np.random.randint(0, d1))
+    if diffPriv13 or diffPriv16:
+        delta = -alpha * g + getNoise(iteration)
     else:
         delta = -alpha * g
 
@@ -111,12 +133,12 @@ def privateFun(ww, batch_size):
 
 if __name__ == '__main__':
     
-    init("creditcard0", 1)
+    init("creditcard0", "creditcard0", 1)
     ww = np.zeros(d)
 
     for i in range(3000):
     
-        grad = privateFun(ww, 10)
+        grad = privateFun(ww, batch_size)
         delta = grad
 
         if (np.any(np.isnan(delta))):
