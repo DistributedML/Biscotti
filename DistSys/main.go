@@ -35,6 +35,7 @@ const (
 	
 	NUM_VERIFIERS 	int           = 1
 	NUM_MINERS 		int           = 1
+	NUM_NOISERS     int 		  = 2
 	DEFAULT_STAKE   int 		  = 10
 
 	VERIFIER_PRIME 	int 		  = 2
@@ -46,7 +47,9 @@ const (
 	TOTAL_SHARES 	int 		  = 10
 
 	SECURE_AGG  	bool 		  = false
-	NOISY_VERIF		bool 		  = false
+	NOISY_VERIF		bool 		  = true
+
+	EPSILON 		float64 	  = 1
 
 )
 
@@ -368,11 +371,11 @@ func getRoles() map[int]int {
 		NUM_VERIFIERS, NUM_MINERS, numberOfNodes)
 
 	nIDs, _, _ := myVRF.getVRFNoisers(stakeMap, client.bc.getLatestBlockHash(), 
-		client.id, NUM_VERIFIERS, numberOfNodes)
+		client.id, NUM_NOISERS, numberOfNodes)
 
-	outLog.Printf("Verifiers are %s", vIDs)
-	outLog.Printf("Miners are %s", mIDs)
-	outLog.Printf("Noisers are %s", nIDs)
+	outLog.Printf("Verifiers are %v", vIDs)
+	outLog.Printf("Miners are %v", mIDs)
+	outLog.Printf("Noisers are %v", nIDs)
 
 	for _, id := range vIDs {
 		roleMap[id] *= VERIFIER_PRIME
@@ -382,7 +385,7 @@ func getRoles() map[int]int {
 		roleMap[id] *= MINER_PRIME
 	}
 
-	for _, id := range mIDs {
+	for _, id := range nIDs {
 		roleMap[id] *= NOISER_PRIME
 	}
 
@@ -402,7 +405,8 @@ func getRoleNames(iterationCount int) ([]string, []string, []string, int) {
     // TODO: Maybe implement inverted index
     for address, ID := range peerLookup {
 
-    	if (roleIDs[ID] == 1) {
+    	// A bit messy. The contributors are all non verifier, non miner.
+    	if (roleIDs[ID] == 1 || roleIDs[ID] == NOISER_PRIME) {
     		numVanilla++
     	}
         
@@ -588,7 +592,12 @@ func main() {
 
 	
 	// Reading data and declaring some global locks to be used later
-	client.initializeData(datasetName, numberOfNodes)
+	if NOISY_VERIF {
+		client.initializeData(datasetName, numberOfNodes, EPSILON)	
+	} else {
+		client.initializeData(datasetName, numberOfNodes, 0)	
+	}
+	
 	client.bootstrapKeys()
 
 	// initialize the VRF
@@ -777,7 +786,8 @@ func prepareForNextIteration() {
 	verifier = amVerifier(client.id)
 	miner = amMiner(client.id)
 
-	verifierPortsToConnect, minerPortsToConnect, noiserPortsToConnect, numberOfNodeUpdates = getRoleNames(iterationCount)
+	verifierPortsToConnect, minerPortsToConnect, 
+		noiserPortsToConnect, numberOfNodeUpdates = getRoleNames(iterationCount)
 
 	if miner {
 		outLog.Printf(strconv.Itoa(client.id)+":I am miner. Iteration:%d", iterationCount)
@@ -1157,16 +1167,18 @@ func requestNoiseFromNoisers(addresses []string) []float64 {
 
 	var noiseVec []float64
 
-	// Just return a blank noise vector, case is handled downstream.
+	// Just return an empty noise vector, case is handled downstream.
 	if !NOISY_VERIF {
 		return noiseVec
 	}
 
+	noisesReceived := 0.0
+	noiseVec = make([]float64, client.ncol)
 	c := make(chan error)
 
-	// TODO: incorporate multiple noise vec at once
 	for _, address := range addresses {
 
+		var thisVec []float64
 		conn, err := rpc.Dial("tcp", address)
 		printError("Unable to connect to noiser", err)
 	
@@ -1174,14 +1186,21 @@ func requestNoiseFromNoisers(addresses []string) []float64 {
 			
 			defer conn.Close()
 			outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Noiser. Iteration:%d\n", client.update.Iteration)
-			go func() { c <- conn.Call("Peer.RequestNoise", client.update.Iteration, &noiseVec) } ()
+			go func() { c <- conn.Call("Peer.RequestNoise", client.update.Iteration, &thisVec) } ()
 			
 			select {
 			case noiseError := <-c:
 				
 				printError("Error in sending update", err)
 				if (noiseError == nil) {
+		
 					outLog.Printf(strconv.Itoa(client.id)+":Got noise. Iteration:%d\n", client.update.Iteration)
+					noisesReceived++
+
+					for i := 0; i < len(thisVec); i++ {
+						noiseVec[i] += thisVec[i]
+					}
+
 				}
 
 			// use err and result
@@ -1198,6 +1217,11 @@ func requestNoiseFromNoisers(addresses []string) []float64 {
 			continue
 		}
 
+	}
+
+	// Take the average of the noise to preserve privacy budget
+	for i := 0; i < len(noiseVec); i++ {
+		noiseVec[i] /= noisesReceived
 	}
 
 	return noiseVec
