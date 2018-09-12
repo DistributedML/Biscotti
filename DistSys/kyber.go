@@ -3,17 +3,16 @@ package main
 import (
 	
 	"github.com/dedis/kyber/pairing/bn256"	
-	"github.com/dedis/kyber"
-	// "github.com/dedis/kyber/share"
-	"fmt"
-	// "crypto/sha256"
-	// "encoding/binary"
-	"math"
-	// "github.com/DzananGanic/numericalgo"
-	// "github.com/DzananGanic/numericalgo/fit/poly"
+	"github.com/dedis/kyber"	
+	"fmt"	
+	"math"	
 	"sort"
 	"github.com/gonum/matrix/mat64"
-	// "bytes"
+	"bytes"
+    // "crypto/cipher"
+    "errors"
+    "github.com/dedis/kyber/util/random"
+
 )
 
 var (
@@ -26,6 +25,11 @@ var (
 
 )
 
+// A basic, verifiable signature
+type basicSig struct {
+    C   kyber.Scalar // challenge
+    R   kyber.Scalar // response
+}
 
 type Share struct {
 	
@@ -48,7 +52,7 @@ type MinerPart struct {
 	CommitmentUpdate	kyber.Point
 	Iteration 			int
 	NodeID 				int
-	// SignatureList		[]kyber.Point
+	// SignatureList		[][]byte
 	PolyMap 		    PolynomialMap	
 }
 
@@ -57,7 +61,7 @@ type MinerPartRPC struct {
 	CommitmentUpdate	[]byte
 	Iteration 			int
 	NodeID 				int
-	// SignatureList		[]kyber.Point
+	// SignatureList		[][]byte
 	PolyMap 		    PolynomialMapRPC	
 }
 
@@ -84,14 +88,16 @@ type PolynomialMapRPC map[int]PolynomialPartRPC
 
 func converttoRPC(minerPart MinerPart) MinerPartRPC{
 
-	byteCommitment, _ := minerPart.CommitmentUpdate.MarshalBinary()
+	byteCommitment, err := minerPart.CommitmentUpdate.MarshalBinary()
+	check(err)
 
 	polyMapRPC := PolynomialMapRPC{}
 
 	for index, subPolyPart := range minerPart.PolyMap{
 	
 		thisPolynomial := subPolyPart.Polynomial
-		thisCommitment, _ := subPolyPart.Commitment.MarshalBinary()
+		thisCommitment, err := subPolyPart.Commitment.MarshalBinary()
+		check(err)
 		thisSecrets := subPolyPart.Secrets
 		thisWitnesses := make([][]byte, len(subPolyPart.Witnesses))
 
@@ -100,13 +106,15 @@ func converttoRPC(minerPart MinerPart) MinerPartRPC{
 
 		for i := 0; i < len(subPolyPart.Witnesses); i++ {
 			thisWitnesses[i] =[]byte{}						
-			thisWitnesses[i], _ = subPolyPart.Witnesses[i].MarshalBinary()
+			thisWitnesses[i], err = subPolyPart.Witnesses[i].MarshalBinary()
+			check(err)
 		}
 
 		// for indexW := range thisWitnesses{
 
 		// 	thisWitnesses[indexW] = make([]byte, 64)
-		// 	thisWitnesses[indexW], _ = subPolyPart.Witnesses[indexW].MarshalBinary()
+		// 	thisWitnesses[indexW], err = subPolyPart.Witnesses[indexW].MarshalBinary()
+		// 	check(err)
 		// }
 
 		polyMapRPC[index] = PolynomialPartRPC{Polynomial: thisPolynomial, Commitment: thisCommitment, Secrets: thisSecrets, Witnesses: thisWitnesses}
@@ -121,7 +129,7 @@ func converttoRPC(minerPart MinerPart) MinerPartRPC{
 func converttoMinerPart(minerPartRPC MinerPartRPC) MinerPart{
 
 	// byteCommitment := minerPart.CommitmentUpdate.MarshalBinary()
-	commitment := suite.G1().Point().Null()
+	commitment := suite.G1().Point()
 
 	err := commitment.UnmarshalBinary(minerPartRPC.CommitmentUpdate)
 
@@ -133,18 +141,22 @@ func converttoMinerPart(minerPartRPC MinerPartRPC) MinerPart{
 
 		thisPolynomial := subPolyPart.Polynomial
 		
-		thisCommitment := suite.G1().Point().Null()
-		err := thisCommitment.UnmarshalBinary(subPolyPart.Commitment)
+		thisCommitment := suite.G1().Point()
+		// fmt.Println(index)
+		// fmt.Println(subPolyPart.Commitment)
+		_ = thisCommitment.UnmarshalBinary(subPolyPart.Commitment)
 
 		thisSecrets := subPolyPart.Secrets
 		thisWitnesses := make([]kyber.Point, len(subPolyPart.Witnesses))
 
 		for indexW := range thisWitnesses{
 
-			partCommitment := suite.G1().Point().Null()
-			err = partCommitment.UnmarshalBinary(subPolyPart.Witnesses[indexW])
-			check(err)
-			thisWitnesses[indexW] = partCommitment.Clone()
+			partCommitment := suite.G1().Point()
+			// fmt.Println(indexW)
+			// fmt.Println(subPolyPart.Witnesses[indexW])
+			_ = partCommitment.UnmarshalBinary(subPolyPart.Witnesses[indexW])
+			// check(err)
+			thisWitnesses[indexW] = cloneCommitment(partCommitment)
 		}
 
 		polyMap[index] = PolynomialPart{Polynomial: thisPolynomial, Commitment: thisCommitment, Secrets: thisSecrets, Witnesses: thisWitnesses}		
@@ -185,11 +197,6 @@ func (pComm *PolynomialCommitment) fillPolynomialMap(pkey PublicKey, maxPolyDegr
 		prevIndex = index
 
 		pComm.PolyMap[index] = PolynomialPart{Polynomial: subPolynomial, Commitment: commitment, Secrets: shares, Witnesses: witnesses}
-
-		//fmt.Println(pComm.PolyMap[index].Polynomial)
-		//fmt.Println(pComm.PolyMap[index].Commitment)
-		//fmt.Println(pComm.PolyMap[index].Secrets)
-		//fmt.Println(pComm.PolyMap[index].Witnesses)
 
 	}
 
@@ -242,7 +249,7 @@ func aggregateSecret(previousAggregate MinerPart, newSecret MinerPart) MinerPart
 
 	for index, subPolyPart := range previousAggregate.PolyMap{
 
-		thisIndexCommitment := subPolyPart.Commitment.Clone()
+		thisIndexCommitment := cloneCommitment(subPolyPart.Commitment)
 
 		thisIndexCommitment.Add(thisIndexCommitment, newSecret.PolyMap[index].Commitment)
 
@@ -263,7 +270,7 @@ func aggregateSecret(previousAggregate MinerPart, newSecret MinerPart) MinerPart
 			
 			secrets = append(secrets, Share{thisXValue, finalYValue})
 
-			thisWitness := subPolyPart.Witnesses[i].Clone()
+			thisWitness := cloneCommitment(subPolyPart.Witnesses[i])
 
 			thisWitness.Add(thisWitness, newSecret.PolyMap[index].Witnesses[i])
 
@@ -530,11 +537,11 @@ func createCommitment(update []int64 , pkeyG1 []kyber.Point) (kyber.Point) {
 
 	// updateInt := makePolynomialMap(update)
 
-	commitment := suite.G1().Point().Null()
+	commitment := suite.G1().Point()
 
 	parameterIntScalar := suite.G1().Scalar().One()
 
-	commitmentParameter := suite.G1().Point().Null()
+	commitmentParameter := suite.G1().Point()
 
 	
 	// for _, subPolynomial := range updateInt{
@@ -850,9 +857,6 @@ func recoverSecret(shares []Share, degree int) []int64{
 
 }
 
-
-
-
 func Vandermonde(a []float64, degree int) *mat64.Dense {
     x := mat64.NewDense(len(a), degree+1, nil)
     for i := range a {
@@ -863,3 +867,80 @@ func Vandermonde(a []float64, degree int) *mat64.Dense {
     return x
 }
 
+// This simplified implementation of Schnorr Signatures is based on
+// crypto/anon/sig.go
+// The ring structure is removed and
+// The anonimity set is reduced to one public key = no anonimity
+func SchnorrSign(message []byte,
+    privateKey kyber.Scalar) []byte {
+
+	suite := bn256.NewSuite()
+	seed := random.New()
+    // Create random secret v and public point commitment T
+    v := suite.G1().Scalar().Pick(seed)
+    T := suite.G1().Point().Mul(v, nil)
+
+    // Create challenge c based on message and T
+    c := hashSchnorr(suite, message, T)
+
+    // Compute response r = v - x*c
+    r := suite.G1().Scalar()
+    r.Mul(privateKey, c).Sub(v, r)
+
+    // Return verifiable signature {c, r}
+    // Verifier will be able to compute v = r + x*c
+    // And check that hashElgamal for T and the message == c
+    buf := bytes.Buffer{}
+    sig := basicSig{c, r}
+    _ = suite.Write(&buf, &sig)
+    return buf.Bytes()
+}
+
+func SchnorrVerify(message []byte, publicKey kyber.Point,
+    signatureBuffer []byte) error {
+
+    // Decode the signature
+	suite := bn256.NewSuite()    
+    buf := bytes.NewBuffer(signatureBuffer)
+    sig := basicSig{C:suite.G1().Scalar(),R:suite.G1().Scalar()}
+    if err := suite.Read(buf, &sig); err != nil {
+        return err
+    }
+    r := sig.R
+    c := sig.C
+
+    // Compute base**(r + x*c) == T
+    var P, T kyber.Point
+    P = suite.G1().Point()
+    T = suite.G1().Point()
+    T.Add(T.Mul(r, nil), P.Mul(c, publicKey))
+
+    // Verify that the hash based on the message and T
+    // matches the challange c from the signature
+    c = hashSchnorr(suite, message, T)
+    if !c.Equal(sig.C) {
+        return errors.New("invalid signature")
+    }
+
+    return nil
+}
+
+// Returns a secret that depends on on a message and a point
+func hashSchnorr(suite *bn256.Suite, message []byte, p kyber.Point) kyber.Scalar {
+    pb, _ := p.MarshalBinary()
+    c := suite.XOF(pb)
+    c.Write(message)
+    return suite.G1().Scalar().Pick(c)
+}
+
+func cloneCommitment(input kyber.Point) kyber.Point{
+
+	byteCommitment, _ := input.MarshalBinary()
+
+	thisPoint := suite.G1().Point()
+
+	_ = thisPoint.UnmarshalBinary(byteCommitment)
+
+	return thisPoint
+
+}

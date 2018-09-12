@@ -137,8 +137,10 @@ func (honest *Honest) checkConvergence() bool {
 func (honest *Honest) computeUpdate(iterationCount int) {
 	prevModel := honest.bc.getLatestGradient()
 	deltas, err := oneGradientStep(prevModel) // TODO: Create commitment here
-	check(err)	
+	// outLog.Printf("This update float:%s", deltas)
 	deltasInt := updateFloatToInt(deltas, PRECISION)
+	// outLog.Printf("This update:%s", deltasInt)
+
 	updateCommitment := createCommitment(deltasInt, client.Keys.CommitmentKey.PKG1)
 	byteCommitment, err := updateCommitment.MarshalBinary()
 	check(err)
@@ -739,7 +741,6 @@ func extractCommitmentKey(dimensions int) PublicKey {
 
 	// commitKey.GenerateKey()
 
-
 	commitKeyFile, err := os.Open(commitKeyPath)
 
 	check(err)
@@ -763,6 +764,8 @@ func extractCommitmentKey(dimensions int) PublicKey {
 		check(err)
 
 		thisPointG2 := suite.G2().Point()
+
+		check(err)
 
 		// fmt.Println(len(thisKey))
 

@@ -17,6 +17,7 @@ diffPriv13 = False
 expected_iters = 5000
 
 def init(dataset, filename, epsilon, batch_size):
+
     
     global myclient
 

@@ -17,8 +17,6 @@ import (
 	"flag"
 	"encoding/gob"
 	"sort"
-	
-
 )
 
 // Timeout for block should be more than timeout for update because nodes should be more patients for the block to come through
@@ -29,8 +27,8 @@ const (
 	basePort        int           = 8000
 	verifierIP   	string        = "127.0.0.1:"
 	timeoutRPC    	time.Duration = 10000000000
-	timeoutUpdate 	time.Duration = 10000000000  
-	timeoutBlock 	time.Duration = 15000000000  
+	timeoutUpdate 	time.Duration = 10000000000000  
+	timeoutBlock 	time.Duration = 150000000000000  
 	timeoutPeer 	time.Duration = 5000000000
 	
 	NUM_VERIFIERS 	int           = 1
@@ -46,10 +44,10 @@ const (
 	POLY_SIZE 		int 		  = 10
 	TOTAL_SHARES 	int 		  = 10
 
-	SECURE_AGG  	bool 		  = false
-	NOISY_VERIF		bool 		  = true
-
 	EPSILON 		float64 	  = 1
+	SECURE_AGG  	bool 		  = true
+	NOISY_VERIF		bool 		  = false
+
 
 )
 
@@ -89,7 +87,6 @@ var (
 	// pkMap					map[int]PublicKey
 	// commitKey 				PublicKey
 	// sKey 					kyber.Scalar
-
 
 	//Locks
 	updateLock    		sync.Mutex
@@ -153,12 +150,21 @@ func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
 
 	// Roni score measures change in local training error
 	if roniScore > 0.02 {
+	
 		outLog.Printf("Rejecting update!")		
 		return nil
 	}
 
-	// TODO: Instead of adding to a block, sign it and return to client
 	return nil
+	
+	// }else{
+
+	// 	// (*signature) = SchnorrSign(suite)
+	// 	return nil
+	
+	// }
+
+	// TODO: Instead of adding to a block, sign it and return to client
 
 }
 
@@ -758,6 +764,14 @@ func prepareForNextIteration() {
 		time.Sleep(1000 * time.Millisecond)
 		client.bc.PrintChain()
 		os.Exit(1)
+	}else{
+
+		if iterationCount > 50 {
+			
+			client.bc.PrintChain()
+			os.Exit(1)	
+		
+		}
 	}
 
 	if(SECURE_AGG) {
@@ -1267,7 +1281,6 @@ func sendUpdateToVerifiers(addresses []string) bool {
 
 			outLog.Printf("GOT VERIFIER ERROR")
 			time.Sleep(1000 * time.Millisecond)
-
 			continue
 		}
 	
@@ -1370,13 +1383,13 @@ func sendUpdateSecretsToMiners(addresses []string) {
 	// generate secrets here
 	minerSecrets := generateMinerSecretShares(client.update.Delta, PRECISION, client.Keys.CommitmentKey, NUM_MINERS, POLY_SIZE, TOTAL_SHARES)
 
-	outLog.Printf("My secret share:%s", minerSecrets)
+	// outLog.Printf("My secret share:%s", minerSecrets)
 
-	for i := 0; i < len(minerSecrets); i++ {
-		outLog.Printf("My secret share 10:%s", minerSecrets[i].PolyMap[10].Secrets)		
-		outLog.Printf("My secret share 20:%s", minerSecrets[i].PolyMap[20].Secrets)
-		outLog.Printf("My secret share 20:%s", minerSecrets[i].PolyMap[25].Secrets)		
-	}
+	// for i := 0; i < len(minerSecrets); i++ {
+		// outLog.Printf("My secret share 10:%s", minerSecrets[i].PolyMap[10].Secrets)		
+		// outLog.Printf("My secret share 20:%s", minerSecrets[i].PolyMap[20].Secrets)
+		// outLog.Printf("My secret share 20:%s", minerSecrets[i].PolyMap[25].Secrets)		
+	// }
 
 	// fmt.Println(minerSecrets)
 	// fmt.Println(minerSecrets[0].PolyMap[10].Secrets)

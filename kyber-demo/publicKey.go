@@ -21,19 +21,19 @@ type PublicKey struct {
 
 }
 
-// generates a public key based on a random seed
+// generates a public key based on a random seed for commitments of the updates
 
 func (pkey *PublicKey) GenerateKey(numberOfDimensions int) {
 
 	suite := bn256.NewSuite()
 
-	seed := random.New()
+	// seed := random.New()
 
 	pkey.PKG1 = make([]kyber.Point , numberOfDimensions)
 	pkey.PKG2 = make([]kyber.Point , numberOfDimensions)
 
 	// generate secret key
-	privateKey := suite.G1().Scalar().Pick(seed)
+	privateKey := suite.G1().Scalar().SetInt64(int64(2))
 	// fmt.Println("Private Key:" + privateKey.String()+ "\n")	
 	
 	// getting the generator for each group
@@ -58,7 +58,6 @@ func (pkey *PublicKey) GenerateKey(numberOfDimensions int) {
 	
 	}
 
-
 }
 
 func (pkey *PublicKey) GetGeneratorG1() kyber.Point{
@@ -79,10 +78,29 @@ func (pkey *PublicKey) GetFirstPKG2() kyber.Point{
 
 }
 
-func (pkey *PublicKey) SetG1Key(key kyber.Point) {
+func (pkey *PublicKey) GenerateClientKey() kyber.Scalar {
 
-	return pkey.PKG1[0] = key
+		suite := bn256.NewSuite()
+		seed := random.New()
+
+		pkey.PKG1 = make([]kyber.Point , 1)
+		pkey.PKG2 = make([]kyber.Point , 1)
+
+		privateKey := suite.G1().Scalar().Pick(seed)
+
+		generatorG1  := suite.G1().Point().Mul(suite.G1().Scalar().One(),nil)
+		generatorG2  := suite.G2().Point().Mul(suite.G2().Scalar().One(),nil)	
+
+		pkey.PKG1[0] = suite.G1().Point().Mul(privateKey,generatorG1)
+		pkey.PKG2[0] = suite.G2().Point().Mul(privateKey,generatorG2)
+
+		return privateKey
 
 }
 
+func (pkey *PublicKey) SetG1Key(key kyber.Point) {
 
+	pkey.PKG1 = make([]kyber.Point , 1)
+	pkey.PKG1[0] = key
+
+}

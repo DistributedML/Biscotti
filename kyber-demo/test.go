@@ -1,70 +1,127 @@
 package main
- 
-// import (
-//     "fmt"
- 
-//     "github.com/gonum/matrix/mat64"
-// )
 
-// // [-105-166(x)+49(x^2)-81(x^3)+88(x^4)+381(x^5)+264(x^6)+227(x^7)+275(x^8)+23040(x^9)]
+import (
+    "bytes"
+    // "crypto/cipher"
+    "encoding/hex"
+    "errors"
+    "fmt"
 
-// var (
-    
-//     // x = []float64{2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0, 16.0, 18.0, 20.0}
-//     // y = []float64{11925543, 6063028175, 232730932767, 3097548252327, 23070072902135, 119008602891423, 476462484633135, 1584543628990007, 4573377221115207, 11803828688648175}
+    "github.com/dedis/kyber"
+    "github.com/dedis/kyber/pairing/bn256"
+    "github.com/dedis/kyber/util/random"
 
-// 	x = []float64{0, -1.0, -2.0, -3 , -4, -5, -6, -7, -8 ,-9}
-//     y = []float64{-105, -22449, -11735761, -451985889, -6024384129, -44906120425, -231779315529, -928317427401, -3088169159929, -8915275010049}
+)
 
+type Suite interface {
+    kyber.Group
+    kyber.Encoding
+    kyber.XOFFactory
+}
 
+// A basic, verifiable signature
+type basicSig struct {
+    C   kyber.Scalar // challenge
+    R   kyber.Scalar // response
+}
 
+// Returns a secret that depends on on a message and a point
+func hashSchnorr(suite *bn256.Suite, message []byte, p kyber.Point) kyber.Scalar {
+    pb, _ := p.MarshalBinary()
+    c := suite.XOF(pb)
+    c.Write(message)
+    return suite.G1().Scalar().Pick(c)
+}
 
- 
-//     degree = 9
-// )
- 
-// func main() {
-    
-//     a := Vandermonde(x, degree)
-//     b := mat64.NewDense(len(y), 1, y)
-//     c := mat64.NewDense(degree+1, 1, nil)
- 
-//     qr := new(mat64.QR)
-//     qr.Factorize(a)
- 
-//     err := c.SolveQR(qr, false, b)
+// This simplified implementation of Schnorr Signatures is based on
+// crypto/anon/sig.go
+// The ring structure is removed and
+// The anonimity set is reduced to one public key = no anonimity
+func SchnorrSign(message []byte,
+    privateKey kyber.Scalar) []byte {
+
+	suite := bn256.NewSuite()
+	seed := random.New()
+    // Create random secret v and public point commitment T
+    v := suite.G1().Scalar().Pick(seed)
+    T := suite.G1().Point().Mul(v, nil)
+
+    // Create challenge c based on message and T
+    c := hashSchnorr(suite, message, T)
+
+    // Compute response r = v - x*c
+    r := suite.G1().Scalar()
+    r.Mul(privateKey, c).Sub(v, r)
+
+    // Return verifiable signature {c, r}
+    // Verifier will be able to compute v = r + x*c
+    // And check that hashElgamal for T and the message == c
+    buf := bytes.Buffer{}
+    sig := basicSig{c, r}
+    _ = suite.Write(&buf, &sig)
+    return buf.Bytes()
+}
+
+func SchnorrVerify(message []byte, publicKey kyber.Point,
+    signatureBuffer []byte) error {
+
+    // Decode the signature
+	suite := bn256.NewSuite()    
+    buf := bytes.NewBuffer(signatureBuffer)
+    sig := basicSig{C:suite.G1().Scalar(),R:suite.G1().Scalar()}
+    if err := suite.Read(buf, &sig); err != nil {
+        return err
+    }
+    r := sig.R
+    c := sig.C
+
+    // Compute base**(r + x*c) == T
+    var P, T kyber.Point
+    P = suite.G1().Point()
+    T = suite.G1().Point()
+    T.Add(T.Mul(r, nil), P.Mul(c, publicKey))
+
+    // Verify that the hash based on the message and T
+    // matches the challange c from the signature
+    c = hashSchnorr(suite, message, T)
+    if !c.Equal(sig.C) {
+        return errors.New("invalid signature")
+    }
+
+    return nil
+}
+
+// This example shows how to perform a simple Schnorr signature. Please, use this
+// example as a reference to understand the abstraction only. There is a
+// `sign/schnorr` package which provides Schnorr signatures functionality in a
+// more secure manner.
+func main() {
+    // Crypto setup
+	suite := bn256.NewSuite()
+	seed := random.New()
+
+    // Create a public/private keypair (X,x)
+    x := suite.G1().Scalar().Pick(seed) // create a private key x
+    X := suite.G1().Point().Mul(x, nil) // corresponding public key X
+
+    // testPoint := suite.G1().Point().Null()
+
+    // Generate the signature21
+    M, _ := X.MarshalBinary() // message we want to sign
+    fmt.Println(M)
+    sig := SchnorrSign(M, x)
+    fmt.Print("Signature:\n" + hex.Dump(sig))
+
+    // testBinary, _ := testPoint.MarshalBinary()
    
-//     if err != nil {
-//     	fmt.Println("here")
-//         fmt.Println(err)
-//     } else {
-//         fmt.Printf("%.0f\n", mat64.Formatted(c))
-//     }
+    // Verify the signature against the correct message
+    err := SchnorrVerify(M, X, sig)
+    if err != nil {
+        panic(err.Error())
+    }
+    fmt.Println("Signature verified against correct message.")
 
-// }
- 
-// func Vandermonde(a []float64, degree int) *mat64.Dense {
-//     x := mat64.NewDense(len(a), degree+1, nil)
-//     for i := range a {
-//         for j, p := 0, 1.; j <= degree; j, p = j+1, p*a[i] {
-//             x.Set(i, j, p)
-//         }
-//     }
-//     return x
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 
 

@@ -27,13 +27,13 @@ func (pkey *PublicKey) GenerateKey(numberOfDimensions int) {
 
 	suite := bn256.NewSuite()
 
-	seed := random.New()
+	// seed := random.New()
 
 	pkey.PKG1 = make([]kyber.Point , numberOfDimensions)
 	pkey.PKG2 = make([]kyber.Point , numberOfDimensions)
 
 	// generate secret key
-	privateKey := suite.G1().Scalar().Pick(seed)
+	privateKey := suite.G1().Scalar().SetInt64(int64(2))
 	// fmt.Println("Private Key:" + privateKey.String()+ "\n")	
 	
 	// getting the generator for each group
