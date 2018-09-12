@@ -9,16 +9,14 @@ from lfw_cnn_model import LFWCNNModel
 from svm_model import SVMModel
 import datasets
 
-batch_size = 5
 learning_rate = 1e-2
 
 # Use the Song and Sarwate 2013 implementation. Will likely crash if d is too large
+# Otherwise, use the 2016 Abadi.
 diffPriv13 = False
+expected_iters = 5000
 
-# Use the Abadi 2016 implementation.
-diffPriv16 = True
-
-def init(dataset, filename, epsilon):
+def init(dataset, filename, epsilon, batch_size):
     
     global myclient
 
@@ -34,35 +32,44 @@ def init(dataset, filename, epsilon):
     global samples
     samples = []
 
+    global this_batch_size
+    this_batch_size = batch_size
+
     def lnprob(x, alpha):
         return -(alpha / 2) * np.linalg.norm(x)
 
-    if diffPriv13:
+    if epsilon > 0:
 
-        nwalkers = max(4 * nParams, 250)
-        sampler = emcee.EnsembleSampler(nwalkers, nParams, lnprob, args=[epsilon])
+        if diffPriv13:
 
-        p0 = [np.random.rand(nParams) for i in range(nwalkers)]
-        pos, _, state = sampler.run_mcmc(p0, 100)
+            nwalkers = max(4 * nParams, 250)
+            sampler = emcee.EnsembleSampler(nwalkers, nParams, lnprob, args=[epsilon])
 
-        sampler.reset()
-        sampler.run_mcmc(pos, 1000, rstate0=state)
+            p0 = [np.random.rand(nParams) for i in range(nwalkers)]
+            pos, _, state = sampler.run_mcmc(p0, 100)
 
-        print("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
+            sampler.reset()
+            sampler.run_mcmc(pos, 1000, rstate0=state)
 
-        samples = sampler.flatchain
+            print("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
 
-    elif diffPriv16:
-        expected_iters = 5000
-        sigma = np.sqrt(2 * np.log(1.25)) / epsilon
-        noise = sigma * np.random.randn(batch_size, expected_iters, nParams)
-        samples = np.sum(noise, axis=0)
+            samples = sampler.flatchain
+
+        else:
+
+            sigma = np.sqrt(2 * np.log(1.25)) / epsilon
+            noise = sigma * np.random.randn(batch_size, expected_iters, nParams)
+            samples = np.sum(noise, axis=0)
+
+    else:
+
+        samples = np.zeros((expected_iters, nParams))
 
     return nParams
 
 # returns flattened gradient
 # Keep batch_size for API compliance
-def privateFun(ww, batch_size):
+def privateFun(ww):
     global myclient
     weights = np.array(ww)
     myclient.updateModel(weights)
@@ -87,7 +94,7 @@ def getTestErr(ww):
     return myclient.getTestErr()
 
 def getNoise(iteration):
-    return (-1) * (learning_rate / batch_size) * samples[iteration]
+    return (-1) * (learning_rate / this_batch_size) * samples[iteration]
 
 def roni(ww, delta):
     global myclient
@@ -105,19 +112,16 @@ def roni(ww, delta):
 
 if __name__ == '__main__':
     
-    epsilon = 1
-    dim = init("mnist", "mnist_train", epsilon)
+    epsilon = 0
+    batch_size = 10
+    dim = init("mnist", "mnist_train", epsilon, batch_size)
     ww = np.zeros(dim)
     numRejected = 0
 
     for i in range(3000):
     
-        grad = privateFun(ww, batch_size)
-
-        if diffPriv16 or diffPriv13:
-            delta = grad + getNoise(i)
-        else:
-            delta = grad
+        grad = privateFun(ww)
+        delta = grad + getNoise(i)
 
         if (np.any(np.isnan(delta))):
             pdb.set_trace()

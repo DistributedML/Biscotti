@@ -14,14 +14,13 @@ alpha = 1e-2
 d = 0
 hist_grad = 0
 epsilon = 0
-batch_size = 10
 
 scale = False
 diffPriv13 = False
 diffPriv16 = True
 
 
-def init(dataset, filename, epsilon):
+def init(dataset, filename, epsilon, batch_size):
 
     passedEpsilon = epsilon
     data = utils.load_dataset(dataset)
@@ -40,6 +39,9 @@ def init(dataset, filename, epsilon):
 
     global samples
     samples = []
+
+    global this_batch_size
+    this_batch_size = batch_size
 
     def lnprob(x, alpha):
         return -(alpha / 2) * np.linalg.norm(x)
@@ -98,11 +100,11 @@ def funObj(ww, X, y, batch_size):
     return f, g
 
 def getNoise(iteration):
-    return (-alpha / batch_size) * samples[iteration % len(samples)]
+    return (-alpha / this_batch_size) * samples[iteration % len(samples)]
 
 # Reports the direct change to w, based on the given one.
 # Batch size could be 1 for SGD, or 0 for full gradient.
-def privateFun(ww, batch_size):
+def privateFun(ww):
 
     global iteration
     ww = np.array(ww)
@@ -110,13 +112,13 @@ def privateFun(ww, batch_size):
     # Define constants and params
     nn, dd = X.shape
 
-    if batch_size > 0 and batch_size < nn:
-        idx = np.random.choice(nn, batch_size, replace=False)
+    if this_batch_size > 0 and this_batch_size < nn:
+        idx = np.random.choice(nn, this_batch_size, replace=False)
     else:
         # Just take the full range
         idx = range(nn)
 
-    f, g = funObj(ww, X[idx, :], y[idx], batch_size)
+    f, g = funObj(ww, X[idx, :], y[idx], this_batch_size)
 
     d1, _ = samples.shape
 
@@ -126,19 +128,21 @@ def privateFun(ww, batch_size):
         delta = -alpha * g
 
     w_new = ww + delta
-    f_new, g_new = funObj(w_new, X[idx, :], y[idx], batch_size)
+    f_new, g_new = funObj(w_new, X[idx, :], y[idx], this_batch_size)
     iteration = iteration + 1
 
     return delta
 
 if __name__ == '__main__':
     
-    init("creditcard0", "creditcard0", 1)
+    batch_size = 10
+    epsilon = 1
+    init("creditcard0", "creditcard0", epsilon, batch_size)
     ww = np.zeros(d)
 
     for i in range(3000):
     
-        grad = privateFun(ww, batch_size)
+        grad = privateFun(ww)
         delta = grad
 
         if (np.any(np.isnan(delta))):

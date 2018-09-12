@@ -35,9 +35,6 @@ var (
 	pyRoniFunc    *python.PyObject
 	pyNoiseFunc	  *python.PyObject
 
-	
-	
-
 	useTorch	   bool
 
 	//Errors
@@ -45,10 +42,8 @@ var (
 )
 
 const (
-	samples         = 10 // L
-	sampleDeviation = 0.1
+
 	batch_size      = 10
-	epsilon         = 1.0
 	datasetPath     = "../ML/data/"
 	codePath        = "../ML/code"
 	torchPath       = "../ML/Pytorch"
@@ -97,7 +92,7 @@ func init() {
 
 // Load data and initialize chain
 
-func (honest *Honest) initializeData(datasetName string, numberOfNodes int) {
+func (honest *Honest) initializeData(datasetName string, numberOfNodes int, epsilon float64) {
 
 	if datasetName == "creditcard" {
 		useTorch = false
@@ -105,7 +100,7 @@ func (honest *Honest) initializeData(datasetName string, numberOfNodes int) {
 		useTorch = true
 	}
 
-	honest.ncol = pyInit(datasetName, datasetName + strconv.Itoa(honest.id))
+	honest.ncol = pyInit(datasetName, datasetName + strconv.Itoa(honest.id), epsilon)
 	honest.dataset = datasetName
 	honest.bc = NewBlockchain(honest.ncol)
 
@@ -158,7 +153,7 @@ func (honest *Honest) computeUpdate(iterationCount int) {
 
 // Initialize the python stuff using go-python
 
-func pyInit(datasetName string, dataFile string) int {
+func pyInit(datasetName string, dataFile string, epsilon float64) int {
 
 	sysPath := python.PySys_GetObject("path")
 	python.PyList_Insert(sysPath, 0, python.PyString_FromString("./"))
@@ -198,8 +193,11 @@ func pyInit(datasetName string, dataFile string) int {
 
 	}
 	
+	// If epsilon is 0, this tells python not to pre-sample noise, 
+	// which saves a lot of time and memory
 	pyNumFeatures = pyInitFunc.CallFunction(python.PyString_FromString(datasetName), 
-			python.PyString_FromString(dataFile), python.PyFloat_FromDouble(epsilon))
+			python.PyString_FromString(dataFile), python.PyFloat_FromDouble(epsilon),
+			python.PyInt_FromLong(batch_size))
 
 	numFeatures := python.PyInt_AsLong(pyNumFeatures)
 
@@ -223,9 +221,8 @@ func oneGradientStep(globalW []float64) ([]float64, error) {
 		python.PyList_SetItem(argArray, i, python.PyFloat_FromDouble(globalW[i]))
 	}
 	
-	// Either use full GD or SGD here
 	var result *python.PyObject
-	result = pyPrivFunc.CallFunction(argArray, python.PyInt_FromLong(batch_size))
+	result = pyPrivFunc.CallFunction(argArray)
 
 	// Convert the resulting array to a go byte array
 	pyByteArray := python.PyByteArray_FromObject(result)
