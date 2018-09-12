@@ -25,11 +25,11 @@ def main():
     train_cut = 0.8
 
     for i in range(10):
-        model = returnModel(D_in, D_out)    
-        clients.append(Client("mnist", "mnist" + str(i), batch_size, model, train_cut))
+        model = returnModel(D_in, D_out)
+        clients.append(Client("mnist", "mnist" + str(i), batch_size, 0.01, model, train_cut))
 
     model = returnModel(D_in, D_out)
-    test_client = Client("mnist", "mnist_test", batch_size, model, 0)
+    test_client = Client("mnist", "mnist_test", batch_size, 0.01, model, 0)
 
     for iter in range(iter_time):
         # Calculate and aggregaate gradients    
