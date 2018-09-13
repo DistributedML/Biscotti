@@ -24,7 +24,8 @@ class Client():
         ### Tunables ###
         # self.criterion = nn.MultiLabelMarginLoss()
         self.criterion = nn.CrossEntropyLoss()
-        self.optimizer = optim.SGD(self.model.parameters(), lr=0.001, momentum=0.75, weight_decay=0.001) # mnist_cnn
+        # self.optimizer = optim.SGD(self.model.parameters(), lr=0.001, momentum=0.75, weight_decay=0.001) # mnist_cnn
+        self.optimizer = optim.SGD(self.model.parameters(), lr=0.01, momentum=0.5, weight_decay=0.001) # mnist_softmax
         self.aggregatedGradients = []
         self.loss = 0.0
 

@@ -29,7 +29,7 @@ cd ..
 
 echo "Running tests: No failure case. All nodes online"
 
-for (( totalnodes = 4; totalnodes < 5; totalnodes++ )); do
+for (( totalnodes = 10; totalnodes < 11; totalnodes++ )); do
 	
 	echo "Running with " $totalnodes "nodes"
 
@@ -44,7 +44,7 @@ for (( totalnodes = 4; totalnodes < 5; totalnodes++ )); do
 		echo $thisPort
 		echo $myAddress
 
-		sudo timeout $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=mnist > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile & 
+		sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=mnist > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile & 
 		
 		# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile 2> /dev/null &
 		# if [ $index -eq 0 ] 

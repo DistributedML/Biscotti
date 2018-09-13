@@ -11,12 +11,13 @@ import (
 
 // Update - data object representing a single update
 type Update struct {
-	Iteration 	int
-	Delta     	[]float64
-	Commitment  []byte // a commitment to delta: can't be kyber.Point
-	Noise 		[]float64
-	NoisedDelta []float64
-	Accepted  	bool
+	Iteration 		int
+	Delta     		[]float64
+	Commitment  	[]byte // a commitment to delta: can't be kyber.Point
+	Noise 			[]float64
+	NoisedDelta 	[]float64
+	Accepted  		bool
+	SignatureList	[][]byte
 }
 
 func (update Update) String() string {

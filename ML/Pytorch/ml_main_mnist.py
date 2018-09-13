@@ -16,7 +16,7 @@ def returnModel(D_in, D_out):
 # Initialize Clients
 # First Client is the aggregator
 def main():
-    iter_time = 1500
+    iter_time = 2000
     clients = []
     test_accuracy_rate = []
     D_in = datasets.get_num_features("mnist")
