@@ -40,14 +40,14 @@ for line in $(cat tempHosts);do
 	# leviathan
 	elif [ "$tname" == "198.162.52.57" ]; then
 		# echo $peersFile
-		# scp peersFileSent cfung@$tname:~/gopath/src/simpleBlockChain/DistSys
+		scp peersFileSent cfung@$tname:~/gopath/src/simpleBlockChain/DistSys
 		scp ../DistSys/DistSys cfung@$tname:~/gopath/src/simpleBlockChain/DistSys
 		ssh cfung@$tname 'bash -s' < deployNodes.sh $nodesInEachVM $indexCount $totalNodes $tname &			
 	
 	# emerson or clarke
 	else		
 		# echo $peersFile
-		# scp peersFileSent clement@$tname:~/gopath/src/simpleBlockChain/DistSys
+		scp peersFileSent clement@$tname:~/gopath/src/simpleBlockChain/DistSys
 		scp ../DistSys/DistSys clement@$tname:~/gopath/src/simpleBlockChain/DistSys
 		ssh clement@$tname 'bash -s' < deployNodes.sh $nodesInEachVM $indexCount $totalNodes $tname &
 	fi

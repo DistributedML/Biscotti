@@ -44,6 +44,7 @@ const (
 	POLY_SIZE 		int 		  = 10
 	TOTAL_SHARES 	int 		  = 10
 
+	MAX_ITERATIONS  int 		  = 200
 	EPSILON 		float64 	  = 1
 	SECURE_AGG  	bool 		  = true
 	NOISY_VERIF		bool 		  = false
@@ -766,7 +767,7 @@ func prepareForNextIteration() {
 		os.Exit(1)
 	}else{
 
-		if iterationCount > 50 {
+		if iterationCount > MAX_ITERATIONS {
 			
 			client.bc.PrintChain()
 			os.Exit(1)	

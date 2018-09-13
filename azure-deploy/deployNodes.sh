@@ -74,7 +74,8 @@ for (( index = $startingIndex ; index < $startingIndex + nodesToRun; index++ ));
 	let thisPort=8000+$index
 
 	echo deploying "$index"
-	$GOPATH/src/simpleBlockChain/DistSys/DistSys -i=$index -t=$totalnodes -d=creditcard -f=$GOPATH/src/simpleBlockChain/DistSys/peersFileSent -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
+	cd $GOPATH/src/simpleBlockChain/DistSys
+	./DistSys -i=$index -t=$totalnodes -d=mnist -f=peersFileSent -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thatLogFile &
 	
 	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
 	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile 2> outLog.log &
