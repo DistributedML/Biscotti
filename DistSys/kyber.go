@@ -18,10 +18,10 @@ import (
 var (
 
 	suite *bn256.Suite = bn256.NewSuite()	
-	precision = 4
-	maxPolynomialdegree = 10
-	maxXValue = 25 
-	totalShares = 10
+	// precision = 4
+	// maxPolynomialdegree = 10
+	// maxXValue = 25 
+	// totalShares = 10
 
 )
 
@@ -52,7 +52,7 @@ type MinerPart struct {
 	CommitmentUpdate	kyber.Point
 	Iteration 			int
 	NodeID 				int
-	// SignatureList		[][]byte
+	SignatureList		[][]byte
 	PolyMap 		    PolynomialMap	
 }
 
@@ -61,7 +61,7 @@ type MinerPartRPC struct {
 	CommitmentUpdate	[]byte
 	Iteration 			int
 	NodeID 				int
-	// SignatureList		[][]byte
+	SignatureList		[][]byte
 	PolyMap 		    PolynomialMapRPC	
 }
 
@@ -121,7 +121,7 @@ func converttoRPC(minerPart MinerPart) MinerPartRPC{
 		
 	} 
 
-	minerPartRPC := MinerPartRPC{CommitmentUpdate: byteCommitment, Iteration: minerPart.Iteration, NodeID: minerPart.NodeID, PolyMap: polyMapRPC} 
+	minerPartRPC := MinerPartRPC{CommitmentUpdate: byteCommitment, Iteration: minerPart.Iteration, NodeID: minerPart.NodeID, SignatureList: minerPart.SignatureList, PolyMap: polyMapRPC} 
 
 	return minerPartRPC
 }
@@ -131,9 +131,9 @@ func converttoMinerPart(minerPartRPC MinerPartRPC) MinerPart{
 	// byteCommitment := minerPart.CommitmentUpdate.MarshalBinary()
 	commitment := suite.G1().Point()
 
-	err := commitment.UnmarshalBinary(minerPartRPC.CommitmentUpdate)
+	_ = commitment.UnmarshalBinary(minerPartRPC.CommitmentUpdate)
 
-	check(err)
+	// check(err)
 
 	polyMap := PolynomialMap{}
 
@@ -162,7 +162,7 @@ func converttoMinerPart(minerPartRPC MinerPartRPC) MinerPart{
 		polyMap[index] = PolynomialPart{Polynomial: thisPolynomial, Commitment: thisCommitment, Secrets: thisSecrets, Witnesses: thisWitnesses}		
 	} 
 
-	minerPart := MinerPart{CommitmentUpdate: commitment, Iteration: minerPartRPC.Iteration, NodeID: minerPartRPC.NodeID, PolyMap: polyMap} 
+	minerPart := MinerPart{CommitmentUpdate: commitment, Iteration: minerPartRPC.Iteration, NodeID: minerPartRPC.NodeID, SignatureList: minerPartRPC.SignatureList, PolyMap: polyMap} 
 
 	return minerPart
 

@@ -172,7 +172,9 @@ func main() {
 			// thisClientPKStruct := PkeyG1{Id: strconv.Itoa(i), PKey:writeBufferPK.Bytes(), SKey:writeBufferSK.Bytes()}
 			thisClientPKStruct := PkeyG1{Id: i, Pkey:writeBufferPK.Bytes(), Skey:writeBufferSK.Bytes()}
 
-			writeBufferPK.Reset()		
+			writeBufferPK.Reset()	
+
+			writeBufferSK.Reset()		
 
 			// fmt.Println(thisClientKey.PKG1[0])
 

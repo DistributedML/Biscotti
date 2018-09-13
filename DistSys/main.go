@@ -17,11 +17,12 @@ import (
 	"flag"
 	"encoding/gob"
 	"sort"
+	"math"
 )
 
 // Timeout for block should be more than timeout for update because nodes should be more patients for the block to come through
 
-//Assumption: Requires node 0 to be online first. Need to move away from this
+//Assumption: Requires node 0 to be online first. 
 
 const (
 	basePort        int           = 8000
@@ -31,8 +32,8 @@ const (
 	timeoutBlock 	time.Duration = 150000000000000  
 	timeoutPeer 	time.Duration = 5000000000
 	
-	NUM_VERIFIERS 	int           = 1
-	NUM_MINERS 		int           = 1
+	NUM_VERIFIERS 	int           = 3
+	NUM_MINERS 		int           = 3
 	NUM_NOISERS     int 		  = 2
 	DEFAULT_STAKE   int 		  = 10
 
@@ -42,11 +43,10 @@ const (
 
 	PRECISION       int 		  = 4
 	POLY_SIZE 		int 		  = 10
-	TOTAL_SHARES 	int 		  = 10
 
 	EPSILON 		float64 	  = 1
 	SECURE_AGG  	bool 		  = true
-	NOISY_VERIF		bool 		  = false
+	NOISY_VERIF		bool 		  = true
 
 
 )
@@ -62,6 +62,8 @@ var (
 	//Input arguments
 	datasetName   		string
 	numberOfNodes 		int
+	TOTAL_SHARES 		int 		  
+
 	numberOfNodeUpdates int
 	myIP                string
 	myPrivateIP         string
@@ -115,6 +117,7 @@ var (
 	staleError error = errors.New("Stale Update/Block")
 	roniError  error = errors.New("RONI Failed")
 	rpcError  error = errors.New("RPC Timeout")
+	signatureError  error = errors.New("Insufficient correct signatures collected")
 
 )
 
@@ -134,7 +137,7 @@ func init() {
 // Returns:
 // - StaleError if its an update for a preceding round.
 
-func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
+func (s *Peer) VerifyUpdate(update Update, signature *[]byte) error {
 
 	outLog.Printf(strconv.Itoa(client.id)+":Got RONI message, iteration %d\n", update.Iteration)
 
@@ -152,19 +155,18 @@ func (s *Peer) VerifyUpdate(update Update, _ignored *bool) error {
 	if roniScore > 0.02 {
 	
 		outLog.Printf("Rejecting update!")		
-		return nil
-	}
-
-	return nil
+		return roniError
 	
-	// }else{
+	}else{
 
-	// 	// (*signature) = SchnorrSign(suite)
-	// 	return nil
-	
-	// }
-
-	// TODO: Instead of adding to a block, sign it and return to client
+		outLog.Printf("Accepting update!")
+		updateCommitment := update.Commitment
+		(*signature) = SchnorrSign(updateCommitment, client.Keys.Skey)
+		mySkey, _ := client.Keys.Skey.MarshalBinary()
+		fmt.Println("My Skey:%s", mySkey)
+		fmt.Println("My Signature:%s", (*signature))
+		return nil	
+	}	
 
 }
 
@@ -199,6 +201,14 @@ func (s *Peer) RegisterSecret(share MinerPartRPC, _ignored *bool) error {
 		return staleError
 	}
 
+	outLog.Printf("Length of signature:%d", len(share.SignatureList))
+	outLog.Printf("Length of verifiers:%d", len(verifierPortsToConnect))
+
+	if ((len(share.SignatureList) <  len(verifierPortsToConnect)/2) || !verifySignatures(share.SignatureList, share.CommitmentUpdate)){
+		printError("Share has insufficient or bogus signatures", signatureError)
+		return signatureError
+	}
+
 	// Process update only called by the miner nodes
 	realShare := converttoMinerPart(share) 
 
@@ -208,6 +218,47 @@ func (s *Peer) RegisterSecret(share MinerPartRPC, _ignored *bool) error {
 
 }
 
+func verifySignatures(signatureList [][]byte, commitment []byte) bool{
+
+	
+	signatureVerified := false
+	for i := 0; i < len(signatureList); i++ {
+	
+		thisSignature := signatureList[i]
+		
+		signatureVerified = false
+		
+		for i := 0; i < len(verifierPortsToConnect); i++ {
+		
+			verifierID := peerLookup[verifierPortsToConnect[i]]
+			verifierPubKey := client.Keys.PubKeyMap[verifierID].PKG1[0]
+			err := SchnorrVerify(commitment, verifierPubKey ,thisSignature)
+		
+			if(err == nil){
+
+				signatureVerified = true
+				break
+			
+			}else{
+				fmt.Println("Verifier Public Key:%s", verifierPubKey)
+				fmt.Println("This Signature: %s", thisSignature)
+				fmt.Println("This Error: %s",err)
+				fmt.Println("This commitment: %s", commitment)
+			}
+			
+		}
+		
+		if !signatureVerified{
+			break
+		}
+	
+	}
+
+	return signatureVerified
+
+
+
+}
 
 // go routine to process the update received by miner nodes
 func processShare(share MinerPart) {
@@ -595,8 +646,8 @@ func main() {
 
 	//Initialize a honest client
 	client = Honest{id: nodeNum, blockUpdates: make([]Update, 0, 5)}
+	TOTAL_SHARES = int(math.Ceil(float64(POLY_SIZE)/float64(NUM_MINERS)))*NUM_MINERS
 
-	
 	// Reading data and declaring some global locks to be used later
 	if NOISY_VERIF {
 		client.initializeData(datasetName, numberOfNodes, EPSILON)	
@@ -766,7 +817,7 @@ func prepareForNextIteration() {
 		os.Exit(1)
 	}else{
 
-		if iterationCount > 50 {
+		if iterationCount > 10 {
 			
 			client.bc.PrintChain()
 			os.Exit(1)	
@@ -1144,7 +1195,9 @@ func messageSender(ports []string) {
 			}
 
 			outLog.Printf("Sending update to verifiers")
-			approved := sendUpdateToVerifiers(verifierPortsToConnect)			 
+			signatureList, approved := sendUpdateToVerifiers(verifierPortsToConnect)			 
+
+			outLog.Printf("Signature List: %s", signatureList)
 
 			if approved {
 				
@@ -1152,6 +1205,8 @@ func messageSender(ports []string) {
 				// send secrets to miners
 
 				outLog.Printf("Sending update to miners")
+				client.update.SignatureList = signatureList
+
 				if SECURE_AGG {
 					sendUpdateSecretsToMiners(minerPortsToConnect)									
 				}else{
@@ -1246,11 +1301,12 @@ func requestNoiseFromNoisers(addresses []string) []float64 {
 // If you cant connect to verifier or verifier fails midway RPC, then append an empty block and move on
 // Start timer for receiving registering block
 
-func sendUpdateToVerifiers(addresses []string) bool {
+func sendUpdateToVerifiers(addresses []string) ([][]byte ,bool) {
 
-	var ign bool
+	signatureList := make([][]byte, 0)
 	c := make(chan error)
 	verified := false
+	verifiersOnline := false
 
 	for _, address := range addresses {
 
@@ -1260,15 +1316,17 @@ func sendUpdateToVerifiers(addresses []string) bool {
 		if(err == nil){
 			
 			defer conn.Close()
+			signature := []byte{}
 			outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Verifier. Sending Update, Iteration:%d\n", client.update.Iteration)
-			go func() { c <- conn.Call("Peer.VerifyUpdate", client.update, &ign) }()
+			go func() { c <- conn.Call("Peer.VerifyUpdate", client.update, &signature) }()
 			select {
 			case verifierError := <-c:
 				
 				printError("Error in sending update", err)
+				verifiersOnline  = true
 				if (verifierError == nil) {
 					outLog.Printf(strconv.Itoa(client.id)+":Update verified. Iteration:%d\n", client.update.Iteration)
-					verified = true
+					signatureList = append(signatureList, signature)
 				}
 
 			// use err and result
@@ -1286,8 +1344,14 @@ func sendUpdateToVerifiers(addresses []string) bool {
 	
 	}
 
+	if (len(signatureList) >= (len(verifierPortsToConnect)/2)) {
+
+		verified = true
+
+	}
+
 	// Verification totally failed. Create empty block and send
-	if !verified {
+	if !verifiersOnline {
 		outLog.Printf(strconv.Itoa(client.id)+":Will try and create an empty block")
 		blockChainLock.Lock()
 		blockToSend, err := client.createBlock(iterationCount)
@@ -1299,7 +1363,7 @@ func sendUpdateToVerifiers(addresses []string) bool {
 		}
 	} 
 
-	return verified
+	return signatureList, verified
 
 }
 
@@ -1378,7 +1442,7 @@ func sendUpdateSecretsToMiners(addresses []string) {
 	var ign bool
 	c := make(chan error)
 
-	mined := false
+	mined := true
 
 	// generate secrets here
 	minerSecrets := generateMinerSecretShares(client.update.Delta, PRECISION, client.Keys.CommitmentKey, NUM_MINERS, POLY_SIZE, TOTAL_SHARES)
@@ -1415,6 +1479,7 @@ func sendUpdateSecretsToMiners(addresses []string) {
 				
 				minerSecrets[minerIndex].Iteration = client.update.Iteration
 				minerSecrets[minerIndex].NodeID = client.id
+				minerSecrets[minerIndex].SignatureList = client.update.SignatureList
 				
 				defer conn.Close()
 
@@ -1450,7 +1515,7 @@ func sendUpdateSecretsToMiners(addresses []string) {
 				
 				outLog.Printf("GOT MINER ERROR. Unable to share secret")
 				time.Sleep(1000 * time.Millisecond)
-
+				mined = false
 				continue
 			}
 
@@ -1596,7 +1661,7 @@ func startShareDeadlineTimer(timerForIteration int){
 			sharesPerMiner := TOTAL_SHARES/NUM_MINERS
 
 			// collected sufficient shares and there are more than one 
-			if ((sharesPerMiner * len(minerMap) >= maxPolynomialdegree) && len(finalNodeList) > 1) {
+			if ((sharesPerMiner * len(minerMap) >= POLY_SIZE) && len(finalNodeList) > 1) {
 
 				client.aggregatedSecrets = getSecretShares(minerMap, finalNodeList)
 
