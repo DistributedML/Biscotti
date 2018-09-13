@@ -10,8 +10,6 @@ let nodesInEachVM=$1
 let dimensions=$2
 let cnt=0
 
-username="cfung"
-
 cd ../keyGeneration
 go install
 
@@ -29,14 +27,19 @@ for line in $(cat ../azure-deploy/tempHosts);do
 		continue
 	fi
 
-	echo $line
-
 	tname=`echo $line | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'`
+
+	echo $tname
+
+	if [ "$tname" == "198.162.52.57" ]; then
+		username="cfung"
+	else
+		username="clement"
+	fi
 
 	scp commitKey.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
 	scp pKeyG1.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
 	scp peersfile.txt $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
-	
 
 done
 

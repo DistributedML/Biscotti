@@ -10,11 +10,14 @@ source ~/.profile
 cd $GOPATH/src/simpleBlockChain/DistSys
 
 PID=`pgrep DistSys`
-while sudo kill $PID > /dev/null
-do
-	sudo kill -9 $PID
-	break
-done
+
+if [[ ! (-z "$PID") ]]; then
+	while sudo kill $PID > /dev/null
+	do
+		sudo kill -9 $PID
+		break
+	done
+fi
 
 # echo "Pulling latest source code from github"
 
@@ -23,11 +26,9 @@ done
 
 rm -r LogFiles
 
-echo "Compiling go"
-
-sudo go install
-
-stat $GOPATH/bin/DistSys
+# echo "Compiling go"
+# sudo go install
+# stat $GOPATH/bin/DistSys
 
 myPrivateIp=$(ifconfig | grep -oE -m 1 "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | head -1)
 
@@ -41,7 +42,7 @@ mkdir -p LogFiles
 
 # rm peersfile.txt
 
-let hostindex=0
+hostindex=0
 
 # for line in $(cat $GOPATH/src/simpleBlockChain/azure-deploy/tempHosts);do
 
@@ -65,20 +66,18 @@ let hostindex=0
 # done
 
 
-for (( index = startingIndex ; index < startingIndex + nodesToRun; index++ )); do
+for (( index = $startingIndex ; index < $startingIndex + nodesToRun; index++ )); do
 	
 	thisLogFile=test1_$index\_$totalnodes.log
 	thatLogFile=log_$index\_$totalnodes.log
 	
 	let thisPort=8000+$index
 
-	sudo timeout 120 $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
+	echo deploying "$index"
+	$GOPATH/src/simpleBlockChain/DistSys/DistSys -i=$index -t=$totalnodes -d=creditcard -f=$GOPATH/src/simpleBlockChain/DistSys/peersFileSent -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
 	
-
 	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
 	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile 2> outLog.log &
-	
-	echo $index
 
 	if [ $index -eq 0 ] 
 	then			
@@ -92,15 +91,12 @@ wait
 
 cd ./LogFiles
 
-if [[ "$myAddress" == "198.162.52.57" ]]; then
+if [[ "$myAddress" != "198.162.52.154" ]]; then
 	
-	echo "Copying files back to naur"
-
-	scp *.log shayan@198.162.52.126:/home/shayan/gopath/src/simpleBlockChain/DistSys/LogFiles
+	echo "Copying files back to dijkstra"
+	scp *.log cfung@198.162.52.154:/home/cfung/gopath/src/simpleBlockChain/DistSys/LogFiles
 
 fi
-
-
 
 echo "Running with " $nodesToRun "nodes complete. Testing similarity of blockchain"
 

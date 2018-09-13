@@ -47,7 +47,11 @@ go get github.com/kniren/gota/dataframe
 go get github.com/sbinet/go-python
 go get gonum.org/v1/gonum/mat
 go get github.com/coniks-sys/coniks-go/crypto/vrf
+
+# Kyber and requirements
 go get github.com/dedis/kyber
+cd github.com/dedis/kyber
+go get -t ./... # install 3rd-party dependencies
 
 ##TODO Probably install python
 echo "pkg-config"
