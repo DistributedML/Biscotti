@@ -34,6 +34,7 @@ for line in $(cat tempHosts);do
 	if [ "$tname" == "198.162.52.126" ]; then
 		ssh shayan@$tname 'bash -s' < deployNodes.sh $nodesInEachVM $indexCount $totalNodes $tname &			
 	
+	# dijkstra 
 	elif [ "$tname" == "198.162.52.154" ]; then
 		bash deployNodes.sh $nodesInEachVM $indexCount $totalNodes $tname &			
 

@@ -9,15 +9,8 @@ source ~/.profile
 
 cd $GOPATH/src/simpleBlockChain/DistSys
 
-PID=`pgrep DistSys`
-
-if [[ ! (-z "$PID") ]]; then
-	while sudo kill $PID > /dev/null
-	do
-		sudo kill -9 $PID
-		break
-	done
-fi
+# Single command that kills them
+pkill DistSys
 
 # echo "Pulling latest source code from github"
 
@@ -75,8 +68,7 @@ for (( index = $startingIndex ; index < $startingIndex + nodesToRun; index++ ));
 
 	echo deploying "$index"
 	cd $GOPATH/src/simpleBlockChain/DistSys
-	./DistSys -i=$index -t=$totalnodes -d=mnist -f=peersFileSent -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thatLogFile &
-	
+	./DistSys -i=$index -t=$totalnodes -d=mnist -f=peersFileSent -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
 	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
 	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile 2> outLog.log &
 
