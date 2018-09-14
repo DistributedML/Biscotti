@@ -9,7 +9,7 @@ import pdb
 import datasets
 
 class Client():
-    def __init__(self, dataset, filename, batch_size, lr, model, train_cut=.80):
+    def __init__(self, dataset, filename, batch_size, model, train_cut=.80):
         # initializes dataset
         self.batch_size=batch_size
         Dataset = datasets.get_dataset(dataset)
