@@ -11,6 +11,7 @@ import (
 
 // Update - data object representing a single update
 type Update struct {
+	SourceID 		int
 	Iteration 		int
 	Delta     		[]float64
 	Commitment  	[]byte // a commitment to delta: can't be kyber.Point

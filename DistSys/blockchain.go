@@ -9,9 +9,9 @@ type Blockchain struct {
 	Blocks []*Block
 }
 
-func (bc *Blockchain) AddBlock(data BlockData) {
+func (bc *Blockchain) AddBlock(data BlockData, stakeMap map[int]int) {
 	prevBlock := bc.Blocks[len(bc.Blocks)-1]
-	newBlock := NewBlock(data, prevBlock.Hash)
+	newBlock := NewBlock(data, prevBlock.Hash, stakeMap)
 	bc.Blocks = append(bc.Blocks, newBlock)
 }
 
@@ -22,6 +22,11 @@ func NewGenesisBlock(numFeatures int) *Block {
 func NewBlockchain(numFeatures int) *Blockchain {
 	return &Blockchain{[]*Block{NewGenesisBlock(numFeatures)}}
 }
+
+func (bc *Blockchain) getLatestBlock() *Block {
+	return bc.Blocks[len(bc.Blocks)-1]
+}
+
 
 func (bc *Blockchain) getLatestGradient() []float64 {
 
@@ -41,6 +46,7 @@ func (bc *Blockchain) PrintChain() {
 		fmt.Printf("Prev. hash: %x\n", block.PrevBlockHash)
 		fmt.Printf("Data: %s\n", block.Data.String())
 		fmt.Printf("Hash: %x\n", block.Hash)
+		fmt.Printf("Stake: %v\n", block.StakeMap)
 		fmt.Println()
 	}
 
@@ -59,7 +65,12 @@ func (bc *Blockchain) verifyBlock(block Block) bool {
 
 func (bc *Blockchain) AddBlockMsg(newBlock Block) {
 
-	appendBlock := &Block{Timestamp: newBlock.Timestamp, Data: newBlock.Data, PrevBlockHash: newBlock.PrevBlockHash, Hash: newBlock.Hash}
+	appendBlock := &Block{Timestamp: newBlock.Timestamp, 
+		Data: newBlock.Data, 
+		PrevBlockHash: newBlock.PrevBlockHash, 
+		Hash: newBlock.Hash, 
+		StakeMap: newBlock.StakeMap}
+		
 	bc.Blocks = append(bc.Blocks, appendBlock)
 }
 

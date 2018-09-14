@@ -16,6 +16,7 @@ type Block struct {
 	Data          BlockData
 	PrevBlockHash []byte
 	Hash          []byte
+	StakeMap	  map[int]int
 }
 
 
@@ -26,28 +27,26 @@ func (b *Block) SetHash() {
 	b.Hash = hash[:]
 }
 
-func NewBlock(data BlockData, prevBlockHash []byte) *Block {
+func NewBlock(data BlockData, prevBlockHash []byte, stakeMap map[int]int) *Block {
 	
-	block := &Block{};
+	var blockTime int64
 
-	if (len(data.Deltas) == 0) {		
-		
-		block = &Block{0, data, prevBlockHash, []byte{}}		
-	
-	}else{
-		
-		block = &Block{time.Now().Unix(), data, prevBlockHash, []byte{}}
-	
+	if (len(data.Deltas) == 0) {
+		blockTime = 0
+	} else {
+		blockTime = time.Now().Unix()
 	}
-	
+
+	block := &Block{blockTime, data, prevBlockHash, []byte{}, stakeMap}
 	block.SetHash()
+	
 	return block
 }
 
 func GenesisBlock(numFeatures int) *Block {
 
 	genesisBlockData := BlockData{-1, make([]float64, numFeatures), []Update{}} // create a globalWW with the appropriate number of features
-	block := &Block{0, genesisBlockData, []byte{}, []byte{}}
+	block := &Block{0, genesisBlockData, []byte{}, []byte{}, map[int]int{}}
 	block.SetHash()
 	return block
 

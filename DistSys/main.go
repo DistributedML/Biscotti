@@ -28,8 +28,8 @@ const (
 	basePort        int           = 8000
 	verifierIP   	string        = "127.0.0.1:"
 	timeoutRPC    	time.Duration = 10000000000
-	timeoutUpdate 	time.Duration = 10000000000000  
-	timeoutBlock 	time.Duration = 150000000000000  
+	timeoutUpdate 	time.Duration = 10000000000  
+	timeoutBlock 	time.Duration = 15000000000  
 	timeoutPeer 	time.Duration = 5000000000
 	
 	NUM_VERIFIERS 	int           = 3
@@ -163,9 +163,9 @@ func (s *Peer) VerifyUpdate(update Update, signature *[]byte) error {
 		outLog.Printf("Accepting update!")
 		updateCommitment := update.Commitment
 		(*signature) = SchnorrSign(updateCommitment, client.Keys.Skey)
-		mySkey, _ := client.Keys.Skey.MarshalBinary()
+		/*mySkey, _ := client.Keys.Skey.MarshalBinary()
 		fmt.Println("My Skey:%s", mySkey)
-		fmt.Println("My Signature:%s", (*signature))
+		fmt.Println("My Signature:%s", (*signature))*/
 		return nil	
 	}	
 
@@ -205,7 +205,7 @@ func (s *Peer) RegisterSecret(share MinerPartRPC, _ignored *bool) error {
 	outLog.Printf("Length of signature:%d", len(share.SignatureList))
 	outLog.Printf("Length of verifiers:%d", len(verifierPortsToConnect))
 
-	if ((len(share.SignatureList) <  len(verifierPortsToConnect)/2) || !verifySignatures(share.SignatureList, share.CommitmentUpdate)){
+	if ((len(share.SignatureList) < len(verifierPortsToConnect)/2) || !verifySignatures(share.SignatureList, share.CommitmentUpdate)){
 		printError("Share has insufficient or bogus signatures", signatureError)
 		return signatureError
 	}
@@ -843,12 +843,12 @@ func prepareForNextIteration() {
 	convergedLock.Unlock()		
 	boolLock.Lock()
 	
-
 	iterationCount++
 	outLog.Printf("Moving on to next iteration %d", iterationCount)
 
 	// This runs the VRF and sets the verifiers for this iteration
 	roleIDs = getRoles()
+
 	verifier = amVerifier(client.id)
 	miner = amMiner(client.id)
 
@@ -929,7 +929,6 @@ func processUpdate(update Update) {
 }
 
 // // For all non-miners, accept the block
-
 func processBlock(block Block) {
 
 	// Lock to ensure that iteration count doesn't change until I have appended block
@@ -999,7 +998,7 @@ func processBlock(block Block) {
 			outLog.Printf("Acquiring bool lock")
 			boolLock.Lock()	
 
-			go addBlockToChain(block)
+			addBlockToChain(block)
 
 		}
 
@@ -1012,7 +1011,7 @@ func processBlock(block Block) {
 	// }
 
 	
-	go addBlockToChain(block)
+	addBlockToChain(block)
 
 }
 
@@ -1026,8 +1025,13 @@ func addBlockToChain(block Block) {
 	
 	outLog.Printf(strconv.Itoa(client.id)+":Adding block for %d, I am at %d\n", 
 		block.Data.Iteration, iterationCount)
-	
+
 	err := client.addBlock(block)
+	
+	// Update the stake in the system
+	stakeMap = block.StakeMap
+	outLog.Printf("New stake map: %v", stakeMap)
+
 	blockChainLock.Unlock()
 
 	if ((block.Data.Iteration == iterationCount) && (err == nil)){
@@ -1037,10 +1041,10 @@ func addBlockToChain(block Block) {
 			
 			if SECURE_AGG {
 
-				outLog.Printf(strconv.Itoa(client.id)+":Sending block to channel")
+				outLog.Printf(strconv.Itoa(client.id)+":Sending block to channel")				
 				blockReceived <- true
 				
-			}else{
+			} else {
 
 				if(!miner) {
 
@@ -1198,7 +1202,7 @@ func messageSender(ports []string) {
 			outLog.Printf("Sending update to verifiers")
 			signatureList, approved := sendUpdateToVerifiers(verifierPortsToConnect)			 
 
-			outLog.Printf("Signature List: %s", signatureList)
+			// outLog.Printf("Signature List: %s", signatureList)
 
 			if approved {
 				
@@ -1355,7 +1359,7 @@ func sendUpdateToVerifiers(addresses []string) ([][]byte ,bool) {
 	if !verifiersOnline {
 		outLog.Printf(strconv.Itoa(client.id)+":Will try and create an empty block")
 		blockChainLock.Lock()
-		blockToSend, err := client.createBlock(iterationCount)
+		blockToSend, err := client.createBlock(iterationCount, stakeMap)
 		blockChainLock.Unlock()		
 		printError("Iteration: " + strconv.Itoa(iterationCount), err)
 		if(err==nil){
@@ -1427,7 +1431,7 @@ func sendUpdateToMiners(addresses []string) {
 	if !mined {
 		outLog.Printf(strconv.Itoa(client.id)+":Will try and create an empty block")
 		blockChainLock.Lock()
-		blockToSend, err := client.createBlock(iterationCount)
+		blockToSend, err := client.createBlock(iterationCount, stakeMap)
 		blockChainLock.Unlock()		
 		printError("Iteration: " + strconv.Itoa(iterationCount), err)
 		if(err==nil){
@@ -1530,7 +1534,7 @@ func sendUpdateSecretsToMiners(addresses []string) {
 	if !mined {
 		outLog.Printf(strconv.Itoa(client.id)+":Will try and create an empty block")
 		blockChainLock.Lock()
-		blockToSend, err := client.createBlock(iterationCount)
+		blockToSend, err := client.createBlock(iterationCount, stakeMap)
 		blockChainLock.Unlock()		
 		printError("Iteration: " + strconv.Itoa(iterationCount), err)
 		if(err==nil){
@@ -1541,8 +1545,7 @@ func sendUpdateSecretsToMiners(addresses []string) {
 
 }
 
-// Timer started by the verifier to set a deadline until which he will receive updates
-
+// Timer started by the miner to set a deadline for receiving updates
 func startUpdateDeadlineTimer(timerForIteration int){
 	
 	select {
@@ -1571,7 +1574,7 @@ func startUpdateDeadlineTimer(timerForIteration int){
 				blockChainLock.Lock()
 				
 				outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")
-				blockToSend, err := client.createBlock(iterationCount)
+				blockToSend, err := client.createBlock(iterationCount, stakeMap)
 				
 				blockChainLock.Unlock()		
 				printError("Iteration: " + strconv.Itoa(iterationCount), err)
@@ -1589,7 +1592,7 @@ func startUpdateDeadlineTimer(timerForIteration int){
 				os.Exit(1)
 			}
 				
-		}else {
+		} else {
 
 			go startBlockDeadlineTimer(iterationCount)
 		
@@ -1643,11 +1646,7 @@ func startShareDeadlineTimer(timerForIteration int){
 	}
 	
 	// If I am on the current iteration and am the CHOSEN ONE among the miners
-
-	outLog.Printf("Here")
-	if (timerForIteration == iterationCount)   {
-
-		outLog.Printf("Here2")
+	if (timerForIteration == iterationCount) {
 
 		leaderAddress := getLeaderAddress()
 
@@ -1659,14 +1658,12 @@ func startShareDeadlineTimer(timerForIteration int){
 
 			minerMap, finalNodeList := getNodesList(minerPortsToConnect)
 
-			sharesPerMiner := TOTAL_SHARES/NUM_MINERS
+			sharesPerMiner := TOTAL_SHARES / NUM_MINERS
 
 			// collected sufficient shares and there are more than one 
 			if ((sharesPerMiner * len(minerMap) >= POLY_SIZE) && len(finalNodeList) > 1) {
 
 				client.aggregatedSecrets = getSecretShares(minerMap, finalNodeList)
-
-				// if (sharesPerMiner * len(minerMap) >= maxPolynomialdegree ) {
 
 				outLog.Printf(strconv.Itoa(client.id)+":Acquiring chain lock")
 				blockChainLock.Lock()
@@ -1674,7 +1671,7 @@ func startShareDeadlineTimer(timerForIteration int){
 				outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")
 				
 				// //TODO:
-				blockToSend, err := client.createBlockSecAgg(iterationCount, finalNodeList)
+				blockToSend, err := client.createBlockSecAgg(iterationCount, finalNodeList, stakeMap)
 			
 				blockChainLock.Unlock()		
 
@@ -1694,7 +1691,7 @@ func startShareDeadlineTimer(timerForIteration int){
 				blockChainLock.Lock()				
 				outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")					
 				// //TODO:
-				blockToSend, err := client.createBlockSecAgg(iterationCount, dummyNodeList)				
+				blockToSend, err := client.createBlockSecAgg(iterationCount, dummyNodeList, stakeMap)				
 				blockChainLock.Unlock()	
 				outLog.Printf(strconv.Itoa(client.id)+":chain lock released")
 
@@ -1705,7 +1702,7 @@ func startShareDeadlineTimer(timerForIteration int){
 			}
 		
 
-		}else{
+		} else {
 
 			if ((myIP+myPort) != leaderAddress) {
 
@@ -1721,7 +1718,7 @@ func startShareDeadlineTimer(timerForIteration int){
 				blockChainLock.Lock()				
 				outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")					
 				// //TODO:
-				blockToSend, err := client.createBlockSecAgg(iterationCount, dummyNodeList)				
+				blockToSend, err := client.createBlockSecAgg(iterationCount, dummyNodeList, stakeMap)				
 				blockChainLock.Unlock()	
 				if (err == nil) {
 					sendBlock(*blockToSend)
@@ -1746,14 +1743,11 @@ func getSecretShares(minerList map[string][]int, nodeList []int) []MinerPart{
 
 	minerShares := make([]MinerPart, 0)
 
-	// aggreegating and appending my own list
-
+	// aggregating and appending my own list
 	myMinerPart := client.secretList[nodeList[0]]
 
 	for i := 1; i < len(nodeList); i++ {
-		
 		myMinerPart = aggregateSecret(myMinerPart, client.secretList[nodeList[i]])
-
 	}
 
 	outLog.Printf("My miner share:%s", myMinerPart)
@@ -1937,7 +1931,7 @@ func startBlockDeadlineTimer(timerForIteration int){
 				outLog.Printf(strconv.Itoa(client.id)+":Timeout. Didn't receive block. Appending empty block at iteration %d", timerForIteration)			
 				blockChainLock.Lock()
 				outLog.Printf(strconv.Itoa(client.id)+":chain lock acquired")
-				blockToSend, err := client.createBlock(iterationCount)
+				blockToSend, err := client.createBlock(iterationCount, stakeMap)
 				blockChainLock.Unlock()		
 				printError("Iteration: " + strconv.Itoa(iterationCount), err)
 				if(err==nil){

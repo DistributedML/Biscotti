@@ -43,6 +43,8 @@ var (
 
 const (
 
+	STAKE_UNIT		= 5
+
 	batch_size      = 10
 	datasetPath     = "../ML/data/"
 	codePath        = "../ML/code"
@@ -144,7 +146,9 @@ func (honest *Honest) computeUpdate(iterationCount int) {
 	updateCommitment := createCommitment(deltasInt, client.Keys.CommitmentKey.PKG1)
 	byteCommitment, err := updateCommitment.MarshalBinary()
 	check(err)
-	honest.update = Update{Iteration: iterationCount, 
+	honest.update = Update{
+		SourceID: honest.id,
+		Iteration: iterationCount, 
 		Commitment: byteCommitment,
 		Delta: deltas, 
 		NoisedDelta: deltas, 
@@ -266,7 +270,7 @@ func (honest *Honest) addSecretShare(share MinerPart) int {
 
 // creates a block from all the updates recorded.
 
-func (honest *Honest) createBlock(iterationCount int) (*Block,error) {
+func (honest *Honest) createBlock(iterationCount int, stakeMap map[int]int) (*Block,error) {
 
 	// Has block already been appended from advertisements by other client?
 	if(honest.bc.getBlock(iterationCount) != nil){
@@ -281,11 +285,14 @@ func (honest *Honest) createBlock(iterationCount int) (*Block,error) {
 
 	// Update Aggregation
 	for _, update := range honest.blockUpdates {
+		theirStake := stakeMap[update.SourceID] 
 		if update.Accepted {
 			deltaM = mat.NewDense(1, honest.ncol, update.Delta)
 			pulledGradientM.Add(pulledGradientM, deltaM)	
+			stakeMap[update.SourceID] = theirStake + STAKE_UNIT
 		} else {
 			outLog.Printf("Skipping an update")
+			stakeMap[update.SourceID] = theirStake - STAKE_UNIT
 		}
 	}
 
@@ -295,7 +302,7 @@ func (honest *Honest) createBlock(iterationCount int) (*Block,error) {
 	copy(updatesGathered, honest.blockUpdates)
 
 	bData := BlockData{iterationCount, updatedGradient, updatesGathered}
-	honest.bc.AddBlock(bData) 
+	honest.bc.AddBlock(bData, stakeMap) 
 
 	newBlock := honest.bc.Blocks[len(honest.bc.Blocks)-1]
 
@@ -305,8 +312,7 @@ func (honest *Honest) createBlock(iterationCount int) (*Block,error) {
 }
 
 // creates a block from all the updates recorded.
-
-func (honest *Honest) createBlockSecAgg(iteration int, nodeList []int) (*Block,error) {
+func (honest *Honest) createBlockSecAgg(iteration int, nodeList []int, stakeMap map[int]int) (*Block,error) {
 
 	// Has block already been appended from advertisements by other client?
 	if(honest.bc.getBlock(iterationCount) != nil){
@@ -319,11 +325,7 @@ func (honest *Honest) createBlockSecAgg(iteration int, nodeList []int) (*Block,e
 	deltaM := mat.NewDense(1, honest.ncol, make([]float64, honest.ncol))
 	pulledGradientM := mat.NewDense(1, honest.ncol, pulledGradient)
 
-		
-
-
 	// Recover Secret Secure Aggregation
-	
 	if (len(nodeList) > 0){
 
 		aggregateUpdate := honest.recoverAggregateUpdates()	
@@ -337,6 +339,8 @@ func (honest *Honest) createBlockSecAgg(iteration int, nodeList []int) (*Block,e
 	for _, nodeIndex := range nodeList {
 		
 		byteCommitment, _ := honest.secretList[nodeIndex].CommitmentUpdate.MarshalBinary()
+		theirStake := stakeMap[nodeIndex]
+		stakeMap[nodeIndex] = theirStake + STAKE_UNIT
 		thisNodeUpdate := Update{Iteration:iteration, Commitment: byteCommitment, Accepted:true}
 		honest.blockUpdates = append(honest.blockUpdates, thisNodeUpdate)
 
@@ -345,15 +349,13 @@ func (honest *Honest) createBlockSecAgg(iteration int, nodeList []int) (*Block,e
 	
 	}
 
-
-
 	mat.Row(updatedGradient, 0, pulledGradientM)
 
 	updatesGathered := make([]Update, len(honest.blockUpdates))
 	copy(updatesGathered, honest.blockUpdates)
 
 	bData := BlockData{iteration, updatedGradient, updatesGathered}
-	honest.bc.AddBlock(bData) 
+	honest.bc.AddBlock(bData, stakeMap) 
 
 	newBlock := honest.bc.Blocks[len(honest.bc.Blocks)-1]
 
