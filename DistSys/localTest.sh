@@ -3,35 +3,34 @@
 clear
 
 #Flushing out all iptables blocked rules
-
 sudo iptables -F INPUT
 sudo iptables -F OUTPUT
 
+let nodes=$1
+let dimensions=$2
+let cnt=0
 
-#Killing processes that might be using ports that I want
-
-PID=`pgrep DistSys`
-while sudo kill $PID > /dev/null
-do
-	sudo kill -9 $PID
-	break
-done
-
+# Generate keys
+cd ../keyGeneration
 go install
+sudo $GOPATH/bin/keyGeneration -n=$nodes -d=$dimensions
 
-cd LogFiles
+# Single command that kills them
+pkill DistSys
 
-rm -f *.log
+cd ../DistSys
+go build
 
-cd ..
+# Purge the logs
+rm -f ./LogFiles/*.log
 
 # #---------------------------------------------------Test 1: All nodes online--------------------------------------------------------------------
 
 echo "Running tests: No failure case. All nodes online"
 
-for (( totalnodes = 10; totalnodes < 11; totalnodes++ )); do
+for (( totalnodes = $nodes; totalnodes < ($nodes + 1); totalnodes++ )); do
 	
-	echo "Running with " $totalnodes "nodes"
+	echo "Running with" $totalnodes "nodes"
 
 	for (( index = 0; index < totalnodes; index++ )); do
 		
@@ -44,13 +43,8 @@ for (( totalnodes = 10; totalnodes < 11; totalnodes++ )); do
 		echo $thisPort
 		echo $myAddress
 
-		sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=mnist > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile & 
+		timeout 120 ./DistSys -i=$index -t=$totalnodes -d=creditcard > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile & 
 		
-		# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile 2> /dev/null &
-		# if [ $index -eq 0 ] 
-		# then			
-		# 	sleep 10			
-		# fi
 	done	
 
 	wait

@@ -44,7 +44,7 @@ const (
 	PRECISION       int 		  = 4
 	POLY_SIZE 		int 		  = 10
 
-	MAX_ITERATIONS  int 		  = 200
+	MAX_ITERATIONS  int 		  = 50
 	EPSILON 		float64 	  = 1
 	SECURE_AGG  	bool 		  = true
 	NOISY_VERIF		bool 		  = true
