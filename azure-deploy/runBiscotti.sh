@@ -13,7 +13,7 @@ echo "file written"
 # Generate keys
 cd ../keyGeneration
 go install
-sudo $GOPATH/bin/keyGeneration -n=$nodesInEachVM -d=$dimensions
+$GOPATH/bin/keyGeneration -n=$nodesInEachVM -d=$dimensions
 
 cd ../DistSys
 echo "Building"

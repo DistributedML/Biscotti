@@ -13,7 +13,7 @@ let cnt=0
 # Generate keys
 cd ../keyGeneration
 go install
-sudo $GOPATH/bin/keyGeneration -n=$nodes -d=$dimensions
+$GOPATH/bin/keyGeneration -n=$nodes -d=$dimensions
 
 # Single command that kills them
 pkill DistSys
