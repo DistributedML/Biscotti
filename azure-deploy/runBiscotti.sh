@@ -6,6 +6,20 @@ set -f
 let indexCount=0
 let nodesInEachVM=$1
 let totalNodes=$2
+let dimensions=$3
+
+echo "file written"
+
+# Generate keys
+cd ../keyGeneration
+go install
+sudo $GOPATH/bin/keyGeneration -n=$nodesInEachVM -d=$dimensions
+
+cd ../DistSys
+echo "Building"
+go build
+
+cd ../azure-deploy
 
 peersFile="peersFileSent"
 firstport=8000
@@ -23,7 +37,30 @@ for line in $(cat tempHosts);do
 
 done
 
-echo "file written"
+for line in $(cat tempHosts);do
+
+	# skip the first line
+	# if [ $cnt -eq 0 ]; then
+	# 	cnt=$((cnt + 1))
+	# 	continue
+	# fi
+
+	tname=`echo $line | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'`
+
+	echo $tname
+
+	if [ "$tname" == "198.162.52.57" ]; then
+		username="cfung"
+	else
+		username="clement"
+	fi
+
+	scp ../DistSys/commitKey.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
+	scp ../DistSys/pKeyG1.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
+	scp peersFileSent $username@$tname:~/gopath/src/simpleBlockChain/DistSys
+	scp ../DistSys/DistSys $username@$tname:~/gopath/src/simpleBlockChain/DistSys+
+
+done
 
 for line in $(cat tempHosts);do
 
@@ -38,25 +75,13 @@ for line in $(cat tempHosts);do
 	elif [ "$tname" == "198.162.52.154" ]; then
 		bash deployNodes.sh $nodesInEachVM $indexCount $totalNodes $tname &			
 
-	# leviathan
-	elif [ "$tname" == "198.162.52.57" ]; then
-		# echo $peersFile
-		scp peersFileSent cfung@$tname:~/gopath/src/simpleBlockChain/DistSys
-		scp ../DistSys/DistSys cfung@$tname:~/gopath/src/simpleBlockChain/DistSys
-		ssh cfung@$tname 'bash -s' < deployNodes.sh $nodesInEachVM $indexCount $totalNodes $tname &			
-	
-	# emerson or clarke
 	else		
-		# echo $peersFile
-		scp peersFileSent clement@$tname:~/gopath/src/simpleBlockChain/DistSys
-		scp ../DistSys/DistSys clement@$tname:~/gopath/src/simpleBlockChain/DistSys
-		ssh clement@$tname 'bash -s' < deployNodes.sh $nodesInEachVM $indexCount $totalNodes $tname &
+		ssh $username@$tname 'bash -s' < deployNodes.sh $nodesInEachVM $indexCount $totalNodes $tname &			
 	fi
 
 	indexCount=$((indexCount + nodesInEachVM))
 	
-	# Give time for nodes in the firstVM to get bootstrapped
-
+	# Give time for nodes in the firstVM to get bootstrapped\
 	if [ $indexCount -eq $nodesInEachVM ]; then
 		echo "Sleeping. Allowing first set of nodes to get bootstrapped"
 		sleep 15
