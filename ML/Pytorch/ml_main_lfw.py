@@ -14,14 +14,14 @@ import matplotlib.pylab as mp
 import matplotlib.pyplot as plt
 
 def returnModel(D_in, D_out):
-    # model = SoftmaxModel(D_in, D_out)
-    model = LFWCNNModel()
+    model = SoftmaxModel(D_in, D_out)
+    # model = LFWCNNModel()
     return model
 
 # Initialize Clients
 # First Client is the aggregator
 def main():
-    iter_time = 1000
+    iter_time = 1500
     clients = []
     average_loss = []
     test_accuracy_rate = []
@@ -83,6 +83,8 @@ def main():
     test_client.updateModel(modelWeights)
     test_err = test_client.getTestErr()
     print("Test error: " + str(test_err))
+    accuracy_rate = 1 - test_err
+    print("Accuracy rate: " + str(accuracy_rate) + "\n")
 
 
 if __name__ == "__main__":
