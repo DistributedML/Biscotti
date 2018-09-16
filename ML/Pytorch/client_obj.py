@@ -28,7 +28,7 @@ def init(dataset, filename, epsilon, batch_size):
     model = SoftmaxModel(D_in, D_out)
     train_cut = 0.8
     
-    myclient = client.Client(dataset, filename, batch_size, learning_rate, model, train_cut)
+    myclient = client.Client(dataset, filename, batch_size, model, train_cut)
 
     global samples
     samples = []
@@ -95,7 +95,7 @@ def getTestErr(ww):
     return myclient.getTestErr()
 
 def getNoise(iteration):
-    return (-1) * (learning_rate / this_batch_size) * samples[iteration]
+    return (-1 / this_batch_size) * samples[iteration]
 
 def roni(ww, delta):
     global myclient

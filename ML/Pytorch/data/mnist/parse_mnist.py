@@ -150,10 +150,9 @@ def slice_uniform(numSplits):
         print("slice " + str(i) + " is shape " + str
             (dataslice.shape))
 
-        np.save("mnist" + str(i), dataslice)
-        np.save("mnist" + str(i + 10), dataslice)
-        np.save("mnist" + str(i + 20), dataslice)
-
+        for mult in range(10):
+            np.save("mnist" + str(i + 10 * mult), dataslice)
+        
     train_slice = np.hstack((Xtrain, np.reshape(ytrain, (len(ytrain), 1))))
     np.save("mnist_train", train_slice)
 
