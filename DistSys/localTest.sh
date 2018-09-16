@@ -43,7 +43,7 @@ for (( totalnodes = $nodes; totalnodes < ($nodes + 1); totalnodes++ )); do
 		echo $thisPort
 		echo $myAddress
 
-		timeout 120 ./DistSys -i=$index -t=$totalnodes -d=creditcard > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile & 
+		./DistSys -i=$index -t=$totalnodes -d=creditcard > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile & 
 		
 	done	
 

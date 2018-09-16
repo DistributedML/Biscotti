@@ -46,7 +46,7 @@ func (bc *Blockchain) PrintChain() {
 		fmt.Printf("Prev. hash: %x\n", block.PrevBlockHash)
 		fmt.Printf("Data: %s\n", block.Data.String())
 		fmt.Printf("Hash: %x\n", block.Hash)
-		fmt.Printf("Stake: %v\n", block.StakeMap)
+		// fmt.Printf("Stake: %v\n", block.StakeMap)
 		fmt.Println()
 	}
 

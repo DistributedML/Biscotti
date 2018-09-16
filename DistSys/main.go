@@ -44,11 +44,12 @@ const (
 	PRECISION       int 		  = 4
 	POLY_SIZE 		int 		  = 10
 
-	MAX_ITERATIONS  int 		  = 50
+	MAX_ITERATIONS  int 		  = 15
 	EPSILON 		float64 	  = 1
 	SECURE_AGG  	bool 		  = true
 	NOISY_VERIF		bool 		  = true
 
+	PRIV_PROB 		float64 	  = 0.4
 
 )
 
@@ -73,6 +74,8 @@ var (
 
 	client 				Honest
 	myVRF				VRF
+	collusionThresh 	int
+	unmaskedUpdates 	int
 	
 	allSharesReceived		chan bool
 	allUpdatesReceived		chan bool
@@ -239,13 +242,14 @@ func verifySignatures(signatureList [][]byte, commitment []byte) bool{
 
 				signatureVerified = true
 				break
-			
-			}else{
-				fmt.Println("Verifier Public Key:%s", verifierPubKey)
-				fmt.Println("This Signature: %s", thisSignature)
-				fmt.Println("This Error: %s",err)
-				fmt.Println("This commitment: %s", commitment)
 			}
+			
+			// }else{
+			// 	// fmt.Println("Verifier Public Key:%s", verifierPubKey)
+			// 	// fmt.Println("This Signature: %s", thisSignature)
+			// 	// fmt.Println("This Error: %s",err)
+			// 	// fmt.Println("This commitment: %s", commitment)
+			// }
 			
 		}
 		
@@ -650,10 +654,16 @@ func main() {
 	TOTAL_SHARES = int(math.Ceil(float64(POLY_SIZE)/float64(NUM_MINERS)))*NUM_MINERS
 
 	// Reading data and declaring some global locks to be used later
-	if NOISY_VERIF {
+	collusionThresh = int(math.Ceil(float64(numberOfNodes) * (1.0 - PRIV_PROB)))
+	
+	if NOISY_VERIF && (nodeNum < collusionThresh) {
+
 		client.initializeData(datasetName, numberOfNodes, EPSILON)	
+	
 	} else {
+		
 		client.initializeData(datasetName, numberOfNodes, 0)	
+	
 	}
 	
 	client.bootstrapKeys()
@@ -803,6 +813,39 @@ func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
 
 }
 
+func isCollusionAttack(verifiers []string, noisers []string) bool{
+
+	verifierColludes := false
+
+	for i := 0; i < len(verifiers); i++ {
+		if(peerLookup[verifiers[i]] >= collusionThresh){
+
+			verifierColludes = true
+			break
+
+		}
+	}
+
+	if(!verifierColludes){
+		return false
+	}
+
+	noiserCollusion := true
+
+	for i := 0; i < len(noisers); i++ {
+	
+		if(peerLookup[noisers[i]] < collusionThresh){
+
+			noiserCollusion = false	
+			break
+		}	
+	
+	}
+
+	return noiserCollusion
+
+}
+
 // At the start of each iteration, this function is called to reset shared global variables
 // based on whether you are a verifier or not.
 
@@ -812,14 +855,17 @@ func prepareForNextIteration() {
 
 	if converged {
 
+		fmt.Println("Unmasked Updates:%d", unmaskedUpdates)
 		convergedLock.Unlock()
 		time.Sleep(1000 * time.Millisecond)
 		client.bc.PrintChain()
 		os.Exit(1)
+	
 	}else{
 
 		if iterationCount > MAX_ITERATIONS {
 			
+			fmt.Println("Unmasked Updates:%d", unmaskedUpdates)
 			client.bc.PrintChain()
 			os.Exit(1)	
 		
@@ -855,7 +901,13 @@ func prepareForNextIteration() {
 	verifierPortsToConnect, minerPortsToConnect, 
 		noiserPortsToConnect, numberOfNodeUpdates = getRoleNames(iterationCount)
 
+	if (isCollusionAttack(verifierPortsToConnect, noiserPortsToConnect) && PRIV_PROB > 0) {
+
+		unmaskedUpdates = unmaskedUpdates + 1
+	}
+
 	if miner {
+		
 		outLog.Printf(strconv.Itoa(client.id)+":I am miner. Iteration:%d", iterationCount)
 		updateSent = true
 		if (SECURE_AGG) {
@@ -1216,14 +1268,18 @@ func messageSender(ports []string) {
 					sendUpdateSecretsToMiners(minerPortsToConnect)									
 				}else{
 					sendUpdateToMiners(minerPortsToConnect)
-				}
-				
+				}			
 			
-				if iterationCount == client.update.Iteration {
-					updateSent = true
-				}
 
+			}else{
+
+				go startBlockDeadlineTimer(iterationCount)
 			}
+
+			if iterationCount == client.update.Iteration {
+					updateSent = true
+			}
+
 
 			boolLock.Unlock()
 

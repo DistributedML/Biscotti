@@ -28,8 +28,7 @@ func (update Update) String() string {
 
 	pointCommitment := suite.G1().Point().Null()
 
-	err := pointCommitment.UnmarshalBinary(byteCommitment)
-	check(err)
+	_ = pointCommitment.UnmarshalBinary(byteCommitment)
 
 	return fmt.Sprintf("{Iteration:" + strconv.Itoa(update.Iteration) + ", "  + "Commitment:" + pointCommitment.String() + ", "  + "Deltas:" + arrayToString(update.Delta, ",") + "}")
 
