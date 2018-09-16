@@ -8,7 +8,6 @@ myAddress=$4
 source ~/.profile
 
 cd $GOPATH/src/simpleBlockChain/DistSys
-go build
 
 # Single command that kills them
 pkill DistSys
@@ -69,18 +68,18 @@ for (( index = $startingIndex ; index < $startingIndex + nodesToRun; index++ ));
 
 	echo deploying "$index"
 	cd $GOPATH/src/simpleBlockChain/DistSys
-	timeout 1200 ./DistSys -i=$index -t=$totalnodes \
+	timeout 12000 ./DistSys -i=$index -t=$totalnodes \
 		-d=mnist -f=peersFileSent \
 		-a=$myAddress -p=$thisPort -pa=$myPrivateIp \
 		 > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
 	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
 	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile 2> outLog.log &
 
-	if [ $index -eq 0 ] 
-	then			
-		echo "Sleeping. Allowing node zero to be up and running"
-		sleep 5			
-	fi
+	# if [ $index -eq 0 ] 
+	# then			
+	# 	echo "Sleeping. Allowing node zero to be up and running"
+	# 	sleep 5			
+	# fi
 
 done	
 

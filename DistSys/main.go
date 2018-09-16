@@ -29,7 +29,7 @@ const (
 	verifierIP   	string        = "127.0.0.1:"
 	timeoutRPC    	time.Duration = 10000000000
 	timeoutUpdate 	time.Duration = 10000000000  
-	timeoutBlock 	time.Duration = 15000000000  
+	timeoutBlock 	time.Duration = 1500000000000  
 	timeoutPeer 	time.Duration = 5000000000
 	
 	NUM_VERIFIERS 	int           = 3
@@ -44,12 +44,13 @@ const (
 	PRECISION       int 		  = 4
 	POLY_SIZE 		int 		  = 10
 
-	MAX_ITERATIONS  int 		  = 15
+	MAX_ITERATIONS  int 		  = 50
 	EPSILON 		float64 	  = 1
 	SECURE_AGG  	bool 		  = true
 	NOISY_VERIF		bool 		  = true
 
-	PRIV_PROB 		float64 	  = 0.4
+	// This should be 0 by default
+	PRIV_PROB 		float64 	  = 0
 
 )
 
@@ -1261,7 +1262,7 @@ func messageSender(ports []string) {
 
 			noise := requestNoiseFromNoisers(noiserPortsToConnect)
 
-			outLog.Printf("Noise:%s", noise)
+			// outLog.Printf("Noise:%s", noise)
 
 			if (len(noise) > 0) {
 				
@@ -1444,6 +1445,7 @@ func sendUpdateToVerifiers(addresses []string) ([][]byte ,bool) {
 
 	// Verification totally failed. Create empty block and send
 	if !verifiersOnline {
+		time.Sleep(5000 * time.Millisecond)
 		outLog.Printf(strconv.Itoa(client.id)+":Will try and create an empty block")
 		blockChainLock.Lock()
 		blockToSend, err := client.createBlock(iterationCount, stakeMap)
@@ -1516,6 +1518,7 @@ func sendUpdateToMiners(addresses []string) {
 
 	// Couldn't mine the block. Send empty block. // Why do we need this?
 	if !mined {
+		time.Sleep(5000 * time.Millisecond)
 		outLog.Printf(strconv.Itoa(client.id)+":Will try and create an empty block")
 		blockChainLock.Lock()
 		blockToSend, err := client.createBlock(iterationCount, stakeMap)
@@ -1534,7 +1537,7 @@ func sendUpdateSecretsToMiners(addresses []string) {
 	var ign bool
 	c := make(chan error)
 
-	mined := true
+	mined := false
 
 	// generate secrets here
 	minerSecrets := generateMinerSecretShares(client.update.Delta, PRECISION, client.Keys.CommitmentKey, NUM_MINERS, POLY_SIZE, TOTAL_SHARES)
@@ -1584,18 +1587,16 @@ func sendUpdateSecretsToMiners(addresses []string) {
 				select {
 				case err := <-c:
 					
+					mined = true
+
 					printError("Error in sending secret share", err)
 					if(err==nil){
 						outLog.Printf(strconv.Itoa(client.id)+":Secret shared. Iteration:%d\n", client.update.Iteration)
-						mined = true
 					}
 
 					if(err==staleError){
 						outLog.Printf(strconv.Itoa(client.id)+"Stale error:Secret shared. Iteration:%d\n", client.update.Iteration)
-						mined = true
 					}
-					
-					go startBlockDeadlineTimer(iterationCount)
 
 					// use err and result
 				case <-time.After(timeoutRPC):
@@ -1607,7 +1608,6 @@ func sendUpdateSecretsToMiners(addresses []string) {
 				
 				outLog.Printf("GOT MINER ERROR. Unable to share secret")
 				time.Sleep(1000 * time.Millisecond)
-				mined = false
 				continue
 			}
 
@@ -1619,6 +1619,7 @@ func sendUpdateSecretsToMiners(addresses []string) {
 
 	// Couldn't mine the block. Send empty block. // Why do we need this?
 	if !mined {
+		time.Sleep(5000 * time.Millisecond)
 		outLog.Printf(strconv.Itoa(client.id)+":Will try and create an empty block")
 		blockChainLock.Lock()
 		blockToSend, err := client.createBlock(iterationCount, stakeMap)
@@ -1628,6 +1629,8 @@ func sendUpdateSecretsToMiners(addresses []string) {
 			outLog.Printf(strconv.Itoa(client.id)+":Sending an empty block")
 			go sendBlock(*blockToSend)
 		}
+	} else {
+		go startBlockDeadlineTimer(iterationCount)
 	}
 
 }

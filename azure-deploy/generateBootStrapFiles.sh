@@ -29,9 +29,9 @@ for line in $(cat ../azure-deploy/tempHosts);do
 		username="clement"
 	fi
 
-	scp commitKey.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
-	scp pKeyG1.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
-	scp peersfile.txt $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
+	# scp commitKey.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
+	# scp pKeyG1.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
+	# scp peersfile.txt $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
 
 done
 
