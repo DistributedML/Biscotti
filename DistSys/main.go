@@ -49,7 +49,7 @@ const (
 	SECURE_AGG  	bool 		  = true
 	NOISY_VERIF		bool 		  = true
 
-	PRIV_PROB 		float64 	  = 0
+	PRIV_PROB 		float64 	  = 0.4
 
 )
 
@@ -76,6 +76,7 @@ var (
 	myVRF				VRF
 	collusionThresh 	int
 	unmaskedUpdates 	int
+	totalUpdates	 	int
 	
 	allSharesReceived		chan bool
 	allUpdatesReceived		chan bool
@@ -154,6 +155,14 @@ func (s *Peer) VerifyUpdate(update Update, signature *[]byte) error {
 
 	roniScore := client.verifyUpdate(update)
 	outLog.Printf("RONI for update at iteration %d is %f.\n", update.Iteration, roniScore)
+
+	if (PRIV_PROB > 0) {
+		
+		outLog.Printf("Accepting update!")
+		updateCommitment := update.Commitment
+		(*signature) = SchnorrSign(updateCommitment, client.Keys.Skey)		
+		return nil	
+	}
 
 	// Roni score measures change in local training error
 	if roniScore > 0.02 {
@@ -855,7 +864,10 @@ func prepareForNextIteration() {
 
 	if converged {
 
-		fmt.Println("Unmasked Updates:%d", unmaskedUpdates)
+		if (PRIV_PROB > 0){
+			fmt.Println(unmaskedUpdates, totalUpdates, PRIV_PROB)
+		}
+		
 		convergedLock.Unlock()
 		time.Sleep(1000 * time.Millisecond)
 		client.bc.PrintChain()
@@ -865,7 +877,9 @@ func prepareForNextIteration() {
 
 		if iterationCount > MAX_ITERATIONS {
 			
-			fmt.Println("Unmasked Updates:%d", unmaskedUpdates)
+			if (PRIV_PROB > 0){
+				fmt.Println(unmaskedUpdates, totalUpdates, PRIV_PROB)
+			}
 			client.bc.PrintChain()
 			os.Exit(1)	
 		
@@ -901,10 +915,17 @@ func prepareForNextIteration() {
 	verifierPortsToConnect, minerPortsToConnect, 
 		noiserPortsToConnect, numberOfNodeUpdates = getRoleNames(iterationCount)
 
-	if (isCollusionAttack(verifierPortsToConnect, noiserPortsToConnect) && PRIV_PROB > 0) {
+	if (PRIV_PROB > 0) {
+		
+		totalUpdates = totalUpdates + len(client.bc.Blocks[len(client.bc.Blocks) - 1].Data.Deltas)
 
-		unmaskedUpdates = unmaskedUpdates + 1
+		if (isCollusionAttack(verifierPortsToConnect, noiserPortsToConnect)) {
+
+				unmaskedUpdates = unmaskedUpdates + 1
+		}
 	}
+
+
 
 	if miner {
 		
@@ -1240,10 +1261,18 @@ func messageSender(ports []string) {
 
 			noise := requestNoiseFromNoisers(noiserPortsToConnect)
 
+			outLog.Printf("Noise:%s", noise)
+
 			if (len(noise) > 0) {
+				
 				noiseDelta := make([]float64, len(noise))
+				
+				outLog.Printf("Update Delta:%s",len(client.update.Delta))
+				outLog.Printf("Noise:%s",len(noise))
+				outLog.Printf("noiseDelta:%s",len(noiseDelta))
 
 				for i := 0; i < len(noise); i++ {
+
 					noiseDelta[i] = client.update.Delta[i] + noise[i]
 				}
 

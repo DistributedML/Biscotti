@@ -138,7 +138,9 @@ func (honest *Honest) checkConvergence() bool {
 // calculates update by calling oneGradientStep function that invokes python and passing latest global model from the chain to it.
 func (honest *Honest) computeUpdate(iterationCount int) {
 	prevModel := honest.bc.getLatestGradient()
+	outLog.Printf("Global Model:%s", prevModel)
 	deltas, err := oneGradientStep(prevModel) // TODO: Create commitment here
+	outLog.Printf("Deltas:%s", deltas)
 	// outLog.Printf("This update float:%s", deltas)
 	deltasInt := updateFloatToInt(deltas, PRECISION)
 	// outLog.Printf("This update:%s", deltasInt)
@@ -154,6 +156,7 @@ func (honest *Honest) computeUpdate(iterationCount int) {
 		NoisedDelta: deltas, 
 		Noise: deltas,
 		Accepted: true}
+	outLog.Printf("Deltas:%s", honest.update.Delta)
 
 }
 

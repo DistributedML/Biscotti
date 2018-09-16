@@ -18,7 +18,7 @@ epsilon = 0
 scale = False
 diffPriv13 = False
 diffPriv16 = True
-
+expected_iters = 100
 
 def init(dataset, filename, epsilon, batch_size):
 
@@ -77,10 +77,14 @@ def init(dataset, filename, epsilon, batch_size):
             samples = sampler.flatchain
 
         elif diffPriv16:
-            expected_iters = 5000
+            
             sigma = np.sqrt(2 * np.log(1.25)) / epsilon
             noise = sigma * np.random.randn(batch_size, expected_iters, d)
             samples = np.sum(noise, axis=0)
+
+    else:
+
+        samples = np.zeros((expected_iters, d))
 
     return d
 
