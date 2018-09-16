@@ -49,7 +49,7 @@ const (
 	SECURE_AGG  	bool 		  = true
 	NOISY_VERIF		bool 		  = true
 
-	PRIV_PROB 		float64 	  = 0.4
+	PRIV_PROB 		float64 	  = 0
 
 )
 
@@ -1081,8 +1081,10 @@ func addBlockToChain(block Block) {
 	err := client.addBlock(block)
 	
 	// Update the stake in the system
-	stakeMap = block.StakeMap
-	outLog.Printf("New stake map: %v", stakeMap)
+	if len(block.StakeMap) > 0 {
+		stakeMap = block.StakeMap
+		outLog.Printf("New stake map: %v", stakeMap)
+	}
 
 	blockChainLock.Unlock()
 

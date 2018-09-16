@@ -76,5 +76,10 @@ pip install scikit-image
 echo "mnist"
 pip install python-mnist
 
+cd $HOME/gopath/src/simpleBlockChain/ML/Pytorch/data/mnist
+python parse_mnist.py
+
 cd $HOME/gopath/src/simpleBlockChain/DistSys
+mkdir LogFiles
+
 go install

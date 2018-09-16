@@ -8,14 +8,57 @@ myAddress=$4
 source ~/.profile
 
 cd $GOPATH/src/simpleBlockChain/DistSys
+go build
 
 # Single command that kills them
 pkill DistSys
 
+# echo "Pulling latest source code from github"
+
+# git reset --hard
+# git pull origin master
+
 rm -r LogFiles
-mkdir -p LogFiles
+
+# echo "Compiling go"
+# sudo go install
+# stat $GOPATH/bin/DistSys
 
 myPrivateIp=$(ifconfig | grep -oE -m 1 "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | head -1)
+
+# myPrivateIp=$myPrivateIP+":"
+
+# echo $myPrivateIp
+
+mkdir -p LogFiles
+
+# create new peers file
+
+# rm peersfile.txt
+
+hostindex=0
+
+# for line in $(cat $GOPATH/src/simpleBlockChain/azure-deploy/tempHosts);do
+
+# 	tname=`echo $line | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'`
+
+# 	echo $tname
+
+# 	for (( myIndex = hostindex ; myIndex < hostindex + nodesToRun; myIndex++)); do
+
+# 		echo $myIndex
+# 		let myPort=8000+$myIndex
+# 		lineToWrite=$tname:$myPort
+# 		echo $lineToWrite >> peersfile.txt
+	
+# 	done
+
+# 	echo "I am here"
+
+# 	hostindex=$((hostindex + nodesToRun))
+
+# done
+
 
 for (( index = $startingIndex ; index < $startingIndex + nodesToRun; index++ )); do
 	
@@ -24,13 +67,12 @@ for (( index = $startingIndex ; index < $startingIndex + nodesToRun; index++ ));
 	
 	let thisPort=8000+$index
 
-	echo deploying "$index" $myAddress $myPrivateIp
+	echo deploying "$index"
 	cd $GOPATH/src/simpleBlockChain/DistSys
 	timeout 120 ./DistSys -i=$index -t=$totalnodes \
 		-d=creditcard -f=peersFileSent \
-		-a=$myAddress -p=$thisPort -pa=$myAddress \
+		-a=$myAddress -p=$thisPort -pa=$myPrivateIp \
 		 > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
-
 	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
 	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile 2> outLog.log &
 

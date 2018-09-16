@@ -59,26 +59,28 @@ def init(dataset, filename, epsilon, batch_size):
 
     # samples = sampler.flatchain
 
-    if diffPriv13:
+    if epsilon > 0:
 
-        nwalkers = max(4 * d, 250)
-        sampler = emcee.EnsembleSampler(nwalkers, d, lnprob, args=[epsilon])
+        if diffPriv13:
 
-        p0 = [np.random.rand(d) for i in range(nwalkers)]
-        pos, _, state = sampler.run_mcmc(p0, 100)
+            nwalkers = max(4 * d, 250)
+            sampler = emcee.EnsembleSampler(nwalkers, d, lnprob, args=[epsilon])
 
-        sampler.reset()
-        sampler.run_mcmc(pos, 1000, rstate0=state)
+            p0 = [np.random.rand(d) for i in range(nwalkers)]
+            pos, _, state = sampler.run_mcmc(p0, 100)
 
-        print("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
+            sampler.reset()
+            sampler.run_mcmc(pos, 1000, rstate0=state)
 
-        samples = sampler.flatchain
+            print("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
 
-    elif diffPriv16:
-        expected_iters = 5000
-        sigma = np.sqrt(2 * np.log(1.25)) / epsilon
-        noise = sigma * np.random.randn(batch_size, expected_iters, d)
-        samples = np.sum(noise, axis=0)
+            samples = sampler.flatchain
+
+        elif diffPriv16:
+            expected_iters = 5000
+            sigma = np.sqrt(2 * np.log(1.25)) / epsilon
+            noise = sigma * np.random.randn(batch_size, expected_iters, d)
+            samples = np.sum(noise, axis=0)
 
     return d
 
