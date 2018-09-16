@@ -70,7 +70,7 @@ for (( index = $startingIndex ; index < $startingIndex + nodesToRun; index++ ));
 	echo deploying "$index"
 	cd $GOPATH/src/simpleBlockChain/DistSys
 	timeout 120 ./DistSys -i=$index -t=$totalnodes \
-		-d=creditcard -f=peersFileSent \
+		-d=mnist -f=peersFileSent \
 		-a=$myAddress -p=$thisPort -pa=$myPrivateIp \
 		 > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
 	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &

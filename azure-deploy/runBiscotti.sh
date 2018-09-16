@@ -50,12 +50,10 @@ for line in $(cat tempHosts);do
 
 	echo $tname
 
-	if [[ "$tname" == "198.162.52.57" ]]; then
-		username="cfung"
-	elif [[ "$tname" == "198.162.52.157" || "$tname" == "198.162.52.33" ]]; then
+	if [[ "$tname" == "198.162.52.157" || "$tname" == "198.162.52.33" ]]; then
 		username="clement"
 	else
-		username="bis"
+		username="cfung"
 	fi
 
 	scp ../DistSys/commitKey.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
@@ -80,12 +78,10 @@ for line in $(cat tempHosts);do
 
 	else
 
-		if [[ "$tname" == "198.162.52.57" ]]; then
-			username="cfung"
-		elif [[ "$tname" == "198.162.52.157" || "$tname" == "198.162.52.33" ]]; then
+		if [[ "$tname" == "198.162.52.157" || "$tname" == "198.162.52.33" ]]; then
 			username="clement"
 		else
-			username="bis"
+			username="cfung"
 		fi
 
 		if [[ $azure ]]; then

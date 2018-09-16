@@ -14,7 +14,7 @@ learning_rate = 1e-2
 # Use the Song and Sarwate 2013 implementation. Will likely crash if d is too large
 # Otherwise, use the 2016 Abadi.
 diffPriv13 = False
-expected_iters = 5000
+expected_iters = 100
 
 def init(dataset, filename, epsilon, batch_size):
 
@@ -95,7 +95,7 @@ def getTestErr(ww):
     return myclient.getTestErr()
 
 def getNoise(iteration):
-    return (-1 / this_batch_size) * samples[iteration]
+    return (-1 / this_batch_size) * samples[iteration % expected_iters]
 
 def roni(ww, delta):
     global myclient
