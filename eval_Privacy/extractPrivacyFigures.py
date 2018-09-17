@@ -1,12 +1,12 @@
 import os
 
 directory = "../DistSys/LogFiles"
-privacyResultsFile = "results.txt"
+privacyResultsFile = "results.csv"
 
 totalUnmaskedUpdates = 0
 privProb = 0
 
-results = open(privacyResultsFile, "w")
+results = open(privacyResultsFile, "a+")
 
 
 for filename in os.listdir(directory):
@@ -30,9 +30,6 @@ print totalUnmaskedUpdates
 
 maskingProb = (totalUnmaskedUpdates*1.0)/(totalUpdates*1.0)
 
-lineToWrite = str(privProb) + "," + str(maskingProb)
+lineToWrite = str(privProb) + "," + str(maskingProb)+"\n"
 
 results.write(lineToWrite)
-
-
-

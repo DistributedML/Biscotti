@@ -49,9 +49,6 @@ const (
 	SECURE_AGG  	bool 		  = true
 	NOISY_VERIF		bool 		  = true
 
-	// This should be 0 by default
-	PRIV_PROB 		float64 	  = 0
-
 )
 
 type Peer int
@@ -65,7 +62,8 @@ var (
 	//Input arguments
 	datasetName   		string
 	numberOfNodes 		int
-	TOTAL_SHARES 		int 		  
+	TOTAL_SHARES 		int
+	colluders 			int 		  
 
 	numberOfNodeUpdates int
 	myIP                string
@@ -124,6 +122,9 @@ var (
 	roniError  error = errors.New("RONI Failed")
 	rpcError  error = errors.New("RPC Timeout")
 	signatureError  error = errors.New("Insufficient correct signatures collected")
+
+	PRIV_PROB 		float64 	  = 0
+
 
 )
 
@@ -560,6 +561,8 @@ func main() {
 
     myPortPtr := flag.String("p", "", " If not local, this node's port")
 
+    colludersPtr := flag.Int("c", 0, "Number of colluders")
+
 	flag.Parse()
 
 	nodeNum := *nodeNumPtr
@@ -570,6 +573,7 @@ func main() {
     myPrivateIP = *myPrivateIPPtr+":"
     myIP = *myIPPtr+":"
     myPort = *myPortPtr
+    colluders = *colludersPtr
 
 	if(numberOfNodes <= 0 || nodeNum < 0 || datasetName == ""){
 		flag.PrintDefaults()
@@ -664,6 +668,8 @@ func main() {
 	TOTAL_SHARES = int(math.Ceil(float64(POLY_SIZE)/float64(NUM_MINERS)))*NUM_MINERS
 
 	// Reading data and declaring some global locks to be used later
+	PRIV_PROB = (float64(colluders)/100.0)
+	
 	collusionThresh = int(math.Ceil(float64(numberOfNodes) * (1.0 - PRIV_PROB)))
 	
 	if NOISY_VERIF && (nodeNum < collusionThresh) {
