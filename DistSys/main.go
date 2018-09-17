@@ -34,7 +34,7 @@ const (
 	
 	NUM_VERIFIERS 	int           = 3
 	NUM_MINERS 		int           = 3
-	NUM_NOISERS     int 		  = 2
+	// NUM_NOISERS     int 		  = 2
 	DEFAULT_STAKE   int 		  = 10
 
 	VERIFIER_PRIME 	int 		  = 2
@@ -126,6 +126,7 @@ var (
 	signatureError  error = errors.New("Insufficient correct signatures collected")
 
 	PRIV_PROB 		float64 	  = 0
+	NUM_NOISERS 	int 		  = 2
 
 
 )
@@ -570,6 +571,8 @@ func main() {
 
     colludersPtr := flag.Int("c", 0, "Number of colluders")
 
+    numNoisePtr := flag.Int("n", 2, "Number of noisers")
+
 	flag.Parse()
 
 	nodeNum := *nodeNumPtr
@@ -581,6 +584,7 @@ func main() {
     myIP = *myIPPtr+":"
     myPort = *myPortPtr
     colluders = *colludersPtr
+    NUM_NOISERS = *numNoisePtr
 
 	if(numberOfNodes <= 0 || nodeNum < 0 || datasetName == ""){
 		flag.PrintDefaults()
@@ -874,12 +878,15 @@ func isCollusionAttack(verifiers []string, noisers []string) bool{
 
 func prepareForNextIteration() {
 
-	convergedLock.Lock()
+	
+	totalUpdates = totalUpdates + len(client.bc.Blocks[len(client.bc.Blocks) - 1].Data.Deltas)
 
+	convergedLock.Lock()
+	
 	if converged {
 
 		if (PRIV_PROB > 0){
-			fmt.Println(unmaskedUpdates, totalUpdates, PRIV_PROB)
+			fmt.Println(unmaskedUpdates, totalUpdates, PRIV_PROB, NUM_NOISERS)
 		}
 		
 		convergedLock.Unlock()
@@ -894,7 +901,7 @@ func prepareForNextIteration() {
 			outLog.Println("Reached the max iterations!")
 
 			if (PRIV_PROB > 0){
-				fmt.Println(unmaskedUpdates, totalUpdates, PRIV_PROB)
+				fmt.Println(unmaskedUpdates, totalUpdates, PRIV_PROB, NUM_NOISERS)
 			}
 
 			client.bc.PrintChain()
@@ -934,8 +941,6 @@ func prepareForNextIteration() {
 
 	if (PRIV_PROB > 0) {
 		
-		totalUpdates = totalUpdates + len(client.bc.Blocks[len(client.bc.Blocks) - 1].Data.Deltas)
-
 		if (isCollusionAttack(verifierPortsToConnect, noiserPortsToConnect)) {
 
 				unmaskedUpdates = unmaskedUpdates + 1

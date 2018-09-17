@@ -23,6 +23,7 @@ for filename in os.listdir(directory):
 				totalUnmaskedUpdates = totalUnmaskedUpdates + int(values[0])			
 				totalUpdates = int(values[1])
 				privProb = float(values[2])
+				numNoisers = int(values[3])
 
 			print values
 	
@@ -30,6 +31,6 @@ print totalUnmaskedUpdates
 
 maskingProb = (totalUnmaskedUpdates*1.0)/(totalUpdates*1.0)
 
-lineToWrite = str(privProb) + "," + str(maskingProb)+"\n"
+lineToWrite = str(privProb) + "," + str(maskingProb)+"," + str(numNoisers)+"\n"
 
 results.write(lineToWrite)
