@@ -222,10 +222,13 @@ func (s *Peer) RegisterSecret(share MinerPartRPC, _ignored *bool) error {
 	outLog.Printf("Length of verifiers:%d", len(verifierPortsToConnect))
 
 	if VERIFY {
-		if ((len(share.SignatureList) < len(verifierPortsToConnect)/2) || !verifySignatures(share.SignatureList, share.CommitmentUpdate)){
-			printError("Share has insufficient or bogus signatures", signatureError)
-			return signatureError
+		if share.Iteration == iterationCount {	
+			if ((len(share.SignatureList) < len(verifierPortsToConnect)/2) || !verifySignatures(share.SignatureList, share.CommitmentUpdate)){
+				printError("Share has insufficient or bogus signatures", signatureError)
+				return signatureError
+			}
 		}
+
 	}
 
 	// Process update only called by the miner nodes
@@ -297,9 +300,11 @@ func processShare(share MinerPart) {
 		numberOfShares := client.addSecretShare(share)
 		updateLock.Unlock()
 
+		outLog.Printf("As miner, I expect %d shares, I have gotten %d", numberOfNodeUpdates / 4, numberOfShares)
+
 		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
-		if numberOfShares == (numberOfNodeUpdates / 4) {			
-			outLog.Printf(strconv.Itoa(client.id)+":Half shares for iteration %d received. Notifying channel.", iterationCount)	
+		if numberOfShares == (numberOfNodeUpdates / 8) {			
+			outLog.Printf(strconv.Itoa(client.id)+":Eighth shares for iteration %d received. Notifying channel.", iterationCount)	
 			allSharesReceived <- true 		 
 		}
 		
@@ -1328,7 +1333,7 @@ func messageSender(ports []string) {
 			}
 
 			if iterationCount == client.update.Iteration {
-					updateSent = true
+				updateSent = true
 			}
 
 
@@ -1424,6 +1429,8 @@ func sendUpdateToVerifiers(addresses []string) ([][]byte ,bool) {
 		return signatureList, true
 	}
 
+	VerifLoop:
+
 	for _, address := range addresses {
 
 		conn, err := rpc.Dial("tcp", address)
@@ -1441,8 +1448,17 @@ func sendUpdateToVerifiers(addresses []string) ([][]byte ,bool) {
 				printError("Error in sending update", err)
 				verifiersOnline  = true
 				if (verifierError == nil) {
-					outLog.Printf(strconv.Itoa(client.id)+":Update verified. Iteration:%d\n", client.update.Iteration)
+
+					outLog.Printf(strconv.Itoa(client.id)+":Update verified. Itersation:%d\n", client.update.Iteration)
 					signatureList = append(signatureList, signature)
+
+					if (len(signatureList) >= (len(verifierPortsToConnect)/2)) {
+						verified = true
+						break VerifLoop
+					} else {
+						outLog.Printf(strconv.Itoa(client.id)+":Couldn't get enough signatures. Iteration:%d\n", client.update.Iteration)
+					}
+
 				}
 
 				if (verifierError == roniError) {
@@ -1462,12 +1478,6 @@ func sendUpdateToVerifiers(addresses []string) ([][]byte ,bool) {
 			continue
 		}
 	
-	}
-
-	if (len(signatureList) >= (len(verifierPortsToConnect)/2)) {
-		verified = true
-	} else {
-		outLog.Printf(strconv.Itoa(client.id)+":Couldn't get enough signatures. Iteration:%d\n", client.update.Iteration)
 	}
 
 	// Verification totally failed. Create empty block and send
@@ -1975,7 +1985,7 @@ func getNodesList(minerList []string) (map[string][]int, []int) {
 	}
 
 	outLog.Printf("Intersection List: %s", intersectionList)
-	outLog.Printf("Node List: %s",listOfUpdates)
+	outLog.Printf("Node List: %s", listOfUpdates)
 
 	return listOfUpdates, intersectionList
 
