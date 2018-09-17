@@ -19,7 +19,7 @@ for line in $(cat tempHosts);do
 		username="cfung"
 	fi
 
-	echo "killing" $tname
+	echo "pulling on" $tname
 	ssh $username@$tname 'cd /home/cfung/gopath/src/simpleBlockChain; git checkout .; git pull origin master'
 
 done

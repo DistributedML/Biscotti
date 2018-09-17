@@ -526,9 +526,11 @@ func (honest *Honest) requestNoise(iterationCount int) ([]float64, error) {
 */
 func (honest *Honest) verifyUpdate(update Update) float64 {
 
+	outLog.Println("Acquiring Python Lock...")
 	runtime.LockOSThread()
 
 	_gstate := python.PyGILState_Ensure()
+	outLog.Println("Acquired Python Lock")
 
 	deltas := update.NoisedDelta
 	truthModel := honest.bc.getLatestGradient()
@@ -547,6 +549,7 @@ func (honest *Honest) verifyUpdate(update Update) float64 {
 	score = python.PyFloat_AsDouble(pyRoni)		
 	
 	python.PyGILState_Release(_gstate)	
+	outLog.Println("Released Python Lock")
 
 	return score
 

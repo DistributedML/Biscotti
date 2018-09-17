@@ -27,10 +27,10 @@ import (
 const (
 	basePort        int           = 8000
 	verifierIP   	string        = "127.0.0.1:"
-	timeoutRPC    	time.Duration = 10000000000
-	timeoutUpdate 	time.Duration = 10000000000  
-	timeoutBlock 	time.Duration = 1500000000000  
-	timeoutPeer 	time.Duration = 5000000000
+	timeoutRPC    	time.Duration = 60 * time.Second
+	timeoutUpdate 	time.Duration = 60 * time.Second 
+	timeoutBlock 	time.Duration = 120 * time.Second
+	timeoutPeer 	time.Duration = 5 * time.Second
 	
 	NUM_VERIFIERS 	int           = 3
 	NUM_MINERS 		int           = 3
@@ -44,10 +44,12 @@ const (
 	PRECISION       int 		  = 4
 	POLY_SIZE 		int 		  = 10
 
-	MAX_ITERATIONS  int 		  = 50
-	EPSILON 		float64 	  = 1
+	MAX_ITERATIONS  int 		  = 100
+	EPSILON 		float64 	  = 5
+
 	SECURE_AGG  	bool 		  = true
 	NOISY_VERIF		bool 		  = true
+	VERIFY 			bool 		  = true
 
 )
 
@@ -219,9 +221,11 @@ func (s *Peer) RegisterSecret(share MinerPartRPC, _ignored *bool) error {
 	outLog.Printf("Length of signature:%d", len(share.SignatureList))
 	outLog.Printf("Length of verifiers:%d", len(verifierPortsToConnect))
 
-	if ((len(share.SignatureList) < len(verifierPortsToConnect)/2) || !verifySignatures(share.SignatureList, share.CommitmentUpdate)){
-		printError("Share has insufficient or bogus signatures", signatureError)
-		return signatureError
+	if VERIFY {
+		if ((len(share.SignatureList) < len(verifierPortsToConnect)/2) || !verifySignatures(share.SignatureList, share.CommitmentUpdate)){
+			printError("Share has insufficient or bogus signatures", signatureError)
+			return signatureError
+		}
 	}
 
 	// Process update only called by the miner nodes
@@ -272,8 +276,6 @@ func verifySignatures(signatureList [][]byte, commitment []byte) bool{
 
 	return signatureVerified
 
-
-
 }
 
 // go routine to process the update received by miner nodes
@@ -289,15 +291,15 @@ func processShare(share MinerPart) {
 	// Might get an update while I am in the announceToNetwork phase and when I come out of it the update becomes redundant
 	if ((iterationCount == share.Iteration)) {
 
-		outLog.Printf(strconv.Itoa(client.id)+":Appending secret share, iteration %d\n", share.Iteration)	
+		outLog.Printf(strconv.Itoa(client.id)+":Appending secret share, iteration %d\n", share.Iteration)
 
 		updateLock.Lock()
 		numberOfShares := client.addSecretShare(share)
 		updateLock.Unlock()
 
 		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
-		if numberOfShares == numberOfNodeUpdates {			
-			outLog.Printf(strconv.Itoa(client.id)+":All shares for iteration %d received. Notifying channel.", iterationCount)	
+		if numberOfShares == (numberOfNodeUpdates / 4) {			
+			outLog.Printf(strconv.Itoa(client.id)+":Half shares for iteration %d received. Notifying channel.", iterationCount)	
 			allSharesReceived <- true 		 
 		}
 		
@@ -884,9 +886,12 @@ func prepareForNextIteration() {
 
 		if iterationCount > MAX_ITERATIONS {
 			
+			outLog.Println("Reached the max iterations!")
+
 			if (PRIV_PROB > 0){
 				fmt.Println(unmaskedUpdates, totalUpdates, PRIV_PROB)
 			}
+
 			client.bc.PrintChain()
 			os.Exit(1)	
 		
@@ -999,8 +1004,8 @@ func processUpdate(update Update) {
 		outLog.Printf("As miner, I expect %d updates, I have gotten %d", numberOfNodeUpdates, numberOfUpdates)
 
 		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
-		if numberOfUpdates == (numberOfNodeUpdates) {			
-			outLog.Printf(strconv.Itoa(client.id)+":All updates for iteration %d received. Notifying channel.", iterationCount)	
+		if numberOfUpdates == (numberOfNodeUpdates / 2)  {			
+			outLog.Printf(strconv.Itoa(client.id)+":Half updates for iteration %d received. Notifying channel.", iterationCount)	
 			allUpdatesReceived <- true 		 
 		}	
 	
@@ -1011,8 +1016,11 @@ func processUpdate(update Update) {
 // // For all non-miners, accept the block
 func processBlock(block Block) {
 
-	// Lock to ensure that iteration count doesn't change until I have appended block
+	if (block.Data.Iteration < iterationCount || iterationCount < 0) {
+		return
+	}
 
+	// Lock to ensure that iteration count doesn't change until I have appended block
 	outLog.Printf("Trying to acquire lock...")
 	boolLock.Lock()
 
@@ -1020,7 +1028,7 @@ func processBlock(block Block) {
 
 	hasBlock := client.hasBlock(block.Data.Iteration)
 
-	if ((block.Data.Iteration < iterationCount) || hasBlock || iterationCount<0) {
+	if ((block.Data.Iteration < iterationCount) || hasBlock || iterationCount < 0) {
 		
 		if hasBlock {
 			outLog.Printf("Already have block")
@@ -1078,7 +1086,7 @@ func processBlock(block Block) {
 			outLog.Printf("Acquiring bool lock")
 			boolLock.Lock()	
 
-			addBlockToChain(block)
+			go addBlockToChain(block)
 
 		}
 
@@ -1091,7 +1099,7 @@ func processBlock(block Block) {
 	// }
 
 	
-	addBlockToChain(block)
+	go addBlockToChain(block)
 
 }
 
@@ -1264,28 +1272,33 @@ func messageSender(ports []string) {
 
 			client.computeUpdate(iterationCount)
 
-			outLog.Printf(strconv.Itoa(client.id)+":Getting noise from %s\n", noiserPortsToConnect)
+			// Only need to sample noise if verifying
+			if VERIFY {
 
-			noise := requestNoiseFromNoisers(noiserPortsToConnect)
+				outLog.Printf(strconv.Itoa(client.id)+":Getting noise from %s\n", noiserPortsToConnect)
 
-			// outLog.Printf("Noise:%s", noise)
+				noise := requestNoiseFromNoisers(noiserPortsToConnect)
 
-			if (len(noise) > 0) {
-				
-				noiseDelta := make([]float64, len(noise))
-				
-				outLog.Printf("Update Delta:%s",len(client.update.Delta))
-				outLog.Printf("Noise:%s",len(noise))
-				outLog.Printf("noiseDelta:%s",len(noiseDelta))
+				// outLog.Printf("Noise:%s", noise)
 
-				for i := 0; i < len(noise); i++ {
+				if (len(noise) > 0) {
+					
+					noiseDelta := make([]float64, len(noise))
+					
+					outLog.Printf("Update Delta:%s",len(client.update.Delta))
+					outLog.Printf("Noise:%s",len(noise))
+					outLog.Printf("noiseDelta:%s",len(noiseDelta))
 
-					noiseDelta[i] = client.update.Delta[i] + noise[i]
+					for i := 0; i < len(noise); i++ {
+
+						noiseDelta[i] = client.update.Delta[i] + noise[i]
+					}
+
+					// The default is if no noise being used, NoisedDelta will just be Delta.
+					client.update.Noise = noise
+					client.update.NoisedDelta = noiseDelta
+
 				}
-
-				// The default is if no noise being used, NoisedDelta will just be Delta.
-				client.update.Noise = noise
-				client.update.NoisedDelta = noiseDelta
 
 			}
 
@@ -1407,6 +1420,10 @@ func sendUpdateToVerifiers(addresses []string) ([][]byte ,bool) {
 	verified := false
 	verifiersOnline := false
 
+	if !VERIFY {
+		return signatureList, true
+	}
+
 	for _, address := range addresses {
 
 		conn, err := rpc.Dial("tcp", address)
@@ -1428,6 +1445,10 @@ func sendUpdateToVerifiers(addresses []string) ([][]byte ,bool) {
 					signatureList = append(signatureList, signature)
 				}
 
+				if (verifierError == roniError) {
+					outLog.Printf(strconv.Itoa(client.id)+":Update rejected.... Iteration:%d\n", client.update.Iteration)
+				}
+
 			// use err and result
 			case <-time.After(timeoutRPC):
 				outLog.Printf(strconv.Itoa(client.id)+":RPC Call timed out.")
@@ -1444,9 +1465,9 @@ func sendUpdateToVerifiers(addresses []string) ([][]byte ,bool) {
 	}
 
 	if (len(signatureList) >= (len(verifierPortsToConnect)/2)) {
-
 		verified = true
-
+	} else {
+		outLog.Printf(strconv.Itoa(client.id)+":Couldn't get enough signatures. Iteration:%d\n", client.update.Iteration)
 	}
 
 	// Verification totally failed. Create empty block and send
@@ -1733,10 +1754,10 @@ func startShareDeadlineTimer(timerForIteration int){
 				timerForIteration, iterationCount)
 
 		case <- time.After(timeoutUpdate):
-			outLog.Printf(strconv.Itoa(client.id)+":Timeout. Didn't receive expected number of shares. Preparing to send block. Iteration: %d..", iterationCount)
+			outLog.Printf(strconv.Itoa(client.id)+":Timeout. Didn't receive expected number of shares. Preparing to send block. Iteration: %d..", timerForIteration)
 
 		case <- quitRoutine:
-			outLog.Printf(strconv.Itoa(client.id)+"Already appended block. Quitting routine. Iteration: %d..", iterationCount)			
+			outLog.Printf(strconv.Itoa(client.id)+"Already appended block. Quitting routine. Iteration: %d..", timerForIteration)			
 			return	
 	
 	}
