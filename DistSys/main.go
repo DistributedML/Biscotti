@@ -301,7 +301,7 @@ func processShare(share MinerPart) {
 		numberOfShares := client.addSecretShare(share)
 		updateLock.Unlock()
 
-		outLog.Printf("As miner, I expect %d shares, I have gotten %d", numberOfNodeUpdates / 4, numberOfShares)
+		outLog.Printf("As miner, I expect %d shares, I have gotten %d", numberOfNodeUpdates / 8, numberOfShares)
 
 		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
 		if numberOfShares == (numberOfNodeUpdates / 8) {			
@@ -1030,6 +1030,13 @@ func processBlock(block Block) {
 		return
 	}
 
+	outLog.Printf(strconv.Itoa(client.id)+":Got block message, iteration %d\n", block.Data.Iteration)
+
+	if (!updateSent && block.Data.Iteration == iterationCount) {
+		updateSent = true
+		outLog.Printf("Releasing worker on iteration %d", iterationCount)
+	}
+
 	// Lock to ensure that iteration count doesn't change until I have appended block
 	outLog.Printf("Trying to acquire lock...")
 	boolLock.Lock()
@@ -1278,13 +1285,17 @@ func messageSender(ports []string) {
 
 		if !updateSent {
 
-			outLog.Printf(strconv.Itoa(client.id)+":Computing Update\n")
+			go startBlockDeadlineTimer(iterationCount)
 
+			outLog.Printf(strconv.Itoa(client.id)+":Computing Update\n")
 			client.computeUpdate(iterationCount)
 
-			// Only need to sample noise if verifying
-			if VERIFY {
+		}
 
+		// Only need to sample noise if verifying
+		if VERIFY {
+
+			if !updateSent {
 				outLog.Printf(strconv.Itoa(client.id)+":Getting noise from %s\n", noiserPortsToConnect)
 
 				noise := requestNoiseFromNoisers(noiserPortsToConnect)
@@ -1312,10 +1323,19 @@ func messageSender(ports []string) {
 
 			}
 
-			outLog.Printf("Sending update to verifiers")
-			signatureList, approved := sendUpdateToVerifiers(verifierPortsToConnect)			 
+		}
 
-			// outLog.Printf("Signature List: %s", signatureList)
+		approved := false
+		var signatureList [][]byte
+
+		if !updateSent {
+
+			outLog.Printf("Sending update to verifiers")
+			signatureList, approved = sendUpdateToVerifiers(verifierPortsToConnect)			 
+
+		}
+
+		if !updateSent {
 
 			if approved {
 				
@@ -1331,25 +1351,22 @@ func messageSender(ports []string) {
 					sendUpdateToMiners(minerPortsToConnect)
 				}			
 			
-
 			}else{
 
-				go startBlockDeadlineTimer(iterationCount)
+				
 			}
 
 			if iterationCount == client.update.Iteration {
 				updateSent = true
 			}
 
-
-			boolLock.Unlock()
-
-		} else {
-
-			boolLock.Unlock()
-			time.Sleep(100 * time.Millisecond)
-
 		}
+
+		if updateSent {
+			boolLock.Unlock()
+			time.Sleep(1000 * time.Millisecond)
+		}
+		
 	}
 }
 
