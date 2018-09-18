@@ -56,9 +56,9 @@ for line in $(cat tempHosts);do
 		username="cfung"
 	fi
 
-	# scp ../DistSys/commitKey.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
-	# scp ../DistSys/pKeyG1.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
-	# scp peersFileSent $username@$tname:~/gopath/src/simpleBlockChain/DistSys
+	scp ../DistSys/commitKey.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
+	scp ../DistSys/pKeyG1.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
+	scp peersFileSent $username@$tname:~/gopath/src/simpleBlockChain/DistSys
 	scp ../DistSys/DistSys $username@$tname:~/gopath/src/simpleBlockChain/DistSys
 
 done

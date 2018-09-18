@@ -301,10 +301,10 @@ func processShare(share MinerPart) {
 		numberOfShares := client.addSecretShare(share)
 		updateLock.Unlock()
 
-		outLog.Printf("As miner, I expect %d shares, I have gotten %d", numberOfNodeUpdates / 8, numberOfShares)
+		outLog.Printf("As miner, I expect %d shares, I have gotten %d", numberOfNodeUpdates / 2, numberOfShares)
 
 		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
-		if numberOfShares == (numberOfNodeUpdates / 8) {			
+		if numberOfShares == (numberOfNodeUpdates / 2) {			
 			outLog.Printf(strconv.Itoa(client.id)+":Eighth shares for iteration %d received. Notifying channel.", iterationCount)	
 			allSharesReceived <- true 		 
 		}
@@ -947,8 +947,6 @@ func prepareForNextIteration() {
 		}
 	}
 
-
-
 	if miner {
 		
 		outLog.Printf(strconv.Itoa(client.id)+":I am miner. Iteration:%d", iterationCount)
@@ -967,6 +965,7 @@ func prepareForNextIteration() {
 	
 	} else {
 		outLog.Printf(strconv.Itoa(client.id)+":I am not miner or verifier. Iteration:%d", iterationCount)
+		go startBlockDeadlineTimer(iterationCount)
 		updateSent = false
 	}
 
@@ -1285,7 +1284,7 @@ func messageSender(ports []string) {
 
 		if !updateSent {
 
-			go startBlockDeadlineTimer(iterationCount)
+			
 
 			outLog.Printf(strconv.Itoa(client.id)+":Computing Update\n")
 			client.computeUpdate(iterationCount)
