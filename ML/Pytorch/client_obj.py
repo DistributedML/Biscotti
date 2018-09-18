@@ -104,10 +104,10 @@ def roni(ww, delta):
 
     # Get original score
     myclient.updateModel(weights)
-    original = myclient.getTestErr()
+    original = myclient.getTrainErr()
 
     myclient.updateModel(weights + update)
-    after = myclient.getTestErr()
+    after = myclient.getTrainErr()
 
     return after - original
 

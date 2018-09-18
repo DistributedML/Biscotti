@@ -14,8 +14,8 @@ class Client():
         self.batch_size=batch_size
         Dataset = datasets.get_dataset(dataset)
         transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
-        self.trainset = Dataset(filename, "../ML/Pytorch/data/" + dataset, is_train=True, train_cut=train_cut, transform=transform)
-        self.testset = Dataset(filename, "../ML/Pytorch/data/" + dataset, is_train=False, train_cut=train_cut, transform=transform)
+        self.trainset = Dataset(filename, "../ML/Pytorch/data/" + dataset, is_train=True, transform=transform)
+        self.testset = Dataset("mnist_test", "../ML/Pytorch/data/" + dataset, is_train=False, transform=transform)
         self.trainloader = torch.utils.data.DataLoader(self.trainset, batch_size=self.batch_size, shuffle=True)
         self.testloader = torch.utils.data.DataLoader(self.testset, batch_size=len(self.testset), shuffle=False)
 
@@ -130,6 +130,16 @@ class Client():
     def getModel(self):
         return self.model
     
+    def getTrainErr(self):
+        for i, data in enumerate(self.trainloader, 0):
+            # get the inputs
+            inputs = data['image'].float()
+            labels = data['label'].long()
+            inputs, labels = Variable(inputs), Variable(labels)
+            out = self.model(inputs)
+            pred = np.argmax(out.detach().numpy(), axis=1)
+        return 1 - accuracy_score(pred, labels)
+
     def getTestErr(self):
         for i, data in enumerate(self.testloader, 0):
             # get the inputs
