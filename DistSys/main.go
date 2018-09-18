@@ -51,6 +51,8 @@ const (
 	NOISY_VERIF		bool 		  = true
 	VERIFY 			bool 		  = true
 
+	POISONING 	 	float64 	  = 0
+
 )
 
 type Peer int
@@ -680,19 +682,30 @@ func main() {
 
 	// Reading data and declaring some global locks to be used later
 	PRIV_PROB = (float64(colluders)/100.0)
-	
 	collusionThresh = int(math.Ceil(float64(numberOfNodes) * (1.0 - PRIV_PROB)))
 	
-	if NOISY_VERIF && (nodeNum < collusionThresh) {
+	// Privacy Attack experiment ONLY
+	if collusionThresh > 0 {
+		if NOISY_VERIF && (nodeNum < collusionThresh) {
+			client.initializeData(datasetName, numberOfNodes, EPSILON, false)	
+		} else {
+			client.initializeData(datasetName, numberOfNodes, 0, false)	
+		}
+	}
 
-		client.initializeData(datasetName, numberOfNodes, EPSILON)	
-	
-	} else {
+	if POISONING > 0 {
+
+		// If your node idx is above this, you are poisoning
+		poisoning_index := int(math.Ceil(float64(numberOfNodes) * (1.0 - POISONING)))
 		
-		client.initializeData(datasetName, numberOfNodes, 0)	
-	
+		outLog.Printf("Poisoning is at %d", poisoning_index)
+
+		isPoisoning := nodeNum > poisoning_index 
+		client.initializeData(datasetName, numberOfNodes, EPSILON, isPoisoning)	
 	}
 	
+	// Poisoning attack ONLY
+
 	client.bootstrapKeys()
 
 	// initialize the VRF

@@ -86,9 +86,9 @@ def slice_for_tm():
 
     # standardize each column
     print("Standardize columns")
-    Xtrain = Xtrain / 100.0
-    # Xtrain, _, _ = standardize_cols(Xtrain)
-    # Xtest, _, _ = standardize_cols(Xtest)
+    # Xtrain = Xtrain / 100.0
+    Xtrain, _, _ = standardize_cols(Xtrain)
+    Xtest, _, _ = standardize_cols(Xtest)
 
     for k in range(10):
 
@@ -99,15 +99,13 @@ def slice_for_tm():
 
         print("slice " + str(k) + " is shape " + str(data_slice.shape))
 
-        np.save("mnist" + str(k), data_slice)
+        np.save("mnist_digit" + str(k), data_slice)
 
     train_slice = np.hstack((Xtrain, np.reshape(ytrain, (len(ytrain), 1))))
     np.save("mnist_train", train_slice)
 
     test_slice = np.hstack((Xtest, np.reshape(ytest, (len(ytest), 1))))
     np.save("mnist_test", test_slice)
-
-    pdb.set_trace()
 
 def slice_uniform(numSplits):
 
@@ -134,9 +132,9 @@ def slice_uniform(numSplits):
 
     # standardize each column
     print("Standardize columns")
-    Xtrain = Xtrain / 100.0
-    # Xtrain, _, _ = standardize_cols(Xtrain)
-    # Xtest, _, _ = standardize_cols(Xtest)
+    # Xtrain = Xtrain / 100.0
+    Xtrain, _, _ = standardize_cols(Xtrain)
+    Xtest, _, _ = standardize_cols(Xtest)
 
     randseed = np.random.permutation(Xtrain.shape[0])
     Xtrain = Xtrain[randseed, :]
@@ -236,6 +234,12 @@ def standardize_cols(X, mu=None, sigma=None):
 
 
 if __name__ == "__main__":
-    slice_uniform(10)
-    # for i in range(1, 10):
-    #     slice_for_iid(i)
+    
+    slice_for_tm()
+
+    # Set up a 1-7
+    data = np.load("mnist_digit1.npy")
+    data[:, -1] = 7
+
+    np.save("mnist_bad", data)
+
