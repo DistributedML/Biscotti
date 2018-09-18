@@ -45,9 +45,9 @@ const (
 	POLY_SIZE 		int 		  = 10
 
 	MAX_ITERATIONS  int 		  = 100
-	EPSILON 		float64 	  = 5
+	EPSILON 		float64 	  = 2
 
-	SECURE_AGG  	bool 		  = false
+	SECURE_AGG  	bool 		  = true
 	NOISY_VERIF		bool 		  = true
 	VERIFY 			bool 		  = true
 
@@ -156,7 +156,7 @@ func (s *Peer) VerifyUpdate(update Update, signature *[]byte) error {
 	/*	// we can return the chain to the guy here instead of just leaving that guy with an error
 	if update.Iteration < iterationCount {
 		printError("Update of previous iteration received", staleError)
-		// sender is stale, return true here and let them catch up
+	// sender is stale, return true here and let them catch up
 		return true
 	}*/
 
@@ -303,10 +303,10 @@ func processShare(share MinerPart) {
 		numberOfShares := client.addSecretShare(share)
 		updateLock.Unlock()
 
-		outLog.Printf("As miner, I expect %d shares, I have gotten %d", numberOfNodeUpdates / 2, numberOfShares)
+		outLog.Printf("As miner, I expect %d shares, I have gotten %d", numberOfNodeUpdates / 8, numberOfShares)
 
 		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
-		if numberOfShares == (numberOfNodeUpdates / 2) {			
+		if numberOfShares == (numberOfNodeUpdates / 8) {			
 			outLog.Printf(strconv.Itoa(client.id)+":Eighth shares for iteration %d received. Notifying channel.", iterationCount)	
 			allSharesReceived <- true 		 
 		}
