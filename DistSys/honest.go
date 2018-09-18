@@ -49,7 +49,7 @@ const (
 	datasetPath     = "../ML/data/"
 	codePath        = "../ML/code"
 	torchPath       = "../ML/Pytorch"
-	convThreshold   = 0.05
+	convThreshold   = 0.00
 
 	// Crypto constants
 	commitKeyPath = "commitKey.json"

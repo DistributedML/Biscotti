@@ -6,9 +6,7 @@ let indexCount=0
 let nodesInEachVM=$1
 let totalNodes=$2
 let dimensions=$3
-let collusion=$4
-let numberNoisers=$5
-let azure=0
+let azure=1
 
 echo "file written"
 
@@ -19,12 +17,12 @@ echo "file written"
 
 cd ../DistSys
 echo "Building"
-# go build
+go build
 
-rm ./LogFiles/*.log
+rm ./LogFiles2/*.log
 # cd ..
 
-cd ../eval_Privacy
+cd ../eval_Performance
 
 peersFile="peersFileSent"
 firstport=8000
@@ -60,10 +58,10 @@ for line in $(cat tempHosts);do
 		username="cfung"
 	fi
 
-	# scp ../DistSys/commitKey.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
-	# scp ../DistSys/pKeyG1.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
-	# scp peersFileSent $username@$tname:~/gopath/src/simpleBlockChain/DistSys
-	# scp ../DistSys/DistSys $username@$tname:~/gopath/src/simpleBlockChain/DistSys
+	scp ../DistSys/commitKey.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
+	scp ../DistSys/pKeyG1.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
+	scp peersFileSent $username@$tname:~/gopath/src/simpleBlockChain/DistSys
+	scp ../DistSys/DistSys $username@$tname:~/gopath/src/simpleBlockChain/DistSys
 
 done
 
@@ -74,11 +72,11 @@ for line in $(cat tempHosts);do
 	tname=`echo $line | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'`
 
 	if [[ "$tname" == "198.162.52.126" ]]; then
-		ssh shayan@$tname 'bash -s' < deployNodes.sh $nodesInEachVM $indexCount $totalNodes $tname $collusion $numberNoisers &			
+		ssh shayan@$tname 'bash -s' < deployNodes.sh $nodesInEachVM $indexCount $totalNodes $tname &			
 	
 	# dijkstra 
 	elif [[ "$tname" == "198.162.52.154" ]]; then
-		bash deployNodes.sh $nodesInEachVM $indexCount $totalNodes $tname $collusion $numberNoisers &			
+		bash deployNodes.sh $nodesInEachVM $indexCount $totalNodes $tname &			
 
 	else
 
@@ -90,9 +88,9 @@ for line in $(cat tempHosts);do
 
 		if [[ "$azure" -eq 1 ]]; then
 			echo "Deploying on azure"
-			ssh $username@$tname 'bash -s' < deployAzureNodes.sh $nodesInEachVM $indexCount $totalNodes $tname $collusion $numberNoisers &	
+			ssh $username@$tname 'bash -s' < deployAzureNodes.sh $nodesInEachVM $indexCount $totalNodes $tname &	
 		else
-			ssh $username@$tname 'bash -s' < deployNodes.sh $nodesInEachVM $indexCount $totalNodes $tname $collusion $numberNoisers &	
+			ssh $username@$tname 'bash -s' < deployNodes.sh $nodesInEachVM $indexCount $totalNodes $tname &	
 		fi
 
 	fi

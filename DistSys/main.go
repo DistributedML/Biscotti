@@ -47,7 +47,7 @@ const (
 	MAX_ITERATIONS  int 		  = 100
 	EPSILON 		float64 	  = 5
 
-	SECURE_AGG  	bool 		  = true
+	SECURE_AGG  	bool 		  = false
 	NOISY_VERIF		bool 		  = true
 	VERIFY 			bool 		  = true
 
@@ -961,12 +961,12 @@ func prepareForNextIteration() {
 
 		outLog.Printf(strconv.Itoa(client.id)+":I am verifier. Iteration:%d", iterationCount)
 		updateSent = true
-		// startBlockDeadlineTimer(iterationCount)
 	
 	} else {
 		outLog.Printf(strconv.Itoa(client.id)+":I am not miner or verifier. Iteration:%d", iterationCount)
 		go startBlockDeadlineTimer(iterationCount)
 		updateSent = false
+		go startBlockDeadlineTimer(iterationCount)
 	}
 
 	boolLock.Unlock()
@@ -1283,8 +1283,6 @@ func messageSender(ports []string) {
 		boolLock.Lock()
 
 		if !updateSent {
-
-			
 
 			outLog.Printf(strconv.Itoa(client.id)+":Computing Update\n")
 			client.computeUpdate(iterationCount)

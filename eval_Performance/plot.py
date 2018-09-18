@@ -24,6 +24,4 @@ for numNoise in numNoisers:
 plt.legend(loc='best')
 plt.xlabel('Percentage of colluders in the system')
 plt.ylabel('Probability of unmasked updates')
-plt.xlim([0,0.5])
-plt.ylim([0,0.3])
 plt.show()
