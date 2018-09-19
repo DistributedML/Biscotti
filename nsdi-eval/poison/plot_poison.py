@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 
-input_file_directory = "poison_fed_40p"
+input_file_directory = "poison_fed_20p_ar"
 output_file_directory = input_file_directory + "_parsed/"
 
 total_nodes = 50
@@ -26,11 +26,15 @@ def parse_logs():
 
 			if idx != -1:
 
+				ar_idx = line.find("Attack Rate")
+
 				timestamp = line[7:20]
 
 				outfile.write(str(iteration))
 				outfile.write(",")
 				outfile.write(line[(idx + 15):(idx + 22)])
+				outfile.write(",")
+				outfile.write(line[(ar_idx + 15):(ar_idx + 21)])
 				outfile.write(",")
 				outfile.write(timestamp)
 				outfile.write("\n")
@@ -45,7 +49,7 @@ def plot20():
 	toplot = np.zeros((5, 100))
 
 	###########################################
-	across_runs = np.zeros((100, 102))
+	across_runs = np.zeros((50, 102))
 	for i in range(50):
 		df = pd.read_csv("poison_bis_20p_3v_parsed/data" + str(i), header=None)
 		across_runs[i] = df[1].values
@@ -54,7 +58,7 @@ def plot20():
 	###########################################
 
 	###########################################
-	across_runs = np.zeros((100, 102))
+	across_runs = np.zeros((50, 102))
 	for i in range(50):
 		df = pd.read_csv("poison_bis_20p_5v_parsed/data" + str(i), header=None)
 		across_runs[i] = df[1].values
@@ -63,7 +67,7 @@ def plot20():
 	###########################################
 
 	###########################################
-	across_runs = np.zeros((100, 102))
+	across_runs = np.zeros((50, 102))
 	for i in range(50):
 		df = pd.read_csv("poison_bis_20p_3v_noep_parsed/data" + str(i), header=None)
 		across_runs[i] = df[1].values
@@ -72,7 +76,7 @@ def plot20():
 	###########################################
 
 	###########################################
-	across_runs = np.zeros((100, 102))
+	across_runs = np.zeros((50, 102))
 	for i in range(50):
 		df = pd.read_csv("poison_bis_20p_5v_noep_parsed/data" + str(i), header=None)
 		across_runs[i] = df[1].values
@@ -81,11 +85,11 @@ def plot20():
 	###########################################
 
 	###########################################
-	across_runs = np.zeros((100, 102))
+	across_runs = np.zeros((50, 102))
 	for i in range(50):
 		print i
-		df = pd.read_csv("poison_fed_20p_parsed/data" + str(i), header=None)
-		across_runs[i] = df[1].values
+		df = pd.read_csv("poison_fed_20p_ar_parsed/data" + str(i), header=None)
+		across_runs[i] = df[2].values
 
 	toplot[4] = np.mean(across_runs[:, 0:100], axis=0)
 	###########################################
@@ -137,7 +141,7 @@ def plot40():
 	toplot = np.zeros((5, 100))
 
 	###########################################
-	across_runs = np.zeros((100, 102))
+	across_runs = np.zeros((50, 102))
 	for i in range(50):
 		df = pd.read_csv("poison_bis_40p_3v_parsed/data" + str(i), header=None)
 		across_runs[i] = df[1].values
@@ -146,7 +150,7 @@ def plot40():
 	###########################################
 
 	###########################################
-	across_runs = np.zeros((100, 102))
+	across_runs = np.zeros((50, 102))
 	for i in range(50):
 		df = pd.read_csv("poison_bis_40p_5v_parsed/data" + str(i), header=None)
 		across_runs[i] = df[1].values
@@ -155,7 +159,7 @@ def plot40():
 	###########################################
 
 	###########################################
-	across_runs = np.zeros((100, 102))
+	across_runs = np.zeros((50, 102))
 	for i in range(50):
 		print i
 		df = pd.read_csv("poison_bis_40p_3v_noep_parsed/data" + str(i), header=None)
@@ -165,7 +169,7 @@ def plot40():
 	###########################################
 
 	###########################################
-	across_runs = np.zeros((100, 102))
+	across_runs = np.zeros((50, 102))
 	for i in range(50):
 		print i
 		df = pd.read_csv("poison_bis_40p_5v_noep_parsed/data" + str(i), header=None)
@@ -175,11 +179,11 @@ def plot40():
 	###########################################
 
 	###########################################
-	across_runs = np.zeros((100, 102))
+	across_runs = np.zeros((50, 102))
 	for i in range(50):
 		print i
-		df = pd.read_csv("poison_fed_40p_parsed/data" + str(i), header=None)
-		across_runs[i] = df[1].values
+		df = pd.read_csv("poison_fed_40p_ar_parsed/data" + str(i), header=None)
+		across_runs[i] = df[2].values
 
 	toplot[4] = np.mean(across_runs[:, 0:100], axis=0)
 	###########################################
@@ -212,7 +216,7 @@ def plot40():
 
 	axes = plt.gca()
 	axes.set_xlim([0, 101])
-	axes.set_ylim([0, 1])
+	axes.set_ylim([0, 1.1])
 
 	ax.spines['right'].set_visible(False)
 	ax.spines['top'].set_visible(False)
@@ -227,4 +231,4 @@ def plot40():
 
 if __name__ == '__main__':
 	
-	plot40()
+	plot20()
