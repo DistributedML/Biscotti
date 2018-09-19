@@ -25,6 +25,7 @@ var (
 	pyRoniModule  *python.PyObject
 	pyRoniFunc    *python.PyObject
 	pyNoiseFunc	  *python.PyObject
+	pyAttackFunc  *python.PyObject
 
 	useTorch	   bool
 
@@ -92,8 +93,9 @@ func (honest *Honest) initializeData(datasetName string, numberOfNodes int, epsi
 func (honest *Honest) checkConvergence(iterationCount int) bool {
 
 	trainError := testModel(honest.globalModel)
+	attackRate := testAttackRate(honest.globalModel)
 
-	outLog.Printf(strconv.Itoa(honest.id)+":Train Error is %.5f in Iteration %d", trainError, iterationCount)
+	outLog.Printf(strconv.Itoa(honest.id)+":Train Error is %.5f in Iteration %d and Attack Rate is %.5f", trainError, iterationCount, attackRate)
 
 	if trainError < convThreshold {
 		return true
@@ -144,6 +146,7 @@ func pyInit(datasetName string, dataFile string, epsilon float64) int {
 		pyTestFunc = pyTorchModule.GetAttrString("getTestErr")
 		pyRoniFunc = pyTorchModule.GetAttrString("roni")
 		pyNoiseFunc = pyTorchModule.GetAttrString("getNoise")
+		pyAttackFunc = pyTorchModule.GetAttrString("get17AttackRate")
 
 	} else {
 		
@@ -160,6 +163,7 @@ func pyInit(datasetName string, dataFile string, epsilon float64) int {
 		pyTrainFunc = pyTestModule.GetAttrString("train_error")
 		pyTestFunc = pyTestModule.GetAttrString("test_error")
 		pyRoniFunc = pyRoniModule.GetAttrString("roni")
+		pyAttackFunc = pyTorchModule.GetAttrString("test_error")
 
 	}
 	
@@ -279,6 +283,29 @@ func testModel(weights []float64) float64 {
 	python.PyGILState_Release(_gstate)	
 
 	return trainErr
+
+}
+
+//Test the current global model. Determine training and test error to see if model has converged 
+func testAttackRate(weights []float64) float64 {
+
+	runtime.LockOSThread()
+
+	_gstate := python.PyGILState_Ensure()
+
+	argArray := python.PyList_New(len(weights))
+
+	for i := 0; i < len(weights); i++ {
+		python.PyList_SetItem(argArray, i, python.PyFloat_FromDouble(weights[i]))
+	}
+
+	var attackRate float64
+	pyTrainResult := pyAttackFunc.CallFunction(argArray)
+	attackRate = python.PyFloat_AsDouble(pyTrainResult)
+
+	python.PyGILState_Release(_gstate)	
+
+	return attackRate
 
 }
 

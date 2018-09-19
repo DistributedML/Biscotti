@@ -94,6 +94,12 @@ def getTestErr(ww):
     myclient.updateModel(weights)
     return myclient.getTestErr()
 
+def get17AttackRate(ww):
+    global myclient
+    weights = np.array(ww)
+    myclient.updateModel(weights)
+    return myclient.get17AttackRate()
+
 def getNoise(iteration):
     return (-1 / this_batch_size) * samples[iteration % expected_iters]
 
@@ -115,7 +121,7 @@ if __name__ == '__main__':
     
     epsilon = 0
     batch_size = 10
-    dim = init("mnist", "mnist_train", epsilon, batch_size)
+    dim = init("mnist", "mnist_bad", epsilon, batch_size)
     ww = np.zeros(dim)
     numRejected = 0
 
@@ -129,10 +135,12 @@ if __name__ == '__main__':
 
         if i % 50 == 0:
             print("Test err: " + str(getTestErr(ww)))
+            print("Attack rate: " + str(get17AttackRate(ww)))
 
         ww = ww + delta
 
     print(getTestErr(ww))
+    print(get17AttackRate(ww))
     # print("Num rejected by RONI: " + str(numRejected))
 
     pdb.set_trace()
