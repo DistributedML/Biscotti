@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/sbinet/go-python"
 	"log"
+	"math"
 	"net"
 	"net/rpc"
     "strings"
@@ -40,6 +41,8 @@ const (
 	EPSILON 		float64 	  = 5
 
 	SECURE_AGG  	bool 		  = true
+
+	POISONING 	 	float64 	  = 0
 
 )
 
@@ -286,7 +289,21 @@ func main() {
 
 	//Initialize a honest client
 	client = Honest{id: nodeNum, blockUpdates: make([]Update, 0, 5)}
-	client.initializeData(datasetName, numberOfNodes, EPSILON)	
+
+	if POISONING > 0 {
+
+		// If your node idx is above this, you are poisoning
+		poisoning_index := int(math.Ceil(float64(numberOfNodes) * (1.0 - POISONING)))
+		
+		outLog.Printf("Poisoning is at %d", poisoning_index)
+
+		isPoisoning := nodeNum >= poisoning_index 
+		client.initializeData(datasetName, numberOfNodes, EPSILON, isPoisoning)	
+	
+	} else {
+		
+		client.initializeData(datasetName, numberOfNodes, EPSILON, false)	
+	}
 
 	converged = false
 	updateLock = sync.Mutex{}

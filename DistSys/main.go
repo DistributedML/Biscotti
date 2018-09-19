@@ -303,11 +303,11 @@ func processShare(share MinerPart) {
 		numberOfShares := client.addSecretShare(share)
 		updateLock.Unlock()
 
-		outLog.Printf("As miner, I expect %d shares, I have gotten %d", numberOfNodeUpdates / 2, numberOfShares)
+		outLog.Printf("As miner, I expect %d shares, I have gotten %d", numberOfNodeUpdates / 4, numberOfShares)
 
 		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
-		if numberOfShares == (numberOfNodeUpdates / 2) {			
-			outLog.Printf(strconv.Itoa(client.id)+":Eighth shares for iteration %d received. Notifying channel.", iterationCount)	
+		if numberOfShares == (numberOfNodeUpdates / 4) {			
+			outLog.Printf(strconv.Itoa(client.id)+":Quarter shares for iteration %d received. Notifying channel.", iterationCount)	
 			allSharesReceived <- true 		 
 		}
 		
