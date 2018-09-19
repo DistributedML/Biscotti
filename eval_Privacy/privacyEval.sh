@@ -20,9 +20,7 @@ echo $maxNoisers
 let numNoisers=5
 # let colluders=15
 
-for (( colluders = 40 ; colluders <= upperbound; colluders=colluders+stepCollusion )); do
-
-	# for (( i = 0; i < numRuns; i++ )); do
+for (( colluders = 20 ; colluders <= 50; colluders=colluders+stepCollusion)); do
 
 	echo $colluders, $numNoisers
 
@@ -32,10 +30,7 @@ for (( colluders = 40 ; colluders <= upperbound; colluders=colluders+stepCollusi
 		echo "Test run failed"
 		exit
 	fi
-	# break
-		
-	# done
-
+	
 done
 
 	# break

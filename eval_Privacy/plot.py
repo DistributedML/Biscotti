@@ -28,7 +28,7 @@ plt.ylabel('Probability of unmasked updates', fontsize=20)
 
 axes = plt.gca()
 axes.set_xlim([0, 0.5])
-axes.set_ylim([0, 0.3])
+axes.set_ylim([0, 0.1])
 
 ax.spines['right'].set_visible(False)
 ax.spines['top'].set_visible(False)
@@ -38,4 +38,5 @@ plt.setp(ax.get_yticklabels(), fontsize=14)
 
 fig.tight_layout(pad=0.1)
 fig.savefig("eval_noise_attack.pdf")
+
 plt.show()

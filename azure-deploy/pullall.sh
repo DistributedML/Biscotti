@@ -20,7 +20,8 @@ for line in $(cat tempHosts);do
 	fi
 
 	echo "pulling on" $tname
-	ssh $username@$tname 'cd /home/cfung/gopath/src/simpleBlockChain; git checkout .; git pull origin master'
+	ssh $username@$tname 'cd /home/cfung/gopath/src/simpleBlockChain; git checkout .; git pull origin master;cd /home/cfung/gopath/src/simpleBlockChain/ML/Pytorch/data/mnist; python parse_mnist.py'
+
 
 done
 

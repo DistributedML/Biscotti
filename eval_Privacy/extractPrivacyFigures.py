@@ -29,8 +29,8 @@ for filename in os.listdir(directory):
 	
 print totalUnmaskedUpdates
 
-maskingProb = (totalUnmaskedUpdates*1.0)/(totalUpdates*1.0)
+# maskingProb = (totalUnmaskedUpdates*1.0)/(totalUpdates*1.0)
 
-lineToWrite = str(privProb) + "," + str(maskingProb)+"," + str(numNoisers)+"\n"
+lineToWrite = str(privProb) + "," + str(totalUnmaskedUpdates)+"," + str(numNoisers)+"\n"
 
 results.write(lineToWrite)

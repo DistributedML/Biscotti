@@ -977,7 +977,6 @@ func prepareForNextIteration() {
 	
 	} else {
 		outLog.Printf(strconv.Itoa(client.id)+":I am not miner or verifier. Iteration:%d", iterationCount)
-		go startBlockDeadlineTimer(iterationCount)
 		updateSent = false
 		go startBlockDeadlineTimer(iterationCount)
 	}
@@ -1023,10 +1022,10 @@ func processUpdate(update Update) {
 		numberOfUpdates := client.addBlockUpdate(update)
 		updateLock.Unlock()
 
-		outLog.Printf("As miner, I expect %d updates, I have gotten %d", numberOfNodeUpdates, numberOfUpdates)
+		outLog.Printf("As miner, I expect %d updates, I have gotten %d", (numberOfNodeUpdates / 8), numberOfUpdates)
 
 		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
-		if numberOfUpdates == (numberOfNodeUpdates / 2)  {			
+		if numberOfUpdates == (numberOfNodeUpdates / 8)  {			
 			outLog.Printf(strconv.Itoa(client.id)+":Half updates for iteration %d received. Notifying channel.", iterationCount)	
 			allUpdatesReceived <- true 		 
 		}	
@@ -1554,18 +1553,17 @@ func sendUpdateToMiners(addresses []string) {
 				select {
 				case err := <-c:
 					
+					mined = true
+
 					printError("Error in sending update", err)
 					if(err==nil){
 						outLog.Printf(strconv.Itoa(client.id)+":Update mined. Iteration:%d\n", client.update.Iteration)
-						mined = true
 					}
 
 					if(err==staleError){
 						outLog.Printf(strconv.Itoa(client.id)+"Stale error:Update mined. Iteration:%d\n", client.update.Iteration)
-						mined = true
 					}
 					
-					go startBlockDeadlineTimer(iterationCount)
 
 					// use err and result
 				case <-time.After(timeoutRPC):
@@ -1597,8 +1595,8 @@ func sendUpdateToMiners(addresses []string) {
 			outLog.Printf(strconv.Itoa(client.id)+":Sending an empty block")
 			go sendBlock(*blockToSend)
 		}
-	}
-
+	
+	} 
 }
 
 func sendUpdateSecretsToMiners(addresses []string) {
@@ -1698,8 +1696,11 @@ func sendUpdateSecretsToMiners(addresses []string) {
 			outLog.Printf(strconv.Itoa(client.id)+":Sending an empty block")
 			go sendBlock(*blockToSend)
 		}
+	
 	} else {
+	
 		go startBlockDeadlineTimer(iterationCount)
+	
 	}
 
 }
