@@ -1,6 +1,5 @@
 let converged=0
 let numberOfNodes=50
-let failurePerMin=1
 
 while [[ "$converged" -eq 0 ]]; do
 
@@ -13,8 +12,17 @@ while [[ "$converged" -eq 0 ]]; do
 	echo $failNode
 	echo $failPort
 
+	if [[ "$failNode" -eq 0 ]]; then
+		echo I will not kill 0
+		continue
+	fi
+
 	fuser -k $failPort/tcp
 			
+	sleep 5
+
+	./DistSys -i $failNode -t $numberOfNodes -d mnist
+
 	sleep 5
 
 done
