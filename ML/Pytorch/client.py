@@ -16,10 +16,8 @@ class Client():
         transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
         self.trainset = Dataset(filename, "../ML/Pytorch/data/" + dataset, is_train=True, transform=transform)
         self.testset = Dataset("mnist_test", "../ML/Pytorch/data/" + dataset, is_train=False, transform=transform)
-        self.attackset = Dataset("mnist_digit1", "../ML/Pytorch/data/" + dataset, is_train=False, transform=transform)
         self.trainloader = torch.utils.data.DataLoader(self.trainset, batch_size=self.batch_size, shuffle=True)
         self.testloader = torch.utils.data.DataLoader(self.testset, batch_size=len(self.testset), shuffle=False)
-        self.attackloader = torch.utils.data.DataLoader(self.attackset, batch_size=len(self.testset), shuffle=False)
 
         self.model = model
 
@@ -131,16 +129,6 @@ class Client():
     
     def getModel(self):
         return self.model
-    
-    def roni(self, modelWeights, update):
-        
-        self.updateModel(modelWeights)
-        score1 = self.getTrainErr()
-
-        self.updateModel(modelWeights + update)
-        score2 = self.getTrainErr()
-
-        return score2 - score1
 
     def getTrainErr(self):
         for i, data in enumerate(self.trainloader, 0):
@@ -161,18 +149,6 @@ class Client():
             out = self.model(inputs)
             pred = np.argmax(out.detach().numpy(), axis=1)
         return 1 - accuracy_score(pred, labels)
-
-    def get17AttackRate(self):
-
-        for i, data in enumerate(self.attackloader, 0):
-            # get the inputs
-            inputs = data['image'].float()
-            labels = data['label'].long()
-            inputs, labels = Variable(inputs), Variable(labels)
-            out = self.model(inputs)
-            pred = np.argmax(out.detach().numpy(), axis=1)
-        return 1 - accuracy_score(pred, labels)
-
 
         # X, y = self.testset.getData()
         # X, y = Variable(torch.from_numpy(X)), Variable(torch.from_numpy(y))

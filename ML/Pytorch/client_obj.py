@@ -94,12 +94,6 @@ def getTestErr(ww):
     myclient.updateModel(weights)
     return myclient.getTestErr()
 
-def get17AttackRate(ww):
-    global myclient
-    weights = np.array(ww)
-    myclient.updateModel(weights)
-    return myclient.get17AttackRate()
-
 def getNoise(iteration):
     return (-1 / this_batch_size) * samples[iteration % expected_iters]
 
