@@ -103,9 +103,8 @@ func (honest *Honest) initializeData(datasetName string, numberOfNodes int, epsi
 func (honest *Honest) checkConvergence(iterationCount int) bool {
 
 	trainError := testModel(honest.globalModel)
-	attackRate := testAttackRate(honest.globalModel)
 
-	outLog.Printf(strconv.Itoa(honest.id)+":Train Error is %.5f in Iteration %d and Attack Rate is %.5f", trainError, iterationCount, attackRate)
+	outLog.Printf(strconv.Itoa(honest.id)+":Train Error is %.5f in Iteration %d", trainError, iterationCount)
 
 	if trainError < convThreshold {
 		return true
