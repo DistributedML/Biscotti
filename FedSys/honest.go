@@ -41,7 +41,7 @@ const (
 	datasetPath     = "../ML/data/"
 	codePath        = "../ML/code"
 	torchPath       = "../ML/Pytorch"
-	convThreshold   = 0.05
+	convThreshold   = 0.00
 
 	// Crypto constants
 	commitKeyPath = "commitKey.json"
@@ -174,7 +174,7 @@ func pyInit(datasetName string, dataFile string, epsilon float64) int {
 		pyTrainFunc = pyTestModule.GetAttrString("train_error")
 		pyTestFunc = pyTestModule.GetAttrString("test_error")
 		pyRoniFunc = pyRoniModule.GetAttrString("roni")
-		pyAttackFunc = pyTorchModule.GetAttrString("test_error")
+		pyAttackFunc = pyTestModule.GetAttrString("test_error")
 
 	}
 	
