@@ -98,17 +98,30 @@ func init() {
 func (honest *Honest) initializeData(datasetName string, numberOfNodes int, epsilon float64, isPoisoning bool) {
 
 	if datasetName == "creditcard" {
+		
 		useTorch = false
+	
+		if isPoisoning {
+			outLog.Println("Get the bad credit data.")
+			honest.ncol = pyInit("creditbad", "creditbad", epsilon)	
+		} else {
+			honest.ncol = pyInit(datasetName, datasetName + strconv.Itoa(honest.id), epsilon)
+		}	
+
 	} else {
+	
 		useTorch = true
+	
+		if isPoisoning {
+			outLog.Println("Get the bad data.")
+			honest.ncol = pyInit("mnist", "mnist_bad_full", epsilon)	
+		} else {
+			honest.ncol = pyInit(datasetName, datasetName + strconv.Itoa(honest.id), epsilon)
+		}
+
 	}
 
-	if isPoisoning {
-		outLog.Println("Get the bad data.")
-		honest.ncol = pyInit("mnist", "mnist_bad", epsilon)	
-	} else {
-		honest.ncol = pyInit(datasetName, datasetName + strconv.Itoa(honest.id), epsilon)
-	}
+	
 	
 	honest.dataset = datasetName
 	honest.bc = NewBlockchain(honest.ncol)
@@ -212,7 +225,7 @@ func pyInit(datasetName string, dataFile string, epsilon float64) int {
 		pyRoniFunc = pyRoniModule.GetAttrString("roni")
 
 		// only used for MNIST
-		pyAttackFunc = pyTorchModule.GetAttrString("test_error")
+		pyAttackFunc = pyTestModule.GetAttrString("test_error")
 
 	}
 	

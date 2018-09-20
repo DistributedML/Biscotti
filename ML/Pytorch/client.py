@@ -132,6 +132,16 @@ class Client():
     def getModel(self):
         return self.model
     
+    def roni(self, modelWeights, update):
+        
+        self.updateModel(modelWeights)
+        score1 = self.getTrainErr()
+
+        self.updateModel(modelWeights + update)
+        score2 = self.getTrainErr()
+
+        return score2 - score1
+
     def getTrainErr(self):
         for i, data in enumerate(self.trainloader, 0):
             # get the inputs

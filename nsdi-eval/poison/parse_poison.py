@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 
-input_file_directory = "poison_fed_20p_ar"
+input_file_directory = "poison_fed_40p_full"
 output_file_directory = input_file_directory + "_parsed/"
 
 total_nodes = 50
