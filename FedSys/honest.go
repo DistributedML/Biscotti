@@ -72,18 +72,29 @@ func init() {
 func (honest *Honest) initializeData(datasetName string, numberOfNodes int, epsilon float64, isPoisoning bool) {
 
 	if datasetName == "creditcard" {
+		
 		useTorch = false
+	
+		if isPoisoning {
+			outLog.Println("Get the bad credit data.")
+			honest.ncol = pyInit("creditbad", "creditbad", epsilon)	
+		} else {
+			honest.ncol = pyInit(datasetName, datasetName + strconv.Itoa(honest.id), epsilon)
+		}	
+
 	} else {
+	
 		useTorch = true
-	}
+	
+		if isPoisoning {
+			outLog.Println("Get the bad data.")
+			honest.ncol = pyInit("mnist", "mnist_bad_full", epsilon)	
+		} else {
+			honest.ncol = pyInit(datasetName, datasetName + strconv.Itoa(honest.id), epsilon)
+		}
 
-	if isPoisoning {
-		outLog.Println("Get the bad data.")
-		honest.ncol = pyInit("mnist", "mnist_bad", epsilon)	
-	} else {
-		honest.ncol = pyInit(datasetName, datasetName + strconv.Itoa(honest.id), epsilon)
 	}
-
+	
 	honest.dataset = datasetName
 	honest.globalModel = make([]float64, honest.ncol)
 

@@ -120,9 +120,7 @@ func (honest *Honest) initializeData(datasetName string, numberOfNodes int, epsi
 		}
 
 	}
-
-	
-	
+		
 	honest.dataset = datasetName
 	honest.bc = NewBlockchain(honest.ncol)
 
