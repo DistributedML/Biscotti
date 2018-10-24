@@ -20,16 +20,3 @@ runningTime=$((end-start))
 thisLine=$runningTime,$totalNodes
 
 echo $thisLine >> results.csv
-
-		# if ! python extractPerfFigures.py; then
-		# 	echo "Test run failed"
-		# 	exit
-		# fi
-		
-	# done
-
-# done
-
-
-
-# python plot.py

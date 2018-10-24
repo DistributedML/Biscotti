@@ -64,7 +64,11 @@ for (( index = $startingIndex ; index < $startingIndex + nodesToRun; index++ ));
 	thisLogFile=test1_$index\_$totalnodes.log
 	thatLogFile=log_$index\_$totalnodes.log
 	
+
 	let thisPort=8000+$index
+
+	echo $index, $totalnodes, $myAddress, $thisPort
+
 
 	echo deploying "$index"
 	cd $GOPATH/src/simpleBlockChain/DistSys

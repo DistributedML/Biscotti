@@ -563,8 +563,10 @@ func (honest *Honest) verifyUpdate(update Update) float64 {
 	}
 
 	var score float64
+	outLog.Println("Going inside RONI")
 	pyRoni := pyRoniFunc.CallFunction(truthArray, updateArray)
 	score = python.PyFloat_AsDouble(pyRoni)		
+	outLog.Println("Outside RONI")
 	
 	python.PyGILState_Release(_gstate)	
 	outLog.Println("Released Python Lock")

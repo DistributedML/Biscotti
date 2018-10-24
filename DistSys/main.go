@@ -33,7 +33,7 @@ const (
 	timeoutPeer 	time.Duration = 5 * time.Second
 	
 	NUM_VERIFIERS 	int           = 3
-	NUM_MINERS 		int           = 3
+	NUM_MINERS 		int           = 10
 	// NUM_NOISERS     int 		  = 2
 	DEFAULT_STAKE   int 		  = 10
 
@@ -104,6 +104,7 @@ var (
 	convergedLock 		sync.Mutex
 	peerLock			sync.Mutex
 	blockChainLock		sync.Mutex
+	roniLock			sync.Mutex
 
 	ensureRPC      		sync.WaitGroup
 
@@ -129,7 +130,6 @@ var (
 
 	PRIV_PROB 		float64 	  = 0
 	NUM_NOISERS 	int 		  = 2
-
 
 )
 
@@ -160,7 +160,10 @@ func (s *Peer) VerifyUpdate(update Update, signature *[]byte) error {
 		return true
 	}*/
 
+	roniLock.Lock()
 	roniScore := client.verifyUpdate(update)
+	roniLock.Unlock()
+
 	outLog.Printf("RONI for update at iteration %d is %f.\n", update.Iteration, roniScore)
 
 	if (PRIV_PROB > 0) {
@@ -719,6 +722,7 @@ func main() {
 	convergedLock = sync.Mutex{}
 	peerLock = sync.Mutex{}
 	blockChainLock = sync.Mutex{}
+	roniLock = sync.Mutex{}
 
 	ensureRPC = sync.WaitGroup{}
 	allUpdatesReceived = make (chan bool)

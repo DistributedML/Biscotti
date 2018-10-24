@@ -19,7 +19,7 @@ cd ../DistSys
 echo "Building"
 go build
 
-rm ./LogFiles2/*.log
+# rm ./LogFiles2/*.log
 # cd ..
 
 cd ../eval_Performance
@@ -40,24 +40,24 @@ for line in $(cat tempHosts);do
 
 done
 
-# for line in $(cat tempHosts);do
+for line in $(cat tempHosts);do
 
-# 	tname=`echo $line | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'`
+	tname=`echo $line | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'`
 
-# 	echo $tname
+	echo $tname
 
-# 	if [[ "$tname" == "198.162.52.157" || "$tname" == "198.162.52.33" ]]; then
-# 		username="clement"
-# 	else
-# 		username="cfung"
-# 	fi
+	if [[ "$tname" == "198.162.52.157" || "$tname" == "198.162.52.33" ]]; then
+		username="clement"
+	else
+		username="cfung"
+	fi
 
-# 	scp ../DistSys/commitKey.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
-# 	scp ../DistSys/pKeyG1.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
-# 	scp peersFileSent $username@$tname:~/gopath/src/simpleBlockChain/DistSys
-# 	scp ../DistSys/DistSys $username@$tname:~/gopath/src/simpleBlockChain/DistSys
+	scp ../DistSys/commitKey.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
+	scp ../DistSys/pKeyG1.json $username@$tname:/home/$username/gopath/src/simpleBlockChain/DistSys
+	scp peersFileSent $username@$tname:~/gopath/src/simpleBlockChain/DistSys
+	# scp ../DistSys/DistSys $username@$tname:~/gopath/src/simpleBlockChain/DistSys
 
-# done
+done
 
 for line in $(cat tempHosts);do
 

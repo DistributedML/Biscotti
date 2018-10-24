@@ -3,7 +3,7 @@ let dimensions=7850
 # let maxVMNodes=5
 let totalVMs=20
 
-let nodesInEachVM=4
+let nodesInEachVM=2
 
 # for (( nodesInEachVM = 5 ; nodesInEachVM <= maxVMNodes; nodesInEachVM=nodesInEachVM+1 )); do
 
