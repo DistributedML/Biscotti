@@ -43,7 +43,7 @@ for (( totalnodes = $nodes; totalnodes < ($nodes + 1); totalnodes++ )); do
 		echo $thisPort
 		echo $myAddress
 
-		./DistSys -i=$index -t=$totalnodes -d=creditcard -c=0 > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile & 
+		./DistSys -i=$index -t=$totalnodes -d=mnist -c=0 > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile & 
 		
 	done	
 

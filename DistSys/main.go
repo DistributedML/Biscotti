@@ -9,6 +9,8 @@ import (
 	"log"
 	"net"
 	"net/rpc"
+	"math"
+	"math/rand"
     "strings"
 	"strconv"
 	"sync"
@@ -17,7 +19,6 @@ import (
 	"flag"
 	"encoding/gob"
 	"sort"
-	"math"
 )
 
 // Timeout for block should be more than timeout for update because nodes should be more patients for the block to come through
@@ -52,6 +53,9 @@ const (
 	VERIFY 			bool 		  = true
 
 	POISONING 	 	float64 	  = 0
+
+	// Probability of failing at any iteration. Set to 0 or negative to avoid.
+	FAIL_PROB 		float64 	  = -0.005
 
 )
 
@@ -946,6 +950,12 @@ func prepareForNextIteration() {
 	
 	iterationCount++
 	outLog.Printf("Moving on to next iteration %d", iterationCount)
+
+	if rand.Float64() < FAIL_PROB {
+		outLog.Printf("Got unlucky, I will fail now.")
+		os.Exit(1)		
+	}
+
 
 	// This runs the VRF and sets the verifiers for this iteration
 	roleIDs = getRoles()
