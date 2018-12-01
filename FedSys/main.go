@@ -126,7 +126,7 @@ func (s *Peer) RegisterModel(data BlockData, returnModel *BlockData) error {
 	go processNewModel(data)
 
 	return nil
-
+	
 }
 
 func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, model *Update) error {
@@ -461,7 +461,7 @@ func prepareForNextIteration() {
 	iterationCount++
 	outLog.Printf("Moving on to next iteration %d", iterationCount)
 
-	numberOfNodeUpdates = numberOfNodes - 1
+	numberOfNodeUpdates = (numberOfNodes)/8
 
 	if amLeader() {
 		go startUpdateDeadlineTimer(iterationCount)
@@ -513,7 +513,7 @@ func processUpdate(update Update) {
 		outLog.Printf("As aggregator, I expect %d updates, I have gotten %d", numberOfNodeUpdates, numberOfUpdates)
 
 		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
-		if numberOfUpdates >= (numberOfNodeUpdates)  {			
+		if numberOfUpdates == (numberOfNodeUpdates)  {			
 			outLog.Printf(strconv.Itoa(client.id)+":Half updates for iteration %d received. Notifying channel.", iterationCount)	
 			allUpdatesReceived <- true
 		}	

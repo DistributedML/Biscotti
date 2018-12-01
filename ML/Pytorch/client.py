@@ -78,7 +78,7 @@ class Client():
         for name, param in self.model.named_parameters():
             if param.requires_grad:
                 param.grad = layers[layer]
-                layer += 1
+                layer += 1  
 
         # Step in direction of parameter gradients
         self.optimizer.step()

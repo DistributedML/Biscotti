@@ -5,8 +5,6 @@ let totalVMs=20
 
 let nodesInEachVM=2
 
-# for (( nodesInEachVM = 5 ; nodesInEachVM <= maxVMNodes; nodesInEachVM=nodesInEachVM+1 )); do
-
 	# for (( i = 0; i < numRuns; i++ )); do
 let totalNodes=$(($nodesInEachVM*$totalVMs))
 echo $totalNodes. $nodesInEachVM

@@ -11,9 +11,6 @@ import (
 	"github.com/dedis/kyber"
 	"github.com/dedis/kyber/pairing/bn256"
 	"encoding/json"
-
-
-
 )
 
 // Assumption: This script takes in the amount of nodes to be run at each machine in the hosts file alongwith the dimensions of delta w
@@ -28,7 +25,7 @@ type PkeyG1 struct{
 
 var(
 
-	fileReadPath = "../azure-deploy/tempHosts"
+	confPath = "../azure-conf/"
 	peersFilePath = "../DistSys/peersfile.txt"
 	commitKeyPath = "../DistSys/commitKey.json"
 	// commitKeyG2Path = "../DistSys/commitKeyG2.json"
@@ -48,7 +45,10 @@ func main() {
 	suite := bn256.NewSuite()
 
 	nodesInEachVMPtr := (flag.Int("n", 0 , "The total number of nodes in the network"))
-	dimesionsPtr := (flag.Int("d", 0 , "The total number of nodes in the network"))
+	dimesionsPtr := (flag.Int("d", 0 , "The number of parameters in the network"))
+
+	var hostFileName string
+    flag.StringVar(&hostFileName, "h", "hosts_sameDC", "The filename inside azure-conf containing hostnames")
 
 	flag.Parse()
 
@@ -57,7 +57,9 @@ func main() {
 
 	fmt.Println(nodesInEachVM)
 
-	readFile, err := os.Open(fileReadPath)
+	hostFilePath := confPath + hostFileName                         
+
+	hostFile, err := os.Open(hostFilePath)
 
 	check(err)
 
@@ -72,7 +74,7 @@ func main() {
 	
 	check(er)	
 
-	defer readFile.Close()
+	defer hostFile.Close()
 
 	defer peersFile.Close()
 
@@ -84,7 +86,7 @@ func main() {
 
 	// defer sKeyFile.Close()
 
-	scanner := bufio.NewScanner(readFile)
+	scanner := bufio.NewScanner(hostFile)
 
 	hostindex := 0
 

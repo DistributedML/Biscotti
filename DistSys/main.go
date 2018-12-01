@@ -28,13 +28,13 @@ import (
 const (
 	basePort        int           = 8000
 	verifierIP   	string        = "127.0.0.1:"
-	timeoutRPC    	time.Duration = 60 * time.Second
-	timeoutUpdate 	time.Duration = 60 * time.Second 
-	timeoutBlock 	time.Duration = 120 * time.Second
+	timeoutRPC    	time.Duration = 120 * time.Second
+	timeoutUpdate 	time.Duration = 500 * time.Second 
+	timeoutBlock 	time.Duration = 600 * time.Second
 	timeoutPeer 	time.Duration = 5 * time.Second
 	
 	NUM_VERIFIERS 	int           = 3
-	NUM_MINERS 		int           = 10
+	NUM_MINERS 		int           = 3
 	// NUM_NOISERS     int 		  = 2
 	DEFAULT_STAKE   int 		  = 10
 
@@ -49,7 +49,7 @@ const (
 	EPSILON 		float64 	  = 2
 
 	SECURE_AGG  	bool 		  = true
-	NOISY_VERIF		bool 		  = true
+	NOISY_VERIF		bool 		  = false
 	VERIFY 			bool 		  = true
 
 	POISONING 	 	float64 	  = 0
@@ -231,15 +231,15 @@ func (s *Peer) RegisterSecret(share MinerPartRPC, _ignored *bool) error {
 	outLog.Printf("Length of signature:%d", len(share.SignatureList))
 	outLog.Printf("Length of verifiers:%d", len(verifierPortsToConnect))
 
-	if VERIFY {
-		if share.Iteration == iterationCount {	
-			if ((len(share.SignatureList) < len(verifierPortsToConnect)/2) || !verifySignatures(share.SignatureList, share.CommitmentUpdate)){
-				printError("Share has insufficient or bogus signatures", signatureError)
-				return signatureError
-			}
-		}
+	// if VERIFY {
+	// 	if share.Iteration == iterationCount {	
+	// 		if ((len(share.SignatureList) < len(verifierPortsToConnect)/2) || !verifySignatures(share.SignatureList, share.CommitmentUpdate)){
+	// 			printError("Share has insufficient or bogus signatures", signatureError)
+	// 			return signatureError
+	// 		}
+	// 	}
 
-	}
+	// }
 
 	// Process update only called by the miner nodes
 	realShare := converttoMinerPart(share) 
@@ -313,7 +313,7 @@ func processShare(share MinerPart) {
 		outLog.Printf("As miner, I expect %d shares, I have gotten %d", numberOfNodeUpdates / 8, numberOfShares)
 
 		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
-		if numberOfShares >= (numberOfNodeUpdates / 8) {			
+		if numberOfShares == (numberOfNodeUpdates / 8) {			
 			outLog.Printf(strconv.Itoa(client.id)+":Eighth shares for iteration %d received. Notifying channel.", iterationCount)	
 			allSharesReceived <- true 		 
 		}
@@ -685,7 +685,7 @@ func main() {
 
 	//Initialize a honest client
 	client = Honest{id: nodeNum, blockUpdates: make([]Update, 0, 5)}
-	TOTAL_SHARES = int(math.Ceil(float64(POLY_SIZE)/float64(NUM_MINERS)))*NUM_MINERS
+	TOTAL_SHARES = int(math.Ceil(float64(POLY_SIZE*2)/float64(NUM_MINERS)))*NUM_MINERS
 
 	// Reading data and declaring some global locks to be used later
 	PRIV_PROB = (float64(colluders)/100.0)
@@ -1121,6 +1121,7 @@ func processBlock(block Block) {
 			time.Sleep(1000 * time.Millisecond)
 		}
 
+		// TODO: Backlog created while in main loop. Race condition. Too many blocks of previous iteration created.
 		
 
 		if ((block.Data.Iteration == iterationCount) || client.evaluateBlockQuality(block)){
@@ -1198,8 +1199,7 @@ func addBlockToChain(block Block) {
 				quitRoutine <- true
 			}
 		
-		}
-		
+		}		
 
 		boolLock.Unlock()
 
@@ -1772,6 +1772,15 @@ func startUpdateDeadlineTimer(timerForIteration int){
 		
 		}
 
+	}else{
+
+
+
+		time.Sleep(1000 * time.Millisecond)
+		outLog.Printf(strconv.Itoa(client.id)+":Forwarding timer ahead.")
+		allUpdatesReceived <- true
+	
+	}
 	}
 	// An old timer was triggered, try to catch up
 	// } else {
