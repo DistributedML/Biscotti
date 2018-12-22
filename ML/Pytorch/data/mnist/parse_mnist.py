@@ -241,7 +241,7 @@ if __name__ == "__main__":
     data = np.load("mnist_digit1.npy")
     data[:, -1] = 7
 
-    np.save("mnist_bad_17", data)
+    np.save("mnist17", data)
 
     # Set up a 1-7
     data = np.load("mnist17.npy")
