@@ -1781,7 +1781,7 @@ func startUpdateDeadlineTimer(timerForIteration int){
 		allUpdatesReceived <- true
 	
 	}
-	}
+	
 	// An old timer was triggered, try to catch up
 	// } else {
 	// 	time.Sleep(1000 * time.Millisecond)
