@@ -106,7 +106,8 @@ def slice_for_tm():
 
     test_slice = np.hstack((Xtest, np.reshape(ytest, (len(ytest), 1))))
     np.save("mnist_test", test_slice)
-
+    
+# Creates dataset into numSplits*10. Use value 10 to generate 100 datafiles 
 def slice_uniform(numSplits):
 
     mndata = MNIST('.')
@@ -136,11 +137,16 @@ def slice_uniform(numSplits):
     Xtrain, _, _ = standardize_cols(Xtrain)
     Xtest, _, _ = standardize_cols(Xtest)
 
+    print("Shape of X train:" + str(Xtrain.shape))
+
     randseed = np.random.permutation(Xtrain.shape[0])
     Xtrain = Xtrain[randseed, :]
     ytrain = ytrain[randseed]
 
+
     numRows = int(Xtrain.shape[0] / numSplits)
+    
+
     for i in range(numSplits):
         dataslice = np.hstack((Xtrain[(i * numRows):((i + 1) * numRows), :],
                         ytrain[(i * numRows):((i + 1) * numRows)][:, None]))
@@ -235,17 +241,19 @@ def standardize_cols(X, mu=None, sigma=None):
 
 if __name__ == "__main__":
     
-    slice_for_tm()
+    slice_uniform(10)
 
-    # Set up a 1-7
-    data = np.load("mnist_digit1.npy")
-    data[:, -1] = 7
+    # slice_for_tm()
 
-    np.save("mnist17", data)
+    # # Set up a 1-7
+    # data = np.load("mnist_digit1.npy")
+    # data[:, -1] = 7
 
-    # Set up a 1-7
-    data = np.load("mnist17.npy")
-    data[:, -1] = (data[:, -1] + 1) % 10
+    # np.save("mnist17", data)
 
-    np.save("mnist_bad_full", data)
+    # # Set up a 1-7
+    # data = np.load("mnist17.npy")
+    # data[:, -1] = (data[:, -1] + 1) % 10
+
+    # np.save("mnist_bad_full", data)
 
