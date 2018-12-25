@@ -310,10 +310,10 @@ func processShare(share MinerPart) {
 		numberOfShares := client.addSecretShare(share)
 		updateLock.Unlock()
 
-		outLog.Printf("As miner, I expect %d shares, I have gotten %d", numberOfNodeUpdates / 8, numberOfShares)
+		outLog.Printf("As miner, I expect %d shares, I have gotten %d", numberOfNodes / 8, numberOfShares)
 
 		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
-		if numberOfShares == (numberOfNodeUpdates / 8) {			
+		if numberOfShares == (numberOfNodes / 8) {			
 			outLog.Printf(strconv.Itoa(client.id)+":Eighth shares for iteration %d received. Notifying channel.", iterationCount)	
 			allSharesReceived <- true 		 
 		}
@@ -688,10 +688,11 @@ func main() {
 	TOTAL_SHARES = int(math.Ceil(float64(POLY_SIZE*2)/float64(NUM_MINERS)))*NUM_MINERS
 
 	// Reading data and declaring some global locks to be used later
-	PRIV_PROB = (float64(colluders)/100.0)
-	collusionThresh = int(math.Ceil(float64(numberOfNodes) * (1.0 - PRIV_PROB)))
 	
 	// Privacy Attack experiment ONLY
+	PRIV_PROB = (float64(colluders)/100.0)
+	collusionThresh = int(math.Ceil(float64(numberOfNodes) * (1.0 - PRIV_PROB)))
+
 	if collusionThresh > 0 {
 		if NOISY_VERIF && (nodeNum < collusionThresh) {
 			client.initializeData(datasetName, numberOfNodes, EPSILON, false)	
@@ -699,6 +700,8 @@ func main() {
 			client.initializeData(datasetName, numberOfNodes, 0, false)	
 		}
 	}
+
+	// Poisoning attack ONLY
 
 	if POISONING > 0 {
 
@@ -711,7 +714,6 @@ func main() {
 		client.initializeData(datasetName, numberOfNodes, EPSILON, isPoisoning)	
 	}
 	
-	// Poisoning attack ONLY
 
 	client.bootstrapKeys()
 
@@ -1039,7 +1041,7 @@ func processUpdate(update Update) {
 		outLog.Printf("As miner, I expect %d updates, I have gotten %d", (numberOfNodeUpdates / 8), numberOfUpdates)
 
 		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
-		if numberOfUpdates == (numberOfNodeUpdates / 8)  {			
+		if numberOfUpdates == (numberOfNodes / 8)  {			
 			outLog.Printf(strconv.Itoa(client.id)+":Half updates for iteration %d received. Notifying channel.", iterationCount)	
 			allUpdatesReceived <- true 		 
 		}	

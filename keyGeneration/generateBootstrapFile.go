@@ -25,7 +25,7 @@ type PkeyG1 struct{
 
 var(
 
-	confPath = "../azure-conf/"
+	confPath = "../azure/azure-conf/"
 	peersFilePath = "../DistSys/peersfile.txt"
 	commitKeyPath = "../DistSys/commitKey.json"
 	// commitKeyG2Path = "../DistSys/commitKeyG2.json"
