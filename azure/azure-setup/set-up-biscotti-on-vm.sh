@@ -19,5 +19,5 @@ scp $installscript $uname@$ipaddr:~
 echo $installscript
 
 ssh -t $uname@$ipaddr "
-	sudo bash '${installscript}'
+	bash '${installscript}'
 "

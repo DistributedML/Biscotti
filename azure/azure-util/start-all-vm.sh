@@ -1,10 +1,12 @@
 #!/bin/bash -x
 
-hostfile='../azure-conf/hosts_diffDC'
 rgroup='biscotti'
+let numVMs=10
+vmprefix='bis'
 
-for ip in $(cat $hostfile);do
+for (( i = 0; i < numVMs; i++ )); do
 
-	bash start-vm.sh $rgroup $ip
+	vmname=$vmprefix$i
 
+	bash start-vm.sh $rgroup $vmname
 done
