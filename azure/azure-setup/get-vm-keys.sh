@@ -1,11 +1,20 @@
 #!/bin/bash
+if [ "$#" -ne 4 ]; then
+
+    echo "Illegal number of parameters"
+    echo "usage:"
+    echo "[localuname, localip, localpass, ipfile]"
+    exit
+
+fi
 
 myuname=$1
 myip=$2
 pass=$3
+ipfile=$4
 
 vmuname='shayan'
-hostFile='../azure-conf/hosts_diffDC'
+hostFile="../azure-conf/${ipfile}"
 
 for line in $(cat $hostFile);do
 

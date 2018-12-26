@@ -21,6 +21,8 @@ echo $location
 # Create the VM
 az vm create --resource-group $rgroup --name $vm --image $imagename \
    --admin-username shayan --location $location --size Standard_A4m_v2 \
+   --vnet-name ${location}VNET \
+   --subnet Subnet1 \
    --ssh-key-value  /home/shayan/.ssh/id_rsa.pub
 
 # # Reset the password for the user in the vm
@@ -30,7 +32,7 @@ az vm user update --resource-group $rgroup --name $vm \
 # # Set the public IP address to static
 az network public-ip update --name ${vm}PublicIp --resource-group $rgroup --allocation-method Static
 
-# # Add rules for to allow machines to communicate with each other'
+# # Add rules for to allow machines to communicate with each other
 bash add-rules-to-sg.sh $rgroup ${vm}NSG
 
 # # Show details about the newly created VM

@@ -1,14 +1,14 @@
 #!/bin/bash -x
 
-if [ "$#" -ne 2 ]; then
+if [ "$#" -ne 1 ]; then
     echo "Illegal number of parameters"
     echo "usage:"
-    echo "[rgName, rglocation]"
+    echo "[rgName]"
     exit
 fi
 
 rgroup=$1
-rglocation=$2
+rglocation='westus'
 
 #create resource group
 az group create --name $rgroup --location $rglocation

@@ -96,8 +96,6 @@ for line in $(cat $hostPath);do
 done
 # ##################################################################################################
 
-
-
 # #SSH into each host and run the required number of nodes in each host
 # ###################################################################################################
 for line in $(cat $hostPath);do

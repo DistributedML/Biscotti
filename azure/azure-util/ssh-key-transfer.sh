@@ -3,7 +3,7 @@ set -f
 
 # Harcoded username/hostFiles here. 
 username='shayan'
-hostFile='../azure-conf/hosts_diffDC'
+hostFile='../azure-conf/hosts_sameDC'
 keyPath=~/.ssh/id_rsa.pub
 
 for line in $(cat $hostFile);do

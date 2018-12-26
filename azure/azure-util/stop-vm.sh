@@ -10,5 +10,5 @@ fi
 rgroup=$1   # resource group
 vm=$2       # VM name to stop
 
-echo 'Deallocating vm $vm'
+echo "Deallocating vm $vm"
 az vm deallocate --resource-group $rgroup --name $vm --no-wait
