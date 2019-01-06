@@ -8,7 +8,8 @@ sudo iptables -F OUTPUT
 
 let nodes=$1
 dataset=$2
-additionalArgs="-sa=true -vp=true -np=false -na=1 -nv=1 -nn=1"
+# additionalArgs="-sa=true -vp=true -np=false -na=1 -nv=1 -nn=1"
+additionalArgs=""
 argList=($additionalArgs)
 let cnt=0
 
