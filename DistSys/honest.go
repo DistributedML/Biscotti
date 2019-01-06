@@ -158,6 +158,16 @@ func (honest *Honest) computeUpdate(iterationCount int) {
 	prevModel := honest.bc.getLatestGradient()
 	//outLog.Printf("Global Model:%s", prevModel)
 	deltas, err := oneGradientStep(prevModel) // TODO: Create commitment here
+
+	if DP_IN_MODEL {
+		noise,err := honest.requestNoise(iterationCount)
+		check(err)
+		for i := 0; i < len(noise); i++ {
+
+			deltas[i] = deltas[i] + noise[i]
+		}
+	}
+	
 	//outLog.Printf("Deltas:%s", deltas)
 	// outLog.Printf("This update float:%s", deltas)
 	deltasInt := updateFloatToInt(deltas, PRECISION)

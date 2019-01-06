@@ -5,7 +5,8 @@ set -f
 
 # Harcoded username/hostFiles here. Kills Biscotti processes on every VM in host file
 username='shayan'
-hostFile='../azure-conf/hosts_diffDC'
+fileName=$1
+hostFile="../azure-conf/$fileName"
 
 for line in $(cat $hostFile);do
 
@@ -17,20 +18,3 @@ for line in $(cat $hostFile);do
 done
 
 exit
-
-
-#Deprecated code
-#####################################################################
-
-# skip the first line
-# if [ $cnt -eq 0 ]; then
-# 	cnt=$((cnt + 1))
-# 	continue
-# fi
-
-# if [[ "$tname" == "198.162.52.157" || "$tname" == "198.162.52.33" ]]; then
-# 	username="clement"
-# else
-# 	username="cfung"
-# fi
-####################################################################

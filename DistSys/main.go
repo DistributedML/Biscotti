@@ -33,8 +33,7 @@ const (
 	timeoutBlock 	time.Duration = 600 * time.Second
 	timeoutPeer 	time.Duration = 5 * time.Second
 	
-	NUM_VERIFIERS 	int           = 3
-	NUM_MINERS 		int           = 3
+
 	// NUM_NOISERS     int 		  = 2
 	DEFAULT_STAKE   int 		  = 10
 
@@ -47,10 +46,6 @@ const (
 
 	MAX_ITERATIONS  int 		  = 100
 	EPSILON 		float64 	  = 2
-
-	SECURE_AGG  	bool 		  = true
-	NOISY_VERIF		bool 		  = false
-	VERIFY 			bool 		  = true
 
 	POISONING 	 	float64 	  = 0
 
@@ -133,7 +128,16 @@ var (
 	signatureError  error = errors.New("Insufficient correct signatures collected")
 
 	PRIV_PROB 		float64 	  = 0
+
 	NUM_NOISERS 	int 		  = 2
+	NUM_VERIFIERS 	int           = 3
+	NUM_MINERS 		int           = 3
+
+	SECURE_AGG  	bool 		  = true
+	NOISY_VERIF		bool 		  = true
+	VERIFY 			bool 		  = true
+
+	DP_IN_MODEL 	bool 		  = true
 
 )
 
@@ -310,10 +314,18 @@ func processShare(share MinerPart) {
 		numberOfShares := client.addSecretShare(share)
 		updateLock.Unlock()
 
-		outLog.Printf("As miner, I expect %d shares, I have gotten %d", numberOfNodes / 8, numberOfShares)
+		minBlockSize := numberOfNodes / 8		
+
+		if (minBlockSize <= 1) {
+			minBlockSize = 2
+		}
+
+		outLog.Printf("As miner, I expect %d shares, I have gotten %d", minBlockSize, numberOfShares)
+
+
 
 		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
-		if numberOfShares == (numberOfNodes / 8) {			
+		if numberOfShares == minBlockSize {			
 			outLog.Printf(strconv.Itoa(client.id)+":Eighth shares for iteration %d received. Notifying channel.", iterationCount)	
 			allSharesReceived <- true 		 
 		}
@@ -580,7 +592,19 @@ func main() {
 
     colludersPtr := flag.Int("c", 0, "Number of colluders")
 
-    numNoisePtr := flag.Int("n", 2, "Number of noisers")
+    numAggPtr := flag.Int("na", 3, "Number of aggregators")
+
+    numVerPtr := flag.Int("nv", 3, "Number of aggregators")
+
+    numNoisePtr := flag.Int("nn", 2, "Number of noisers")
+
+    isSecAggPtr := flag.Bool("sa", true, "Turn secure agg on or off")
+
+    isNoisingPtr := flag.Bool("np", true, "Turn noising on or off")
+
+    isVerificationPtr := flag.Bool("vp", true, "Turn verification on or off")
+
+
 
 	flag.Parse()
 
@@ -594,6 +618,12 @@ func main() {
     myPort = *myPortPtr
     colluders = *colludersPtr
     NUM_NOISERS = *numNoisePtr
+    NUM_VERIFIERS = *numVerPtr
+    NUM_MINERS = *numAggPtr
+    SECURE_AGG = *isSecAggPtr
+    NOISY_VERIF = *isNoisingPtr
+    VERIFY = *isVerificationPtr
+
 
 	if(numberOfNodes <= 0 || nodeNum < 0 || datasetName == ""){
 		flag.PrintDefaults()
@@ -694,7 +724,7 @@ func main() {
 	collusionThresh = int(math.Ceil(float64(numberOfNodes) * (1.0 - PRIV_PROB)))
 
 	if collusionThresh > 0 {
-		if NOISY_VERIF && (nodeNum < collusionThresh) {
+		if (NOISY_VERIF || DP_IN_MODEL) && (nodeNum < collusionThresh) {
 			client.initializeData(datasetName, numberOfNodes, EPSILON, false)	
 		} else {
 			client.initializeData(datasetName, numberOfNodes, 0, false)	
@@ -1401,9 +1431,15 @@ func requestNoiseFromNoisers(addresses []string) []float64 {
 	var noiseVec []float64
 
 	// Just return an empty noise vector, case is handled downstream.
+	// If diff priv added all the way generate noise
+
 	if !NOISY_VERIF {
+
 		return noiseVec
 	}
+
+	// Generate noise yourself if DP added until end.
+
 
 	noisesReceived := 0.0
 	noiseVec = make([]float64, client.ncol)

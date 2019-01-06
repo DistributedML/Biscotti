@@ -9,6 +9,10 @@ myAddress=$4
 controllerUser=$5
 controllerIP=$6
 logFileCopyPath=$7
+dataset=$8
+additionalArgs=${@:9}
+
+argList=($additionalArgs)
 
 rm -rf LogFiles
 
@@ -43,11 +47,18 @@ for (( index = $startingIndex ; index < $startingIndex + nodesToRun; index++ ));
 
 	echo deploying "$index"
 	cd $pathToBinary
-	timeout 9000 ./DistSys -i=$index -t=$totalnodes \
-		-d=mnist -f=peersFileSent \
-		-a=$myAddress -p=$thisPort -pa=$myPrivateIp \
-		 > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
-	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
+
+	commandToRun="timeout 9000 ./DistSys -i=${index} -t=${totalnodes} -d=${dataset} -c=0 -f=peersFileSent \
+				-a=$myAddress -p=$thisPort -pa=$myPrivateIp ${argList[@]}"
+	commandList=($commandToRun)
+	"${commandList[@]}" > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile & 
+
+
+	# timeout 9000 ./DistSys -i=$index -t=$totalnodes \
+	# 	-d=$dataset -f=peersFileSent \
+	# 	-a=$myAddress -p=$thisPort -pa=$myPrivateIp \
+	# 	 > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
+	# # sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
 	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile 2> outLog.log &
 
 done	

@@ -2,8 +2,10 @@ IFS=$'\n'
 set -f
 
 # Harcoded username/hostFiles here. 
+fileName=$1
+echo $fileName
 username='shayan'
-hostFile='../azure-conf/hosts_diffDC'
+hostFile="../azure-conf/$fileName"
 
 let vmcount=0
 

@@ -7,8 +7,18 @@ sudo iptables -F INPUT
 sudo iptables -F OUTPUT
 
 let nodes=$1
-let dimensions=$2
+dataset=$2
+additionalArgs="-sa=true -vp=true -np=false -na=1 -nv=1 -nn=1"
+argList=($additionalArgs)
 let cnt=0
+
+#TODO: Take as input dataset name. Figure out dimensions based on name
+if [[ "$dataset" = "mnist" ]]; then
+	dimensions=7850
+elif [["$dataset" = "creditcard"]]; then
+	dimensions=25
+fi
+
 
 # Generate keys
 cd ../keyGeneration
@@ -43,8 +53,10 @@ for (( totalnodes = $nodes; totalnodes < ($nodes + 1); totalnodes++ )); do
 		echo $thisPort
 		echo $myAddress
 
-		./DistSys -i=$index -t=$totalnodes -d=mnist -c=0 > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile & 
-		
+		commandToRun="./DistSys -i=${index} -t=${totalnodes} -d=${dataset} -c=0 ${argList[@]}"
+		commandList=($commandToRun)
+		echo "${commandList[@]}" 
+		"${commandList[@]}" > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile & 
 	done	
 
 	wait

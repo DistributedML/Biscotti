@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
 rgroup='biscotti'
-let numVMs=10
+let numVMs=20
 vmprefix='bis'
 
 for (( i = 0; i < numVMs; i++ )); do

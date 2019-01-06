@@ -17,9 +17,9 @@ After that follow the procedure below to setup VM's for Biscotti.
 	bash create-vnets.sh $rgroup $location
 
 	For same location deployment:
-		bash bash create-vnets.sh biscotti same
+		bash create-vnets.sh biscotti same
 	For different:
-		bash bash create-vnets.sh biscotti diff
+		bash create-vnets.sh biscotti diff
 
 	Locations to deploy hardcoded in script. Change if needed.
 

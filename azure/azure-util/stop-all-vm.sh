@@ -1,10 +1,11 @@
 #!/bin/bash -x
 
-hostfile='../azure-conf/hosts_diffDC'
+filename=$1
+hostfile="../azure-conf/$filename"
 rgroup='biscotti'
 vmprefix='bis'
 
-let numVMs=10
+let numVMs=20
 
 for (( i = 0; i < numVMs; i++ )); do
 	

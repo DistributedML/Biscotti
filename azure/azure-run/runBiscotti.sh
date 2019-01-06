@@ -6,12 +6,18 @@ set -f
 # Argument parsing and intializing variables
 #############################################################################
 let indexCount=0
+let dimensions=0
 let nodesInEachVM=$1
 let totalNodes=$2
-let dimensions=$3
+hostFileName=$3
+dataset=$4
+additionalArgs=$5
+
+echo $additionalArgs
+
 let azure=1
 
-dataset="mnist"
+# dataset="mnist"
 
 #TODO: Take as input dataset name. Figure out dimensions based on name
 if [[ "$dataset" = "mnist" ]]; then
@@ -22,7 +28,6 @@ fi
 
 currentDir=$PWD
 azureUser="shayan"
-hostFileName="hosts_diffDC"
 pathToKeyGeneration=$GOPATH/src/Biscotti/keyGeneration/
 confPath=$GOPATH/src/Biscotti/azure/azure-conf/
 distSysPath=$GOPATH/src/Biscotti/DistSys/
@@ -107,7 +112,7 @@ for line in $(cat $hostPath);do
 
 	if [[ "$azure" -eq 1 ]]; then
 		echo "Deploying on azure"
-		ssh $azureUser@$tname 'bash -s' < deployAzureNodes.sh $nodesInEachVM $indexCount $totalNodes $tname $controllerUser $controllerIP $logFilesPath&	
+		ssh $azureUser@$tname 'bash -s' < deployAzureNodes.sh $nodesInEachVM $indexCount $totalNodes $tname $controllerUser $controllerIP $logFilesPath $dataset $additionalArgs &	
 	else
 		ssh $controllerUser@$controllerIP 'bash -s' < deployNodes.sh $nodesInEachVM $indexCount $totalNodes $controllerIP $logFilesPath&
 	fi
