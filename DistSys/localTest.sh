@@ -16,7 +16,7 @@ let cnt=0
 #TODO: Take as input dataset name. Figure out dimensions based on name
 if [[ "$dataset" = "mnist" ]]; then
 	dimensions=7850
-elif [["$dataset" = "creditcard"]]; then
+elif [[ "$dataset" = "creditcard" ]]; then
 	dimensions=25
 fi
 
