@@ -19,7 +19,7 @@ bash localTest.sh <numNodes> <dataset>
 
 ```
 For example
-
+```
 bash localTest.sh 10 creditcard
 
 ```
