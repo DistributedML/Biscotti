@@ -625,6 +625,8 @@ func main() {
     VERIFY = *isVerificationPtr
     EPSILON = *epsilonPtr
 
+    outLog.Printf("EPSILON IS: %d", EPSILON)
+
 	if(numberOfNodes <= 0 || nodeNum < 0 || datasetName == ""){
 		flag.PrintDefaults()
 		os.Exit(1)	

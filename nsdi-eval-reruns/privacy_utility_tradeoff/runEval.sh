@@ -14,11 +14,11 @@ fi
 let nodesInEachVM=$1
 let totalNodes=$2
 let numberOfRuns=$3
-let epsilon=$4
+epsilon=$4
 hostFileName=$5
 dataset=$6
 currentDir=$PWD
-additionalArgs="-sa=true -vp=true -np=false -na=3 -nv=3 -nn=2 -ep=$epsilon" # change epsilon value
+additionalArgs="-sa=false -vp=true -np=false -na=3 -nv=3 -nn=2 -ep=$epsilon" # change epsilon value
 echo $additionalArgs
 
 azuredeployScript="$GOPATH/src/Biscotti/azure/azure-run"
@@ -27,12 +27,12 @@ cd $azuredeployScript
 
 for (( run = 0; run < $numberOfRuns; run++ )); do
 
-	cd $azuredeployScript
-	
+	cd $azuredeployScript	
 	destFolder="$currentDir/LogFiles_$run"
-	rm -rf $destFolder
+	echo $destFolder
+	# rm -rf $destFolder
 	echo "Run#"$run
 	bash runBiscotti.sh $nodesInEachVM $totalNodes $hostFileName $dataset "$additionalArgs"	
-	# cp -a /home/shayan/gopath/src/Biscotti/DistSys/LogFiles $destFolder
+	cp -a /home/shayan/gopath/src/Biscotti/DistSys/LogFiles $destFolder
 
 done

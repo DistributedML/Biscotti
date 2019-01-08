@@ -58,7 +58,7 @@ def init(dataset, filename, epsilon, batch_size):
 
         else:
 
-            sigma = np.sqrt(2 * np.log(1.25)) / epsilon
+            sigma = np.sqrt(2 * (np.log(1.25)/0.0001)) / epsilon
             noise = sigma * np.random.randn(batch_size, expected_iters, nParams)
             samples = np.sum(noise, axis=0)
 
