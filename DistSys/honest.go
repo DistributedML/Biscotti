@@ -17,23 +17,22 @@ import (
 	"encoding/json"
 	// "fmt"
 	"sort"
-
 )
 
 var (
 	
-	pyLogModule   *python.PyObject
-	pyTorchModule 		*python.PyObject
+	pyLogModule     *python.PyObject
+	pyTorchModule	*python.PyObject
 
-	pyInitFunc *python.PyObject
-	pyPrivFunc *python.PyObject
-	pyNumFeatures *python.PyObject
-	pyTestModule  *python.PyObject
-	pyTestFunc    *python.PyObject
-	pyTrainFunc   *python.PyObject
-	pyRoniModule  *python.PyObject
-	pyRoniFunc    *python.PyObject
-	pyNoiseFunc	  *python.PyObject
+	pyInitFunc 		*python.PyObject
+	pyPrivFunc 		*python.PyObject
+	pyNumFeatures 	*python.PyObject
+	pyTestModule  	*python.PyObject
+	pyTestFunc    	*python.PyObject
+	pyTrainFunc   	*python.PyObject
+	pyRoniModule  	*python.PyObject
+	pyRoniFunc    	*python.PyObject
+	pyNoiseFunc	  	*python.PyObject
 
 	useTorch	   bool
 

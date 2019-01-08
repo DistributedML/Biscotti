@@ -32,7 +32,6 @@ const (
 	timeoutUpdate 	time.Duration = 500 * time.Second 
 	timeoutBlock 	time.Duration = 600 * time.Second
 	timeoutPeer 	time.Duration = 5 * time.Second
-	
 
 	// NUM_NOISERS     int 		  = 2
 	DEFAULT_STAKE   int 		  = 10
@@ -45,7 +44,6 @@ const (
 	POLY_SIZE 		int 		  = 10
 
 	MAX_ITERATIONS  int 		  = 100
-	EPSILON 		float64 	  = 2
 
 	POISONING 	 	float64 	  = 0
 
@@ -138,6 +136,8 @@ var (
 	VERIFY 			bool 		  = true
 
 	DP_IN_MODEL 	bool 		  = true
+
+	EPSILON 		float64 	  = 2.0
 
 )
 
@@ -604,7 +604,7 @@ func main() {
 
     isVerificationPtr := flag.Bool("vp", true, "Turn verification on or off")
 
-
+    epsilonPtr := flag.Float64("ep", 2.0, "Epsilon value for noise")
 
 	flag.Parse()
 
@@ -623,7 +623,7 @@ func main() {
     SECURE_AGG = *isSecAggPtr
     NOISY_VERIF = *isNoisingPtr
     VERIFY = *isVerificationPtr
-
+    EPSILON = *epsilonPtr
 
 	if(numberOfNodes <= 0 || nodeNum < 0 || datasetName == ""){
 		flag.PrintDefaults()

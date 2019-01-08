@@ -1,4 +1,9 @@
 #!/bin/bash
+if [ "$#" -ne 2 ]; then
+    echo "Illegal number of parameters (expecting 2):"
+    echo "[username, ipfile]"
+    exit
+fi
 
 username=$1
 ipfile=$2
