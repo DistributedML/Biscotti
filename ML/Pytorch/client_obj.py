@@ -15,7 +15,7 @@ learning_rate = 1e-2
 # Otherwise, use the 2016 Abadi.
 diffPriv13 = False
 expected_iters = 100
-delta = 0.0001
+delta = 1
 
 def init(dataset, filename, epsilon, batch_size):
 

@@ -15,14 +15,14 @@ total_nodes = 100
 numIterations = 102
 
 colors = ['black', 'red', 'green', 'blue', 'yellow']
-labels = ['30% poisones', 'RONI - Calibrated Centralized']
+labels = ['epsilon=0.1', 'No Privacy', 'epsilon=1']
 
 def plotResults(outputFile, inputFiles):
 
 	print outputFile
 
 	fig, ax = plt.subplots(figsize=(10, 5))
-	toplot = np.zeros((len(inputFiles), 200))
+	toplot = np.zeros((len(inputFiles), numIterations))
 
 	# unpoisonedFedlearn = "results_FedLearn.csv"
 
@@ -33,30 +33,33 @@ def plotResults(outputFile, inputFiles):
 
 		print inputFile
 		df =  pd.read_csv(inputFile, header=None)	
-		toplot[fileIdx] = 100 - df[1].values
+		toplot[fileIdx] = df[1].values
 		fileIdx+=1
 
 	lineIdx = 0
 
+	print(toplot)
+	print(toplot.shape)
+
 	for dataPoints in toplot:
 		
-		thisLine =  mlines.Line2D(np.arange(200), dataPoints, color=colors[lineIdx],	linewidth=3, linestyle='-', label=labels[lineIdx])	
+		thisLine =  mlines.Line2D(np.arange(numIterations), dataPoints, color=colors[lineIdx],	linewidth=3, linestyle='-', label=labels[lineIdx])	
 		ax.add_line(thisLine)
 		lines.append(thisLine)
 		lineIdx+=1
 
-	# for line in lines:
+	# # for line in lines:
 
 
 
-	# ###########################################
+	# # ###########################################
 	
-	# unpoisonedDF = pd.read_csv(unpoisonedFedlearn, header=None)
-	# toplot[0] = 100 - unpoisonedDF[1].values
-	# l1 = mlines.Line2D(np.arange(200), toplot[0], color='black', 
-	# 	linewidth=3, linestyle='-', label="Federated Learning")	
+	# # unpoisonedDF = pd.read_csv(unpoisonedFedlearn, header=None)
+	# # toplot[0] = 100 - unpoisonedDF[1].values
+	# # l1 = mlines.Line2D(np.arange(200), toplot[0], color='black', 
+	# # 	linewidth=3, linestyle='-', label="Federated Learning")	
 
-	# ###########################################
+	# # ###########################################
 
 	# ax.add_line(l1)
 	plt.legend(handles=lines, loc='best', fontsize=18)
@@ -64,10 +67,10 @@ def plotResults(outputFile, inputFiles):
 	axes = plt.gca()	
 
 	plt.ylabel("Validation Error", fontsize=22)
-	axes.set_ylim([0, 100])
+	axes.set_ylim([0, 1.0])
 
 	plt.xlabel("Training Iterations", fontsize=22)
-	axes.set_xlim([0, 200])
+	axes.set_xlim([0, numIterations])
 
 	ax.spines['right'].set_visible(False)
 	ax.spines['top'].set_visible(False)
@@ -192,7 +195,12 @@ def plot(numRuns,firstInput,secondInput,time=True):
 
 if __name__ == '__main__':
 
-	# epsilonValues = ["0.1"]
+	epsilonValues = ["0.1", "0", "1"]
+	fileNames = []
+
+	for epsilon in epsilonValues:
+
+		fileNames.append("epsilon_" + str(epsilon) + "_parsedResults/data0.csv")
 
 	# for epsilon in epsilonValues:
 
@@ -200,3 +208,9 @@ if __name__ == '__main__':
 	# 	parse_logs(1,folderName)
 
 	# plot(1,"epsilon_"+str(epsilonValues[0]),"epsilon_"+str(epsilonValues[1]),False)
+
+	plotResults("privacy_utility_tradeoff.jpg", fileNames)
+
+
+
+
