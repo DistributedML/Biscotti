@@ -15,8 +15,8 @@ for ip in $(cat $hostFile);do
 
 	ssh -t $uname@$ip "
 		cd $GOPATH/src/Biscotti
-		git remote set-url origin https://github.com/DistributedML/Biscotti.git
-		git stash
+		# git remote set-url origin https://github.com/DistributedML/Biscotti.git
+		# git stash
 		git pull origin master
 	"
 	# break

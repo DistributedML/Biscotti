@@ -15,7 +15,7 @@ learning_rate = 1e-2
 # Otherwise, use the 2016 Abadi.
 diffPriv13 = False
 expected_iters = 100
-delta = 1
+delta = 0.001
 
 def init(dataset, filename, epsilon, batch_size):
 
@@ -59,7 +59,7 @@ def init(dataset, filename, epsilon, batch_size):
 
         else:
 
-            sigma = np.sqrt(2 * (np.log(1.25)/delta)) / epsilon
+            sigma = np.sqrt(2 * (np.log(1.25/delta))) / epsilon
             noise = sigma * np.random.randn(batch_size, expected_iters, nParams)
             samples = np.sum(noise, axis=0)
 
