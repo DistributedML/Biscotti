@@ -1,8 +1,12 @@
 #!/bin/bash -x
+if [ "$#" -ne 1 ]; then
+    echo "Illegal number of parameters (expecting 1):"
+    echo "[name of resource group]"
+    exit
+fi
 
-filename=$1
-hostfile="../azure-conf/$filename"
-rgroup='biscotti'
+rgroup=$1
+
 vmprefix='bis'
 
 let numVMs=20
