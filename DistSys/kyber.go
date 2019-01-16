@@ -9,7 +9,6 @@ import (
 	"sort"
 	"github.com/gonum/matrix/mat64"
 	"bytes"
-    // "crypto/cipher"
     "errors"
     "github.com/dedis/kyber/util/random"
 

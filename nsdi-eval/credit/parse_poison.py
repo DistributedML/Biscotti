@@ -43,6 +43,7 @@ def parse_logs():
 
 		outfile.close()
 
+
 if __name__ == '__main__':
 	
 	parse_logs()

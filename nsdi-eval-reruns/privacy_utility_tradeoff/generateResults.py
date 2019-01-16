@@ -94,7 +94,7 @@ def parse_logs(numRuns,input_file_directory):
 		if not os.path.exists(output_file_directory):
 			os.makedirs(output_file_directory)
 
-		outfile = open(output_file_directory + "data" + str(i), "w")
+		outfile = open(output_file_directory + "data" + str(i)+".csv", "w")
 		iteration = 0
 
 		for line in lines:
@@ -128,7 +128,7 @@ def plot(numRuns,firstInput,secondInput,time=True):
 	###########################################
 	across_runs = np.zeros((numRuns, numIterations))
 	for i in range(0,numRuns):
-		df = pd.read_csv((fedSysOutput+'data'+str(i)), header=None)
+		df = pd.read_csv((fedSysOutput+"data" + str(i)+".csv"), header=None)
 		across_runs[i] = df[1].values
 
 	toplot[0] = np.mean(across_runs, axis=0)
@@ -137,7 +137,7 @@ def plot(numRuns,firstInput,secondInput,time=True):
 	###########################################
 	across_runs = np.zeros((numRuns, numIterations))
 	for i in range(0,numRuns):
-		df = pd.read_csv((distSysOutput+'data'+str(i)), header=None)
+		df = pd.read_csv((distSysOutput+"data" + str(i)+".csv"), header=None)
 		across_runs[i] = df[1].values
 
 	toplot[1] = np.mean(across_runs, axis=0)
@@ -195,12 +195,13 @@ def plot(numRuns,firstInput,secondInput,time=True):
 
 if __name__ == '__main__':
 
-	epsilonValues = ["0.1", "0", "1"]
-	fileNames = []
+	# epsilonValues = ["0.1","0", "1"]
+	fileNames = ["epsilon_0.1_delta_parsedResults/data0.csv", "epsilon_0_parsedResults/data0.csv", "epsilon_1_delta_parsedResults/data0.csv"]
+	# fileNames=[]
 
-	for epsilon in epsilonValues:
+	# for epsilon in epsilonValues:
 
-		fileNames.append("epsilon_" + str(epsilon) + "_parsedResults/data0.csv")
+	# 	fileNames.append("epsilon_" + str(epsilon) + "_parsedResults/data0.csv")
 
 	# for epsilon in epsilonValues:
 
@@ -209,7 +210,7 @@ if __name__ == '__main__':
 
 	# plot(1,"epsilon_"+str(epsilonValues[0]),"epsilon_"+str(epsilonValues[1]),False)
 
-	plotResults("privacy_utility_tradeoff.jpg", fileNames)
+	plotResults("privacy_utility_delta_0.0001.jpg", fileNames)
 
 
 
