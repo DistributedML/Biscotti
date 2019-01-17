@@ -38,7 +38,7 @@ echo "export LC_ALL=C" >> .profile
 # #clone the TorMentor Repository
 echo "Installing Biscotti"
 cd gopath/src
-git clone https://github.com/m-shayanshafi/Biscotti.git
+git clone https://github.com/DistributedML/Biscotti.git
 
 source ~/.profile
 
