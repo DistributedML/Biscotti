@@ -11,28 +11,26 @@ rgroup=$1    # resource group in which to find the image/create VM
 
 echo $rgroup
 
-locations=('westus' 'eastus' 'centralus' \
-      'centralindia' 'southeastasia' 'japaneast' 'canadacentral' \
-      'australiaeast' 'northeurope' 'westeurope') #locations to deploy
+locations=('westus' 'eastus' 'centralindia' 'japaneast' 'australiaeast' 'westeurope') #locations to deploy
 
 # let numlocations=${#locations[@]}
-let numlocations=3
+let numlocations=6
 
-# for (( i = 0; i < numlocations; i++ )); do
+for (( i = 0; i < numlocations; i++ )); do
 
-#   vmlocation=${locations[i]}
+  vmlocation=${locations[i]}
 
-#   echo "Creating vnet at ${vmlocation}"
+  echo "Creating vnet at ${vmlocation}"
 
-#   az network vnet create \
-#     --name ${vmlocation}VNET \
-#     --resource-group $rgroup \
-#     --location ${vmlocation} \
-#     --address-prefixes 10.0.${i}.0/24 \
-#     --subnet-name Subnet1 \
-#     --subnet-prefix 10.0.${i}.0/24
+  az network vnet create \
+    --name ${vmlocation}VNET \
+    --resource-group $rgroup \
+    --location ${vmlocation} \
+    --address-prefixes 10.0.${i}.0/24 \
+    --subnet-name Subnet1 \
+    --subnet-prefix 10.0.${i}.0/24
 
-# done
+done
 
 # For every vnet created, establish peering with other vnets
 for (( i = 0; i < numlocations; i++ )); do

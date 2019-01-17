@@ -11,34 +11,33 @@ user=$3      # username whose cmd line password will be changed
 pws=$4       # password to set the user's password to
 location=$5  # deployment in same or different location
 
-sshPath='/home/shayan/.ssh/id_rsa.pub' #location of ssh-keys on ur machine
+sshPath='/home/matheus/.ssh/id_rsa.pub' #location of ssh-keys on ur machine
 imagename='UBUNTULTS' #OS
 vmprefix='bis' #each vmname is vmprefix+vmid
 
 locations=('westus') #locations to deploy
 
 if [[ "$location" = "same" ]]; then
-	
+
 	locations=('westus') #locations to deploy
 
 elif [[ "$location" = "diff" ]]; then
 
-	locations=('westus' 'eastus' 'centralus' \
-			'centralindia' 'southeastasia' 'japaneast' 'canadacentral' \
-			'australiaeast' 'northeurope' 'westeurope') #locations to deploy	
+	locations=('westus' 'eastus' 'centralindia' 'japaneast' 'australiaeast' 'westeurope') #locations to deploy
+
 
 else
-	
+
 	echo "location should be same or diff"
 	exit
 
-fi 
+fi
 
 #Find number of locations to deploy
 numlocations=${#locations[@]}
 
 #deploy the VMS in the listed locations
-for (( i = 2; i < numVMs; i++ )); do
+for (( i = 0; i < numVMs; i++ )); do
 
 	vmname=$vmprefix$i
 	locIdx=$(($i % $numlocations))

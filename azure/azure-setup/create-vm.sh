@@ -6,9 +6,6 @@ if [ "$#" -ne 6 ]; then
     exit
 fi
 
-# NOTE: hardcoded cs416 as username
-#       hardcoded key for cs416
-
 rgroup=$1    # resource group in which to find the image/create VM
 vm=$2        # the name of the newly created VM
 imagename=$3 # imagename from which to create the VM
@@ -20,10 +17,10 @@ echo $location
 
 # Create the VM
 az vm create --resource-group $rgroup --name $vm --image $imagename \
-   --admin-username shayan --location $location --size Standard_A4m_v2 \
+   --admin-username $user --location $location --size Standard_A4m_v2 \
    --vnet-name ${location}VNET \
    --subnet Subnet1 \
-   --ssh-key-value  /home/shayan/.ssh/id_rsa.pub
+   --ssh-key-value  /home/matheus/.ssh/id_rsa.pub
 
 # # Reset the password for the user in the vm
 az vm user update --resource-group $rgroup --name $vm \

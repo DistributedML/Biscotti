@@ -1,10 +1,17 @@
 IFS=$'\n'
 set -f
 
-# Harcoded username/hostFiles here. 
+if [ "$#" -ne 2 ]; then
+    echo "Illegal number of parameters"
+    echo "usage:"
+    echo "[fileName, user]"
+    exit
+fi
+
 fileName=$1
 echo $fileName
-username='shayan'
+username=$2'
+echo $username
 hostFile="../azure-conf/$fileName"
 
 let vmcount=0
