@@ -25,7 +25,7 @@ for (( index = $startingIndex ; index < $startingIndex + nodesToRun; index++ ));
 	let thisPort=8000+$index
 
 	echo deploying "$index" $myAddress $myPrivateIp
-	cd $GOPATH/src/simpleBlockChain/DistSys
+	cd $GOPATH/src/Biscotti/DistSys
 	timeout 120 ./DistSys -i=$index -t=$totalnodes \
 		-d=creditcard -f=peersFileSent \
 		-a=$myAddress -p=$thisPort -pa=$myAddress \
@@ -49,7 +49,7 @@ cd ./LogFiles
 if [[ "$myAddress" != "198.162.52.154" ]]; then
 	
 	echo "Copying files back to dijkstra"
-	scp *.log cfung@198.162.52.154:/home/cfung/gopath/src/simpleBlockChain/DistSys/LogFiles
+	scp *.log cfung@198.162.52.154:/home/cfung/gopath/src/Biscotti/DistSys/LogFiles
 
 fi
 

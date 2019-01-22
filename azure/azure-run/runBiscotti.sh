@@ -27,7 +27,7 @@ elif [["$dataset" = "creditcard"]]; then
 fi
 
 currentDir=$PWD
-azureUser="shayan"
+azureUser="matheus"
 pathToKeyGeneration=$GOPATH/src/Biscotti/keyGeneration/
 confPath=$GOPATH/src/Biscotti/azure/azure-conf/
 distSysPath=$GOPATH/src/Biscotti/DistSys/
@@ -112,7 +112,7 @@ for line in $(cat $hostPath);do
 
 	if [[ "$azure" -eq 1 ]]; then
 		echo "Deploying on azure"
-		ssh $azureUser@$tname 'bash -s' < deployAzureNodes.sh $nodesInEachVM $indexCount $totalNodes $tname $controllerUser $controllerIP $logFilesPath $dataset $additionalArgs &	
+		ssh $azureUser@$tname 'bash -s' < deployAzureNodes.sh $nodesInEachVM $indexCount $totalNodes $tname $controllerUser $controllerIP $logFilesPath $dataset $additionalArgs &
 	else
 		ssh $controllerUser@$controllerIP 'bash -s' < deployNodes.sh $nodesInEachVM $indexCount $totalNodes $controllerIP $logFilesPath&
 	fi
@@ -141,7 +141,7 @@ exit
 
 	#naur
 	# if [[ "$tname" == "198.162.52.126" ]]; then
-	# 	ssh shayan@$tname 'bash -s' < deployNodes.sh $nodesInEachVM $indexCount $totalNodes $tname &			
+	# 	ssh matheus@$tname 'bash -s' < deployNodes.sh $nodesInEachVM $indexCount $totalNodes $tname &
 	
 	# # dijkstra 
 	# elif [[ "$tname" == "198.162.52.154" ]]; then
