@@ -135,7 +135,7 @@ var (
 	NOISY_VERIF		bool 		  = true
 	VERIFY 			bool 		  = true
 
-	DP_IN_MODEL 	bool 		  = true
+	DP_IN_MODEL 	bool 		  = false
 
 	EPSILON 		float64 	  = 2.0
 
