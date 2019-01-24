@@ -78,7 +78,7 @@ for (( index = $startingIndex ; index < $startingIndex + nodesToRun; index++ ));
 
 	echo deploying "$index"
 	cd $pathToBinary
-	timeout 500 ./FedSys -i=$index -t=$totalnodes \
+	timeout 1500 ./FedSys -i=$index -t=$totalnodes \
 		-d=mnist -f=peersFileSent \
 		-a=$myAddress -p=$thisPort -pa=$myPrivateIp \
 		 > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
