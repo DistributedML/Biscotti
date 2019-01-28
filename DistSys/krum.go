@@ -1,13 +1,177 @@
 package main
 
 import(
-
+	"strconv"
+	"time"
+	"github.com/sbinet/go-python"
+	"runtime"
+	"encoding/binary"
+	"math"
 )
 
-type KrumValidator struct {
+var (
+
+	pyKRUMFunc 		*python.PyObject
+)
+
+type KRUMValidator struct {
 
 	UpdateList  	[][]float64
-	acceptedList 	[]int
+	AcceptedList 	[]int
+	NumAdversaries	float64
+
+}
+
+func (krumval *KRUMValidator) initialize(){
+
+	if useTorch {
+
+		pyKRUMFunc = pyTorchModule.GetAttrString("krum")
+
+	}else {
+
+		pyKRUMFunc = pyRoniModule.GetAttrString("krum")
+		outLog.Printf("Krum function is:%s", pyKRUMFunc)
+
+	}
+
+}
+
+
+func (krumval *KRUMValidator) checkIfAccepted(peerId int) bool {
+	
+	accepted := false
+
+	for i := 0; i < len(krumval.AcceptedList); i++ {
+		
+		if krumval.AcceptedList[i] == peerId  {			
+			accepted = true
+			return accepted
+		}
+
+	}
+
+	return accepted
+
+}
+
+
+//TODO: Replace with python call to krum
+func (krumval *KRUMValidator) computeScores(){
+	
+	// numUpdatesRec := int(len(krumval.UpdateList))
+	// numberToReject := int(krumval.NumAdversaries*float64(numUpdatesRec))
+	// numberToAccept := numberToReject - numUpdatesRec
+
+	runningDeltas := krumval.UpdateList
+	acceptedListFloats := krumval.getTopKRUMIndex(runningDeltas)
+	outLog.Printf("List of accepted people:%s", acceptedListFloats)
+
+	for i := 0; i < len(acceptedListFloats); i++ {		
+		krumval.AcceptedList = append(krumval.AcceptedList, int(acceptedListFloats[i]))
+	}
+}
+
+func (krumval *KRUMValidator) getTopKRUMIndex(deltas [][]float64) []float64{
+
+	//Making Python call to KRUM
+	outLog.Println("Acquiring Python Lock...")
+	runtime.LockOSThread()
+
+	_gstate := python.PyGILState_Ensure()
+	outLog.Println("Acquired Python Lock")
+
+	numUpdates := len(deltas)
+	adversaryCount := int(krumval.NumAdversaries*float64(numUpdates))
+
+	pyDeltas := python.PyList_New(len(deltas))
+	// updateArray := python.PyList_New(len(truthModel))
+
+	// TODO: Create a two d array
+
+	for i := 0; i < len(deltas); i++ {
+		thisDelta := python.PyList_New(len(deltas[i]))
+
+		for j := 0; j < len(deltas[i]); j++ {
+			python.PyList_SetItem(thisDelta, j, python.PyFloat_FromDouble(deltas[i][j]))
+		}
+
+		python.PyList_SetItem(pyDeltas,i,thisDelta)
+	}
+
+	pyAdversaries := python.PyInt_FromLong(adversaryCount)
+	
+	var result *python.PyObject
+	result = pyKRUMFunc.CallFunction(pyDeltas, pyAdversaries)
+	outLog.Printf("Result from krum python:%s", result)
+
+	// Convert the resulting array to a go byte array
+	pyByteArray := python.PyByteArray_FromObject(result)
+	goByteArray := python.PyByteArray_AsBytes(pyByteArray)
+
+	var goFloatArray []float64
+	size := len(goByteArray) / 8
+
+	for i := 0; i < size; i++ {
+		currIndex := i * 8
+		bits := binary.LittleEndian.Uint64(goByteArray[currIndex : currIndex+8])
+		aFloat := math.Float64frombits(bits)
+		goFloatArray = append(goFloatArray, aFloat)
+	}
+
+	outLog.Println("Outside KRUM")	
+	python.PyGILState_Release(_gstate)	
+	outLog.Println("Released Python Lock")
+
+	return goFloatArray
+
+}
+
+// Empty the validator
+func (krumval *KRUMValidator) flushCollectedUpdates(){
+	
+	krumval.UpdateList = krumval.UpdateList[:0]
+	krumval.AcceptedList = krumval.AcceptedList[:0]
+
+}
+
+func startKRUMDeadlineTimer(timerForIteration int){
+	
+	outLog.Printf(strconv.Itoa(client.id)+"Starting KRUM deadline timer %d\n", iterationCount)		
+	
+	select{
+		
+		case <- krumReceived:
+			
+			outLog.Printf(strconv.Itoa(client.id)+"Required updates received for iteration: %d", timerForIteration)
+
+			if (timerForIteration == iterationCount) {
+				outLog.Printf(strconv.Itoa(client.id)+"Evaluating KRUM for iteration %d", iterationCount)
+			}
+
+		case <-time.After(timeoutKRUM):
+		
+			krumLock.Lock()
+
+			if (timerForIteration == iterationCount) {
+				
+				outLog.Printf(strconv.Itoa(client.id)+":Timeout. Going ahead with KRUM for iteration", timerForIteration)		
+							
+				krum.computeScores()
+
+				collectingUpdates = false
+
+				for i := 0; i < len(krum.UpdateList); i++ {
+				
+					krumAccepted <- true			
+					
+				}
+
+			}
+
+			krumLock.Unlock()	
+	}
+
 }
 
 
@@ -15,7 +179,7 @@ func (s *Peer) VerifyUpdateKRUM(update Update, signature *[]byte) error {
 
 	outLog.Printf(strconv.Itoa(client.id)+":Got KRUM message, iteration %d\n", update.Iteration)
 
-	if (update.Iteration < iterationCount && !collectingUpdates) {
+	if (update.Iteration < iterationCount) {
 
 		printError("Update of previous iteration received", staleError)
 		return staleError
@@ -32,28 +196,68 @@ func (s *Peer) VerifyUpdateKRUM(update Update, signature *[]byte) error {
 	}	
 
 	// TODO: set up acquiring a lock here
+	krumLock.Lock()
+	peerId := 0	
 
 	if collectingUpdates {
 
 		peerId = len(krum.UpdateList)
 
-		krum.UpdateList = append(krum.UpdateList, Update.Delta)
+		krum.UpdateList = append(krum.UpdateList, update.Delta)
 
-		//TODO: Declare UpdateThresh		
+		//TODO: Declare UpdateThresh	
 
 		if (len(krum.UpdateList) == KRUM_UPDATETHRESH){
 			
+			outLog.Printf(strconv.Itoa(client.id)+"Reached KRUM THRESH at %d\n", iterationCount)
+			
+			krumReceived <- true
+			outLog.Printf(strconv.Itoa(client.id)+"Crossed Received %d\n", iterationCount)
+			
+			
+			collectingUpdates = false
+
 			krum.computeScores()
 
+			outLog.Printf(strconv.Itoa(client.id)+"Crossed Accepted %d\n", iterationCount)
+
+			for i := 0; i < (KRUM_UPDATETHRESH-1); i++ {
+			
+				krumAccepted <- true								
+				
+			}
+
+			krumLock.Unlock()
+
+			outLog.Printf("KRUM Processing Complete")
+
+			// shouldn't be going out. return here
+
 		}else{
+			
+			krumLock.Unlock()
 
-			// Release lock
-			krumAccepted <- true
-
+			<- krumAccepted				
 
 		}
+
+		if krum.checkIfAccepted(peerId){
+
+			outLog.Printf("Accepting update!")
+			updateCommitment := update.Commitment
+			(*signature) = SchnorrSign(updateCommitment, client.Keys.Skey)
+			return nil
 		
+		}else{
+
+			outLog.Printf("Rejecting update!")
+			return updateError
+		
+		}		
+	
 	}
 
-	
+	krumLock.Unlock()
+	printError("Not collectingUpdates anymore", staleError)
+	return staleError	
 }

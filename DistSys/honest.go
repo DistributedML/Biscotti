@@ -211,6 +211,7 @@ func pyInit(datasetName string, dataFile string, epsilon float64) int {
 		pyTestFunc = pyTorchModule.GetAttrString("getTestErr")
 		pyRoniFunc = pyTorchModule.GetAttrString("roni")
 		pyNoiseFunc = pyTorchModule.GetAttrString("getNoise")
+		
 
 	} else {
 		
@@ -509,7 +510,6 @@ func (honest *Honest) flushSecrets() {
 	honest.secretList = make(map[int]MinerPart)
 	honest.blockUpdates = honest.blockUpdates[:0]
 	honest.aggregatedSecrets = honest.aggregatedSecrets[:0]
-
 
 }
 

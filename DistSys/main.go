@@ -28,7 +28,8 @@ import (
 const (
 	basePort        int           = 8000
 	verifierIP   	string        = "127.0.0.1:"
-	timeoutRPC    	time.Duration = 120 * time.Second
+	timeoutRONI    	time.Duration = 120 * time.Second
+	timeoutKRUM 	time.Duration = 300 * time.Second
 	timeoutUpdate 	time.Duration = 500 * time.Second 
 	timeoutBlock 	time.Duration = 600 * time.Second
 	timeoutPeer 	time.Duration = 5 * time.Second
@@ -43,12 +44,15 @@ const (
 	PRECISION       int 		  = 4
 	POLY_SIZE 		int 		  = 10
 
-	MAX_ITERATIONS  int 		  = 100
+	MAX_ITERATIONS  int 		  = 2
 
 	POISONING 	 	float64 	  = 0
 
 	// Probability of failing at any iteration. Set to 0 or negative to avoid.
 	FAIL_PROB 		float64 	  = -0.005
+
+	POISON_DEFENSE	string 		  = "KRUM"
+
 
 )
 
@@ -65,6 +69,7 @@ var (
 	numberOfNodes 		int
 	TOTAL_SHARES 		int
 	colluders 			int 		  
+	collectingUpdates 	bool
 
 	numberOfNodeUpdates int
 	myIP                string
@@ -73,6 +78,7 @@ var (
     peersFileName       string
 
 	client 				Honest
+	krum 				KRUMValidator
 	myVRF				VRF
 	collusionThresh 	int
 	unmaskedUpdates 	int
@@ -83,6 +89,9 @@ var (
 	networkBootstrapped		chan bool
 	blockReceived 			chan bool
 	quitRoutine 			chan bool
+	krumAccepted			chan bool
+	krumReceived			chan bool
+
 	portsToConnect 			[]string
 	verifierPortsToConnect 	[]string
 	minerPortsToConnect 	[]string
@@ -102,6 +111,8 @@ var (
 	peerLock			sync.Mutex
 	blockChainLock		sync.Mutex
 	roniLock			sync.Mutex
+	krumLock			sync.Mutex
+	sigLock       		sync.Mutex
 
 	ensureRPC      		sync.WaitGroup
 
@@ -121,7 +132,7 @@ var (
 
 	//Errors
 	staleError error = errors.New("Stale Update/Block")
-	roniError  error = errors.New("RONI Failed")
+	updateError  error = errors.New("Update Rejected")
 	rpcError  error = errors.New("RPC Timeout")
 	signatureError  error = errors.New("Insufficient correct signatures collected")
 
@@ -138,6 +149,10 @@ var (
 	DP_IN_MODEL 	bool 		  = true
 
 	EPSILON 		float64 	  = 2.0
+
+	KRUM_UPDATETHRESH	int 	  = 25
+
+	timeoutRPC    	time.Duration = 120 * time.Second
 
 )
 
@@ -157,7 +172,7 @@ func init() {
 // Returns:
 // - StaleError if its an update for a preceding round.
 
-func (s *Peer) VerifyUpdate(update Update, signature *[]byte) error {
+func (s *Peer) VerifyUpdateRONI(update Update, signature *[]byte) error {
 
 	outLog.Printf(strconv.Itoa(client.id)+":Got RONI message, iteration %d\n", update.Iteration)
 
@@ -186,7 +201,7 @@ func (s *Peer) VerifyUpdate(update Update, signature *[]byte) error {
 	if roniScore > 0.02 {
 	
 		outLog.Printf("Rejecting update!")		
-		return roniError
+		return updateError
 	
 	}else{
 
@@ -197,14 +212,14 @@ func (s *Peer) VerifyUpdate(update Update, signature *[]byte) error {
 		fmt.Println("My Skey:%s", mySkey)
 		fmt.Println("My Signature:%s", (*signature))*/
 		return nil	
-	}	
+	}
 
 }
 
 // The peer receives an update from another peer if its a noiser in that round.
 // The noiser peer returns their noise at the given iteration value
 // Returns:
-// - roniError if it fails
+// - updateError if it fails
 func (s *Peer) RequestNoise(iterationCount int, returnNoise *[]float64) error {
 
 	outLog.Printf(strconv.Itoa(client.id)+":Got noise message, iteration %d\n", iterationCount)
@@ -526,6 +541,8 @@ func getRoleNames(iterationCount int) ([]string, []string, []string, int) {
 
     }
 
+    // order verfiers by ID. Needed by KRUM
+    sort.Strings(verifiers)
 	return verifiers, miners, noisers, numVanilla
 
 }
@@ -717,6 +734,19 @@ func main() {
 
 	//Initialize a honest client
 	client = Honest{id: nodeNum, blockUpdates: make([]Update, 0, 5)}
+
+	krum = KRUMValidator{
+		UpdateList: make([][]float64, 0, 5), 
+		AcceptedList:make([]int, 0, 5), 
+		NumAdversaries:0.5}
+
+
+	if POISON_DEFENSE == "KRUM" {
+		timeoutRPC = timeoutKRUM
+	}else{
+		timeoutRPC = timeoutRONI
+	}
+
 	TOTAL_SHARES = int(math.Ceil(float64(POLY_SIZE*2)/float64(NUM_MINERS)))*NUM_MINERS
 
 	// Reading data and declaring some global locks to be used later
@@ -749,6 +779,8 @@ func main() {
 
 	client.bootstrapKeys()
 
+	krum.initialize()	
+
 	// initialize the VRF
 	myVRF = VRF{}
 	myVRF.init()
@@ -761,6 +793,12 @@ func main() {
 	peerLock = sync.Mutex{}
 	blockChainLock = sync.Mutex{}
 	roniLock = sync.Mutex{}
+	krumLock = sync.Mutex{}
+	sigLock = sync.Mutex{}
+
+	// TODO: Replace with numNodes/4 after test
+	KRUM_UPDATETHRESH = 5
+
 
 	ensureRPC = sync.WaitGroup{}
 	allUpdatesReceived = make (chan bool)
@@ -768,6 +806,8 @@ func main() {
 	blockReceived = make (chan bool)
 	allSharesReceived = make (chan bool)
 	quitRoutine = make (chan bool)
+	krumAccepted = make (chan bool)
+	krumReceived = make (chan bool)
 
 	// Initializing RPC Server
 	peer := new(Peer)
@@ -1022,10 +1062,26 @@ func prepareForNextIteration() {
 
 		outLog.Printf(strconv.Itoa(client.id)+":I am verifier. Iteration:%d", iterationCount)
 		updateSent = true
+
+		if POISON_DEFENSE == "KRUM" {				
+
+			krumLock.Lock()
+			krum.flushCollectedUpdates()
+			collectingUpdates = true
+			krumLock.Unlock()
+			go startKRUMDeadlineTimer(iterationCount)
+		
+		}
+
+		//MAYBE TODO: If KRUM, start timer
+
 	
 	} else {
 		outLog.Printf(strconv.Itoa(client.id)+":I am not miner or verifier. Iteration:%d", iterationCount)
 		updateSent = false
+		krumLock.Lock()		
+		collectingUpdates = false
+		krumLock.Unlock()
 		go startBlockDeadlineTimer(iterationCount)
 	}
 
@@ -1130,7 +1186,7 @@ func processBlock(block Block) {
 			if(block.Data.Iteration == len(client.bc.Blocks) - 2){
 				client.replaceBlock(block, block.Data.Iteration)
 				outLog.Printf("Chain Length:" + strconv.Itoa(len(client.bc.Blocks)))
-				outLog.Printf(strconv.Itoa(client.id)+":Received better  block")
+				outLog.Printf(strconv.Itoa(client.id)+":Received better block")
 			}
 			return 
 		
@@ -1153,21 +1209,18 @@ func processBlock(block Block) {
 		for block.Data.Iteration > iterationCount {
 			outLog.Printf(strconv.Itoa(client.id)+":Blocking. Got block for %d, I am at %d\n", block.Data.Iteration, iterationCount)
 			time.Sleep(1000 * time.Millisecond)
-		}
-
-		// TODO: Backlog created while in main loop. Race condition. Too many blocks of previous iteration created.
-		
+		}		
 
 		if ((block.Data.Iteration == iterationCount) || client.evaluateBlockQuality(block)){
 
 			outLog.Printf("Acquiring bool lock")
 			boolLock.Lock()	
-
 			go addBlockToChain(block)
 
 		}
 
 		return
+	
 	}
 			
 	// // if not empty and not verifier send signal to channel. Not verifier required because you are not waiting for a block if you are the verifier and if you receive an empty block and if you are currently busy bootstrapping yourself. 
@@ -1279,6 +1332,17 @@ func sendBlock(block Block) {
 
 	outLog.Printf(strconv.Itoa(client.id)+":Preparing for next Iteration. Current Iteration: %d", iterationCount)
 
+	// This seems to be the safest place to release all peers stuck in a verifier RPC.
+	if (verifier && collectingUpdates) {
+
+		outLog.Printf("Block Appended. Releasing peer requests for verification.")
+
+		for i := 0; i < len(krum.UpdateList); i++ {					
+			krumAccepted <- true
+		}
+
+	}
+
 	prepareForNextIteration()
 		
 }
@@ -1388,7 +1452,9 @@ func messageSender(ports []string) {
 		if !updateSent {
 
 			outLog.Printf("Sending update to verifiers")
-			signatureList, approved = sendUpdateToVerifiers(verifierPortsToConnect)			 
+			outLog.Printf("Verifier addresses:%s", verifierPortsToConnect)				
+			signatureList, approved = sendUpdateToVerifiers(verifierPortsToConnect)	 			
+			
 
 		}
 
@@ -1441,7 +1507,6 @@ func requestNoiseFromNoisers(addresses []string) []float64 {
 	}
 
 	// Generate noise yourself if DP added until end.
-
 
 	noisesReceived := 0.0
 	noiseVec = make([]float64, client.ncol)
@@ -1506,7 +1571,6 @@ func requestNoiseFromNoisers(addresses []string) []float64 {
 func sendUpdateToVerifiers(addresses []string) ([][]byte ,bool) {
 
 	signatureList := make([][]byte, 0)
-	c := make(chan error)
 	verified := false
 	verifiersOnline := false
 
@@ -1514,57 +1578,25 @@ func sendUpdateToVerifiers(addresses []string) ([][]byte ,bool) {
 		return signatureList, true
 	}
 
-	VerifLoop:
+	ensureRPC.Add(len(addresses))
 
 	for _, address := range addresses {
 
-		conn, err := rpc.Dial("tcp", address)
-		printError("Unable to connect to verifier", err)
-		
-		if(err == nil){
-			
-			defer conn.Close()
-			signature := []byte{}
-			outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Verifier. Sending Update, Iteration:%d\n", client.update.Iteration)
-			go func() { c <- conn.Call("Peer.VerifyUpdate", client.update, &signature) }()
-			select {
-			case verifierError := <-c:
-				
-				printError("Error in sending update", err)
-				verifiersOnline  = true
-				if (verifierError == nil) {
-
-					outLog.Printf(strconv.Itoa(client.id)+":Update verified. Itersation:%d\n", client.update.Iteration)
-					signatureList = append(signatureList, signature)
-
-					if (len(signatureList) >= (len(verifierPortsToConnect)/2)) {
-						verified = true
-						break VerifLoop
-					} else {
-						outLog.Printf(strconv.Itoa(client.id)+":Couldn't get enough signatures. Iteration:%d\n", client.update.Iteration)
-					}
-
-				}
-
-				if (verifierError == roniError) {
-					outLog.Printf(strconv.Itoa(client.id)+":Update rejected.... Iteration:%d\n", client.update.Iteration)
-				}
-
-			// use err and result
-			case <-time.After(timeoutRPC):
-				outLog.Printf(strconv.Itoa(client.id)+":RPC Call timed out.")
-				continue
-			}
-		
-		} else {
-
-			outLog.Printf("GOT VERIFIER ERROR")
-			time.Sleep(1000 * time.Millisecond)
-			continue
-		}
+		go sendUpdateToVerifier(address, &signatureList, &verifiersOnline)		
 	
 	}
 
+	ensureRPC.Wait()
+
+	if (len(signatureList) >= (len(verifierPortsToConnect)/2)) {
+			
+		verified = true
+	
+	}else {
+
+		outLog.Printf(strconv.Itoa(client.id)+":Couldn't get enough signatures. Iteration:%d\n", client.update.Iteration)
+	}
+	
 	// Verification totally failed. Create empty block and send
 	if !verifiersOnline {
 		time.Sleep(5000 * time.Millisecond)
@@ -1580,6 +1612,69 @@ func sendUpdateToVerifiers(addresses []string) ([][]byte ,bool) {
 	} 
 
 	return signatureList, verified
+
+}
+
+func sendUpdateToVerifier(address string, signatureList *([][]byte), verifiersOnline *bool) {
+
+	defer ensureRPC.Done()
+
+	conn, err := rpc.Dial("tcp", address)
+	printError("Unable to connect to verifier", err)
+	c := make(chan error)
+
+	
+	if(err == nil){
+		
+		defer conn.Close()
+		signature := []byte{}
+		outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Verifier. Sending Update, Iteration:%d\n", client.update.Iteration)
+		
+		if POISON_DEFENSE == "KRUM" {
+			go func() { c <- conn.Call("Peer.VerifyUpdateKRUM", client.update, &signature) }()
+		}else{
+			go func() { c <- conn.Call("Peer.VerifyUpdateRONI", client.update, &signature) }()
+		}
+		select {
+		case verifierError := <-c:
+			
+			printError("Error in sending update", err)
+			sigLock.Lock()
+			*verifiersOnline  = true
+			sigLock.Unlock()
+			if (verifierError == nil) {
+
+				outLog.Printf(strconv.Itoa(client.id)+":Update verified. Itersation:%d\n", client.update.Iteration)
+				sigLock.Lock()
+				*signatureList = append(*	signatureList, signature)
+				sigLock.Unlock()
+
+				// if (len(signatureList) >= (len(verifierPortsToConnect)/2)) {
+				// 	verified = true
+				// 	break VerifLoop
+				// } else {
+				// 	outLog.Printf(strconv.Itoa(client.id)+":Couldn't get enough signatures. Iteration:%d\n", client.update.Iteration)
+				// }
+
+			}
+
+			if (verifierError == updateError) {
+				outLog.Printf(strconv.Itoa(client.id)+":Update rejected.... Iteration:%d\n", client.update.Iteration)
+			}
+
+		// use err and result
+		case <-time.After(timeoutRPC):
+			outLog.Printf(strconv.Itoa(client.id)+":RPC Call timed out.")
+			// continue
+		}
+	
+	} 
+	//else {
+
+	// 	outLog.Printf("GOT VERIFIER ERROR")
+	// 	time.Sleep(1000 * time.Millisecond)
+	// 	continue
+	// }
 
 }
 
