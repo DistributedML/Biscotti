@@ -159,5 +159,5 @@ if __name__ == '__main__':
     parse_logs(3, biscotti_input_file_dir, biscotti_output_file_dir)
     parse_logs(3, fedsys_input_file_dir, fedsys_output_file_dir)
 
-    # plot(3,"FedSys_Azure","azure-deploy",False)
+    #plot(3,"FedSys_Azure","azure-deploy",False)
     plot(3, fedsys_input_file_dir, biscotti_input_file_dir, fedsys_output_file_dir, biscotti_output_file_dir, True)
