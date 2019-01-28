@@ -1514,9 +1514,11 @@ func sendUpdateToVerifiers(addresses []string) ([][]byte ,bool) {
 		return signatureList, true
 	}
 
+	shuffledIndices := rand.Perm(len(addresses))
 	VerifLoop:
 
-	for _, address := range addresses {
+	for _, shuffledIndex := range shuffledIndices {
+		address := addresses[shuffledIndex]
 
 		conn, err := rpc.Dial("tcp", address)
 		printError("Unable to connect to verifier", err)
