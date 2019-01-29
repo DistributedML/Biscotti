@@ -131,7 +131,7 @@ def plot(numRuns, fedSysInput, distSysInput, fedSysOutput, distSysOutput, time=T
 
     if time:
         plt.xlabel("Time (s)", fontsize=22)
-        axes.set_xlim([0, 14000])
+        axes.set_xlim([0, 8000])
     else:
         plt.xlabel("Training Iterations", fontsize=22)
         axes.set_xlim([0, 100])
