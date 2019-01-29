@@ -102,6 +102,7 @@ var (
 	peerLock			sync.Mutex
 	blockChainLock		sync.Mutex
 	roniLock			sync.Mutex
+	sigLock 			sync.Mutex
 
 	ensureRPC      		sync.WaitGroup
 
@@ -121,6 +122,7 @@ var (
 
 	//Errors
 	staleError error = errors.New("Stale Update/Block")
+	updateError error = errors.New("Update Rejected")
 	roniError  error = errors.New("RONI Failed")
 	rpcError  error = errors.New("RPC Timeout")
 	signatureError  error = errors.New("Insufficient correct signatures collected")
@@ -157,7 +159,7 @@ func init() {
 // Returns:
 // - StaleError if its an update for a preceding round.
 
-func (s *Peer) VerifyUpdate(update Update, signature *[]byte) error {
+func (s *Peer) VerifyUpdateRONI(update Update, signature *[]byte) error {
 
 	outLog.Printf(strconv.Itoa(client.id)+":Got RONI message, iteration %d\n", update.Iteration)
 
@@ -186,7 +188,7 @@ func (s *Peer) VerifyUpdate(update Update, signature *[]byte) error {
 	if roniScore > 0.02 {
 	
 		outLog.Printf("Rejecting update!")		
-		return roniError
+		return updateError
 	
 	}else{
 
@@ -761,6 +763,7 @@ func main() {
 	peerLock = sync.Mutex{}
 	blockChainLock = sync.Mutex{}
 	roniLock = sync.Mutex{}
+	sigLock = sync.Mutex{}
 
 	ensureRPC = sync.WaitGroup{}
 	allUpdatesReceived = make (chan bool)
@@ -1506,7 +1509,6 @@ func requestNoiseFromNoisers(addresses []string) []float64 {
 func sendUpdateToVerifiers(addresses []string) ([][]byte ,bool) {
 
 	signatureList := make([][]byte, 0)
-	c := make(chan error)
 	verified := false
 	verifiersOnline := false
 
@@ -1514,57 +1516,23 @@ func sendUpdateToVerifiers(addresses []string) ([][]byte ,bool) {
 		return signatureList, true
 	}
 
-	shuffledIndices := rand.Perm(len(addresses))
-	VerifLoop:
+	ensureRPC.Add(len(addresses))
 
-	for _, shuffledIndex := range shuffledIndices {
-		address := addresses[shuffledIndex]
+	for _, address := range addresses {
 
-		conn, err := rpc.Dial("tcp", address)
-		printError("Unable to connect to verifier", err)
-		
-		if(err == nil){
-			
-			defer conn.Close()
-			signature := []byte{}
-			outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Verifier. Sending Update, Iteration:%d\n", client.update.Iteration)
-			go func() { c <- conn.Call("Peer.VerifyUpdate", client.update, &signature) }()
-			select {
-			case verifierError := <-c:
-				
-				printError("Error in sending update", err)
-				verifiersOnline  = true
-				if (verifierError == nil) {
+		go sendUpdateToVerifier(address, &signatureList, &verifiersOnline)
 
-					outLog.Printf(strconv.Itoa(client.id)+":Update verified. Itersation:%d\n", client.update.Iteration)
-					signatureList = append(signatureList, signature)
+	}
 
-					if (len(signatureList) >= (len(verifierPortsToConnect)/2)) {
-						verified = true
-						break VerifLoop
-					} else {
-						outLog.Printf(strconv.Itoa(client.id)+":Couldn't get enough signatures. Iteration:%d\n", client.update.Iteration)
-					}
+	ensureRPC.Wait()
 
-				}
+	if (len(signatureList) >= (len(verifierPortsToConnect)/2)) {
 
-				if (verifierError == roniError) {
-					outLog.Printf(strconv.Itoa(client.id)+":Update rejected.... Iteration:%d\n", client.update.Iteration)
-				}
+		verified = true
 
-			// use err and result
-			case <-time.After(timeoutRPC):
-				outLog.Printf(strconv.Itoa(client.id)+":RPC Call timed out.")
-				continue
-			}
-		
-		} else {
+	} else {
 
-			outLog.Printf("GOT VERIFIER ERROR")
-			time.Sleep(1000 * time.Millisecond)
-			continue
-		}
-	
+		outLog.Printf(strconv.Itoa(client.id)+":Couldn't get enough signatures. Iteration:%d\n", client.update.Iteration)
 	}
 
 	// Verification totally failed. Create empty block and send
@@ -1582,6 +1550,50 @@ func sendUpdateToVerifiers(addresses []string) ([][]byte ,bool) {
 	} 
 
 	return signatureList, verified
+
+}
+
+func sendUpdateToVerifier(address string, signatureList *([][]byte), verifiersOnline *bool) {
+
+	defer ensureRPC.Done()
+
+	conn, err := rpc.Dial("tcp", address)
+	printError("Unable to connect to verifier", err)
+	c := make(chan error)
+
+
+	if(err == nil){
+
+		defer conn.Close()
+		signature := []byte{}
+		outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Verifier. Sending Update, Iteration:%d\n", client.update.Iteration)
+
+		go func() { c <- conn.Call("Peer.VerifyUpdateRONI", client.update, &signature) }()
+		select {
+		case verifierError := <-c:
+
+			printError("Error in sending update", err)
+			sigLock.Lock()
+			*verifiersOnline  = true
+			sigLock.Unlock()
+			if (verifierError == nil) {
+
+				outLog.Printf(strconv.Itoa(client.id)+":Update verified. Iteration:%d\n", client.update.Iteration)
+				sigLock.Lock()
+				*signatureList = append(*	signatureList, signature)
+				sigLock.Unlock()
+
+			}
+
+			if (verifierError == updateError) {
+				outLog.Printf(strconv.Itoa(client.id)+":Update rejected.... Iteration:%d\n", client.update.Iteration)
+			}
+
+		case <-time.After(timeoutRPC):
+			outLog.Printf(strconv.Itoa(client.id)+":RPC Call timed out.")
+		}
+
+	}
 
 }
 
