@@ -44,9 +44,9 @@ const (
 	PRECISION       int 		  = 4
 	POLY_SIZE 		int 		  = 10
 
-	MAX_ITERATIONS  int 		  = 2
+	MAX_ITERATIONS  int 		  = 100
 
-	POISONING 	 	float64 	  = 0
+	POISONING 	 	float64 	  = 0.5
 
 	// Probability of failing at any iteration. Set to 0 or negative to avoid.
 	FAIL_PROB 		float64 	  = -0.005

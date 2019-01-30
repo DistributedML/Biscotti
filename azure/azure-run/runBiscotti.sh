@@ -19,18 +19,28 @@ let azure=1
 
 # dataset="mnist"
 
+localUser=$USER
+azureUser="matheus"
+
 #TODO: Take as input dataset name. Figure out dimensions based on name
 if [[ "$dataset" = "mnist" ]]; then
 	dimensions=7850
-elif [["$dataset" = "creditcard"]]; then
+elif [[ "$dataset" = "creditcard" ]]; then
 	dimensions=25
 fi
 
+#TODO: Take as input dataset name. Figure out dimensions based on name
+if [[ "$hostFileName" = "hosts_sameDC" ]]; then
+	azureUser="shayan"
+elif [[ "$hostFileName" = "hosts_diffDC" ]]; then
+	azureUser="matheus"
+fi
+
 currentDir=$PWD
-azureUser="shayan"
 pathToKeyGeneration=$GOPATH/src/Biscotti/keyGeneration/
 confPath=$GOPATH/src/Biscotti/azure/azure-conf/
 distSysPath=$GOPATH/src/Biscotti/DistSys/
+azureDistSysPath="/home/$azureUser/gopath/src/Biscotti/DistSys"
 controllerIP=$(ifconfig | grep -oE -m 1 "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | head -1)
 controllerUser=$USER
 logFilesPath=$distSysPath/LogFiles
@@ -93,10 +103,10 @@ for line in $(cat $hostPath);do
 	# 	azureUser="cfung"
 	# fi
 
-	scp $distSysPath/commitKey.json $azureUser@$tname:$distSysPath
-	scp $distSysPath/pKeyG1.json $azureUser@$tname:$distSysPath
-	scp peersFileSent $azureUser@$tname:$distSysPath
-	scp $distSysPath/DistSys $azureUser@$tname:$distSysPath
+	scp $distSysPath/commitKey.json $azureUser@$tname:$azureDistSysPath
+	scp $distSysPath/pKeyG1.json $azureUser@$tname:$azureDistSysPath
+	scp peersFileSent $azureUser@$tname:$azureDistSysPath
+	scp $distSysPath/DistSys $azureUser@$tname:$azureDistSysPath
 
 done
 # ##################################################################################################

@@ -6,7 +6,8 @@ import(
 	"github.com/sbinet/go-python"
 	"runtime"
 	"encoding/binary"
-	"math"
+	// "bytes"
+	// "math"
 )
 
 var (
@@ -64,15 +65,17 @@ func (krumval *KRUMValidator) computeScores(){
 	// numberToAccept := numberToReject - numUpdatesRec
 
 	runningDeltas := krumval.UpdateList
-	acceptedListFloats := krumval.getTopKRUMIndex(runningDeltas)
-	outLog.Printf("List of accepted people:%s", acceptedListFloats)
+	krum.AcceptedList = krumval.getTopKRUMIndex(runningDeltas)
+	
+	outLog.Printf("List of accepted people:%s", krum.AcceptedList)
 
-	for i := 0; i < len(acceptedListFloats); i++ {		
-		krumval.AcceptedList = append(krumval.AcceptedList, int(acceptedListFloats[i]))
-	}
+
+	// for i := 0; i < len(acceptedListFloats); i++ {		
+	// 	krumval.AcceptedList = append(krumval.AcceptedList, int(acceptedListFloats[i]))
+	// }
 }
 
-func (krumval *KRUMValidator) getTopKRUMIndex(deltas [][]float64) []float64{
+func (krumval *KRUMValidator) getTopKRUMIndex(deltas [][]float64) []int{
 
 	//Making Python call to KRUM
 	outLog.Println("Acquiring Python Lock...")
@@ -109,21 +112,34 @@ func (krumval *KRUMValidator) getTopKRUMIndex(deltas [][]float64) []float64{
 	pyByteArray := python.PyByteArray_FromObject(result)
 	goByteArray := python.PyByteArray_AsBytes(pyByteArray)
 
-	var goFloatArray []float64
+	outLog.Println("Go Byte Array:%s", len(goByteArray) )	
+		outLog.Println("Go Byte Array:%s", goByteArray )	
+
+	// acceptedIdxs := binary.BigEndian.Uint64(goByteArray[s])
+
+	var acceptedIdxs []int
+	var acceptedIdx int
 	size := len(goByteArray) / 8
+
+	// buf := bytes.NewBuffer(goByteArray) // b is []byte	
 
 	for i := 0; i < size; i++ {
 		currIndex := i * 8
-		bits := binary.LittleEndian.Uint64(goByteArray[currIndex : currIndex+8])
-		aFloat := math.Float64frombits(bits)
-		goFloatArray = append(goFloatArray, aFloat)
+		temp := binary.LittleEndian.Uint64(goByteArray[currIndex : currIndex+8])
+		// buf := goByteArray[currIndex : currIndex+8]
+		// outLog.Println("Buffer:%s", buf )
+		// aFloat64, _ := binary.ReadVarint(buf)
+		acceptedIdx = int(temp) 	
+
+		// _ = binary.Read(bytes.NewReader(buf), binary.BigEndian, &aFloat)		
+		acceptedIdxs = append(acceptedIdxs, acceptedIdx)
 	}
 
 	outLog.Println("Outside KRUM")	
 	python.PyGILState_Release(_gstate)	
 	outLog.Println("Released Python Lock")
 
-	return goFloatArray
+	return acceptedIdxs
 
 }
 

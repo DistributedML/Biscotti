@@ -38,6 +38,8 @@ def krum(deltas, clip):
     # assume deltas is an array of size group * d
     n = len(deltas)
 
+    deltas = np.array(deltas)
+    
     scores = get_krum_scores(deltas, n - clip)
 
     good_idx = np.argpartition(scores, n - clip)[:(n - clip)]

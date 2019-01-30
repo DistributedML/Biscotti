@@ -42,7 +42,7 @@ const (
 
 	SECURE_AGG  	bool 		  = true
 
-	POISONING 	 	float64 	  = 0
+	POISONING 	 	float64 	  = 0.5
 
 )
 

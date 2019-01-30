@@ -4,7 +4,7 @@ set -f
 # Harcoded username/hostFiles here. 
 fileName=$1
 echo $fileName
-username='shayan'
+username='matheus'
 hostFile="../azure-conf/$fileName"
 
 let vmcount=0

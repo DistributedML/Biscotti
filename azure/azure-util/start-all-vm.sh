@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-rgroup='biscotti'
+rgroup='GlobalDeploy'
 let numVMs=20
 vmprefix='bis'
 

@@ -4,7 +4,7 @@ IFS=$'\n'
 set -f
 
 # Harcoded username/hostFiles here. Kills Biscotti processes on every VM in host file
-username='shayan'
+username='matheus'
 fileName=$1
 hostFile="../azure-conf/$fileName"
 
