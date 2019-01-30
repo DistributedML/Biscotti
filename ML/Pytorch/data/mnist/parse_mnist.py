@@ -238,10 +238,20 @@ def standardize_cols(X, mu=None, sigma=None):
 
     return (X - mu) / sigma, mu, sigma
 
+def generate_poisoned():
+
+    # Set up a 1-7
+    data = np.load("mnist_digit1.npy")
+    data[:, -1] = 7    
+
+    np.save("mnist_bad", data)
+
 
 if __name__ == "__main__":
     
-    slice_uniform(10)
+    # slice_uniform(10)
+
+    generate_poisoned()
 
     # slice_for_tm()
 

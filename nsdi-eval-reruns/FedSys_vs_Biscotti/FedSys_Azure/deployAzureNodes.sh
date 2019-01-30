@@ -13,7 +13,7 @@ logFileCopyPath=$7
 rm -rf LogFiles
 
 source ~/.profile
-pathToBinary=$GOPATH/src/simpleBlockChain/FedSys
+pathToBinary=$GOPATH/src/Biscotti/FedSys
 #####################################################
 
 
@@ -47,7 +47,7 @@ mkdir -p LogFiles
 
 hostindex=0
 
-# for line in $(cat $GOPATH/src/simpleBlockChain/azure-deploy/tempHosts);do
+# for line in $(cat $GOPATH/src/Biscotti/azure-deploy/tempHosts);do
 
 # 	tname=`echo $line | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'`
 
@@ -78,7 +78,7 @@ for (( index = $startingIndex ; index < $startingIndex + nodesToRun; index++ ));
 
 	echo deploying "$index"
 	cd $pathToBinary
-	timeout 500 ./FedSys -i=$index -t=$totalnodes \
+	timeout 1500 ./FedSys -i=$index -t=$totalnodes \
 		-d=mnist -f=peersFileSent \
 		-a=$myAddress -p=$thisPort -pa=$myPrivateIp \
 		 > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
@@ -102,7 +102,7 @@ scp ./LogFiles/*.log $controllerUser@$controllerIP:$logFileCopyPath
 # # if [[ "$myAddress" != "198.162.52.154" ]]; then
 	
 # # 	echo "Copying files back to naur"
-# # 	scp *.log cfung@198.162.52.154:/home/cfung/gopath/src/simpleBlockChain/DistSys/LogFiles
+# # 	scp *.log cfung@198.162.52.154:/home/cfung/gopath/src/Biscotti/DistSys/LogFiles
 
 # # fi
 
