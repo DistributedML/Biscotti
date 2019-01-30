@@ -251,9 +251,10 @@ if __name__ == "__main__":
     
     # slice_uniform(10)
 
+    slice_for_tm()
     generate_poisoned()
 
-    # slice_for_tm()
+    
 
     # # Set up a 1-7
     # data = np.load("mnist_digit1.npy")
