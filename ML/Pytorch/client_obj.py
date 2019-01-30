@@ -111,12 +111,13 @@ def roni(ww, delta):
 
     return after - original
 
-# Returns the index of the row that should be used in Krum
 def krum(deltas, clip):
 
     # assume deltas is an array of size group * d
     n = len(deltas)
 
+    deltas = np.array(deltas)
+    
     scores = get_krum_scores(deltas, n - clip)
 
     good_idx = np.argpartition(scores, n - clip)[:(n - clip)]
