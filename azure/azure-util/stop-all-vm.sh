@@ -2,7 +2,7 @@
 
 filename=$1
 hostfile="../azure-conf/$filename"
-rgroup='biscotti'
+rgroup='globalDeploy'
 vmprefix='bis'
 
 let numVMs=20

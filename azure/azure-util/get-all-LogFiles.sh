@@ -23,7 +23,7 @@ for line in $(cat $hostFile);do
 
 	ipaddr=`echo $line | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'`
 
-	scp $username@$ipaddr:$GOPATH/src/Biscotti/DistSys/LogFiles/*.log $destPath 
+	scp $username@$ipaddr:/home/$username/gopath/src/Biscotti/DistSys/LogFiles/*.log $destPath 
 
 done
 exit

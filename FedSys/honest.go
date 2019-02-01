@@ -9,6 +9,8 @@ import (
 	"strconv"
 	"errors"
 	"runtime"
+	"math/rand"
+	"time"
 )
 
 var (
@@ -87,7 +89,7 @@ func (honest *Honest) initializeData(datasetName string, numberOfNodes int, epsi
 	
 		if isPoisoning {
 			outLog.Println("Get the bad data.")
-			honest.ncol = pyInit("mnist", "mnist_bad_full", epsilon)	
+			honest.ncol = pyInit("mnist", "mnist_bad", epsilon)	
 		} else {
 			honest.ncol = pyInit(datasetName, datasetName + strconv.Itoa(honest.id), epsilon)
 		}
@@ -111,6 +113,30 @@ func (honest *Honest) checkConvergence(iterationCount int) bool {
 	}
 
 	return false
+}
+
+// cSample updates for the poisoning case
+func (honest *Honest) sampleUpdates(numUpdates int) {
+
+	r := rand.New(rand.NewSource(time.Now().Unix()))
+	selectedUpdates := make([]Update, numUpdates)
+	perm := r.Perm(len(honest.blockUpdates))
+	
+	for i, randIndex := range perm {
+		selectedUpdates[i] = honest.blockUpdates[randIndex]
+
+		if i == (numUpdates-1) {
+			break
+		}
+	
+	}	
+
+	honest.blockUpdates = selectedUpdates
+
+	outLog.Printf("Number of updates sampled:%s", len(honest.blockUpdates))
+	outLog.Printf("Indexes selected:%s", perm[:numUpdates])
+
+
 }
 
 // calculates update by calling oneGradientStep function that invokes python and passing latest global model from the chain to it.
@@ -244,12 +270,15 @@ func (honest *Honest) createNewModel(iterationCount int) (BlockData, error) {
 	updatedGradient := make([]float64, honest.ncol)
 	deltaM := mat.NewDense(1, honest.ncol, make([]float64, honest.ncol))
 	pulledGradientM := mat.NewDense(1, honest.ncol, pulledGradient)
+	// avgFactor := 1.0/float64(len(honest.blockUpdates))
 
 	// Update Aggregation
 	for _, update := range honest.blockUpdates {
 		deltaM = mat.NewDense(1, honest.ncol, update.Delta)
 		pulledGradientM.Add(pulledGradientM, deltaM)	
 	}
+
+	// pulledGradientM.Scale(avgFactor, pulledGradientM)
 
 	mat.Row(updatedGradient, 0, pulledGradientM)
 

@@ -66,7 +66,8 @@ func (krumval *KRUMValidator) computeScores(){
 
 	runningDeltas := krumval.UpdateList
 	krum.AcceptedList = krumval.getTopKRUMIndex(runningDeltas)
-	
+	// numInBlock = numberOfNodes/8
+	// krum.AcceptedList = krum.AcceptedList[:numberOfNodes]
 	outLog.Printf("List of accepted people:%s", krum.AcceptedList)
 
 
@@ -219,7 +220,7 @@ func (s *Peer) VerifyUpdateKRUM(update Update, signature *[]byte) error {
 
 		peerId = len(krum.UpdateList)
 
-		krum.UpdateList = append(krum.UpdateList, update.Delta)
+		krum.UpdateList = append(krum.UpdateList, update.NoisedDelta)
 
 		//TODO: Declare UpdateThresh	
 

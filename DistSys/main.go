@@ -46,7 +46,7 @@ const (
 
 	MAX_ITERATIONS  int 		  = 100
 
-	POISONING 	 	float64 	  = 0.5
+	POISONING 	 	float64 	  = 0.3
 
 	// Probability of failing at any iteration. Set to 0 or negative to avoid.
 	FAIL_PROB 		float64 	  = -0.005
@@ -146,7 +146,7 @@ var (
 	NOISY_VERIF		bool 		  = true
 	VERIFY 			bool 		  = true
 
-	DP_IN_MODEL 	bool 		  = true
+	DP_IN_MODEL 	bool 		  = false
 
 	EPSILON 		float64 	  = 2.0
 
@@ -340,7 +340,8 @@ func processShare(share MinerPart) {
 
 
 		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
-		if numberOfShares == minBlockSize {			
+		// if numberOfShares == minBlockSize {
+		if numberOfShares == (KRUM_UPDATETHRESH/2) {			
 			outLog.Printf(strconv.Itoa(client.id)+":Eighth shares for iteration %d received. Notifying channel.", iterationCount)	
 			allSharesReceived <- true 		 
 		}
@@ -755,15 +756,8 @@ func main() {
 	PRIV_PROB = (float64(colluders)/100.0)
 	collusionThresh = int(math.Ceil(float64(numberOfNodes) * (1.0 - PRIV_PROB)))
 
-	if collusionThresh > 0 {
-		if (NOISY_VERIF || DP_IN_MODEL) && (nodeNum < collusionThresh) {
-			client.initializeData(datasetName, numberOfNodes, EPSILON, false)	
-		} else {
-			client.initializeData(datasetName, numberOfNodes, 0, false)	
-		}
-	}
 
-	// Poisoning attack ONLY
+		// Poisoning attack ONLY
 
 	if POISONING > 0 {
 
@@ -774,6 +768,30 @@ func main() {
 
 		isPoisoning := nodeNum > poisoning_index 
 		client.initializeData(datasetName, numberOfNodes, EPSILON, isPoisoning)	
+	
+	}else{
+
+		// if collusionThresh > 0 {
+	
+			// if (NOISY_VERIF) && (nodeNum < collusionThresh) {
+			// 	client.initializeData(datasetName, numberOfNodes, EPSILON, false)	
+			// } else {
+			// 	client.initializeData(datasetName, numberOfNodes, 0, false)	
+			// }
+
+		// }
+
+		// if collusionThresh > 0 {
+	
+		if (NOISY_VERIF) && (nodeNum < collusionThresh) {
+			client.initializeData(datasetName, numberOfNodes, EPSILON, false)	
+		} else {
+			client.initializeData(datasetName, numberOfNodes, 0, false)	
+		}
+
+		// }
+
+	
 	}
 	
 
@@ -797,8 +815,7 @@ func main() {
 	sigLock = sync.Mutex{}
 
 	// TODO: Replace with numNodes/4 after test
-	KRUM_UPDATETHRESH = 5
-
+	KRUM_UPDATETHRESH = 70
 
 	ensureRPC = sync.WaitGroup{}
 	allUpdatesReceived = make (chan bool)
@@ -1129,7 +1146,9 @@ func processUpdate(update Update) {
 		outLog.Printf("As miner, I expect %d updates, I have gotten %d", (numberOfNodeUpdates / 8), numberOfUpdates)
 
 		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
-		if numberOfUpdates == (numberOfNodes / 8)  {			
+		if numberOfUpdates == (KRUM_UPDATETHRESH / 2)  {		
+		
+		// if numberOfUpdates == (numberOfNodes / 8)  {			
 			outLog.Printf(strconv.Itoa(client.id)+":Half updates for iteration %d received. Notifying channel.", iterationCount)	
 			allUpdatesReceived <- true 		 
 		}	
@@ -1578,6 +1597,8 @@ func sendUpdateToVerifiers(addresses []string) ([][]byte ,bool) {
 		return signatureList, true
 	}
 
+	// outLog.Printf("My update sent for verification is %s", client.update.NoisedDelta)
+
 	ensureRPC.Add(len(addresses))
 
 	for _, address := range addresses {
@@ -1630,6 +1651,7 @@ func sendUpdateToVerifier(address string, signatureList *([][]byte), verifiersOn
 		signature := []byte{}
 		outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Verifier. Sending Update, Iteration:%d\n", client.update.Iteration)
 		
+
 		if POISON_DEFENSE == "KRUM" {
 			go func() { c <- conn.Call("Peer.VerifyUpdateKRUM", client.update, &signature) }()
 		}else{
@@ -1646,7 +1668,7 @@ func sendUpdateToVerifier(address string, signatureList *([][]byte), verifiersOn
 
 				outLog.Printf(strconv.Itoa(client.id)+":Update verified. Itersation:%d\n", client.update.Iteration)
 				sigLock.Lock()
-				*signatureList = append(*	signatureList, signature)
+				*signatureList = append(*signatureList, signature)
 				sigLock.Unlock()
 
 				// if (len(signatureList) >= (len(verifierPortsToConnect)/2)) {
@@ -1756,6 +1778,7 @@ func sendUpdateSecretsToMiners(addresses []string) {
 	mined := false
 
 	// generate secrets here
+	// outLog.Printf("My update sent for aggregation is %s", client.update.Delta)
 	minerSecrets := generateMinerSecretShares(client.update.Delta, PRECISION, client.Keys.CommitmentKey, NUM_MINERS, POLY_SIZE, TOTAL_SHARES)
 
 	// outLog.Printf("My secret share:%s", minerSecrets)

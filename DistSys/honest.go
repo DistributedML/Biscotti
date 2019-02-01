@@ -112,7 +112,7 @@ func (honest *Honest) initializeData(datasetName string, numberOfNodes int, epsi
 	
 		if isPoisoning {
 			outLog.Println("Get the bad data.")
-			honest.ncol = pyInit("mnist", "mnist_bad_full", epsilon)	
+			honest.ncol = pyInit("mnist", "mnist_bad", epsilon)	
 		} else {
 			honest.ncol = pyInit(datasetName, datasetName + strconv.Itoa(honest.id), epsilon)
 		}
@@ -157,6 +157,8 @@ func (honest *Honest) computeUpdate(iterationCount int) {
 	prevModel := honest.bc.getLatestGradient()
 	//outLog.Printf("Global Model:%s", prevModel)
 	deltas, err := oneGradientStep(prevModel) // TODO: Create commitment here
+
+	// outLog.Printf(strconv.Itoa(client.id)+":Computed update as %s\n", deltas)
 
 	if DP_IN_MODEL {
 		noise,err := honest.requestNoise(iterationCount)
@@ -262,9 +264,13 @@ func oneGradientStep(globalW []float64) ([]float64, error) {
 	var result *python.PyObject
 	result = pyPrivFunc.CallFunction(argArray)
 
+	outLog.Printf("Result from python is:%s", result)
+
 	// Convert the resulting array to a go byte array
 	pyByteArray := python.PyByteArray_FromObject(result)
 	goByteArray := python.PyByteArray_AsBytes(pyByteArray)
+
+	// outLog.Printf("GoByte is:%s", goByteArray)
 
 	python.PyGILState_Release(_gstate)
 
@@ -277,6 +283,9 @@ func oneGradientStep(globalW []float64) ([]float64, error) {
 		aFloat := math.Float64frombits(bits)
 		goFloatArray = append(goFloatArray, aFloat)
 	}
+
+	// outLog.Printf("GoFloat is:%s", goFloatArray)
+
 
 	return goFloatArray, nil
 
@@ -314,6 +323,7 @@ func (honest *Honest) createBlock(iterationCount int, stakeMap map[int]int) (*Bl
 	updatedGradient := make([]float64, honest.ncol)
 	deltaM := mat.NewDense(1, honest.ncol, make([]float64, honest.ncol))
 	pulledGradientM := mat.NewDense(1, honest.ncol, pulledGradient)
+	// avgFactor := 1.0/float64(len(honest.blockUpdates))
 
 	// Update Aggregation
 	for _, update := range honest.blockUpdates {
@@ -327,6 +337,8 @@ func (honest *Honest) createBlock(iterationCount int, stakeMap map[int]int) (*Bl
 			stakeMap[update.SourceID] = theirStake - STAKE_UNIT
 		}
 	}
+
+	// pulledGradientM.Scale(avgFactor, pulledGradientM)
 
 	mat.Row(updatedGradient, 0, pulledGradientM)
 

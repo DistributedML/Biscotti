@@ -13,7 +13,8 @@ for line in $(cat $hostFile);do
 	tname=`echo $line | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'`
 
 	echo "killing" $tname
-	ssh $username@$tname 'pkill DistSys'
+	# ssh $username@$tname 'pkill DistSys'
+	ssh $username@$tname 'pkill FedSys'
 
 done
 
