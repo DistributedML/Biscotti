@@ -32,7 +32,7 @@ var (
 	pyTrainFunc   	*python.PyObject
 	pyRoniModule  	*python.PyObject
 	pyRoniFunc    	*python.PyObject
-	pyNoiseFunc	  	*python.PyObject
+	pyNoiseFunc	  	*python.PyObject	
 
 	useTorch	   bool
 
