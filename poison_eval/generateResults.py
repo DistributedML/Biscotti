@@ -9,7 +9,7 @@ total_nodes = 100
 numIterations = 102
 
 colors = ['black', 'red', 'green', 'blue', 'yellow']
-labels = ["Federated Learning", 'Biscotti']
+labels = ["Federated Learning- No Poison", 'Federated Learning' ,'Biscotti']
 
 
 def parse_logs(input_file_directory):
@@ -115,7 +115,7 @@ def plotResults(outputFile, inputFiles):
 
 if __name__ == '__main__':
 
-	foldersToParse = ["Fed_Poison_100_30_mnist", "Bis_Poison_100_30_mnist"]
+	foldersToParse = ["Fed_NoPoison_mnist", "Fed_Poison_100_30_mnist", "Bis_Poison_100_30_mnist"]
 
 	parsedFolders = []
 	
@@ -123,4 +123,4 @@ if __name__ == '__main__':
 		parse_logs(folder)
 		parsedFolders.append(folder+"_parsedResults/data.csv")
 
-	plotResults("posion_mnist_30_100.jpg", parsedFolders)
+	plotResults("posion_mnist_30_100_new.jpg", parsedFolders)

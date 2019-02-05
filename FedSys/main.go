@@ -525,7 +525,7 @@ func processUpdate(update Update) {
 			outLog.Printf(strconv.Itoa(client.id)+":All updates for iteration %d received. Notifying channel.", iterationCount)	
 			allUpdatesReceived <- true
 
-		}
+		}	
 
 		// if POISONING > 0 {
 
