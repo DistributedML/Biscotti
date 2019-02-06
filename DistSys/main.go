@@ -1518,8 +1518,10 @@ func sendUpdateToVerifiers(addresses []string) ([][]byte ,bool) {
 
 	ensureRPC.Add(len(addresses))
 
-	for _, address := range addresses {
+	shuffledIndices := rand.Perm(len(addresses))
 
+	for _, shuffledIndex := range shuffledIndices {
+		address := addresses[shuffledIndex]
 		go sendUpdateToVerifier(address, &signatureList, &verifiersOnline)
 
 	}
