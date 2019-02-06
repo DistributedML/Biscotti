@@ -18,7 +18,9 @@ class Client():
         self.testset = Dataset("mnist_test", "../ML/Pytorch/data/" + dataset, is_train=False, transform=transform)
         self.trainloader = torch.utils.data.DataLoader(self.trainset, batch_size=self.batch_size, shuffle=True)
         self.testloader = torch.utils.data.DataLoader(self.testset, batch_size=len(self.testset), shuffle=False)
-
+        self.attackset = Dataset("mnist_digit1", "../ML/Pytorch/data/" + dataset, is_train=False, transform=transform)
+        self.attackloader = torch.utils.data.DataLoader(self.attackset, batch_size=len(self.testset), shuffle=False)
+        
         self.model = model
 
         ### Tunables ###
@@ -155,4 +157,16 @@ class Client():
         # pred = self.model(X.float())
         # y_hat = torch.argmax(pred, dim=1)
         # return 1 - accuracy_score(y, y_hat)
+
+
+    def get17AttackRate(self):
+
+        for i, data in enumerate(self.attackloader, 0):
+            # get the inputs
+            inputs = data['image'].float()
+            labels = data['label'].long()
+            inputs, labels = Variable(inputs), Variable(labels)
+            out = self.model(inputs)
+            pred = np.argmax(out.detach().numpy(), axis=1)
+        return 1 - accuracy_score(pred, labels)
 

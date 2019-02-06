@@ -170,3 +170,9 @@ if __name__ == '__main__':
     # print("Num rejected by RONI: " + str(numRejected))
 
     pdb.set_trace()
+
+def get17AttackRate(ww):
+    global myclient
+    weights = np.array(ww)
+    myclient.updateModel(weights)
+    return myclient.get17AttackRate()
