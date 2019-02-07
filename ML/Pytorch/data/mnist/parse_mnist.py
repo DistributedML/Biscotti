@@ -249,7 +249,7 @@ def generate_poisoned():
 
 if __name__ == "__main__":
     
-    # slice_uniform(10)
+    slice_uniform(10)
 
     slice_for_tm()
     generate_poisoned()
