@@ -46,7 +46,7 @@ const (
 
 	MAX_ITERATIONS  int 		  = 100
 
-	POISONING 	 	float64 	  = 0.3
+	POISONING 	 	float64 	  = 0
 
 	// Probability of failing at any iteration. Set to 0 or negative to avoid.
 	FAIL_PROB 		float64 	  = -0.005
