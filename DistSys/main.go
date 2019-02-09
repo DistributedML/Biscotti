@@ -150,7 +150,7 @@ var (
 
 	EPSILON 		float64 	  = 2.0
 
-	KRUM_UPDATETHRESH	int 	  = 25
+	KRUM_UPDATETHRESH	int 	  = 70
 
 	timeoutRPC    	time.Duration = 120 * time.Second
 
