@@ -1,3 +1,5 @@
+import pandas as pd
+import numpy as np
 import os
 import sys
 from datetime import datetime, timedelta
@@ -16,13 +18,44 @@ total_nodes = sys.argv[1]
 # fedsys_output_file_dir = sys.argv[4]
 # fedsys_input_file_dir = sys.argv[5]
 
+def parse_logs(numRuns, input_file_directory, output_file_directory):
+    for i in range(0, numRuns):
+
+        fname = input_file_directory + str(i) + "/log_0_" + str(total_nodes) + ".log"
+        lines = [line.rstrip('\n') for line in open(fname)]
+
+        if not os.path.exists(output_file_directory):
+            os.makedirs(output_file_directory)
+
+        outfile = open(output_file_directory + "data" + str(i), "w")
+        iteration = 0
+
+        for line in lines:
+
+            idx = line.find("Train Error")
+
+            if idx != -1:
+                timestamp = line[7:20]
+
+                outfile.write(str(iteration))
+                outfile.write(",")
+                outfile.write(line[(idx + 15):(idx + 22)])
+                outfile.write(",")
+                outfile.write(timestamp)
+                outfile.write("\n")
+
+                iteration = iteration + 1
+
+        outfile.close()
+
 def get_completion_time(startTime, endTime):
     startTime = datetime.strptime(startTime, "%H:%M:%S.%f")
     endTime = datetime.strptime(endTime, "%H:%M:%S.%f")
     if endTime < startTime:
         endTime += timedelta(days=1)
     completionTime = endTime - startTime
-    return str(completionTime)
+    return str(completionTime.seconds)
+
 
 def get_highest_id(list):
     max = -1
@@ -30,6 +63,45 @@ def get_highest_id(list):
         if str(number) > max:
             max = number
     return max
+
+def parse_all_noise(input_file_directory, output_file_directory, numFiles):
+    for i in range(0, numFiles):
+        parse_noise(input_file_directory + str(i), output_file_directory, numFiles)
+
+def parse_noise(input_file_directory, output_file_directory, i):
+    fname = input_file_directory + "/log_0_" + str(total_nodes) + ".log"
+    lines = [line.rstrip('\n') for line in open(fname)]
+
+    if not os.path.exists(output_file_directory):
+        os.makedirs(output_file_directory)
+
+    outfile = open(output_file_directory + "data" + str(i), "w")
+
+    noisingNumber = 0
+
+    for i in range(0, len(lines)):
+        line = lines[i]
+        idx = line.find("Getting noise from")
+        if idx != -1:
+            startTime = line[7:20]
+
+            for j in range(i, len(lines)):
+                line2 = lines[j]
+                if line.find("Sending update to verifiers"):
+                    endTime = line2[7:20]
+                    completionTime = get_completion_time(startTime, endTime)
+                    outfile.write(str(noisingNumber))
+                    outfile.write(",")
+                    outfile.write(completionTime)
+                    outfile.write("\n")
+                    noisingNumber = noisingNumber + 1
+                    break
+    outfile.close()
+
+
+def parse_all_verif(input_file_directory, output_file_directory, numFiles):
+    for i in range(0, numFiles):
+        parse_verif(input_file_directory + str(i), output_file_directory, numFiles)
 
 def parse_verif(input_file_directory, output_file_directory, i):
     fname = input_file_directory + "/log_0_" + str(total_nodes) + ".log"
@@ -53,7 +125,6 @@ def parse_verif(input_file_directory, output_file_directory, i):
                 if line2.find("Couldn't get enough signatures") != -1 or line2.find("Sending update to miners") != -1:
                     endTime = line2[7:20]
                     completionTime = get_completion_time(startTime, endTime)
-                    completionTime
                     outfile.write(str(verificationNumber))
                     outfile.write(",")
                     outfile.write(completionTime)
@@ -61,6 +132,7 @@ def parse_verif(input_file_directory, output_file_directory, i):
                     verificationNumber = verificationNumber + 1
                     break
     outfile.close()
+
 
 def parse_aggr_for_iteration(input_file_directory, iteration, lead_miner):
     fname = input_file_directory + "/log_" + str(lead_miner) + "_" + str(total_nodes) + ".log"
@@ -78,6 +150,10 @@ def parse_aggr_for_iteration(input_file_directory, iteration, lead_miner):
                     completionTime = get_completion_time(startTime, endTime)
                     return completionTime
 
+def parse_all_aggr(input_file_directory, output_file_directory, numFiles):
+    for i in range(0, numFiles):
+        parse_aggr(input_file_directory + str(i), output_file_directory, numFiles)
+
 def parse_aggr(input_file_directory, output_file_directory, i):
     fname = input_file_directory + "/log_0_" + str(total_nodes) + ".log"
     lines = [line.rstrip('\n') for line in open(fname)]
@@ -86,7 +162,6 @@ def parse_aggr(input_file_directory, output_file_directory, i):
         os.makedirs(output_file_directory)
 
     outfile = open(output_file_directory + "data" + str(i), "w")
-    print(outfile)
 
     iteration = 0
 
@@ -108,8 +183,44 @@ def parse_aggr(input_file_directory, output_file_directory, i):
     outfile.close()
 
 
+def getAvgTotalTime(parsed_files_directory, iter):
+    completionTimes = np.zeros(3)
+    for i in range(0, 3):
+        df = pd.read_csv((parsed_files_directory + 'data' + str(i)), header=None)
+        startTime = datetime.strptime(df[2].values[0], "%H:%M:%S.%f")
+        endTime = datetime.strptime(df[2].values[iter + 1], "%H:%M:%S.%f")
+        if endTime < startTime:
+            endTime += timedelta(days=1)
+        timeToComplete = endTime - startTime
+        completionTimes[i] = timeToComplete.seconds
+
+    totalAvg = np.mean(completionTimes, axis=0)
+    return totalAvg
+
+def getAvg(parsed_files_directory, iter):
+    across_runs = np.zeros((3, iter + 2))
+    avgPerIter = np.zeros((2, iter + 2))
+
+    for i in range(0, 3):
+        df = pd.read_csv((parsed_files_directory + 'data' + str(i)), header=None)
+        across_runs[i] = df[1].values
+
+    avgPerIter[0] = np.mean(across_runs, axis=0)
+    totalAvg = np.sum(avgPerIter, axis=0)
+    return totalAvg
+
+
 if __name__ == '__main__':
-    # parse_logs(3, "./eval-performance/LogsKrumNoShuffle/", "./eval-performance/parsedNoShuffle/")
-    # parse_logs(3, "./eval-performance/LogsKrumShuffle/", "./eval-performance/parsedShuffle/")
-    #parse_verif("./performance-breakdown/1", "./performance-breakdown/parsedVerif/", 1)
-    parse_aggr("./performance-breakdown/1", "./performance-breakdown/parsedAggregation/", 1)
+    #parse_logs(3, "./performance-breakdown/100Nodes/", "./performance-breakdown/100Nodes/parsedLogs/")
+    parse_all_aggr("./performance-breakdown/100Nodes/", "./performance-breakdown/100Nodes/parsedAggr/", 3)
+    #parse_all_verif("./performance-breakdown/100Nodes/", "./performance-breakdown/100Nodes/parsedAggr/", 3)
+    #parse_all_noise("./performance-breakdown/100Nodes/", "./performance-breakdown/100Nodes/parsedAggregation/", 3)
+    #aggrAvg100 = getAvg("./performance-breakdown/100Nodes/parsedAggr", 100)
+    #verifAvg100 = getAvg("./performance-breakdown/100Nodes/parsedVerif", 100)
+    #noisingAvg100 = getAvg("./performance-breakdown/100Nodes/parsedNoising", 100)
+    #totalTime100 = getAvgTotalTime("./performance-breakdown/100Nodes/parsedLogs", 100)
+    #print("Avg Aggr 100 Nodes: " + str(aggrAvg100))
+    #print("Avg Verif 100 Nodes: " + str(verifAvg100))
+    #print("Avg Noising 100 Nodes: " + str(noisingAvg100))
+    #print("Avg total time: " + str(totalTime100))
+

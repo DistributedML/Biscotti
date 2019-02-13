@@ -21,9 +21,9 @@ total_nodes = sys.argv[1]
 
 
 def parse_logs(numRuns, input_file_directory, output_file_directory):
-    for i in range(0, numRuns):
+    for i in range(1, numRuns):
 
-        fname = input_file_directory + "/log_0_" + str(total_nodes) + ".log"
+        fname = input_file_directory + str(i) + "/log_0_" + str(total_nodes) + ".log"
         lines = [line.rstrip('\n') for line in open(fname)]
 
         if not os.path.exists(output_file_directory):
@@ -157,7 +157,7 @@ def plot(numRuns, fedSysOutput, distSysShuffleOutput, distSysNoShuffleOutput, ti
 
     if time:
         plt.xlabel("Time (s)", fontsize=22)
-        axes.set_xlim([0, 8000])
+        axes.set_xlim([0, 4000])
     else:
         plt.xlabel("Training Iterations", fontsize=22)
         axes.set_xlim([0, 100])
@@ -181,7 +181,119 @@ def plot(numRuns, fedSysOutput, distSysShuffleOutput, distSysNoShuffleOutput, ti
 # plt.show()
 
 
+def plot2(numRuns, fedSysOutput, distSysNoShuffleOutput, time=True):
+    fig, ax = plt.subplots(figsize=(10, 5))
+    toplot = np.zeros((2, 102))
+
+    ###########################################
+    across_runs = np.zeros((numRuns, 102))
+    completionTimes = np.zeros(3)
+    for i in range(0, numRuns):
+        df = pd.read_csv((fedSysOutput + 'data' + str(i)), header=None)
+        across_runs[i] = df[1].values
+        startTime = datetime.strptime(df[2].values[0], "%H:%M:%S.%f")
+        endTime = datetime.strptime(df[2].values[101], "%H:%M:%S.%f")
+        if endTime < startTime:
+            endTime += timedelta(days=1)
+        timeToComplete = endTime - startTime
+        completionTimes[i] = timeToComplete.seconds
+
+    avgFedSysCompletionTime = np.mean(completionTimes, axis=0)
+
+    toplot[0] = np.mean(across_runs, axis=0)
+    print("Fedsys: ")
+    print(toplot[0])
+    print(completionTimes)
+    print(avgFedSysCompletionTime)
+    ###########################################
+    across_runs = np.zeros((numRuns, 102))
+    completionTimes = np.zeros(3)
+    for i in range(0, numRuns):
+        df = pd.read_csv((distSysNoShuffleOutput + 'data' + str(i)), header=None)
+        across_runs[i] = df[1].values
+        startTime = datetime.strptime(df[2].values[0], "%H:%M:%S.%f")
+        endTime = datetime.strptime(df[2].values[101], "%H:%M:%S.%f")
+        if endTime < startTime:
+            endTime += timedelta(days=1)
+        timeToComplete = endTime - startTime
+        completionTimes[i] = timeToComplete.seconds
+
+    avgDistSysCompletionTime = np.mean(completionTimes, axis=0)
+
+    toplot[1] = np.mean(across_runs, axis=0)
+    print("DistSys: ")
+    print(toplot[1])
+    print(avgDistSysCompletionTime)
+    ###########################################
+
+
+    # ###########################################
+    # across_runs = np.zeros((numRuns, 102))
+    # for i in range(0,numRuns):
+    # 	df = pd.read_csv("parsed_100_1/full_run_" + str(i), header=None)
+    # 	across_runs[i] = df[1].values
+
+    # toplot[1] = np.mean(across_runs, axis=0)
+    # ###########################################
+
+    if time:
+
+        # fedSysTime =
+        # distSysTime =
+
+        l1 = mlines.Line2D(avgFedSysCompletionTime * np.arange(102) / 100, toplot[0], color='black',
+                           linewidth=3, linestyle='-', label="Federated Learning 100 nodes")
+
+        l2 = mlines.Line2D(avgDistSysCompletionTime * np.arange(102) / 100, toplot[1], color='red',
+                           linewidth=3, linestyle='--', label="Biscotti 100 nodes")
+
+    else:
+
+        l1 = mlines.Line2D(np.arange(102), toplot[0], color='black',
+                           linewidth=3, linestyle='-', label="Federated Learning 100 nodes")
+
+        l2 = mlines.Line2D(np.arange(102), toplot[1], color='red',
+                           linewidth=3, linestyle='--', label="Biscotti 100 nodes")
+
+    ax.add_line(l1)
+    ax.add_line(l2)
+
+    plt.legend(handles=[l1, l2], loc='right', fontsize=18)
+
+    axes = plt.gca()
+
+    axes.set_ylim([0, 1])
+
+    if time:
+        plt.xlabel("Time (s)", fontsize=22)
+        axes.set_xlim([0, 4000])
+    else:
+        plt.xlabel("Training Iterations", fontsize=22)
+        axes.set_xlim([0, 100])
+
+    plt.ylabel("Validation Error", fontsize=22)
+
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+
+    plt.setp(ax.get_xticklabels(), fontsize=18)
+    plt.setp(ax.get_yticklabels(), fontsize=18)
+
+    fig.tight_layout(pad=0.1)
+
+    if time:
+        fig.savefig("eval_convrate_time.pdf")
+    else:
+        fig.savefig("eval_convrate.pdf")
+
+
+
 if __name__ == '__main__':
+    #parse_logs(3, "./eval-performance/FedSysLogs/", "./eval-performance/parsedFedSys/")
+    #parse_logs(3, "./eval-performance/FedSysLogs/", "./eval-performance/parsedNoShuffle/")
     #parse_logs(3, "./eval-performance/LogsKrumNoShuffle/", "./eval-performance/parsedNoShuffle/")
     #parse_logs(3, "./eval-performance/LogsKrumShuffle/", "./eval-performance/parsedShuffle/")
-    plot(3, "./eval-performance/parsedFedSys/", "./eval-performance/parsedShuffle/", "./eval-performance/parsedNoShuffle/", True)
+    #plot(3, "./eval-performance/parsedFedSys/", "./eval-performance/parsedShuffle/", "./eval-performance/parsedNoShuffle/", True)
+    #plot(3, "./eval-performance/parsedFedSys/", "./eval-performance/parsedShuffle/", "./eval-performance/parsedNoShuffle/", False)
+    plot2(3, "./eval-performance/parsedFedSys/", "./eval-performance/parsedNoShuffle/", True)
+    plot2(3, "./eval-performance/parsedFedSys/", "./eval-performance/parsedNoShuffle/", False)
