@@ -1,9 +1,9 @@
-import pandas as pd
-import numpy as np
-import numpy.ma as ma
 import os
 import sys
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta
+
+import numpy as np
+import pandas as pd
 
 if len(sys.argv) != 2:
     print(
@@ -49,6 +49,7 @@ def parse_logs(numRuns, input_file_directory, output_file_directory):
 
         outfile.close()
 
+
 def get_completion_time(startTime, endTime):
     startTime = datetime.strptime(startTime, "%H:%M:%S.%f")
     endTime = datetime.strptime(endTime, "%H:%M:%S.%f")
@@ -65,9 +66,11 @@ def get_highest_id(list):
             max = number
     return max
 
+
 def parse_all_noise(input_file_directory, output_file_directory, numFiles):
     for i in range(0, numFiles):
         parse_noise(input_file_directory + str(i), output_file_directory, i)
+
 
 def parse_noise(input_file_directory, output_file_directory, i):
     fname = input_file_directory + "/log_0_" + str(total_nodes) + ".log"
@@ -103,6 +106,7 @@ def parse_noise(input_file_directory, output_file_directory, i):
 def parse_all_verif(input_file_directory, output_file_directory, numFiles):
     for i in range(0, numFiles):
         parse_verif(input_file_directory + str(i), output_file_directory, i)
+
 
 def parse_verif(input_file_directory, output_file_directory, i):
     fname = input_file_directory + "/log_0_" + str(total_nodes) + ".log"
@@ -151,9 +155,11 @@ def parse_aggr_for_iteration(input_file_directory, iteration, lead_miner):
                     completionTime = get_completion_time(startTime, endTime)
                     return completionTime
 
+
 def parse_all_aggr(input_file_directory, output_file_directory, numFiles):
     for i in range(0, numFiles):
         parse_aggr(input_file_directory + str(i), output_file_directory, i)
+
 
 def parse_aggr(input_file_directory, output_file_directory, i):
     fname = input_file_directory + "/log_0_" + str(total_nodes) + ".log"
@@ -184,12 +190,12 @@ def parse_aggr(input_file_directory, output_file_directory, i):
     outfile.close()
 
 
-def getAvgTotalTime(parsed_files_directory, iter):
+def getAvgTotalTime(parsed_files_directory):
     completionTimes = np.zeros(3)
     for i in range(0, 3):
         df = pd.read_csv((parsed_files_directory + 'data' + str(i)), header=None)
         startTime = datetime.strptime(df[2].values[0], "%H:%M:%S.%f")
-        endTime = datetime.strptime(df[2].values[iter + 1], "%H:%M:%S.%f")
+        endTime = datetime.strptime(df[2].values[101], "%H:%M:%S.%f")
         if endTime < startTime:
             endTime += timedelta(days=1)
         timeToComplete = endTime - startTime
@@ -198,7 +204,8 @@ def getAvgTotalTime(parsed_files_directory, iter):
     totalAvg = np.mean(completionTimes, axis=0)
     return totalAvg
 
-def getAvg(parsed_files_directory, iter):
+
+def getAvg(parsed_files_directory):
     completionTime = [[], [], []]
     for i in range(0, 3):
         df = pd.read_csv((parsed_files_directory + 'data' + str(i)), header=None)
@@ -206,18 +213,51 @@ def getAvg(parsed_files_directory, iter):
     totalAvg = np.mean(completionTime)
     return totalAvg
 
-
 if __name__ == '__main__':
     parse_logs(3, "./performance-breakdown/40Nodes/", "./performance-breakdown/40Nodes/parsedLogs/")
     parse_all_aggr("./performance-breakdown/40Nodes/", "./performance-breakdown/40Nodes/parsedAggr/", 3)
     parse_all_verif("./performance-breakdown/40Nodes/", "./performance-breakdown/40Nodes/parsedVerif/", 3)
     parse_all_noise("./performance-breakdown/40Nodes/", "./performance-breakdown/40Nodes/parsedNoising/", 3)
-    #aggrAvg100 = getAvg("./performance-breakdown/100Nodes/parsedAggr/", 100)
-    #verifAvg100 = getAvg("./performance-breakdown/100Nodes/parsedVerif/", 98)
-    #noisingAvg100 = getAvg("./performance-breakdown/100Nodes/parsedNoising/", 98)
-    #totalTime100 = getAvgTotalTime("./performance-breakdown/100Nodes/parsedLogs/", 100)
-    #print("Avg Aggr 100 Nodes: " + str(aggrAvg100))
-    #print("Avg Verif 100 Nodes: " + str(verifAvg100))
-    #print("Avg Noising 100 Nodes: " + str(noisingAvg100))
-    #print("Avg total time: " + str(totalTime100))
-
+    aggrAvg100 = getAvg("./performance-breakdown/100Nodes/parsedAggr/") / 100
+    verifAvg100 = getAvg("./performance-breakdown/100Nodes/parsedVerif/") / 100
+    noisingAvg100 = getAvg("./performance-breakdown/100Nodes/parsedNoising/") / 100
+    totalTime100 = getAvgTotalTime("./performance-breakdown/100Nodes/parsedLogs/") / 100
+    floodingTime100 = totalTime100 - aggrAvg100 - verifAvg100 - noisingAvg100
+    print("Avg Aggr 100 Nodes: " + str(aggrAvg100))
+    print("Avg Verif 100 Nodes: " + str(verifAvg100))
+    print("Avg Noising 100 Nodes: " + str(noisingAvg100))
+    print("Avg Flooding 100 Nodes: " + str(floodingTime100))
+    print("Avg total time: " + str(totalTime100))
+    print("")
+    aggrAvg80 = getAvg("./performance-breakdown/80Nodes/parsedAggr/") / 100
+    verifAvg80 = getAvg("./performance-breakdown/80Nodes/parsedVerif/") / 100
+    noisingAvg80 = getAvg("./performance-breakdown/80Nodes/parsedNoising/") / 100
+    totalTime80 = getAvgTotalTime("./performance-breakdown/80Nodes/parsedLogs/") / 100
+    floodingTime80 = totalTime80 - aggrAvg80 - verifAvg80 - noisingAvg80
+    print("Avg Aggr 80 Nodes: " + str(aggrAvg80))
+    print("Avg Verif 80 Nodes: " + str(verifAvg80))
+    print("Avg Noising 80 Nodes: " + str(noisingAvg80))
+    print("Avg Flooding 80 Nodes: " + str(floodingTime80))
+    print("Avg total time: " + str(totalTime80))
+    print("")
+    aggrAvg60 = getAvg("./performance-breakdown/60Nodes/parsedAggr/") / 100
+    verifAvg60 = getAvg("./performance-breakdown/60Nodes/parsedVerif/") / 100
+    noisingAvg60 = getAvg("./performance-breakdown/60Nodes/parsedNoising/") / 100
+    totalTime60 = getAvgTotalTime("./performance-breakdown/60Nodes/parsedLogs/") / 100
+    floodingTime60 = totalTime60 - aggrAvg60 - verifAvg60 - noisingAvg60
+    print("Avg Aggr 60 Nodes: " + str(aggrAvg60))
+    print("Avg Verif 60 Nodes: " + str(verifAvg60))
+    print("Avg Noising 60 Nodes: " + str(noisingAvg60))
+    print("Avg Flooding 60 Nodes: " + str(floodingTime60))
+    print("Avg total time: " + str(totalTime60))
+    print("")
+    aggrAvg40 = getAvg("./performance-breakdown/40Nodes/parsedAggr/") / 100
+    verifAvg40 = getAvg("./performance-breakdown/40Nodes/parsedVerif/") / 100
+    noisingAvg40 = getAvg("./performance-breakdown/40Nodes/parsedNoising/") / 100
+    totalTime40 = getAvgTotalTime("./performance-breakdown/40Nodes/parsedLogs/") / 100
+    floodingTime40 = totalTime40 - aggrAvg40 - verifAvg40 - noisingAvg40
+    print("Avg Aggr 40 Nodes: " + str(aggrAvg40))
+    print("Avg Verif 40 Nodes: " + str(verifAvg40))
+    print("Avg Noising 40 Nodes: " + str(noisingAvg40))
+    print("Avg Flooding 40 Nodes: " + str(floodingTime40))
+    print("Avg total time: " + str(totalTime40))
