@@ -1,8 +1,9 @@
 import pandas as pd
 import numpy as np
+import numpy.ma as ma
 import os
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 
 if len(sys.argv) != 2:
     print(
@@ -66,7 +67,7 @@ def get_highest_id(list):
 
 def parse_all_noise(input_file_directory, output_file_directory, numFiles):
     for i in range(0, numFiles):
-        parse_noise(input_file_directory + str(i), output_file_directory, numFiles)
+        parse_noise(input_file_directory + str(i), output_file_directory, i)
 
 def parse_noise(input_file_directory, output_file_directory, i):
     fname = input_file_directory + "/log_0_" + str(total_nodes) + ".log"
@@ -87,7 +88,7 @@ def parse_noise(input_file_directory, output_file_directory, i):
 
             for j in range(i, len(lines)):
                 line2 = lines[j]
-                if line.find("Sending update to verifiers"):
+                if line2.find("Sending update to verifiers") != -1:
                     endTime = line2[7:20]
                     completionTime = get_completion_time(startTime, endTime)
                     outfile.write(str(noisingNumber))
@@ -101,7 +102,7 @@ def parse_noise(input_file_directory, output_file_directory, i):
 
 def parse_all_verif(input_file_directory, output_file_directory, numFiles):
     for i in range(0, numFiles):
-        parse_verif(input_file_directory + str(i), output_file_directory, numFiles)
+        parse_verif(input_file_directory + str(i), output_file_directory, i)
 
 def parse_verif(input_file_directory, output_file_directory, i):
     fname = input_file_directory + "/log_0_" + str(total_nodes) + ".log"
@@ -152,7 +153,7 @@ def parse_aggr_for_iteration(input_file_directory, iteration, lead_miner):
 
 def parse_all_aggr(input_file_directory, output_file_directory, numFiles):
     for i in range(0, numFiles):
-        parse_aggr(input_file_directory + str(i), output_file_directory, numFiles)
+        parse_aggr(input_file_directory + str(i), output_file_directory, i)
 
 def parse_aggr(input_file_directory, output_file_directory, i):
     fname = input_file_directory + "/log_0_" + str(total_nodes) + ".log"
@@ -198,27 +199,23 @@ def getAvgTotalTime(parsed_files_directory, iter):
     return totalAvg
 
 def getAvg(parsed_files_directory, iter):
-    across_runs = np.zeros((3, iter + 2))
-    avgPerIter = np.zeros((2, iter + 2))
-
+    completionTime = [[], [], []]
     for i in range(0, 3):
         df = pd.read_csv((parsed_files_directory + 'data' + str(i)), header=None)
-        across_runs[i] = df[1].values
-
-    avgPerIter[0] = np.mean(across_runs, axis=0)
-    totalAvg = np.sum(avgPerIter, axis=0)
+        completionTime[i] = np.sum(df[1].values)
+    totalAvg = np.mean(completionTime)
     return totalAvg
 
 
 if __name__ == '__main__':
-    #parse_logs(3, "./performance-breakdown/100Nodes/", "./performance-breakdown/100Nodes/parsedLogs/")
-    parse_all_aggr("./performance-breakdown/100Nodes/", "./performance-breakdown/100Nodes/parsedAggr/", 3)
-    #parse_all_verif("./performance-breakdown/100Nodes/", "./performance-breakdown/100Nodes/parsedAggr/", 3)
-    #parse_all_noise("./performance-breakdown/100Nodes/", "./performance-breakdown/100Nodes/parsedAggregation/", 3)
-    #aggrAvg100 = getAvg("./performance-breakdown/100Nodes/parsedAggr", 100)
-    #verifAvg100 = getAvg("./performance-breakdown/100Nodes/parsedVerif", 100)
-    #noisingAvg100 = getAvg("./performance-breakdown/100Nodes/parsedNoising", 100)
-    #totalTime100 = getAvgTotalTime("./performance-breakdown/100Nodes/parsedLogs", 100)
+    parse_logs(3, "./performance-breakdown/40Nodes/", "./performance-breakdown/40Nodes/parsedLogs/")
+    parse_all_aggr("./performance-breakdown/40Nodes/", "./performance-breakdown/40Nodes/parsedAggr/", 3)
+    parse_all_verif("./performance-breakdown/40Nodes/", "./performance-breakdown/40Nodes/parsedVerif/", 3)
+    parse_all_noise("./performance-breakdown/40Nodes/", "./performance-breakdown/40Nodes/parsedNoising/", 3)
+    #aggrAvg100 = getAvg("./performance-breakdown/100Nodes/parsedAggr/", 100)
+    #verifAvg100 = getAvg("./performance-breakdown/100Nodes/parsedVerif/", 98)
+    #noisingAvg100 = getAvg("./performance-breakdown/100Nodes/parsedNoising/", 98)
+    #totalTime100 = getAvgTotalTime("./performance-breakdown/100Nodes/parsedLogs/", 100)
     #print("Avg Aggr 100 Nodes: " + str(aggrAvg100))
     #print("Avg Verif 100 Nodes: " + str(verifAvg100))
     #print("Avg Noising 100 Nodes: " + str(noisingAvg100))
