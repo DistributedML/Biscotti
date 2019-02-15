@@ -6,16 +6,19 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 
 total_nodes = 100
-numIterations = 102
+numIterations = 101
 
-colors = ['black', 'red', 'green', 'blue', 'yellow']
-labels = ["Federated Learning- No Poison", 'Federated Learning' ,'Biscotti']
+# colors = ['black', 'black', 'black']
+# colors = ['black', 'black', 'red']
+# ls = ['-',':','--']
+colors = ['black', 'red']
+ls = ['-','--']
+labels = ['Federated Learning - 30% Poison' ,'Biscotti - 30% Poison']
 
 
-def parse_logs(input_file_directory):
+def parse_logs(input_file_directory, attackRate=False):
 
 	output_file_directory = input_file_directory + "_parsedResults/"
-
 
 	fname = input_file_directory + "/log_0_" + str(total_nodes) + ".log"
 	lines = [line.rstrip('\n') for line in open(fname)]
@@ -25,10 +28,14 @@ def parse_logs(input_file_directory):
 
 	outfile = open(output_file_directory + "data" +".csv", "w")
 	iteration = 0
+	idx  = -1
 
 	for line in lines:
 
-		idx = line.find("Train Error")
+		if attackRate:
+			idx = line.find("Attack Rate")
+		else:
+			idx = line.find("Train Error")		
 
 		if idx != -1:
 
@@ -47,7 +54,7 @@ def parse_logs(input_file_directory):
 	outfile.close()
 
 
-def plotResults(outputFile, inputFiles):
+def plotResults(outputFile, inputFiles, attackRate=False):
 
 	print outputFile
 
@@ -63,7 +70,7 @@ def plotResults(outputFile, inputFiles):
 
 		print inputFile
 		df =  pd.read_csv(inputFile, header=None)	
-		toplot[fileIdx] = df[1].values
+		toplot[fileIdx] = df[1].values[:101]
 		fileIdx+=1
 
 	lineIdx = 0
@@ -73,7 +80,7 @@ def plotResults(outputFile, inputFiles):
 
 	for dataPoints in toplot:
 		
-		thisLine =  mlines.Line2D(np.arange(numIterations), dataPoints, color=colors[lineIdx],	linewidth=3, linestyle='-', label=labels[lineIdx])	
+		thisLine =  mlines.Line2D(np.arange(numIterations), dataPoints[:101], linewidth=3, linestyle=ls[lineIdx], color = colors[lineIdx], label=labels[lineIdx])	
 		ax.add_line(thisLine)
 		lines.append(thisLine)
 		lineIdx+=1
@@ -92,11 +99,14 @@ def plotResults(outputFile, inputFiles):
 	# # ###########################################
 
 	# ax.add_line(l1)
-	plt.legend(handles=lines, loc='best', fontsize=18)
-	
+	# plt.legend(handles=lines, loc='best', fontsize=18)
+	plt.legend(handles=lines, loc='center right', fontsize=18)
 	axes = plt.gca()	
 
-	plt.ylabel("Validation Error", fontsize=22)
+	if attackRate:	
+		plt.ylabel("1-7 Attack Rate", fontsize=22)
+	else:
+		plt.ylabel("Validation Error", fontsize=22)
 	axes.set_ylim([0, 1.0])
 
 	plt.xlabel("Training Iterations", fontsize=22)
@@ -115,12 +125,20 @@ def plotResults(outputFile, inputFiles):
 
 if __name__ == '__main__':
 
-	foldersToParse = ["Fed_NoPoison_mnist", "Fed_Poison_100_30_mnist", "Bis_Poison_100_30_mnist"]
+	foldersToParse = ["Fed_NoPoison_mnist_AR","Fed_Poison_100_30_mnist_AR", "Bis_Poison_100_30_mnist_AR"]
 
+
+	foldersToParse = ["Fed_Poison_100_30_mnist_AR", "Bis_Poison_100_30_mnist_AR"]
+
+	
+	#creditcard
+	# foldersToParse = ["Fed_No_Poison", "Fed_Poison_100_30_credit", "Bis_Poison_100_credit"]
+
+	# foldersToParse = ["Bis_Poison_100_30_mnist_AR"]
 	parsedFolders = []
 	
 	for folder in foldersToParse:
-		parse_logs(folder)
+		parse_logs(folder, True)
 		parsedFolders.append(folder+"_parsedResults/data.csv")
 
-	plotResults("posion_mnist_30_100_new.jpg", parsedFolders)
+	plotResults("posion_mnist_30_100_AR.pdf", parsedFolders, True)

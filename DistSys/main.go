@@ -29,8 +29,9 @@ const (
 	basePort        int           = 8000
 	verifierIP   	string        = "127.0.0.1:"
 	timeoutRONI    	time.Duration = 120 * time.Second
-	timeoutKRUM 	time.Duration = 300 * time.Second
-	timeoutUpdate 	time.Duration = 500 * time.Second 
+	timeoutKRUM    	time.Duration = 60 * time.Second
+	timeoutKRUMR 	time.Duration = 120 * time.Second
+	timeoutUpdate 	time.Duration = 180 * time.Second 
 	timeoutBlock 	time.Duration = 600 * time.Second
 	timeoutPeer 	time.Duration = 5 * time.Second
 
@@ -45,8 +46,6 @@ const (
 	POLY_SIZE 		int 		  = 10
 
 	MAX_ITERATIONS  int 		  = 100
-
-	POISONING 	 	float64 	  = 0.3
 
 	// Probability of failing at any iteration. Set to 0 or negative to avoid.
 	FAIL_PROB 		float64 	  = -0.005
@@ -146,13 +145,16 @@ var (
 	NOISY_VERIF		bool 		  = true
 	VERIFY 			bool 		  = true
 
-	DP_IN_MODEL 	bool 		  = false
+	DP_IN_MODEL 	bool 		  = true
 
 	EPSILON 		float64 	  = 2.0
 
 	KRUM_UPDATETHRESH	int 	  = 25
 
 	timeoutRPC    	time.Duration = 120 * time.Second
+
+	POISONING 	 	float64 	  = 0.0
+	NUM_SAMPLES     int 		  = 70
 
 )
 
@@ -341,7 +343,7 @@ func processShare(share MinerPart) {
 
 		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
 		// if numberOfShares == minBlockSize {
-		if numberOfShares == (KRUM_UPDATETHRESH/2) {			
+		if numberOfShares == (NUM_SAMPLES/2) {			
 			outLog.Printf(strconv.Itoa(client.id)+":Eighth shares for iteration %d received. Notifying channel.", iterationCount)	
 			allSharesReceived <- true 		 
 		}
@@ -624,6 +626,10 @@ func main() {
 
     epsilonPtr := flag.Float64("ep", 2.0, "Epsilon value for noise")
 
+    poisoningPtr := flag.Float64("po", 0.0, "Poisoner threshold")
+
+	numSamplesPtr := flag.Int("ns", 70 , "Number of samples")   
+
 	flag.Parse()
 
 	nodeNum := *nodeNumPtr
@@ -642,6 +648,8 @@ func main() {
     NOISY_VERIF = *isNoisingPtr
     VERIFY = *isVerificationPtr
     EPSILON = *epsilonPtr
+    POISONING = *poisoningPtr
+    NUM_SAMPLES = *numSamplesPtr 
 
     outLog.Printf("EPSILON IS: %d", EPSILON)
 
@@ -737,13 +745,13 @@ func main() {
 	client = Honest{id: nodeNum, blockUpdates: make([]Update, 0, 5)}
 
 	krum = KRUMValidator{
-		UpdateList: make([][]float64, 0, 5), 
+		UpdateList: make([]Update, 0, 5),
 		AcceptedList:make([]int, 0, 5), 
 		NumAdversaries:0.5}
 
 
 	if POISON_DEFENSE == "KRUM" {
-		timeoutRPC = timeoutKRUM
+		timeoutRPC = timeoutKRUMR
 	}else{
 		timeoutRPC = timeoutRONI
 	}
@@ -783,7 +791,7 @@ func main() {
 
 		// if collusionThresh > 0 {
 	
-		if (NOISY_VERIF) && (nodeNum < collusionThresh) {
+		if (NOISY_VERIF || DP_IN_MODEL	) && (nodeNum < collusionThresh) {
 			client.initializeData(datasetName, numberOfNodes, EPSILON, false)	
 		} else {
 			client.initializeData(datasetName, numberOfNodes, 0, false)	
@@ -815,7 +823,7 @@ func main() {
 	sigLock = sync.Mutex{}
 
 	// TODO: Replace with numNodes/4 after test
-	KRUM_UPDATETHRESH = 70
+	KRUM_UPDATETHRESH = numberOfNodes - NUM_VERIFIERS - NUM_MINERS
 
 	ensureRPC = sync.WaitGroup{}
 	allUpdatesReceived = make (chan bool)
@@ -1038,9 +1046,10 @@ func prepareForNextIteration() {
 
 	convergedLock.Unlock()		
 	boolLock.Lock()
+	peerLock.Lock()
 	
-	iterationCount++
-	outLog.Printf("Moving on to next iteration %d", iterationCount)
+	
+	outLog.Printf("Moving on to next iteration %d", iterationCount+1)
 
 	if rand.Float64() < FAIL_PROB {
 		outLog.Printf("Got unlucky, I will fail now.")
@@ -1049,13 +1058,15 @@ func prepareForNextIteration() {
 
 
 	// This runs the VRF and sets the verifiers for this iteration
-	roleIDs = getRoles()
+	roleIDs = getRoles()	
 
 	verifier = amVerifier(client.id)
 	miner = amMiner(client.id)
 
 	verifierPortsToConnect, minerPortsToConnect, 
-		noiserPortsToConnect, numberOfNodeUpdates = getRoleNames(iterationCount)
+		noiserPortsToConnect, numberOfNodeUpdates = getRoleNames(iterationCount + 1)
+
+	peerLock.Unlock()
 
 	if (PRIV_PROB > 0) {
 		
@@ -1067,17 +1078,17 @@ func prepareForNextIteration() {
 
 	if miner {
 		
-		outLog.Printf(strconv.Itoa(client.id)+":I am miner. Iteration:%d", iterationCount)
+		outLog.Printf(strconv.Itoa(client.id)+":I am miner. Iteration:%d", iterationCount + 1)
 		updateSent = true
 		if (SECURE_AGG) {
-			go startShareDeadlineTimer(iterationCount)
+			go startShareDeadlineTimer(iterationCount + 1)
 		}else{
-			go startUpdateDeadlineTimer(iterationCount) //start timer for receiving updates
+			go startUpdateDeadlineTimer(iterationCount + 1) //start timer for receiving updates
 		}
 
 	} else if verifier {
 
-		outLog.Printf(strconv.Itoa(client.id)+":I am verifier. Iteration:%d", iterationCount)
+		outLog.Printf(strconv.Itoa(client.id)+":I am verifier. Iteration:%d", iterationCount + 1)
 		updateSent = true
 
 		if POISON_DEFENSE == "KRUM" {				
@@ -1086,22 +1097,21 @@ func prepareForNextIteration() {
 			krum.flushCollectedUpdates()
 			collectingUpdates = true
 			krumLock.Unlock()
-			go startKRUMDeadlineTimer(iterationCount)
+			go startKRUMDeadlineTimer(iterationCount + 1)
 		
 		}
 
-		//MAYBE TODO: If KRUM, start timer
-
 	
 	} else {
-		outLog.Printf(strconv.Itoa(client.id)+":I am not miner or verifier. Iteration:%d", iterationCount)
+		outLog.Printf(strconv.Itoa(client.id)+":I am not miner or verifier. Iteration:%d", iterationCount + 1)
 		updateSent = false
 		krumLock.Lock()		
 		collectingUpdates = false
+		krum.flushCollectedUpdates()
 		krumLock.Unlock()
-		go startBlockDeadlineTimer(iterationCount)
+		go startBlockDeadlineTimer(iterationCount + 1)
 	}
-
+	iterationCount++
 	boolLock.Unlock()
 
 	portsToConnect = make([]string, len(peerPorts))
@@ -1146,7 +1156,7 @@ func processUpdate(update Update) {
 		outLog.Printf("As miner, I expect %d updates, I have gotten %d", (numberOfNodeUpdates / 8), numberOfUpdates)
 
 		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
-		if numberOfUpdates == (KRUM_UPDATETHRESH / 2)  {		
+		if numberOfUpdates == (NUM_SAMPLES/2)  {		
 		
 		// if numberOfUpdates == (numberOfNodes / 8)  {			
 			outLog.Printf(strconv.Itoa(client.id)+":Half updates for iteration %d received. Notifying channel.", iterationCount)	
@@ -1323,7 +1333,7 @@ func addBlockToChain(block Block) {
 
 
 // Miner broadcasts the block of this iteration to all peers
-func sendBlock(block Block) {	
+func 	sendBlock(block Block) {	
 
 	outLog.Printf(strconv.Itoa(client.id)+":Sending block of iteration: %d\n", block.Data.Iteration)
 
@@ -1470,7 +1480,7 @@ func messageSender(ports []string) {
 
 		if !updateSent {
 
-			outLog.Printf("Sending update to verifiers")
+			outLog.Printf("Sending update to verifiers. Iteration:%d", iterationCount)
 			outLog.Printf("Verifier addresses:%s", verifierPortsToConnect)				
 			signatureList, approved = sendUpdateToVerifiers(verifierPortsToConnect)	 			
 			
@@ -1591,7 +1601,7 @@ func sendUpdateToVerifiers(addresses []string) ([][]byte ,bool) {
 
 	signatureList := make([][]byte, 0)
 	verified := false
-	verifiersOnline := false
+	verifiersOnline := true
 
 	if !VERIFY {
 		return signatureList, true

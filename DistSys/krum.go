@@ -6,6 +6,10 @@ import(
 	"github.com/sbinet/go-python"
 	"runtime"
 	"encoding/binary"
+	"math/rand"
+	"math"
+	"sort"
+
 	// "bytes"
 	// "math"
 )
@@ -17,9 +21,10 @@ var (
 
 type KRUMValidator struct {
 
-	UpdateList  	[][]float64
+	UpdateList  	[]Update
+	SampledUpdates  []Update	
 	AcceptedList 	[]int
-	NumAdversaries	float64
+	NumAdversaries	float64 // fixed at 0.5
 
 }
 
@@ -44,8 +49,10 @@ func (krumval *KRUMValidator) checkIfAccepted(peerId int) bool {
 	accepted := false
 
 	for i := 0; i < len(krumval.AcceptedList); i++ {
+
+		acceptedIdx := krumval.AcceptedList[i]
 		
-		if krumval.AcceptedList[i] == peerId  {			
+		if krumval.UpdateList[acceptedIdx].SourceID == peerId  {			
 			accepted = true
 			return accepted
 		}
@@ -64,7 +71,12 @@ func (krumval *KRUMValidator) computeScores(){
 	// numberToReject := int(krumval.NumAdversaries*float64(numUpdatesRec))
 	// numberToAccept := numberToReject - numUpdatesRec
 
-	runningDeltas := krumval.UpdateList
+	runningDeltas := make([][]float64, len(krum.UpdateList))
+
+	for i := 0; i < len(krum.UpdateList); i++ {
+		runningDeltas[i] = krum.UpdateList[i].NoisedDelta
+	}
+
 	krum.AcceptedList = krumval.getTopKRUMIndex(runningDeltas)
 	// numInBlock = numberOfNodes/8
 	// krum.AcceptedList = krum.AcceptedList[:numberOfNodes]
@@ -147,8 +159,10 @@ func (krumval *KRUMValidator) getTopKRUMIndex(deltas [][]float64) []int{
 // Empty the validator
 func (krumval *KRUMValidator) flushCollectedUpdates(){
 	
-	krumval.UpdateList = krumval.UpdateList[:0]
-	krumval.AcceptedList = krumval.AcceptedList[:0]
+	if !collectingUpdates{
+		krumval.UpdateList = krumval.UpdateList[:0]
+		krumval.AcceptedList = krumval.AcceptedList[:0]
+	}
 
 }
 
@@ -172,11 +186,17 @@ func startKRUMDeadlineTimer(timerForIteration int){
 
 			if (timerForIteration == iterationCount) {
 				
-				outLog.Printf(strconv.Itoa(client.id)+":Timeout. Going ahead with KRUM for iteration", timerForIteration)		
-							
-				krum.computeScores()
+				outLog.Printf(strconv.Itoa(client.id)+":Timeout. Going ahead with KRUM for iteration", timerForIteration)	
 
 				collectingUpdates = false
+
+				sort.Slice(krum.UpdateList, func(i, j int) bool {
+	  				return krum.UpdateList[i].SourceID < krum.UpdateList[j].SourceID
+				})
+
+				krum.sampleUpdates(NUM_SAMPLES)
+				krum.computeScores()
+
 
 				for i := 0; i < len(krum.UpdateList); i++ {
 				
@@ -209,19 +229,33 @@ func (s *Peer) VerifyUpdateKRUM(update Update, signature *[]byte) error {
 			outLog.Printf(strconv.Itoa(client.id)+":Blocking for stale update. Update for %d, I am at %d\n", update.Iteration, iterationCount)
 			time.Sleep(2000 * time.Millisecond)
 		}
+
+		if update.Iteration == iterationCount{
+
+			krumLock.Lock()
+
+			if !collectingUpdates{
+
+				krum.flushCollectedUpdates()
+				collectingUpdates = true
+			}
+
+			krumLock.Unlock()
+		}
 	
 	}	
 
 	// TODO: set up acquiring a lock here
 	krumLock.Lock()
-	peerId := 0	
+	// peerId := 0	
 
-	if collectingUpdates {
+	if (collectingUpdates) {
 
-		peerId = len(krum.UpdateList)
+		// peerId = len(krum.UpdateList)
 
-		krum.UpdateList = append(krum.UpdateList, update.NoisedDelta)
-
+		krum.UpdateList = append(krum.UpdateList, update)
+		outLog.Printf(strconv.Itoa(client.id)+"Inside collectingUpdates. Update for %d, I am at %d\n", update.Iteration, iterationCount)
+		outLog.Printf(strconv.Itoa(client.id)+"List length %d", len(krum.UpdateList))
 		//TODO: Declare UpdateThresh	
 
 		if (len(krum.UpdateList) == KRUM_UPDATETHRESH){
@@ -234,6 +268,11 @@ func (s *Peer) VerifyUpdateKRUM(update Update, signature *[]byte) error {
 			
 			collectingUpdates = false
 
+			sort.Slice(krum.UpdateList, func(i, j int) bool {
+  				return krum.UpdateList[i].SourceID < krum.UpdateList[j].SourceID
+			})
+
+			krum.sampleUpdates(NUM_SAMPLES)
 			krum.computeScores()
 
 			outLog.Printf(strconv.Itoa(client.id)+"Crossed Accepted %d\n", iterationCount)
@@ -258,9 +297,17 @@ func (s *Peer) VerifyUpdateKRUM(update Update, signature *[]byte) error {
 
 		}
 
-		if krum.checkIfAccepted(peerId){
+		if krum.checkIfAccepted(update.SourceID){
 
 			outLog.Printf("Accepting update!")
+			
+			poisoning_index := int(math.Ceil(float64(numberOfNodes) * (1.0 - POISONING)))
+			isPoisoning := update.SourceID > poisoning_index
+
+			if isPoisoning {
+				outLog.Printf("Accepting poisoned update!")
+			}
+
 			updateCommitment := update.Commitment
 			(*signature) = SchnorrSign(updateCommitment, client.Keys.Skey)
 			return nil
@@ -278,3 +325,27 @@ func (s *Peer) VerifyUpdateKRUM(update Update, signature *[]byte) error {
 	printError("Not collectingUpdates anymore", staleError)
 	return staleError	
 }
+
+// cSample updates for the poisoning case
+func (krumval *KRUMValidator) sampleUpdates(numUpdates int) {
+
+	r := rand.New(rand.NewSource(int64(iterationCount)))
+	selectedUpdates := make([]Update, numUpdates)
+	perm := r.Perm(len(krumval.UpdateList))
+	
+	for i, randIndex := range perm {
+
+		selectedUpdates[i] = krumval.UpdateList[randIndex]
+		if i == (numUpdates-1) {
+			break
+		}
+	
+	}	
+
+	krumval.UpdateList = selectedUpdates
+
+	outLog.Printf("Number of updates sampled:%s", len(krumval.UpdateList))
+	outLog.Printf("Indexes selected:%s", perm[:numUpdates])
+
+}
+

@@ -28,7 +28,7 @@ const (
 	basePort        int           = 8000
 	verifierIP   	string        = "127.0.0.1:"
 	timeoutRPC    	time.Duration = 60 * time.Second
-	timeoutUpdate 	time.Duration = 60 * time.Second 
+	timeoutUpdate 	time.Duration = 120 * time.Second 
 	timeoutBlock 	time.Duration = 120 * time.Second
 	timeoutPeer 	time.Duration = 5 * time.Second
 	
@@ -42,7 +42,7 @@ const (
 
 	SECURE_AGG  	bool 		  = true
 
-	POISONING 	 	float64 	  = 0
+	POISONING 	 	float64 	  = 0.3
 
 )
 
@@ -754,6 +754,8 @@ func startUpdateDeadlineTimer(timerForIteration int){
 	if (timerForIteration == iterationCount) {
 			
 		if (len(client.blockUpdates) > 0) {
+
+			client.sampleUpdates(rndUpdates)
 	
 			modelToSend, err := client.createNewModel(iterationCount)
 			
@@ -773,5 +775,4 @@ func startUpdateDeadlineTimer(timerForIteration int){
 		} 
 
 	}
-
 }

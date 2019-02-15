@@ -44,7 +44,6 @@ var (
 const (
 
 	STAKE_UNIT		= 5
-
 	batch_size      = 10
 	datasetPath     = "../ML/data/"
 	codePath        = "../ML/code"

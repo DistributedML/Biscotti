@@ -6,7 +6,7 @@ if [ "$#" -ne 1 ]; then
     exit
 fi
 
-uname="matheus"
+uname="shayan"
 ipfile=$1
 bisPath="/home/$uname/gopath/src/Biscotti"
 
@@ -17,11 +17,9 @@ for ip in $(cat $hostFile);do
 
 	ssh -t $uname@$ip "
 		cd $bisPath
-		# git remote set-url origin https://github.com/DistributedML/Biscotti.git
-		# git stash
-		git pull origin krum-implementation
-		# cd /home/matheus/gopath/src/Biscotti/ML/Pytorch/data/mnist
-		# python parse_mnist.py
+		git fetch origin
+		git checkout krum_eval_rs
+		git pull origin krum_eval_rs
 	"
 	# break
 done
@@ -35,3 +33,5 @@ exit
 
 # Set remote url
 # git remote set-url origin https://github.com/DistributedML/Biscotti.git
+	# cd /home/$uname/gopath/src/Biscotti/ML/Pytorch/data/mnist
+		# python parse_mnist.py
