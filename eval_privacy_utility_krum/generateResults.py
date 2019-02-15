@@ -14,7 +14,8 @@ import matplotlib.lines as mlines
 total_nodes = 100
 numIterations = 102
 
-colors = ['black', 'red', 'green', 'blue', 'yellow', 'orange']
+colors = ['orange', 'red', 'green', 'blue', 'yellow', 'black']
+linestyle = ['-', '-', '-', '-', '-', '--']
 labels = [r'$\epsilon=0.01$', r'$\epsilon=0.1$', r'$\epsilon=0.5$', r'$\epsilon=1$', r'$\epsilon=2$', 'Biscotti']
 
 def plotResults(outputFile, inputFiles):
@@ -42,7 +43,7 @@ def plotResults(outputFile, inputFiles):
 
 	for dataPoints in toplot:
 		
-		thisLine =  mlines.Line2D(np.arange(numIterations), dataPoints, color=colors[lineIdx],	linewidth=3, linestyle='-', label=labels[lineIdx])	
+		thisLine =  mlines.Line2D(np.arange(numIterations), dataPoints, color=colors[lineIdx],	linewidth=3, linestyle=linestyle[lineIdx], label=labels[lineIdx])	
 		ax.add_line(thisLine)
 		lines.append(thisLine)
 		lineIdx+=1
@@ -207,4 +208,4 @@ if __name__ == '__main__':
 			parsedFileNames.append("parsed_"+filename)
 
 
-	plotResults("privacy_utility_krum_0.00001.pdf", parsedFileNames)
+	plotResults("fig_privacy_utility_krum.pdf", parsedFileNames)
