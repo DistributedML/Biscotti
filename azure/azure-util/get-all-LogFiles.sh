@@ -16,8 +16,6 @@ ipfilepath='../azure-conf/'
 
 hostFile=$ipfilepath$ipfile
 
-
-
 for line in $(cat $hostFile);do
 
 	ipaddr=`echo $line | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'`
