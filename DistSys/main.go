@@ -47,6 +47,8 @@ const (
 
 	MAX_ITERATIONS  int 		  = 100
 
+	// POISONING 	 	float64 	  = 0
+
 	// Probability of failing at any iteration. Set to 0 or negative to avoid.
 	FAIL_PROB 		float64 	  = -0.005
 
@@ -149,7 +151,7 @@ var (
 
 	EPSILON 		float64 	  = 2.0
 
-	KRUM_UPDATETHRESH	int 	  = 25
+	KRUM_UPDATETHRESH	int 	  = 70
 
 	timeoutRPC    	time.Duration = 120 * time.Second
 
@@ -1612,9 +1614,7 @@ func sendUpdateToVerifiers(addresses []string) ([][]byte ,bool) {
 	ensureRPC.Add(len(addresses))
 
 	for _, address := range addresses {
-
-		go sendUpdateToVerifier(address, &signatureList, &verifiersOnline)		
-	
+		go sendUpdateToVerifier(address, &signatureList, &verifiersOnline)
 	}
 
 	ensureRPC.Wait()
