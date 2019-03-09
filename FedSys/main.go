@@ -28,7 +28,7 @@ const (
 	basePort        int           = 8000
 	verifierIP   	string        = "127.0.0.1:"
 	timeoutRPC    	time.Duration = 60 * time.Second
-	timeoutUpdate 	time.Duration = 60 * time.Second 
+	timeoutUpdate 	time.Duration = 120 * time.Second 
 	timeoutBlock 	time.Duration = 120 * time.Second
 	timeoutPeer 	time.Duration = 5 * time.Second
 	
@@ -42,7 +42,7 @@ const (
 
 	SECURE_AGG  	bool 		  = true
 
-	POISONING 	 	float64 	  = 0
+	POISONING 	 	float64 	  = 0.3
 
 )
 
@@ -87,7 +87,10 @@ var (
 	// global shared variables
     updateSent     		bool
 	converged      		bool
+	includePoisoned 	bool
+
 	iterationCount 		= -1
+	rndUpdates 			= 35
 
 	//Logging
 	errLog *log.Logger = log.New(os.Stderr, "[err] ", log.Lshortfile|log.LUTC|log.Lmicroseconds)
@@ -200,6 +203,8 @@ func main() {
 
     myPortPtr := flag.String("p", "", " If not local, this node's port")
 
+    rndUpdatesPtr := flag.Int("b", 35, "Number of updates to accept each round")
+
 	flag.Parse()
 
 	nodeNum := *nodeNumPtr
@@ -210,6 +215,7 @@ func main() {
     myPrivateIP = *myPrivateIPPtr+":"
     myIP = *myIPPtr+":"
     myPort = *myPortPtr
+    rndUpdates = *rndUpdatesPtr
 
 	if(numberOfNodes <= 0 || nodeNum < 0 || datasetName == ""){
 		flag.PrintDefaults()
@@ -306,6 +312,7 @@ func main() {
 	}
 
 	converged = false
+	includePoisoned = true
 	updateLock = sync.Mutex{}
 	boolLock = sync.Mutex{}
 	convergedLock = sync.Mutex{}
@@ -512,11 +519,36 @@ func processUpdate(update Update) {
 
 		outLog.Printf("As aggregator, I expect %d updates, I have gotten %d", numberOfNodeUpdates, numberOfUpdates)
 
-		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
-		if numberOfUpdates == (numberOfNodeUpdates)  {			
-			outLog.Printf(strconv.Itoa(client.id)+":Half updates for iteration %d received. Notifying channel.", iterationCount)	
+		if (numberOfUpdates >= (numberOfNodes - 1)) {			
+		
+			client.sampleUpdates(rndUpdates)
+			outLog.Printf(strconv.Itoa(client.id)+":All updates for iteration %d received. Notifying channel.", iterationCount)	
 			allUpdatesReceived <- true
+
 		}	
+
+		// if POISONING > 0 {
+
+		// 	if (numberOfUpdates >= (numberOfNodes - 1)) {			
+			
+		// 		client.sampleUpdates(numberOfNodeUpdates)
+		// 		outLog.Printf(strconv.Itoa(client.id)+":All updates for iteration %d received. Notifying channel.", iterationCount)	
+		// 		allUpdatesReceived <- true
+		// 	}
+
+		// }else{
+
+		// 	if (numberOfUpdates >= (numberOfNodes - 1))  {
+
+		// 		client.sampleUpdates(numberOfNodeUpdates)			
+		// 		outLog.Printf(strconv.Itoa(client.id)+":Half updates for iteration %d received. Notifying channel.", iterationCount)	
+		// 		allUpdatesReceived <- true
+		// 	}
+
+		// }
+
+		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
+			
 	
 	}
 
@@ -722,6 +754,8 @@ func startUpdateDeadlineTimer(timerForIteration int){
 	if (timerForIteration == iterationCount) {
 			
 		if (len(client.blockUpdates) > 0) {
+
+			client.sampleUpdates(rndUpdates)
 	
 			modelToSend, err := client.createNewModel(iterationCount)
 			
@@ -741,5 +775,4 @@ func startUpdateDeadlineTimer(timerForIteration int){
 		} 
 
 	}
-
 }

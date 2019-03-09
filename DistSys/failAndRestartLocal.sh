@@ -17,8 +17,8 @@ while [[ "$converged" -eq 0 ]]; do
 		continue
 	fi
          
-        echo killing node 
-        
+    echo killing node 
+            
 	fuser -k $failPort/tcp
 			
 	sleep 5

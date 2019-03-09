@@ -33,6 +33,7 @@ var (
 	pyRoniModule  	*python.PyObject
 	pyRoniFunc    	*python.PyObject
 	pyNoiseFunc	  	*python.PyObject
+	pyAttackFunc    *python.PyObject	
 
 	useTorch	   bool
 
@@ -43,7 +44,6 @@ var (
 const (
 
 	STAKE_UNIT		= 5
-
 	batch_size      = 10
 	datasetPath     = "../ML/data/"
 	codePath        = "../ML/code"
@@ -112,7 +112,7 @@ func (honest *Honest) initializeData(datasetName string, numberOfNodes int, epsi
 	
 		if isPoisoning {
 			outLog.Println("Get the bad data.")
-			honest.ncol = pyInit("mnist", "mnist_bad_full", epsilon)	
+			honest.ncol = pyInit("mnist", "mnist_bad", epsilon)	
 		} else {
 			honest.ncol = pyInit(datasetName, datasetName + strconv.Itoa(honest.id), epsilon)
 		}
@@ -141,9 +141,12 @@ func (honest *Honest) bootstrapKeys() {
 func (honest *Honest) checkConvergence() bool {
 
 	trainError := testModel(honest.bc.getLatestGradient())
+	attackRate := testAttackRate(honest.bc.getLatestGradient())
 
 	outLog.Printf(strconv.Itoa(honest.id)+":Train Error is %.5f in Iteration %d", 
 		trainError, honest.bc.Blocks[len(honest.bc.Blocks)-1].Data.Iteration)
+		outLog.Printf(strconv.Itoa(honest.id)+":Attack Rate is %.5f in Iteration %d", 
+		attackRate, honest.bc.Blocks[len(honest.bc.Blocks)-1].Data.Iteration)
 
 	if trainError < convThreshold {
 		return true
@@ -157,6 +160,8 @@ func (honest *Honest) computeUpdate(iterationCount int) {
 	prevModel := honest.bc.getLatestGradient()
 	//outLog.Printf("Global Model:%s", prevModel)
 	deltas, err := oneGradientStep(prevModel) // TODO: Create commitment here
+
+	// outLog.Printf(strconv.Itoa(client.id)+":Computed update as %s\n", deltas)
 
 	if DP_IN_MODEL {
 		noise,err := honest.requestNoise(iterationCount)
@@ -211,6 +216,8 @@ func pyInit(datasetName string, dataFile string, epsilon float64) int {
 		pyTestFunc = pyTorchModule.GetAttrString("getTestErr")
 		pyRoniFunc = pyTorchModule.GetAttrString("roni")
 		pyNoiseFunc = pyTorchModule.GetAttrString("getNoise")
+		pyAttackFunc = pyTorchModule.GetAttrString("get17AttackRate")
+
 
 	} else {
 		
@@ -227,6 +234,7 @@ func pyInit(datasetName string, dataFile string, epsilon float64) int {
 		pyTrainFunc = pyTestModule.GetAttrString("train_error")
 		pyTestFunc = pyTestModule.GetAttrString("test_error")
 		pyRoniFunc = pyRoniModule.GetAttrString("roni")
+		pyAttackFunc = pyTorchModule.GetAttrString("test_error")
 
 	}
 	
@@ -241,6 +249,28 @@ func pyInit(datasetName string, dataFile string, epsilon float64) int {
 	outLog.Printf(strconv.Itoa(client.id)+"Sucessfully pulled dataset. Features: %d\n", numFeatures)
 
 	return numFeatures
+
+}
+
+func testAttackRate(weights []float64) float64 {
+
+	runtime.LockOSThread()
+
+	_gstate := python.PyGILState_Ensure()
+
+	argArray := python.PyList_New(len(weights))
+
+	for i := 0; i < len(weights); i++ {
+		python.PyList_SetItem(argArray, i, python.PyFloat_FromDouble(weights[i]))
+	}
+
+	var attackRate float64
+	pyTrainResult := pyAttackFunc.CallFunction(argArray)
+	attackRate = python.PyFloat_AsDouble(pyTrainResult)
+
+	python.PyGILState_Release(_gstate)	
+
+	return attackRate
 
 }
 
@@ -261,9 +291,13 @@ func oneGradientStep(globalW []float64) ([]float64, error) {
 	var result *python.PyObject
 	result = pyPrivFunc.CallFunction(argArray)
 
+	outLog.Printf("Result from python is:%s", result)
+
 	// Convert the resulting array to a go byte array
 	pyByteArray := python.PyByteArray_FromObject(result)
 	goByteArray := python.PyByteArray_AsBytes(pyByteArray)
+
+	// outLog.Printf("GoByte is:%s", goByteArray)
 
 	python.PyGILState_Release(_gstate)
 
@@ -276,6 +310,9 @@ func oneGradientStep(globalW []float64) ([]float64, error) {
 		aFloat := math.Float64frombits(bits)
 		goFloatArray = append(goFloatArray, aFloat)
 	}
+
+	// outLog.Printf("GoFloat is:%s", goFloatArray)
+
 
 	return goFloatArray, nil
 
@@ -313,6 +350,7 @@ func (honest *Honest) createBlock(iterationCount int, stakeMap map[int]int) (*Bl
 	updatedGradient := make([]float64, honest.ncol)
 	deltaM := mat.NewDense(1, honest.ncol, make([]float64, honest.ncol))
 	pulledGradientM := mat.NewDense(1, honest.ncol, pulledGradient)
+	// avgFactor := 1.0/float64(len(honest.blockUpdates))
 
 	// Update Aggregation
 	for _, update := range honest.blockUpdates {
@@ -326,6 +364,8 @@ func (honest *Honest) createBlock(iterationCount int, stakeMap map[int]int) (*Bl
 			stakeMap[update.SourceID] = theirStake - STAKE_UNIT
 		}
 	}
+
+	// pulledGradientM.Scale(avgFactor, pulledGradientM)
 
 	mat.Row(updatedGradient, 0, pulledGradientM)
 
@@ -509,7 +549,6 @@ func (honest *Honest) flushSecrets() {
 	honest.secretList = make(map[int]MinerPart)
 	honest.blockUpdates = honest.blockUpdates[:0]
 	honest.aggregatedSecrets = honest.aggregatedSecrets[:0]
-
 
 }
 

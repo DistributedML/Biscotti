@@ -48,7 +48,7 @@ for (( index = $startingIndex ; index < $startingIndex + nodesToRun; index++ ));
 	echo deploying "$index"
 	cd $pathToBinary
 
-	commandToRun="timeout 15000 ./DistSys -i=${index} -t=${totalnodes} -d=${dataset} -c=0 -f=peersFileSent \
+	commandToRun="timeout 30000 ./DistSys -i=${index} -t=${totalnodes} -d=${dataset} -f=peersFileSent \
 				-a=$myAddress -p=$thisPort -pa=$myPrivateIp ${argList[@]}"
 	commandList=($commandToRun)
 	"${commandList[@]}" > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile & 

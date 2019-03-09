@@ -10,7 +10,7 @@ fi
 
 fileName=$1
 echo $fileName
-username=$2'
+username=$2
 echo $username
 hostFile="../azure-conf/$fileName"
 

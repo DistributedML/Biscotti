@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 import pdb
 
-fig, ax = plt.subplots(figsize=(8, 5))
+fig, ax = plt.subplots(figsize=(10, 5))
 	
 results = pd.read_csv('results.csv', header=None)
 
@@ -33,8 +33,8 @@ axes.set_ylim([0, 0.1])
 ax.spines['right'].set_visible(False)
 ax.spines['top'].set_visible(False)
 
-plt.setp(ax.get_xticklabels(), fontsize=14)
-plt.setp(ax.get_yticklabels(), fontsize=14)
+plt.setp(ax.get_xticklabels(), fontsize=18)
+plt.setp(ax.get_yticklabels(), fontsize=18)
 
 fig.tight_layout(pad=0.1)
 fig.savefig("eval_noise_attack.pdf")

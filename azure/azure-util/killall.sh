@@ -14,6 +14,7 @@ for line in $(cat $hostFile);do
 
 	echo "killing" $tname
 	ssh $username@$tname 'pkill DistSys'
+	# ssh $username@$tname 'pkill FedSys'
 
 done
 

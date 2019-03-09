@@ -15,10 +15,9 @@ learning_rate = 1e-2
 # Otherwise, use the 2016 Abadi.
 diffPriv13 = False
 expected_iters = 100
-delta = 0.0001
+delta = 0.00001
 
 def init(dataset, filename, epsilon, batch_size):
-
     
     global myclient
 
@@ -112,6 +111,38 @@ def roni(ww, delta):
 
     return after - original
 
+def krum(deltas, clip):
+
+    # assume deltas is an array of size group * d
+    n = len(deltas)
+
+    deltas = np.array(deltas)
+    
+    scores = get_krum_scores(deltas, n - clip)
+
+    good_idx = np.argpartition(scores, n - clip)[:(n - clip)]
+
+    print(good_idx)
+
+    return good_idx
+
+    # return np.mean(deltas[good_idx], axis=0)
+
+
+def get_krum_scores(X, groupsize):
+
+    krum_scores = np.zeros(len(X))
+
+    # Calculate distances
+    distances = np.sum(X**2, axis=1)[:, None] + np.sum(
+        X**2, axis=1)[None] - 2 * np.dot(X, X.T)
+
+    for i in range(len(X)):
+        krum_scores[i] = np.sum(np.sort(distances[i])[1:(groupsize - 1)])
+
+    return krum_scores
+
+
 if __name__ == '__main__':
     
     epsilon = 0
@@ -139,3 +170,9 @@ if __name__ == '__main__':
     # print("Num rejected by RONI: " + str(numRejected))
 
     pdb.set_trace()
+
+def get17AttackRate(ww):
+    global myclient
+    weights = np.array(ww)
+    myclient.updateModel(weights)
+    return myclient.get17AttackRate()

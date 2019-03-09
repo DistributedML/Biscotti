@@ -9,6 +9,8 @@ import (
 	"strconv"
 	"errors"
 	"runtime"
+	"math/rand"
+	"time"
 )
 
 var (
@@ -25,6 +27,7 @@ var (
 	pyRoniModule  *python.PyObject
 	pyRoniFunc    *python.PyObject
 	pyNoiseFunc	  *python.PyObject
+	pyAttackFunc    *python.PyObject
 
 	useTorch	   bool
 
@@ -87,7 +90,7 @@ func (honest *Honest) initializeData(datasetName string, numberOfNodes int, epsi
 	
 		if isPoisoning {
 			outLog.Println("Get the bad data.")
-			honest.ncol = pyInit("mnist", "mnist_bad_full", epsilon)	
+			honest.ncol = pyInit("mnist", "mnist_bad", epsilon)	
 		} else {
 			honest.ncol = pyInit(datasetName, datasetName + strconv.Itoa(honest.id), epsilon)
 		}
@@ -103,14 +106,41 @@ func (honest *Honest) initializeData(datasetName string, numberOfNodes int, epsi
 func (honest *Honest) checkConvergence(iterationCount int) bool {
 
 	trainError := testModel(honest.globalModel)
+	attackRate := testAttackRate(honest.globalModel)
 
 	outLog.Printf(strconv.Itoa(honest.id)+":Train Error is %.5f in Iteration %d", trainError, iterationCount)
+	outLog.Printf(strconv.Itoa(honest.id)+":Attack Rate is %.5f in Iteration %d", 
+		attackRate, iterationCount)
 
 	if trainError < convThreshold {
 		return true
 	}
 
 	return false
+}
+
+// cSample updates for the poisoning case
+func (honest *Honest) sampleUpdates(numUpdates int) {
+
+	r := rand.New(rand.NewSource(time.Now().Unix()))
+	selectedUpdates := make([]Update, numUpdates)
+	perm := r.Perm(len(honest.blockUpdates))
+	
+	for i, randIndex := range perm {
+		selectedUpdates[i] = honest.blockUpdates[randIndex]
+
+		if i == (numUpdates-1) {
+			break
+		}
+	
+	}	
+
+	honest.blockUpdates = selectedUpdates
+
+	outLog.Printf("Number of updates sampled:%s", len(honest.blockUpdates))
+	outLog.Printf("Indexes selected:%s", perm[:numUpdates])
+
+
 }
 
 // calculates update by calling oneGradientStep function that invokes python and passing latest global model from the chain to it.
@@ -155,6 +185,7 @@ func pyInit(datasetName string, dataFile string, epsilon float64) int {
 		pyTestFunc = pyTorchModule.GetAttrString("getTestErr")
 		pyRoniFunc = pyTorchModule.GetAttrString("roni")
 		pyNoiseFunc = pyTorchModule.GetAttrString("getNoise")
+		pyAttackFunc = pyTorchModule.GetAttrString("get17AttackRate")
 
 	} else {
 		
@@ -171,6 +202,7 @@ func pyInit(datasetName string, dataFile string, epsilon float64) int {
 		pyTrainFunc = pyTestModule.GetAttrString("train_error")
 		pyTestFunc = pyTestModule.GetAttrString("test_error")
 		pyRoniFunc = pyRoniModule.GetAttrString("roni")
+		pyAttackFunc = pyTorchModule.GetAttrString("test_error")
 
 	}
 	
@@ -188,6 +220,27 @@ func pyInit(datasetName string, dataFile string, epsilon float64) int {
 
 }
 
+func testAttackRate(weights []float64) float64 {
+
+	runtime.LockOSThread()
+
+	_gstate := python.PyGILState_Ensure()
+
+	argArray := python.PyList_New(len(weights))
+
+	for i := 0; i < len(weights); i++ {
+		python.PyList_SetItem(argArray, i, python.PyFloat_FromDouble(weights[i]))
+	}
+
+	var attackRate float64
+	pyTrainResult := pyAttackFunc.CallFunction(argArray)
+	attackRate = python.PyFloat_AsDouble(pyTrainResult)
+
+	python.PyGILState_Release(_gstate)	
+
+	return attackRate
+
+}
 // calculate the next update using the latest global model on the chain invoking python
 
 func oneGradientStep(globalW []float64) ([]float64, error) {
@@ -244,12 +297,15 @@ func (honest *Honest) createNewModel(iterationCount int) (BlockData, error) {
 	updatedGradient := make([]float64, honest.ncol)
 	deltaM := mat.NewDense(1, honest.ncol, make([]float64, honest.ncol))
 	pulledGradientM := mat.NewDense(1, honest.ncol, pulledGradient)
+	// avgFactor := 1.0/float64(len(honest.blockUpdates))
 
 	// Update Aggregation
 	for _, update := range honest.blockUpdates {
 		deltaM = mat.NewDense(1, honest.ncol, update.Delta)
 		pulledGradientM.Add(pulledGradientM, deltaM)	
 	}
+
+	// pulledGradientM.Scale(avgFactor, pulledGradientM)
 
 	mat.Row(updatedGradient, 0, pulledGradientM)
 
