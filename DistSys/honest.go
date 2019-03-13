@@ -141,12 +141,18 @@ func (honest *Honest) bootstrapKeys() {
 func (honest *Honest) checkConvergence() bool {
 
 	trainError := testModel(honest.bc.getLatestGradient())
-	attackRate := testAttackRate(honest.bc.getLatestGradient())
 
-	outLog.Printf(strconv.Itoa(honest.id)+":Train Error is %.5f in Iteration %d", 
-		trainError, honest.bc.Blocks[len(honest.bc.Blocks)-1].Data.Iteration)
-		outLog.Printf(strconv.Itoa(honest.id)+":Attack Rate is %.5f in Iteration %d", 
-		attackRate, honest.bc.Blocks[len(honest.bc.Blocks)-1].Data.Iteration)
+	if honest.dataset == "creditcard" {
+		trainError := testModel(honest.bc.getLatestGradient())
+		outLog.Printf(strconv.Itoa(honest.id)+":Train Error is %.5f in Iteration %d",
+			trainError, honest.bc.Blocks[len(honest.bc.Blocks)-1].Data.Iteration)
+	} else {
+		attackRate := testAttackRate(honest.bc.getLatestGradient())
+		outLog.Printf(strconv.Itoa(honest.id)+":Train Error is %.5f in Iteration %d",
+			trainError, honest.bc.Blocks[len(honest.bc.Blocks)-1].Data.Iteration)
+		outLog.Printf(strconv.Itoa(honest.id)+":Attack Rate is %.5f in Iteration %d",
+			attackRate, honest.bc.Blocks[len(honest.bc.Blocks)-1].Data.Iteration)
+	}
 
 	if trainError < convThreshold {
 		return true
@@ -234,7 +240,6 @@ func pyInit(datasetName string, dataFile string, epsilon float64) int {
 		pyTrainFunc = pyTestModule.GetAttrString("train_error")
 		pyTestFunc = pyTestModule.GetAttrString("test_error")
 		pyRoniFunc = pyRoniModule.GetAttrString("roni")
-		pyAttackFunc = pyTorchModule.GetAttrString("test_error")
 
 	}
 	
