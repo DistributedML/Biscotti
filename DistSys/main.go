@@ -45,8 +45,6 @@ const (
 	PRECISION       int 		  = 4
 	POLY_SIZE 		int 		  = 10
 
-	MAX_ITERATIONS  int 		  = 100
-
 
 	// POISONING 	 	float64 	  = 0
 
@@ -71,8 +69,10 @@ var (
 	datasetName   		string
 	numberOfNodes 		int
 	TOTAL_SHARES 		int
+	NUM_LOCAL_ITERS     int
 	colluders 			int 		  
 	collectingUpdates 	bool
+
 
 	numberOfNodeUpdates int
 	myIP                string
@@ -120,11 +120,12 @@ var (
 	ensureRPC      		sync.WaitGroup
 
 	// global shared variables
-    updateSent     		bool
-	converged      		bool
-	verifier       		bool
-	miner 				bool
-	iterationCount 		= -1
+    updateSent     bool
+	converged      bool
+	verifier       bool
+	miner          bool
+	MAX_ITERATIONS int
+	iterationCount  		= -1
 
 	// these are maps since it optimizes contains()
 	roleIDs				map[int]int
@@ -158,7 +159,7 @@ var (
 	timeoutRPC    	time.Duration = 120 * time.Second
 
 	POISONING 	 	float64 	  = 0.0
-	NUM_SAMPLES     int 		  = 70
+	NUM_SAMPLES     int 		  = 3
 
 )
 
@@ -595,6 +596,7 @@ func exitOnError(prefix string, err error) {
 // Parse args, read dataset and initialize separate threads for listening for updates/Blocks and sending updates
 
 func main() {
+	fmt.Println("ARGHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
 
 	gob.Register(&net.TCPAddr{})
 	gob.Register(&Blockchain{})
@@ -603,6 +605,8 @@ func main() {
 	numberOfNodesPtr := flag.Int("t", 0 , "The total number of nodes in the network")
 
 	nodeNumPtr := flag.Int("i", -1 ,"The node's index in the total. Has to be greater than 0")
+
+	localIterPerRound := flag.Int("it", 1, "The number of local iterations for each round of federated averaging")
 
 	datasetNamePtr := flag.String("d", "" , "The name of the dataset to be used")
 
@@ -632,7 +636,7 @@ func main() {
 
     poisoningPtr := flag.Float64("po", 0.0, "Poisoner threshold")
 
-	numSamplesPtr := flag.Int("ns", 70 , "Number of samples")   
+	numSamplesPtr := flag.Int("ns", 3 , "Number of samples")
 
 	flag.Parse()
 
@@ -645,6 +649,7 @@ func main() {
     myIP = *myIPPtr+":"
     myPort = *myPortPtr
     colluders = *colludersPtr
+    NUM_LOCAL_ITERS = *localIterPerRound
     NUM_NOISERS = *numNoisePtr
     NUM_VERIFIERS = *numVerPtr
     NUM_MINERS = *numAggPtr
@@ -655,6 +660,7 @@ func main() {
     POISONING = *poisoningPtr
     NUM_SAMPLES = *numSamplesPtr
     NUM_SAMPLES = numberOfNodes - NUM_VERIFIERS - NUM_MINERS
+    MAX_ITERATIONS = 100 / NUM_LOCAL_ITERS
 
     outLog.Printf("EPSILON IS: %d", EPSILON)
 
@@ -828,7 +834,7 @@ func main() {
 	sigLock = sync.Mutex{}
 
 	// TODO: Replace with numNodes/4 after test
-	KRUM_UPDATETHRESH = numberOfNodes - NUM_VERIFIERS - NUM_MINERS
+	KRUM_UPDATETHRESH = 3
 
 	ensureRPC = sync.WaitGroup{}
 	allUpdatesReceived = make (chan bool)
@@ -1443,7 +1449,7 @@ func messageSender(ports []string) {
 		if !updateSent {
 
 			outLog.Printf(strconv.Itoa(client.id)+":Computing Update\n")
-			client.computeUpdate(iterationCount)
+			client.computeUpdate(iterationCount, NUM_LOCAL_ITERS)
 
 		}
 

@@ -10,7 +10,8 @@ controllerUser=$5
 controllerIP=$6
 logFileCopyPath=$7
 dataset=$8
-additionalArgs=${@:9}
+numLocalIterations=$9
+additionalArgs=${@:10}
 
 argList=($additionalArgs)
 
@@ -48,7 +49,7 @@ for (( index = $startingIndex ; index < $startingIndex + nodesToRun; index++ ));
 	echo deploying "$index"
 	cd $pathToBinary
 
-	commandToRun="timeout 30000 ./DistSys -i=${index} -t=${totalnodes} -d=${dataset} -f=peersFileSent \
+	commandToRun="timeout 30000 ./DistSys -i=${index} -t=${totalnodes} -d=${dataset} -it=${numLocalIterations} -f=peersFileSent \
 				-a=$myAddress -p=$thisPort -pa=$myPrivateIp ${argList[@]}"
 	commandList=($commandToRun)
 	"${commandList[@]}" > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile & 

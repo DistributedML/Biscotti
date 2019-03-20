@@ -11,7 +11,8 @@ let nodesInEachVM=$1
 let totalNodes=$2
 hostFileName=$3
 dataset=$4
-additionalArgs=$5
+numLocalIterations=$5
+additionalArgs=$6
 
 echo $additionalArgs
 
@@ -122,9 +123,9 @@ for line in $(cat $hostPath);do
 
 	if [[ "$azure" -eq 1 ]]; then
 		echo "Deploying on azure"
-		ssh $azureUser@$tname 'bash -s' < deployAzureNodes.sh $nodesInEachVM $indexCount $totalNodes $tname $controllerUser $controllerIP $logFilesPath $dataset $additionalArgs &
+		ssh $azureUser@$tname 'bash -s' < deployAzureNodes.sh $nodesInEachVM $indexCount $totalNodes $tname $controllerUser $controllerIP $logFilesPath $dataset $numLocalIterations $additionalArgs  &
 	else
-		ssh $controllerUser@$controllerIP 'bash -s' < deployNodes.sh $nodesInEachVM $indexCount $totalNodes $controllerIP $logFilesPath&
+		ssh $controllerUser@$controllerIP 'bash -s' < deployNodes.sh $nodesInEachVM $indexCount $totalNodes $controllerIP $logFilesPath $numLocalIterations &
 	fi
 
 	indexCount=$((indexCount + nodesInEachVM))

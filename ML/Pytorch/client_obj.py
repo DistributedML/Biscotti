@@ -73,7 +73,9 @@ def init(dataset, filename, epsilon, batch_size):
 def privateFun(ww):
     global myclient
     weights = np.array(ww)
-    myclient.updateModel(weights)
+    for i in range(5):
+        myclient.updateModel(weights)
+        weights = myclient.getModelWeights()
     return (-1) * myclient.getGrad()
 
 def simpleStep(gradient):

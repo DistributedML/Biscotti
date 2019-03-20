@@ -124,17 +124,19 @@ def privateFun(ww):
         # Just take the full range
         idx = range(nn)
 
-    f, g = funObj(ww, X[idx, :], y[idx], this_batch_size)
+    w_new = ww
+    for i in range(5):
+        f, g = funObj(ww, X[idx, :], y[idx], this_batch_size)
 
-    d1, _ = samples.shape
+        d1, _ = samples.shape
 
-    if diffPriv13 or diffPriv16:
-        delta = -alpha * g + getNoise(iteration)
-    else:
-        delta = -alpha * g
+        if diffPriv13 or diffPriv16:
+            delta = -alpha * g + getNoise(iteration)
+        else:
+            delta = -alpha * g
 
-    w_new = ww + delta
-    f_new, g_new = funObj(w_new, X[idx, :], y[idx], this_batch_size)
+            w_new = w_new + delta
+            f_new, g_new = funObj(w_new, X[idx, :], y[idx], this_batch_size)
     iteration = iteration + 1
 
     return delta

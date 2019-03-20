@@ -162,10 +162,10 @@ func (honest *Honest) checkConvergence() bool {
 }
 
 // calculates update by calling oneGradientStep function that invokes python and passing latest global model from the chain to it.
-func (honest *Honest) computeUpdate(iterationCount int) {
+func (honest *Honest) computeUpdate(iterationCount int, numLocalIterations int) {
 	prevModel := honest.bc.getLatestGradient()
 	//outLog.Printf("Global Model:%s", prevModel)
-	deltas, err := oneGradientStep(prevModel) // TODO: Create commitment here
+	deltas, err := oneGradientStep(prevModel, numLocalIterations) // TODO: Create commitment here
 
 	// outLog.Printf(strconv.Itoa(client.id)+":Computed update as %s\n", deltas)
 
@@ -281,7 +281,7 @@ func testAttackRate(weights []float64) float64 {
 
 // calculate the next update using the latest global model on the chain invoking python
 
-func oneGradientStep(globalW []float64) ([]float64, error) {
+func oneGradientStep(globalW []float64, numLocalIterations int) ([]float64, error) {
 
 	runtime.LockOSThread()
 

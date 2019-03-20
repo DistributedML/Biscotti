@@ -4,6 +4,7 @@ nodesToRun=$1
 startingIndex=$2
 totalnodes=$3
 myAddress=$4
+numLocalIterations=$6
 
 source ~/.profile
 
@@ -28,7 +29,7 @@ for (( index = $startingIndex ; index < $startingIndex + nodesToRun; index++ ));
 	cd $GOPATH/src/simpleBlockChain/DistSys
 	timeout 120 ./DistSys -i=$index -t=$totalnodes \
 		-d=creditcard -f=peersFileSent \
-		-a=$myAddress -p=$thisPort -pa=$myAddress \
+		-a=$myAddress -p=$thisPort -pa=$myAddress -it=$numLocalIterations \
 		 > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
 
 	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &

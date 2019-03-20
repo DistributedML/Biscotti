@@ -8,6 +8,7 @@ sudo iptables -F OUTPUT
 
 let nodes=$1
 dataset=$2
+numLocalIterations=$3
 # additionalArgs="-sa=true -vp=true -np=false -na=3 -nv=3 -nn=2 -ep=1"
 argList=($additionalArgs)
 let cnt=0
@@ -53,7 +54,7 @@ for (( totalnodes = $nodes; totalnodes < ($nodes + 1); totalnodes++ )); do
 		echo $thisPort
 		echo $myAddress
 
-		commandToRun="./DistSys -i=${index} -t=${totalnodes} -d=${dataset} -c=0 ${argList[@]}"
+		commandToRun="./DistSys -i=${index} -t=${totalnodes} -d=${dataset} -c=0  -it=${numLocalIterations} ${argList[@]}"
 		commandList=($commandToRun)
 		echo "${commandList[@]}" 
 		"${commandList[@]}" > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile & 
