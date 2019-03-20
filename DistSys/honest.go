@@ -294,7 +294,8 @@ func oneGradientStep(globalW []float64, numLocalIterations int) ([]float64, erro
 	}
 	
 	var result *python.PyObject
-	result = pyPrivFunc.CallFunction(argArray)
+	argNumIters := python.PyInt_FromLong(numLocalIterations)
+	result = pyPrivFunc.CallFunction(argArray, argNumIters)
 
 	outLog.Printf("Result from python is:%s", result)
 

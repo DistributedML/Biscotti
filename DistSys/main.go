@@ -596,7 +596,6 @@ func exitOnError(prefix string, err error) {
 // Parse args, read dataset and initialize separate threads for listening for updates/Blocks and sending updates
 
 func main() {
-	fmt.Println("ARGHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
 
 	gob.Register(&net.TCPAddr{})
 	gob.Register(&Blockchain{})

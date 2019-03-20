@@ -110,7 +110,7 @@ def getNoise(iteration):
 
 # Reports the direct change to w, based on the given one.
 # Batch size could be 1 for SGD, or 0 for full gradient.
-def privateFun(ww):
+def privateFun(ww, numIterations):
 
     global iteration
     ww = np.array(ww)
@@ -125,7 +125,7 @@ def privateFun(ww):
         idx = range(nn)
 
     w_new = ww
-    for i in range(5):
+    for i in range(numIterations):
         f, g = funObj(ww, X[idx, :], y[idx], this_batch_size)
 
         d1, _ = samples.shape

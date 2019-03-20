@@ -70,10 +70,10 @@ def init(dataset, filename, epsilon, batch_size):
 
 # returns flattened gradient
 # Keep batch_size for API compliance
-def privateFun(ww):
+def privateFun(ww, numIterations):
     global myclient
     weights = np.array(ww)
-    for i in range(5):
+    for i in range(numIterations):
         myclient.updateModel(weights)
         weights = myclient.getModelWeights()
     return (-1) * myclient.getGrad()
