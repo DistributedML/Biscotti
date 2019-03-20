@@ -834,7 +834,7 @@ func main() {
 	sigLock = sync.Mutex{}
 
 	// TODO: Replace with numNodes/4 after test
-	KRUM_UPDATETHRESH = 3
+	KRUM_UPDATETHRESH = numberOfNodes - NUM_VERIFIERS - NUM_MINERS
 
 	ensureRPC = sync.WaitGroup{}
 	allUpdatesReceived = make (chan bool)
