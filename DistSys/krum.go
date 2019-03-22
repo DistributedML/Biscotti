@@ -194,7 +194,7 @@ func startKRUMDeadlineTimer(timerForIteration int){
 	  				return krum.UpdateList[i].SourceID < krum.UpdateList[j].SourceID
 				})
 
-				krum.sampleUpdates(NUM_SAMPLES)
+				//krum.sampleUpdates(NUM_SAMPLES)
 				krum.computeScores()
 
 
@@ -272,7 +272,7 @@ func (s *Peer) VerifyUpdateKRUM(update Update, signature *[]byte) error {
   				return krum.UpdateList[i].SourceID < krum.UpdateList[j].SourceID
 			})
 
-			krum.sampleUpdates(NUM_SAMPLES)
+			//krum.sampleUpdates(NUM_SAMPLES)
 			krum.computeScores()
 
 			outLog.Printf(strconv.Itoa(client.id)+"Crossed Accepted %d\n", iterationCount)
