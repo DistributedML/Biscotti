@@ -605,7 +605,7 @@ func main() {
 
 	nodeNumPtr := flag.Int("i", -1 ,"The node's index in the total. Has to be greater than 0")
 
-	localIterPerRound := flag.Int("it", 1, "The number of local iterations for each round of federated averaging")
+	localIterPerRoundPtr := flag.Int("it", 1, "The number of local iterations for each round of federated averaging")
 
 	datasetNamePtr := flag.String("d", "" , "The name of the dataset to be used")
 
@@ -648,7 +648,7 @@ func main() {
     myIP = *myIPPtr+":"
     myPort = *myPortPtr
     colluders = *colludersPtr
-    NUM_LOCAL_ITERS = *localIterPerRound
+    NUM_LOCAL_ITERS = *localIterPerRoundPtr
     NUM_NOISERS = *numNoisePtr
     NUM_VERIFIERS = *numVerPtr
     NUM_MINERS = *numAggPtr

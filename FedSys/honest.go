@@ -143,12 +143,12 @@ func (honest *Honest) sampleUpdates(numUpdates int) {
 
 }
 
-// calculates update by calling oneGradientStep function that invokes python and passing latest global model from the chain to it.
-func (honest *Honest) computeUpdate(iterationCount int) {
+// calculates update by calling gradientSteps function that invokes python and passing latest global model from the chain to it.
+func (honest *Honest) computeUpdate(iterationCount int, numLocalIterations int) {
 	
 	prevModel := honest.globalModel
 	
-	deltas, err := oneGradientStep(prevModel) // TODO: Create commitment here
+	deltas, err := gradientSteps(prevModel, numLocalIterations) // TODO: Create commitment here
 
 	check(err)
 
@@ -243,7 +243,7 @@ func testAttackRate(weights []float64) float64 {
 }
 // calculate the next update using the latest global model on the chain invoking python
 
-func oneGradientStep(globalW []float64) ([]float64, error) {
+func gradientSteps(globalW []float64, numLocalIterations int) ([]float64, error) {
 
 	runtime.LockOSThread()
 
@@ -256,7 +256,8 @@ func oneGradientStep(globalW []float64) ([]float64, error) {
 	}
 	
 	var result *python.PyObject
-	result = pyPrivFunc.CallFunction(argArray)
+	argNumIters := python.PyInt_FromLong(numLocalIterations)
+	result = pyPrivFunc.CallFunction(argArray, argNumIters)
 
 	// Convert the resulting array to a go byte array
 	pyByteArray := python.PyByteArray_FromObject(result)

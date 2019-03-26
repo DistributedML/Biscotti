@@ -10,7 +10,8 @@ controllerUser=$5
 controllerIP=$6
 logFileCopyPath=$7
 dataset=$8
-additionalArgs=${@:9}
+numLocalIterations=$9
+additionalArgs=${@:10}
 
 argList=($additionalArgs)
 
@@ -74,7 +75,7 @@ for (( index = $startingIndex ; index < $startingIndex + nodesToRun; index++ ));
 		#  > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
 
 	commandToRun="timeout 1500 ./FedSys -i=${index} -t=${totalnodes} -d=${dataset} -f=peersFileSent \
-				-a=$myAddress -p=$thisPort -pa=$myPrivateIp ${argList[@]}"
+				-a=$myAddress -p=$thisPort -pa=$myPrivateIp -it=$numLocalIterations ${argList[@]}"
 	commandList=($commandToRun)
 	"${commandList[@]}" > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile & 
 

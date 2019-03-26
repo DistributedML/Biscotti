@@ -37,7 +37,6 @@ const (
 	PRECISION       int 		  = 4
 	POLY_SIZE 		int 		  = 10
 
-	MAX_ITERATIONS  int 		  = 100
 	EPSILON 		float64 	  = 5
 
 	SECURE_AGG  	bool 		  = true
@@ -56,7 +55,8 @@ var (
 
 	//Input arguments
 	datasetName   		string
-	numberOfNodes 		int 		  
+	numberOfNodes 		int
+	NUM_LOCAL_ITERS     int
 
 	numberOfNodeUpdates int
 	myIP                string
@@ -88,7 +88,7 @@ var (
     updateSent     		bool
 	converged      		bool
 	includePoisoned 	bool
-
+	MAX_ITERATIONS  	int
 	iterationCount 		= -1
 	rndUpdates 			= 35
 
@@ -193,6 +193,8 @@ func main() {
 
 	nodeNumPtr := flag.Int("i", -1 ,"The node's index in the total. Has to be greater than 0")
 
+	localIterPerRoundPtr := flag.Int("it", 1, "The number of local iterations for each round of federated averaging")
+
 	datasetNamePtr := flag.String("d", "" , "The name of the dataset to be used")
 
     peersFileNamePtr := flag.String("f", "", "File that contains list of IP:port pairs")
@@ -216,6 +218,8 @@ func main() {
     myIP = *myIPPtr+":"
     myPort = *myPortPtr
     rndUpdates = *rndUpdatesPtr
+    NUM_LOCAL_ITERS = *localIterPerRoundPtr
+	MAX_ITERATIONS = 100 / NUM_LOCAL_ITERS
 
 	if(numberOfNodes <= 0 || nodeNum < 0 || datasetName == ""){
 		flag.PrintDefaults()
@@ -670,7 +674,7 @@ func messageSender() {
 
 		if !updateSent {
 			outLog.Printf(strconv.Itoa(client.id)+":Computing Update\n")
-			client.computeUpdate(iterationCount)
+			client.computeUpdate(iterationCount, NUM_LOCAL_ITERS)
 			sendUpdateToServer()
 			updateSent = true
 
