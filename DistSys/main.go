@@ -154,12 +154,12 @@ var (
 
 	EPSILON 		float64 	  = 2.0
 
-	KRUM_UPDATETHRESH	int 	  = 70
+	KRUM_UPDATETHRESH	int 	  = 7
 
 	timeoutRPC    	time.Duration = 120 * time.Second
 
 	POISONING 	 	float64 	  = 0.0
-	NUM_SAMPLES     int 		  = 3
+	NUM_SAMPLES     int 		  = 7
 
 )
 
@@ -364,7 +364,6 @@ func processShare(share MinerPart) {
 // - StaleError if its an update for a preceding round.
 
 func (s *Peer) RegisterUpdate(update Update, _ignored *bool) error {
-
 	outLog.Printf(strconv.Itoa(client.id)+":Got miner request, iteration %d\n", update.Iteration)
 
 	// we can return the chain to the guy here instead of just leaving that guy with an error
@@ -372,7 +371,6 @@ func (s *Peer) RegisterUpdate(update Update, _ignored *bool) error {
 		printError("Update of previous iteration received", staleError)
 		return staleError
 	}
-
 	// Process update only called by the miner nodes
 	go processUpdate(update)
 
@@ -635,7 +633,7 @@ func main() {
 
     poisoningPtr := flag.Float64("po", 0.0, "Poisoner threshold")
 
-	numSamplesPtr := flag.Int("ns", 3 , "Number of samples")
+	numSamplesPtr := flag.Int("ns", 4 , "Number of samples")
 
 	flag.Parse()
 
@@ -658,7 +656,7 @@ func main() {
     EPSILON = *epsilonPtr
     POISONING = *poisoningPtr
     NUM_SAMPLES = *numSamplesPtr
-    NUM_SAMPLES = numberOfNodes - NUM_VERIFIERS - NUM_MINERS
+    NUM_SAMPLES = 7
     MAX_ITERATIONS = 100 / NUM_LOCAL_ITERS
 
     outLog.Printf("EPSILON IS: %d", EPSILON)
@@ -833,7 +831,7 @@ func main() {
 	sigLock = sync.Mutex{}
 
 	// TODO: Replace with numNodes/4 after test
-	KRUM_UPDATETHRESH = numberOfNodes - NUM_VERIFIERS - NUM_MINERS
+	KRUM_UPDATETHRESH = 7
 
 	ensureRPC = sync.WaitGroup{}
 	allUpdatesReceived = make (chan bool)
@@ -1024,7 +1022,7 @@ func prepareForNextIteration() {
 		client.bc.PrintChain()
 		os.Exit(1)
 	
-	}else{
+	} else{
 
 		if iterationCount > MAX_ITERATIONS {
 			
@@ -1150,7 +1148,6 @@ func messageListener(peerServer *rpc.Server, port string) {
 func processUpdate(update Update) {
 
 	outLog.Printf(strconv.Itoa(client.id)+":Got update for %d, I am at %d\n", update.Iteration, iterationCount)
-
 	for update.Iteration > iterationCount {
 		outLog.Printf(strconv.Itoa(client.id)+":Blocking for stale update. Update for %d, I am at %d\n", update.Iteration, iterationCount)
 		time.Sleep(2000 * time.Millisecond)
@@ -1166,13 +1163,12 @@ func processUpdate(update Update) {
 		outLog.Printf("As miner, I expect %d updates, I have gotten %d", (numberOfNodeUpdates / 8), numberOfUpdates)
 
 		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
-		if numberOfUpdates == (NUM_SAMPLES/2)  {		
-		
-		// if numberOfUpdates == (numberOfNodes / 8)  {			
-			outLog.Printf(strconv.Itoa(client.id)+":Half updates for iteration %d received. Notifying channel.", iterationCount)	
-			allUpdatesReceived <- true 		 
-		}	
-	
+		if numberOfUpdates == (NUM_SAMPLES/2)  {
+		// if numberOfUpdates == (numberOfNodes / 8)  {
+			outLog.Printf(strconv.Itoa(client.id)+":Half updates for iteration %d received. Notifying channel.", iterationCount)
+			allUpdatesReceived <- true
+		}
+
 	}
 
 }
@@ -1431,8 +1427,8 @@ func callRegisterBlockRPC(block Block, peerAddress net.TCPAddr) {
 
 }
 
-// Main sending thread. Checks if you are a non-verifier in the current itearation 
-// Sends update if thats the case.
+// Main sending thread. Checks if you are a non-verifier in the current iteration
+// Sends update if that's the case.
 
 func messageSender(ports []string) {
 
@@ -1463,9 +1459,9 @@ func messageSender(ports []string) {
 				// outLog.Printf("Noise:%s", noise)
 
 				if (len(noise) > 0) {
-					
+
 					noiseDelta := make([]float64, len(noise))
-					
+
 					outLog.Printf("Update Delta:%s",len(client.update.Delta))
 					outLog.Printf("Noise:%s",len(noise))
 					outLog.Printf("noiseDelta:%s",len(noiseDelta))
@@ -1477,8 +1473,7 @@ func messageSender(ports []string) {
 
 					// The default is if no noise being used, NoisedDelta will just be Delta.
 					client.update.Noise = noise
-					client.update.NoisedDelta = noiseDelta
-
+					client.update.NoisedDelta = quantizeWeights(noiseDelta)
 				}
 
 			}
@@ -1509,11 +1504,11 @@ func messageSender(ports []string) {
 
 				if SECURE_AGG {
 					sendUpdateSecretsToMiners(minerPortsToConnect)									
-				}else{
+				} else{
 					sendUpdateToMiners(minerPortsToConnect)
 				}			
 			
-			}else{
+			} else{
 
 				
 			}
@@ -1668,12 +1663,15 @@ func sendUpdateToVerifier(address string, signatureList *([][]byte), verifiersOn
 		defer conn.Close()
 		signature := []byte{}
 		outLog.Printf(strconv.Itoa(client.id)+":Making RPC Call to Verifier. Sending Update, Iteration:%d\n", client.update.Iteration)
-		
+
+		lightweightUpdate := client.update
+		lightweightUpdate.Delta = []float64{}
+		lightweightUpdate.Noise = []float64{}
 
 		if POISON_DEFENSE == "KRUM" {
-			go func() { c <- conn.Call("Peer.VerifyUpdateKRUM", client.update, &signature) }()
+			go func() { c <- conn.Call("Peer.VerifyUpdateKRUM", lightweightUpdate, &signature) }()
 		}else{
-			go func() { c <- conn.Call("Peer.VerifyUpdateRONI", client.update, &signature) }()
+			go func() { c <- conn.Call("Peer.VerifyUpdateRONI", lightweightUpdate, &signature) }()
 		}
 		select {
 		case verifierError := <-c:
@@ -1684,7 +1682,7 @@ func sendUpdateToVerifier(address string, signatureList *([][]byte), verifiersOn
 			sigLock.Unlock()
 			if (verifierError == nil) {
 
-				outLog.Printf(strconv.Itoa(client.id)+":Update verified. Itersation:%d\n", client.update.Iteration)
+				outLog.Printf(strconv.Itoa(client.id)+":Update verified. Iteration:%d\n", client.update.Iteration)
 				sigLock.Lock()
 				*signatureList = append(*signatureList, signature)
 				sigLock.Unlock()
@@ -1911,7 +1909,9 @@ func startUpdateDeadlineTimer(timerForIteration int){
 			outLog.Printf(strconv.Itoa(client.id)+"Already appended block. Quitting routine. Iteration: %d..", iterationCount)			
 			return 
 	}
-	
+
+	fmt.Println("timerForIteration = ", timerForIteration)
+	fmt.Println("iterationCount = ", iterationCount)
 	if (timerForIteration == iterationCount) {
 		
 		leaderAddress := getLeaderAddress()	
@@ -2014,14 +2014,11 @@ func startShareDeadlineTimer(timerForIteration int){
 
 
 		if ((myIP+myPort) == leaderAddress && len(client.secretList) > 0) {
-
 			minerMap, finalNodeList := getNodesList(minerPortsToConnect)
 
 			sharesPerMiner := TOTAL_SHARES / NUM_MINERS
-
 			// collected sufficient shares and there are more than one 
 			if ((sharesPerMiner * len(minerMap) >= POLY_SIZE) && len(finalNodeList) > 1) {
-
 				client.aggregatedSecrets = getSecretShares(minerMap, finalNodeList)
 
 				outLog.Printf(strconv.Itoa(client.id)+":Acquiring chain lock")
@@ -2179,7 +2176,6 @@ func callGetMinerShareRPC(address string, nodeList []int) (MinerPart, error){
 }
 
 func getNodesList(minerList []string) (map[string][]int, []int) {
-	
 	listOfUpdates := make(map[string][]int)
 
 	listOfUpdates[myIP+myPort] = make([]int, 0, len(client.secretList))

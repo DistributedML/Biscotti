@@ -74,7 +74,7 @@ func (krumval *KRUMValidator) computeScores(){
 	runningDeltas := make([][]float64, len(krum.UpdateList))
 
 	for i := 0; i < len(krum.UpdateList); i++ {
-		runningDeltas[i] = krum.UpdateList[i].NoisedDelta
+		runningDeltas[i] = dequantizeWeights(krum.UpdateList[i].NoisedDelta)
 	}
 
 	krum.AcceptedList = krumval.getTopKRUMIndex(runningDeltas)
@@ -258,7 +258,7 @@ func (s *Peer) VerifyUpdateKRUM(update Update, signature *[]byte) error {
 		outLog.Printf(strconv.Itoa(client.id)+"List length %d", len(krum.UpdateList))
 		//TODO: Declare UpdateThresh	
 
-		if (len(krum.UpdateList) == KRUM_UPDATETHRESH){
+		if (len(krum.UpdateList) == KRUM_UPDATETHRESH) {
 			
 			outLog.Printf(strconv.Itoa(client.id)+"Reached KRUM THRESH at %d\n", iterationCount)
 			

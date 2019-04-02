@@ -1,6 +1,8 @@
 package main
 
-import "math"
+import (
+	"math"
+)
 
 type QuantizedWeights struct {
 	Weights []uint8

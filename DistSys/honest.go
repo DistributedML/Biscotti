@@ -1,20 +1,22 @@
 package main
 
 import (
+	"bufio"
+	"fmt"
+
 	// "math/rand"
 	"encoding/binary"
+	"encoding/json"
+	"errors"
+	"github.com/dedis/kyber"
+	"github.com/dedis/kyber/pairing/bn256"
 	"github.com/kniren/gota/dataframe"
 	"github.com/sbinet/go-python"
 	"gonum.org/v1/gonum/mat"
 	"math"
-	"strconv"
 	"os"
-	"bufio"
-	"errors"
 	"runtime"
-	"github.com/dedis/kyber"
-	"github.com/dedis/kyber/pairing/bn256"
-	"encoding/json"
+	"strconv"
 	// "fmt"
 	"sort"
 )
@@ -169,6 +171,7 @@ func (honest *Honest) computeUpdate(iterationCount int, numLocalIterations int) 
 
 	// outLog.Printf(strconv.Itoa(client.id)+":Computed update as %s\n", deltas)
 
+	// TODO: Quantization with DP in Model
 	if DP_IN_MODEL {
 		noise,err := honest.requestNoise(iterationCount)
 		check(err)
@@ -191,12 +194,11 @@ func (honest *Honest) computeUpdate(iterationCount int, numLocalIterations int) 
 		Iteration: iterationCount, 
 		Commitment: byteCommitment,
 		Delta: deltas, 
-		NoisedDelta: deltas, 
+		NoisedDelta: QuantizedWeights{},
 		Noise: deltas,
 		Accepted: true}
 	
 	//outLog.Printf("Deltas:%s", honest.update.Delta)
-
 }
 
 // Initialize the python stuff using go-python
@@ -288,7 +290,6 @@ func gradientSteps(globalW []float64, numLocalIterations int) ([]float64, error)
 	_gstate := python.PyGILState_Ensure()
 
 	argArray := python.PyList_New(len(globalW))
-
 	for i := 0; i < len(globalW); i++ {
 		python.PyList_SetItem(argArray, i, python.PyFloat_FromDouble(globalW[i]))
 	}
@@ -296,7 +297,6 @@ func gradientSteps(globalW []float64, numLocalIterations int) ([]float64, error)
 	var result *python.PyObject
 	argNumIters := python.PyInt_FromLong(numLocalIterations)
 	result = pyPrivFunc.CallFunction(argArray, argNumIters)
-
 	outLog.Printf("Result from python is:%s", result)
 
 	// Convert the resulting array to a go byte array
@@ -345,7 +345,6 @@ func (honest *Honest) addSecretShare(share MinerPart) int {
 // creates a block from all the updates recorded.
 
 func (honest *Honest) createBlock(iterationCount int, stakeMap map[int]int) (*Block,error) {
-
 	// Has block already been appended from advertisements by other client?
 	if(honest.bc.getBlock(iterationCount) != nil){
 		return nil, blockExistsError
@@ -353,6 +352,7 @@ func (honest *Honest) createBlock(iterationCount int, stakeMap map[int]int) (*Bl
 
 	pulledGradient := make([]float64, honest.ncol)
 	pulledGradient = honest.bc.getLatestGradient()
+	fmt.Println(pulledGradient)
 	updatedGradient := make([]float64, honest.ncol)
 	deltaM := mat.NewDense(1, honest.ncol, make([]float64, honest.ncol))
 	pulledGradientM := mat.NewDense(1, honest.ncol, pulledGradient)
@@ -378,9 +378,10 @@ func (honest *Honest) createBlock(iterationCount int, stakeMap map[int]int) (*Bl
 	updatesGathered := make([]Update, len(honest.blockUpdates))
 	copy(updatesGathered, honest.blockUpdates)
 
-	bData := BlockData{iterationCount, updatedGradient, updatesGathered}
+	bData := BlockData{iterationCount, quantizeWeights(updatedGradient), updatesGathered}
 	honest.bc.AddBlock(bData, stakeMap) 
-
+	fmt.Println("BDATAAAAAAAAAAAAAAAAAAAAA")
+	fmt.Println(bData)
 	newBlock := honest.bc.Blocks[len(honest.bc.Blocks)-1]
 
 	return newBlock,nil
@@ -431,7 +432,7 @@ func (honest *Honest) createBlockSecAgg(iteration int, nodeList []int, stakeMap 
 	updatesGathered := make([]Update, len(honest.blockUpdates))
 	copy(updatesGathered, honest.blockUpdates)
 
-	bData := BlockData{iteration, updatedGradient, updatesGathered}
+	bData := BlockData{iteration, quantizeWeights(updatedGradient), updatesGathered}
 	honest.bc.AddBlock(bData, stakeMap) 
 
 	newBlock := honest.bc.Blocks[len(honest.bc.Blocks)-1]
@@ -604,7 +605,7 @@ func (honest *Honest) verifyUpdate(update Update) float64 {
 	_gstate := python.PyGILState_Ensure()
 	outLog.Println("Acquired Python Lock")
 
-	deltas := update.NoisedDelta
+	deltas := dequantizeWeights(update.NoisedDelta)
 	truthModel := honest.bc.getLatestGradient()
 
 	truthArray := python.PyList_New(len(truthModel))

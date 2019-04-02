@@ -9,21 +9,22 @@ import (
 
 type BlockData struct {
 	Iteration int
-	GlobalW   []float64
+	GlobalW   QuantizedWeights
 	Deltas    []Update
 }
 
 //create nw BlockData
 
-func NewBlockData(iteration int, globalW []float64, deltas []Update) *BlockData {
+func NewBlockData(iteration int, globalW QuantizedWeights, deltas []Update) *BlockData {
 	blockData := &BlockData{iteration, globalW, deltas}
 	// block.SetHash()
 	return blockData
 }
 
 func (blockdata BlockData) String() string {
-	return fmt.Sprintf("Iteration: %d, GlobalW: %s, deltas: %s",
-		blockdata.Iteration, arrayToString(blockdata.GlobalW, ","), arrayToStringUpdate(blockdata.Deltas, ","))
+	return fmt.Sprintf("Iteration: %d, GlobalW: %s, Min: %s, Max: %s, deltas: %s",
+		blockdata.Iteration, arrayToStringUint8(blockdata.GlobalW.Weights, ","), blockdata.GlobalW.Min,
+		blockdata.GlobalW.Max, arrayToStringUpdate(blockdata.Deltas, ","))
 }
 
 //converts blockData to an array of bytes

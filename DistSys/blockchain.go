@@ -29,14 +29,14 @@ func (bc *Blockchain) getLatestBlock() *Block {
 
 
 func (bc *Blockchain) getLatestGradient() []float64 {
-
 	prevBlock := bc.Blocks[len(bc.Blocks)-1]
-	gradient := make([]float64, len(prevBlock.Data.GlobalW))
-	copy(gradient, prevBlock.Data.GlobalW)
+	gradient := make([]float64, len(prevBlock.Data.GlobalW.Weights))
+	prevBlockDequantizedWeights := dequantizeWeights(prevBlock.Data.GlobalW)
+	copy(gradient, prevBlockDequantizedWeights)
 	return gradient
 }
 
-func (bc *Blockchain) getLatestBlockModel() []float64 {
+func (bc *Blockchain) getLatestBlockModel() QuantizedWeights {
 	return bc.Blocks[len(bc.Blocks)-1].Data.GlobalW
 }
 
