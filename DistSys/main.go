@@ -154,12 +154,12 @@ var (
 
 	EPSILON 		float64 	  = 2.0
 
-	KRUM_UPDATETHRESH	int 	  = 7
+	KRUM_UPDATETHRESH	int 	  = 35
 
 	timeoutRPC    	time.Duration = 120 * time.Second
 
 	POISONING 	 	float64 	  = 0.0
-	NUM_SAMPLES     int 		  = 7
+	NUM_SAMPLES     int 		  = 35
 
 )
 
@@ -656,7 +656,7 @@ func main() {
     EPSILON = *epsilonPtr
     POISONING = *poisoningPtr
     NUM_SAMPLES = *numSamplesPtr
-    NUM_SAMPLES = 7
+    NUM_SAMPLES = 35
     MAX_ITERATIONS = 100 / NUM_LOCAL_ITERS
 
     outLog.Printf("EPSILON IS: %d", EPSILON)
@@ -831,7 +831,7 @@ func main() {
 	sigLock = sync.Mutex{}
 
 	// TODO: Replace with numNodes/4 after test
-	KRUM_UPDATETHRESH = 7
+	KRUM_UPDATETHRESH = 35
 
 	ensureRPC = sync.WaitGroup{}
 	allUpdatesReceived = make (chan bool)
