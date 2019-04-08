@@ -1910,8 +1910,6 @@ func startUpdateDeadlineTimer(timerForIteration int){
 			return 
 	}
 
-	fmt.Println("timerForIteration = ", timerForIteration)
-	fmt.Println("iterationCount = ", iterationCount)
 	if (timerForIteration == iterationCount) {
 		
 		leaderAddress := getLeaderAddress()	

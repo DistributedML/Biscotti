@@ -2,8 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
-
 	// "math/rand"
 	"encoding/binary"
 	"encoding/json"
@@ -171,7 +169,6 @@ func (honest *Honest) computeUpdate(iterationCount int, numLocalIterations int) 
 
 	// outLog.Printf(strconv.Itoa(client.id)+":Computed update as %s\n", deltas)
 
-	// TODO: Quantization with DP in Model
 	if DP_IN_MODEL {
 		noise,err := honest.requestNoise(iterationCount)
 		check(err)
@@ -189,14 +186,26 @@ func (honest *Honest) computeUpdate(iterationCount int, numLocalIterations int) 
 	updateCommitment := createCommitment(deltasInt, client.Keys.CommitmentKey.PKG1)
 	byteCommitment, err := updateCommitment.MarshalBinary()
 	check(err)
-	honest.update = Update{
-		SourceID: honest.id,
-		Iteration: iterationCount, 
-		Commitment: byteCommitment,
-		Delta: deltas, 
-		NoisedDelta: QuantizedWeights{},
-		Noise: deltas,
-		Accepted: true}
+
+	if DP_IN_MODEL {
+			honest.update = Update{
+			SourceID: honest.id,
+			Iteration: iterationCount,
+			Commitment: byteCommitment,
+			Delta: deltas,
+			NoisedDelta: quantizeWeights(deltas),
+			Noise: deltas,
+			Accepted: true}
+	} else {
+		honest.update = Update{
+			SourceID: honest.id,
+			Iteration: iterationCount,
+			Commitment: byteCommitment,
+			Delta: deltas,
+			NoisedDelta: QuantizedWeights{},
+			Noise: []float64{},
+			Accepted: true}
+	}
 	
 	//outLog.Printf("Deltas:%s", honest.update.Delta)
 }
@@ -352,7 +361,6 @@ func (honest *Honest) createBlock(iterationCount int, stakeMap map[int]int) (*Bl
 
 	pulledGradient := make([]float64, honest.ncol)
 	pulledGradient = honest.bc.getLatestGradient()
-	fmt.Println(pulledGradient)
 	updatedGradient := make([]float64, honest.ncol)
 	deltaM := mat.NewDense(1, honest.ncol, make([]float64, honest.ncol))
 	pulledGradientM := mat.NewDense(1, honest.ncol, pulledGradient)
@@ -379,9 +387,7 @@ func (honest *Honest) createBlock(iterationCount int, stakeMap map[int]int) (*Bl
 	copy(updatesGathered, honest.blockUpdates)
 
 	bData := BlockData{iterationCount, quantizeWeights(updatedGradient), updatesGathered}
-	honest.bc.AddBlock(bData, stakeMap) 
-	fmt.Println("BDATAAAAAAAAAAAAAAAAAAAAA")
-	fmt.Println(bData)
+	honest.bc.AddBlock(bData, stakeMap)
 	newBlock := honest.bc.Blocks[len(honest.bc.Blocks)-1]
 
 	return newBlock,nil
