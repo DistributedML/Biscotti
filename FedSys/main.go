@@ -145,7 +145,7 @@ func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, model *Update) error {
 	
 	returnUpdate := Update{SourceID: 0, 
 		Iteration:iterationCount, 
-		Delta: client.globalModel}
+		Delta: quantizeWeights(client.globalModel)}
 
 	*model = returnUpdate
 
@@ -426,7 +426,7 @@ func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
 				peerAddresses[peerLookup[peerAddress.String()]] = peerAddress
 				peerLock.Unlock()
 
-				client.globalModel = model.Delta
+				client.globalModel = dequantizeWeights(model.Delta)
 
 			}
 
@@ -572,7 +572,7 @@ func processNewModel(data BlockData) {
 		outLog.Printf("Releasing worker on iteration %d", iterationCount)
 	}
 
-	client.globalModel = data.GlobalW
+	client.globalModel = dequantizeWeights(data.QuantizedW)
 
 	convergedLock.Lock()
 	converged = client.checkConvergence(iterationCount)
@@ -594,7 +594,9 @@ func sendModel(data BlockData) {
 	ensureRPC.Add(len(peerAddresses))
 	
 	for _, address := range peerAddresses {
-		go callRegisterModelRPC(data, address)
+		lightweightData := data
+		lightweightData.GlobalW = []float64{}
+		go callRegisterModelRPC(lightweightData, address)
 	}
 	
 	//check for convergence, wait for RPC calls to return and move to the new iteration

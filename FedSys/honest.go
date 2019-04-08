@@ -99,7 +99,6 @@ func (honest *Honest) initializeData(datasetName string, numberOfNodes int, epsi
 	
 	honest.dataset = datasetName
 	honest.globalModel = make([]float64, honest.ncol)
-
 }
 
 // check for Convergence by calling TestModel that invokes puython to compute train and test error 
@@ -158,7 +157,7 @@ func (honest *Honest) computeUpdate(iterationCount int, numLocalIterations int) 
 	honest.update = Update {
 		SourceID: honest.id,
 		Iteration: iterationCount, 
-		Delta: deltas }
+		Delta: quantizeWeights(deltas) }
 
 }
 
@@ -302,7 +301,7 @@ func (honest *Honest) createNewModel(iterationCount int) (BlockData, error) {
 
 	// Update Aggregation
 	for _, update := range honest.blockUpdates {
-		deltaM = mat.NewDense(1, honest.ncol, update.Delta)
+		deltaM = mat.NewDense(1, honest.ncol, dequantizeWeights(update.Delta))
 		pulledGradientM.Add(pulledGradientM, deltaM)	
 	}
 
@@ -313,7 +312,7 @@ func (honest *Honest) createNewModel(iterationCount int) (BlockData, error) {
 	updatesGathered := make([]Update, len(honest.blockUpdates))
 	copy(updatesGathered, honest.blockUpdates)
 
-	bData := BlockData{iterationCount, updatedGradient, updatesGathered}
+	bData := BlockData{iterationCount, updatedGradient, updatesGathered, quantizeWeights(updatedGradient)}
 
 	return bData, nil
 

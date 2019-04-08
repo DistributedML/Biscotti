@@ -8,15 +8,16 @@ import (
 )
 
 type BlockData struct {
-	Iteration int
-	GlobalW   []float64
-	Deltas    []Update
+	Iteration  int
+	GlobalW    []float64
+	Deltas     []Update
+	QuantizedW QuantizedWeights
 }
 
 //create nw BlockData
 
 func NewBlockData(iteration int, globalW []float64, deltas []Update) *BlockData {
-	blockData := &BlockData{iteration, globalW, deltas}
+	blockData := &BlockData{iteration, globalW, deltas, QuantizedWeights{}}
 	// block.SetHash()
 	return blockData
 }
