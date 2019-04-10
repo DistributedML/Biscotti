@@ -74,7 +74,7 @@ func (krumval *KRUMValidator) computeScores(){
 	runningDeltas := make([][]float64, len(krum.UpdateList))
 
 	for i := 0; i < len(krum.UpdateList); i++ {
-		runningDeltas[i] = dequantizeWeights(krum.UpdateList[i].NoisedDelta)
+		runningDeltas[i] = dequantizeWeights(krum.UpdateList[i].QNoisedDelta)
 	}
 
 	krum.AcceptedList = krumval.getTopKRUMIndex(runningDeltas)

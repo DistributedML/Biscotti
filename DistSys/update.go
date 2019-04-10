@@ -16,7 +16,8 @@ type Update struct {
 	Delta                []float64
 	Commitment           []byte // a commitment to delta: can't be kyber.Point
 	Noise                []float64
-	NoisedDelta          QuantizedWeights
+	NoisedDelta          []float64
+	QNoisedDelta         QuantizedWeights
 	Accepted             bool
 	SignatureList        [][]byte
 }

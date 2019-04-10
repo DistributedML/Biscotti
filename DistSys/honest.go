@@ -20,68 +20,69 @@ import (
 )
 
 var (
-	
-	pyLogModule     *python.PyObject
-	pyTorchModule	*python.PyObject
+	pyLogModule   *python.PyObject
+	pyTorchModule *python.PyObject
 
-	pyInitFunc 		*python.PyObject
-	pyPrivFunc 		*python.PyObject
-	pyNumFeatures 	*python.PyObject
-	pyTestModule  	*python.PyObject
-	pyTestFunc    	*python.PyObject
-	pyTrainFunc   	*python.PyObject
-	pyRoniModule  	*python.PyObject
-	pyRoniFunc    	*python.PyObject
-	pyNoiseFunc	  	*python.PyObject
-	pyAttackFunc    *python.PyObject	
+	pyInitFunc    *python.PyObject
+	pyPrivFunc    *python.PyObject
+	pyNumFeatures *python.PyObject
+	pyTestModule  *python.PyObject
+	pyTestFunc    *python.PyObject
+	pyTrainFunc   *python.PyObject
+	pyRoniModule  *python.PyObject
+	pyRoniFunc    *python.PyObject
+	pyNoiseFunc   *python.PyObject
+	pyAttackFunc  *python.PyObject
 
-	useTorch	   bool
+	useTorch bool
 
 	//Errors
-	 blockExistsError = errors.New("Forbidden overwrite of block foiled")
+	blockExistsError = errors.New("Forbidden overwrite of block foiled")
 )
 
 const (
-
-	STAKE_UNIT		= 5
-	batch_size      = 10
-	datasetPath     = "../ML/data/"
-	codePath        = "../ML/code"
-	torchPath       = "../ML/Pytorch"
-	convThreshold   = 0.00
+	STAKE_UNIT    = 5
+	batch_size    = 10
+	datasetPath   = "../ML/data/"
+	codePath      = "../ML/code"
+	torchPath     = "../ML/Pytorch"
+	convThreshold = 0.00
 
 	// Crypto constants
 	commitKeyPath = "commitKey.json"
-	pKeyG1Path = "pKeyG1.json"	
-
+	pKeyG1Path    = "pKeyG1.json"
 )
 
 type Honest struct {
-	id           		int
-	dataset 	 		string
-	ncol 	     		int
-	update       		Update
-	blockUpdates 		[]Update
-	bc           		*Blockchain
-	Keys 		 		EncryptionKeys
-	secretList	        map[int]MinerPart	
-	aggregatedSecrets   []MinerPart
+	id                int
+	dataset           string
+	ncol              int
+	update            Update
+	blockUpdates      []Update
+	bc                *Blockchain
+	Keys              EncryptionKeys
+	secretList        map[int]MinerPart
+	aggregatedSecrets []MinerPart
+	LatestModel       Model
 }
 
-type EncryptionKeys struct{
+type Model struct {
+	GlobalW   []float64
+	Iteration int
+	Hash      []byte
+}
 
+type EncryptionKeys struct {
 	CommitmentKey PublicKey
-	PubKey  	  kyber.Point 
+	PubKey        kyber.Point
 	PubKeyMap     map[int]PublicKey
-	Skey 		  kyber.Scalar
-} 
+	Skey          kyber.Scalar
+}
 
-type PkeyG1 struct{
-
-	Id 		int
-	Pkey 	[]byte
-	Skey 	[]byte
-
+type PkeyG1 struct {
+	Id   int
+	Pkey []byte
+	Skey []byte
 }
 
 func init() {
@@ -96,32 +97,50 @@ func init() {
 func (honest *Honest) initializeData(datasetName string, numberOfNodes int, epsilon float64, isPoisoning bool) {
 
 	if datasetName == "creditcard" {
-		
+
 		useTorch = false
-	
+
 		if isPoisoning {
 			outLog.Println("Get the bad credit data.")
-			honest.ncol = pyInit("creditbad", "creditbad", epsilon)	
+			honest.ncol = pyInit("creditbad", "creditbad", epsilon)
 		} else {
-			honest.ncol = pyInit(datasetName, datasetName + strconv.Itoa(honest.id), epsilon)
-		}	
+			honest.ncol = pyInit(datasetName, datasetName+strconv.Itoa(honest.id), epsilon)
+		}
 
 	} else {
-	
+
 		useTorch = true
-	
+
 		if isPoisoning {
 			outLog.Println("Get the bad data.")
-			honest.ncol = pyInit("mnist", "mnist_bad", epsilon)	
+			honest.ncol = pyInit("mnist", "mnist_bad", epsilon)
 		} else {
-			honest.ncol = pyInit(datasetName, datasetName + strconv.Itoa(honest.id), epsilon)
+			honest.ncol = pyInit(datasetName, datasetName+strconv.Itoa(honest.id), epsilon)
 		}
 
 	}
-		
+
 	honest.dataset = datasetName
 	honest.bc = NewBlockchain(honest.ncol)
 
+}
+
+func checkSlicesEqual(a []byte, b []byte) bool {
+	if (a == nil) != (b == nil) {
+		return false;
+	}
+
+	if len(a) != len(b) {
+		return false
+	}
+
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+
+	return true
 }
 
 // Load all the public and private keys
@@ -140,14 +159,25 @@ func (honest *Honest) bootstrapKeys() {
 // check for Convergence by calling TestModel that invokes puython to compute train and test error 
 func (honest *Honest) checkConvergence() bool {
 
-	trainError := testModel(honest.bc.getLatestGradient())
+	latestBlock := honest.bc.getLatestBlock()
+	var prevModel []float64
+	if latestBlock.Data.Iteration == honest.LatestModel.Iteration && checkSlicesEqual(latestBlock.Hash, honest.LatestModel.Hash) {
+		prevModel = honest.LatestModel.GlobalW
+	} else {
+		prevModel = honest.bc.getLatestGradient()
+		honest.LatestModel.Iteration = latestBlock.Data.Iteration
+		honest.LatestModel.GlobalW = prevModel
+		honest.LatestModel.Hash = latestBlock.Hash
+	}
+
+	trainError := testModel(prevModel)
 
 	if honest.dataset == "creditcard" {
-		trainError := testModel(honest.bc.getLatestGradient())
+		trainError := testModel(prevModel)
 		outLog.Printf(strconv.Itoa(honest.id)+":Train Error is %.5f in Iteration %d",
 			trainError, honest.bc.Blocks[len(honest.bc.Blocks)-1].Data.Iteration)
 	} else {
-		attackRate := testAttackRate(honest.bc.getLatestGradient())
+		attackRate := testAttackRate(prevModel)
 		outLog.Printf(strconv.Itoa(honest.id)+":Train Error is %.5f in Iteration %d",
 			trainError, honest.bc.Blocks[len(honest.bc.Blocks)-1].Data.Iteration)
 		outLog.Printf(strconv.Itoa(honest.id)+":Attack Rate is %.5f in Iteration %d",
@@ -163,21 +193,30 @@ func (honest *Honest) checkConvergence() bool {
 
 // calculates update by calling gradientSteps function that invokes python and passing latest global model from the chain to it.
 func (honest *Honest) computeUpdate(iterationCount int, numLocalIterations int) {
-	prevModel := honest.bc.getLatestGradient()
+	latestBlock := honest.bc.getLatestBlock()
+	var prevModel []float64
+	if latestBlock.Data.Iteration == honest.LatestModel.Iteration && checkSlicesEqual(latestBlock.Hash, honest.LatestModel.Hash) {
+		prevModel = honest.LatestModel.GlobalW
+	} else {
+		prevModel = honest.bc.getLatestGradient()
+		honest.LatestModel.Iteration = latestBlock.Data.Iteration
+		honest.LatestModel.GlobalW = prevModel
+		honest.LatestModel.Hash = latestBlock.Hash
+	}
 	//outLog.Printf("Global Model:%s", prevModel)
 	deltas, err := gradientSteps(prevModel, numLocalIterations) // TODO: Create commitment here
 
 	// outLog.Printf(strconv.Itoa(client.id)+":Computed update as %s\n", deltas)
 
 	if DP_IN_MODEL {
-		noise,err := honest.requestNoise(iterationCount)
+		noise, err := honest.requestNoise(iterationCount)
 		check(err)
 		for i := 0; i < len(noise); i++ {
 
 			deltas[i] = deltas[i] + noise[i]
 		}
 	}
-	
+
 	//outLog.Printf("Deltas:%s", deltas)
 	// outLog.Printf("This update float:%s", deltas)
 	deltasInt := updateFloatToInt(deltas, PRECISION)
@@ -187,26 +226,15 @@ func (honest *Honest) computeUpdate(iterationCount int, numLocalIterations int) 
 	byteCommitment, err := updateCommitment.MarshalBinary()
 	check(err)
 
-	if DP_IN_MODEL {
-			honest.update = Update{
-			SourceID: honest.id,
-			Iteration: iterationCount,
-			Commitment: byteCommitment,
-			Delta: deltas,
-			NoisedDelta: quantizeWeights(deltas),
-			Noise: deltas,
-			Accepted: true}
-	} else {
-		honest.update = Update{
-			SourceID: honest.id,
-			Iteration: iterationCount,
-			Commitment: byteCommitment,
-			Delta: deltas,
-			NoisedDelta: QuantizedWeights{},
-			Noise: []float64{},
-			Accepted: true}
-	}
-	
+	honest.update = Update{
+		SourceID:    honest.id,
+		Iteration:   iterationCount,
+		Commitment:  byteCommitment,
+		Delta:       deltas,
+		NoisedDelta: deltas,
+		Noise:       deltas,
+		Accepted:    true}
+
 	//outLog.Printf("Deltas:%s", honest.update.Delta)
 }
 
@@ -216,16 +244,16 @@ func pyInit(datasetName string, dataFile string, epsilon float64) int {
 
 	sysPath := python.PySys_GetObject("path")
 	python.PyList_Insert(sysPath, 0, python.PyString_FromString("./"))
-	
-	outLog.Printf(strconv.Itoa(client.id)+"Importing modules...")
+
+	outLog.Printf(strconv.Itoa(client.id) + "Importing modules...")
 
 	// We currently support creditcard for logreg, and mnist/lfw for pytorch
 	if useTorch {
-	
+
 		// Get all PyTorch related
 		python.PyList_Insert(sysPath, 0, python.PyString_FromString(torchPath))
-	    
-	    pyTorchModule = python.PyImport_ImportModule("client_obj")
+
+		pyTorchModule = python.PyImport_ImportModule("client_obj")
 
 		pyInitFunc = pyTorchModule.GetAttrString("init")
 		pyPrivFunc = pyTorchModule.GetAttrString("privateFun")
@@ -235,9 +263,8 @@ func pyInit(datasetName string, dataFile string, epsilon float64) int {
 		pyNoiseFunc = pyTorchModule.GetAttrString("getNoise")
 		pyAttackFunc = pyTorchModule.GetAttrString("get17AttackRate")
 
-
 	} else {
-		
+
 		// Get all others
 		python.PyList_Insert(sysPath, 0, python.PyString_FromString(codePath))
 
@@ -253,12 +280,12 @@ func pyInit(datasetName string, dataFile string, epsilon float64) int {
 		pyRoniFunc = pyRoniModule.GetAttrString("roni")
 
 	}
-	
+
 	// If epsilon is 0, this tells python not to pre-sample noise, 
 	// which saves a lot of time and memory
-	pyNumFeatures = pyInitFunc.CallFunction(python.PyString_FromString(datasetName), 
-			python.PyString_FromString(dataFile), python.PyFloat_FromDouble(epsilon),
-			python.PyInt_FromLong(batch_size))
+	pyNumFeatures = pyInitFunc.CallFunction(python.PyString_FromString(datasetName),
+		python.PyString_FromString(dataFile), python.PyFloat_FromDouble(epsilon),
+		python.PyInt_FromLong(batch_size))
 
 	numFeatures := python.PyInt_AsLong(pyNumFeatures)
 
@@ -284,7 +311,7 @@ func testAttackRate(weights []float64) float64 {
 	pyTrainResult := pyAttackFunc.CallFunction(argArray)
 	attackRate = python.PyFloat_AsDouble(pyTrainResult)
 
-	python.PyGILState_Release(_gstate)	
+	python.PyGILState_Release(_gstate)
 
 	return attackRate
 
@@ -302,7 +329,7 @@ func gradientSteps(globalW []float64, numLocalIterations int) ([]float64, error)
 	for i := 0; i < len(globalW); i++ {
 		python.PyList_SetItem(argArray, i, python.PyFloat_FromDouble(globalW[i]))
 	}
-	
+
 	var result *python.PyObject
 	argNumIters := python.PyInt_FromLong(numLocalIterations)
 	result = pyPrivFunc.CallFunction(argArray, argNumIters)
@@ -328,12 +355,9 @@ func gradientSteps(globalW []float64, numLocalIterations int) ([]float64, error)
 
 	// outLog.Printf("GoFloat is:%s", goFloatArray)
 
-
 	return goFloatArray, nil
 
 }
-
-
 
 // add an update to the record of updates received for the current iteration
 
@@ -353,14 +377,22 @@ func (honest *Honest) addSecretShare(share MinerPart) int {
 
 // creates a block from all the updates recorded.
 
-func (honest *Honest) createBlock(iterationCount int, stakeMap map[int]int) (*Block,error) {
+func (honest *Honest) createBlock(iterationCount int, stakeMap map[int]int) (*Block, error) {
 	// Has block already been appended from advertisements by other client?
-	if(honest.bc.getBlock(iterationCount) != nil){
+	if (honest.bc.getBlock(iterationCount) != nil) {
 		return nil, blockExistsError
 	}
 
 	pulledGradient := make([]float64, honest.ncol)
-	pulledGradient = honest.bc.getLatestGradient()
+	latestBlock := honest.bc.getLatestBlock()
+	if latestBlock.Data.Iteration == honest.LatestModel.Iteration && checkSlicesEqual(latestBlock.Hash, honest.LatestModel.Hash) {
+		pulledGradient = honest.LatestModel.GlobalW
+	} else {
+		pulledGradient = honest.bc.getLatestGradient()
+		honest.LatestModel.Iteration = latestBlock.Data.Iteration
+		honest.LatestModel.GlobalW = pulledGradient
+		honest.LatestModel.Hash = latestBlock.Hash
+	}
 	updatedGradient := make([]float64, honest.ncol)
 	deltaM := mat.NewDense(1, honest.ncol, make([]float64, honest.ncol))
 	pulledGradientM := mat.NewDense(1, honest.ncol, pulledGradient)
@@ -368,10 +400,10 @@ func (honest *Honest) createBlock(iterationCount int, stakeMap map[int]int) (*Bl
 
 	// Update Aggregation
 	for _, update := range honest.blockUpdates {
-		theirStake := stakeMap[update.SourceID] 
+		theirStake := stakeMap[update.SourceID]
 		if update.Accepted {
 			deltaM = mat.NewDense(1, honest.ncol, update.Delta)
-			pulledGradientM.Add(pulledGradientM, deltaM)	
+			pulledGradientM.Add(pulledGradientM, deltaM)
 			stakeMap[update.SourceID] = theirStake + STAKE_UNIT
 		} else {
 			outLog.Printf("Skipping an update")
@@ -390,47 +422,53 @@ func (honest *Honest) createBlock(iterationCount int, stakeMap map[int]int) (*Bl
 	honest.bc.AddBlock(bData, stakeMap)
 	newBlock := honest.bc.Blocks[len(honest.bc.Blocks)-1]
 
-	return newBlock,nil
-
+	return newBlock, nil
 
 }
 
 // creates a block from all the updates recorded.
-func (honest *Honest) createBlockSecAgg(iteration int, nodeList []int, stakeMap map[int]int) (*Block,error) {
+func (honest *Honest) createBlockSecAgg(iteration int, nodeList []int, stakeMap map[int]int) (*Block, error) {
 
 	// Has block already been appended from advertisements by other client?
-	if(honest.bc.getBlock(iterationCount) != nil){
+	if (honest.bc.getBlock(iterationCount) != nil) {
 		return nil, blockExistsError
 	}
 
 	pulledGradient := make([]float64, honest.ncol)
-	pulledGradient = honest.bc.getLatestGradient()
+	latestBlock := honest.bc.getLatestBlock()
+	if latestBlock.Data.Iteration == honest.LatestModel.Iteration && checkSlicesEqual(latestBlock.Hash, honest.LatestModel.Hash) {
+		pulledGradient = honest.LatestModel.GlobalW
+	} else {
+		pulledGradient = honest.bc.getLatestGradient()
+		honest.LatestModel.Iteration = latestBlock.Data.Iteration
+		honest.LatestModel.GlobalW = pulledGradient
+		honest.LatestModel.Hash = latestBlock.Hash
+	}
 	updatedGradient := make([]float64, honest.ncol)
 	deltaM := mat.NewDense(1, honest.ncol, make([]float64, honest.ncol))
 	pulledGradientM := mat.NewDense(1, honest.ncol, pulledGradient)
 
 	// Recover Secret Secure Aggregation
-	if (len(nodeList) > 0){
+	if (len(nodeList) > 0) {
 
-		aggregateUpdate := honest.recoverAggregateUpdates()	
+		aggregateUpdate := honest.recoverAggregateUpdates()
 		deltaM = mat.NewDense(1, honest.ncol, aggregateUpdate)
 		pulledGradientM.Add(pulledGradientM, deltaM)
 
 	}
-	
 
 	// Update Aggregation
 	for _, nodeIndex := range nodeList {
-		
+
 		byteCommitment, _ := honest.secretList[nodeIndex].CommitmentUpdate.MarshalBinary()
 		theirStake := stakeMap[nodeIndex]
 		stakeMap[nodeIndex] = theirStake + STAKE_UNIT
-		thisNodeUpdate := Update{Iteration:iteration, Commitment: byteCommitment, Accepted:true}
+		thisNodeUpdate := Update{Iteration: iteration, Commitment: byteCommitment, Accepted: true}
 		honest.blockUpdates = append(honest.blockUpdates, thisNodeUpdate)
 
 		outLog.Printf("Update:%s", thisNodeUpdate)
 		outLog.Printf("List of Updates:%s", honest.blockUpdates)
-	
+
 	}
 
 	mat.Row(updatedGradient, 0, pulledGradientM)
@@ -439,50 +477,50 @@ func (honest *Honest) createBlockSecAgg(iteration int, nodeList []int, stakeMap 
 	copy(updatesGathered, honest.blockUpdates)
 
 	bData := BlockData{iteration, quantizeWeights(updatedGradient), updatesGathered}
-	honest.bc.AddBlock(bData, stakeMap) 
+	honest.bc.AddBlock(bData, stakeMap)
 
 	newBlock := honest.bc.Blocks[len(honest.bc.Blocks)-1]
 
-	return newBlock,nil
+	return newBlock, nil
 
 }
 
-func (honest *Honest) recoverAggregateUpdates() []float64{
+func (honest *Honest) recoverAggregateUpdates() []float64 {
 
-	 myIndex := 0
+	myIndex := 0
 
-	 for index, subPolyPart := range honest.aggregatedSecrets[myIndex].PolyMap{
+	for index, subPolyPart := range honest.aggregatedSecrets[myIndex].PolyMap {
 
-		 listOfShares := make([]Share,0)
+		listOfShares := make([]Share, 0)
 
-		 for i := 0; i < len(honest.aggregatedSecrets); i++ {
-		 	
-		 	for _, share := range honest.aggregatedSecrets[i].PolyMap[index].Secrets{
+		for i := 0; i < len(honest.aggregatedSecrets); i++ {
 
-		 		listOfShares = append(listOfShares, share)	
-		 	}	 	
-		 	
-		 }
+			for _, share := range honest.aggregatedSecrets[i].PolyMap[index].Secrets {
 
-		 outLog.Printf("List of shares for index %d: %s", index, listOfShares)
+				listOfShares = append(listOfShares, share)
+			}
 
-		 subPolyPart.Polynomial = recoverSecret(listOfShares, POLY_SIZE-1)
-		 honest.aggregatedSecrets[myIndex].PolyMap[index] = subPolyPart
-		 outLog.Printf("Polynomial: %s" , subPolyPart.Polynomial)
-		 outLog.Printf("Polynomial2: %s" , honest.aggregatedSecrets[myIndex].PolyMap[index].Polynomial)	 
+		}
 
-	 }
+		outLog.Printf("List of shares for index %d: %s", index, listOfShares)
 
-	 reconstructedUpdate := make([]int64,0)
-	 indexes := make([]int, 0)
+		subPolyPart.Polynomial = recoverSecret(listOfShares, POLY_SIZE-1)
+		honest.aggregatedSecrets[myIndex].PolyMap[index] = subPolyPart
+		outLog.Printf("Polynomial: %s", subPolyPart.Polynomial)
+		outLog.Printf("Polynomial2: %s", honest.aggregatedSecrets[myIndex].PolyMap[index].Polynomial)
 
-	 for k, _ := range honest.aggregatedSecrets[myIndex].PolyMap {
-	    indexes = append(indexes, k)
 	}
-	
-	sort.Ints(indexes)	
 
-	for _, index := range indexes{
+	reconstructedUpdate := make([]int64, 0)
+	indexes := make([]int, 0)
+
+	for k, _ := range honest.aggregatedSecrets[myIndex].PolyMap {
+		indexes = append(indexes, k)
+	}
+
+	sort.Ints(indexes)
+
+	for _, index := range indexes {
 
 		subPolyPart := honest.aggregatedSecrets[myIndex].PolyMap[index]
 
@@ -490,28 +528,25 @@ func (honest *Honest) recoverAggregateUpdates() []float64{
 		outLog.Printf("Length:%d", len(reconstructedUpdate))
 		outLog.Printf("Polynomial:%s", subPolyPart.Polynomial)
 
-
 		for i := len(reconstructedUpdate); i < index; i++ {
- 			
- 			reconstructedUpdate = append(reconstructedUpdate, subPolyPart.Polynomial[i%POLY_SIZE])
- 		
- 		}
 
-	}	 
-	 
-    // fmt.Println(reconstructedUpdate)
+			reconstructedUpdate = append(reconstructedUpdate, subPolyPart.Polynomial[i%POLY_SIZE])
+
+		}
+
+	}
+
+	// fmt.Println(reconstructedUpdate)
 
 	aggregatedVectorFloat := updateIntToFloat(reconstructedUpdate, PRECISION)
 
 	return aggregatedVectorFloat
 
-
-
 }
 
 // function to check if you have a block with the same iteration
 func (honest *Honest) hasBlock(iterationCount int) bool {
-	
+
 	if (honest.bc.getBlock(iterationCount) != nil) {
 		return true;
 	} else {
@@ -525,20 +560,20 @@ func (honest *Honest) addBlock(newBlock Block) error {
 	// if already exists don't create/replace it
 	outLog.Printf("Trying to append block with iteration:%d", newBlock.Data.Iteration)
 
-	if(honest.bc.getBlock(newBlock.Data.Iteration) != nil){
-		
+	if (honest.bc.getBlock(newBlock.Data.Iteration) != nil) {
+
 		better := honest.evaluateBlockQuality(newBlock)
-		if(!better){
+		if (!better) {
 			outLog.Printf("Append foiled")
 			return blockExistsError
-		}else{
+		} else {
 			outLog.Printf("Replace successful")
 			honest.replaceBlock(newBlock, newBlock.Data.Iteration) // this thing doesn't need the second argument I think
 			return nil
 		}
-	
-	}else{
-		
+
+	} else {
+
 		outLog.Printf("Append successful")
 		honest.bc.AddBlockMsg(newBlock)
 		return nil
@@ -565,9 +600,8 @@ func (honest *Honest) flushSecrets() {
 
 }
 
-
 /*
-	Return noise to a requesting client 
+	Return noise to a requesting client
 */
 func (honest *Honest) requestNoise(iterationCount int) ([]float64, error) {
 
@@ -599,7 +633,6 @@ func (honest *Honest) requestNoise(iterationCount int) ([]float64, error) {
 
 }
 
-
 /*
 	Runs RONI through python on the proposed update
 */
@@ -611,8 +644,17 @@ func (honest *Honest) verifyUpdate(update Update) float64 {
 	_gstate := python.PyGILState_Ensure()
 	outLog.Println("Acquired Python Lock")
 
-	deltas := dequantizeWeights(update.NoisedDelta)
-	truthModel := honest.bc.getLatestGradient()
+	deltas := dequantizeWeights(update.QNoisedDelta)
+	latestBlock := honest.bc.getLatestBlock()
+	var truthModel []float64
+	if latestBlock.Data.Iteration == honest.LatestModel.Iteration && checkSlicesEqual(latestBlock.Hash, honest.LatestModel.Hash) {
+		truthModel = honest.LatestModel.GlobalW
+	} else {
+		truthModel = honest.bc.getLatestGradient()
+		honest.LatestModel.Iteration = latestBlock.Data.Iteration
+		honest.LatestModel.GlobalW = truthModel
+		honest.LatestModel.Hash = latestBlock.Hash
+	}
 
 	truthArray := python.PyList_New(len(truthModel))
 	updateArray := python.PyList_New(len(truthModel))
@@ -626,10 +668,10 @@ func (honest *Honest) verifyUpdate(update Update) float64 {
 	var score float64
 	outLog.Println("Going inside RONI")
 	pyRoni := pyRoniFunc.CallFunction(truthArray, updateArray)
-	score = python.PyFloat_AsDouble(pyRoni)		
+	score = python.PyFloat_AsDouble(pyRoni)
 	outLog.Println("Outside RONI")
-	
-	python.PyGILState_Release(_gstate)	
+
+	python.PyGILState_Release(_gstate)
 	outLog.Println("Released Python Lock")
 
 	return score
@@ -640,21 +682,21 @@ func (honest *Honest) evaluateBlockQuality(block Block) bool {
 
 	//TODO: This is just a simple equality check comparing the hashes. 
 	myBlock := honest.bc.getBlock(block.Data.Iteration)
-	previousBlock := honest.bc.getBlock(block.Data.Iteration-1)
+	previousBlock := honest.bc.getBlock(block.Data.Iteration - 1)
 
 	// check equality
-	if(string(block.PrevBlockHash[:]) != string(previousBlock.Hash[:])) {		
-		outLog.Printf("Inconsistent hashes. ThisHash:" + string(block.PrevBlockHash[:]) +".Previous Hash:" + string(previousBlock.Hash[:]) )
+	if (string(block.PrevBlockHash[:]) != string(previousBlock.Hash[:])) {
+		outLog.Printf("Inconsistent hashes. ThisHash:" + string(block.PrevBlockHash[:]) + ".Previous Hash:" + string(previousBlock.Hash[:]))
 		return false
 	} else if (len(block.Data.Deltas) == 0 || len(myBlock.Data.Deltas) != 0) {
 		return false
 	}
-	
+
 	return true
-	
+
 }
 
-func (honest *Honest) replaceBlock(block Block, iterationCount int){
+func (honest *Honest) replaceBlock(block Block, iterationCount int) {
 
 	*honest.bc.Blocks[iterationCount+1] = block
 
@@ -677,7 +719,7 @@ func testModel(weights []float64) float64 {
 	pyTrainResult := pyTrainFunc.CallFunction(argArray)
 	trainErr = python.PyFloat_AsDouble(pyTrainResult)
 
-	python.PyGILState_Release(_gstate)	
+	python.PyGILState_Release(_gstate)
 
 	return trainErr
 
@@ -685,16 +727,15 @@ func testModel(weights []float64) float64 {
 
 // replace the current chain with the one input and return the latest iteration count
 func (honest *Honest) replaceChain(chain Blockchain) int {
-	
+
 	*honest.bc = chain
-	outLog.Printf("Received chain length:%d",  len(chain.Blocks))
-	outLog.Printf("Appended chain length:%d",  len(honest.bc.Blocks))	
-	return chain.Blocks[len(chain.Blocks) - 1].Data.Iteration
+	outLog.Printf("Received chain length:%d", len(chain.Blocks))
+	outLog.Printf("Appended chain length:%d", len(honest.bc.Blocks))
+	return chain.Blocks[len(chain.Blocks)-1].Data.Iteration
 }
 
 // DEPRECATED: Divide the dataset equally among the number of nodes
 func divideData(data dataframe.DataFrame, numberOfNodes int) []dataframe.DataFrame {
-
 
 	var dividedData []dataframe.DataFrame
 	indexes := make([]int, 0)
@@ -735,7 +776,6 @@ func divideData(data dataframe.DataFrame, numberOfNodes int) []dataframe.DataFra
 
 }
 
-
 // DEPRECATED: creates a CSV for your part of the data
 func createCSVs(nodeData dataframe.DataFrame, datasetName string, nodeID int) {
 
@@ -750,7 +790,7 @@ func createCSVs(nodeData dataframe.DataFrame, datasetName string, nodeID int) {
 func getData(filePath string) dataframe.DataFrame {
 
 	f, err := os.Open(filePath)
-	handleErrorFatal("Dataset not found",err)
+	handleErrorFatal("Dataset not found", err)
 	df := dataframe.ReadCSV(bufio.NewReader(f))
 	return df
 
@@ -765,8 +805,8 @@ func check(e error) {
 
 }
 
-func extractKeys(nodeNum int) (map[int]PublicKey, kyber.Scalar, kyber.Point){
-	
+func extractKeys(nodeNum int) (map[int]PublicKey, kyber.Scalar, kyber.Point) {
+
 	pubKeyMap := make(map[int]PublicKey)
 
 	suite := bn256.NewSuite()
@@ -787,10 +827,10 @@ func extractKeys(nodeNum int) (map[int]PublicKey, kyber.Scalar, kyber.Point){
 	for scanner.Scan() {
 
 		thisKeyBytes := scanner.Bytes()
-		
+
 		thisKey := PkeyG1{}
 
-		json.Unmarshal(thisKeyBytes, &thisKey)		
+		json.Unmarshal(thisKeyBytes, &thisKey)
 
 		err = thisPoint.UnmarshalBinary(thisKey.Pkey)
 
@@ -800,34 +840,32 @@ func extractKeys(nodeNum int) (map[int]PublicKey, kyber.Scalar, kyber.Point){
 
 		thisPubKey.SetG1Key(thisPoint.Clone())
 
-		pubKeyMap[thisKey.Id] = thisPubKey 	
+		pubKeyMap[thisKey.Id] = thisPubKey
 
 		// Write Set Key function for this 
 
 		// pubKeyMap[thisKey.Id].PKG1[0] = thisPoint
 
 		// fmt.Println(thisPoint)
-		
 
-		if(thisKey.Id == nodeNum){
+		if (thisKey.Id == nodeNum) {
 
 			mySkey.UnmarshalBinary(thisKey.Skey)
-			myPubKey = thisPoint.Clone()			
-		
-		}
+			myPubKey = thisPoint.Clone()
 
+		}
 
 	}
 
-	return pubKeyMap, mySkey, myPubKey	
+	return pubKeyMap, mySkey, myPubKey
 
 }
 
-func extractCommitmentKey(dimensions int) PublicKey {	
+func extractCommitmentKey(dimensions int) PublicKey {
 
 	suite := bn256.NewSuite()
 
-	commitKey := PublicKey{PKG1:make([]kyber.Point, dimensions), PKG2:make([]kyber.Point, dimensions)}
+	commitKey := PublicKey{PKG1: make([]kyber.Point, dimensions), PKG2: make([]kyber.Point, dimensions)}
 
 	// commitKey.GenerateKey()
 
@@ -840,14 +878,14 @@ func extractCommitmentKey(dimensions int) PublicKey {
 	// index:=0
 
 	for scanner.Scan() {
-						
+
 		thisKeyBytes := scanner.Bytes()
-		
+
 		thisKey := PkeyG1{}
 
-		json.Unmarshal(thisKeyBytes, &thisKey)		
+		json.Unmarshal(thisKeyBytes, &thisKey)
 
-		thisPointG1 := suite.G1().Point()	
+		thisPointG1 := suite.G1().Point()
 
 		err = thisPointG1.UnmarshalBinary(thisKey.Pkey)
 
@@ -869,12 +907,10 @@ func extractCommitmentKey(dimensions int) PublicKey {
 
 		commitKey.PKG1[thisKey.Id] = thisPointG1.Clone()
 
-		commitKey.PKG2[thisKey.Id] = thisPointG2.Clone()	
-
+		commitKey.PKG2[thisKey.Id] = thisPointG2.Clone()
 
 	}
 
-	return commitKey	
+	return commitKey
 
 }
-
