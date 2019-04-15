@@ -64,6 +64,8 @@ var (
 	numberOfNodes     int
 	TOTAL_SHARES      int
 	NUM_LOCAL_ITERS   int
+	LOCAL_ITER_RATE   float64
+	LOCAL_ITER_DECAY  float64
 	colluders         int
 	collectingUpdates bool
 
@@ -643,7 +645,9 @@ func main() {
 	POISONING = *poisoningPtr
 	NUM_SAMPLES = *numSamplesPtr
 	NUM_SAMPLES = numberOfNodes - NUM_VERIFIERS - NUM_MINERS
-	MAX_ITERATIONS = 100 / NUM_LOCAL_ITERS
+	MAX_ITERATIONS = 30
+	LOCAL_ITER_DECAY = 0.9
+	LOCAL_ITER_RATE = float64(NUM_LOCAL_ITERS)
 
 	outLog.Printf("EPSILON IS: %d", EPSILON)
 
@@ -1094,6 +1098,8 @@ func prepareForNextIteration() {
 		go startBlockDeadlineTimer(iterationCount + 1)
 	}
 	iterationCount++
+	LOCAL_ITER_RATE = LOCAL_ITER_RATE * LOCAL_ITER_DECAY
+	NUM_LOCAL_ITERS = int(math.Round(LOCAL_ITER_RATE))
 	boolLock.Unlock()
 
 	portsToConnect = make([]string, len(peerPorts))
