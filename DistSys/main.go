@@ -646,7 +646,7 @@ func main() {
 	POISONING = *poisoningPtr
 	NUM_SAMPLES = *numSamplesPtr
 	NUM_SAMPLES = numberOfNodes - NUM_VERIFIERS - NUM_MINERS
-	MAX_ITERATIONS = 30
+	MAX_ITERATIONS = 80
 	LOCAL_ITER_DECAY = 0.9
 	LOCAL_ITER_RATE = float64(NUM_LOCAL_ITERS)
 
@@ -1101,6 +1101,9 @@ func prepareForNextIteration() {
 	iterationCount++
 	LOCAL_ITER_RATE = LOCAL_ITER_RATE * LOCAL_ITER_DECAY
 	NUM_LOCAL_ITERS = int(math.Round(LOCAL_ITER_RATE))
+	if NUM_LOCAL_ITERS < 1 {
+		NUM_LOCAL_ITERS = 1
+	}
 	boolLock.Unlock()
 
 	portsToConnect = make([]string, len(peerPorts))

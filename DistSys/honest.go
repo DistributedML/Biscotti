@@ -455,7 +455,7 @@ func (honest *Honest) createBlockSecAgg(iteration int, nodeList []int, stakeMap 
 	// Recover Secret Secure Aggregation
 	if (len(nodeList) > 0) {
 
-		aggregateUpdate := honest.recoverAggregateUpdates()
+		aggregateUpdate := honest.recoverAggregateUpdates(len(nodeList))
 		deltaM = mat.NewDense(1, honest.ncol, aggregateUpdate)
 		pulledGradientM.Add(pulledGradientM, deltaM)
 
@@ -493,7 +493,7 @@ func (honest *Honest) createBlockSecAgg(iteration int, nodeList []int, stakeMap 
 
 }
 
-func (honest *Honest) recoverAggregateUpdates() []float64 {
+func (honest *Honest) recoverAggregateUpdates(totalUpdates int) []float64 {
 
 	myIndex := 0
 
@@ -547,6 +547,10 @@ func (honest *Honest) recoverAggregateUpdates() []float64 {
 	// fmt.Println(reconstructedUpdate)
 
 	aggregatedVectorFloat := updateIntToFloat(reconstructedUpdate, PRECISION)
+	avgConstant := float64(NUM_LOCAL_ITERS) / float64(totalUpdates)
+	for j, weight := range aggregatedVectorFloat {
+		aggregatedVectorFloat[j] = weight * avgConstant
+	}
 
 	return aggregatedVectorFloat
 
