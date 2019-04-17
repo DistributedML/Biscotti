@@ -45,7 +45,13 @@ func NewBlock(data BlockData, prevBlockHash []byte, stakeMap map[int]int) *Block
 
 func GenesisBlock(numFeatures int) *Block {
 
-	genesisBlockData := BlockData{-1, QuantizedWeights{Weights: make([]uint8, numFeatures), Min: 0, Max: 0}, []Update{}} // create a globalW with the appropriate number of features
+	var genesisBlockData BlockData
+	if QUANTIZATION {
+		genesisBlockData = BlockData{Iteration: -1, QGlobalW: QuantizedWeights{Weights: make([]uint8, numFeatures), Min: 0, Max: 0}, Deltas: []Update{}} // create a globalW with the appropriate number of features
+	} else {
+		genesisBlockData = BlockData{Iteration: -1, GlobalW: make([]float64, numFeatures), Deltas: []Update{}} // create a globalW with the appropriate number of features
+	}
+
 	block := &Block{0, genesisBlockData, []byte{}, []byte{}, map[int]int{}}
 	block.SetHash()
 	return block

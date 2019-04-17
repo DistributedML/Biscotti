@@ -142,10 +142,17 @@ func (s *Peer) RegisterPeer(peerAddress net.TCPAddr, model *Update) error {
 	if(myPort == strconv.Itoa(basePort) && iterationCount < 0){
 		networkBootstrapped <- true
 	}
-	
-	returnUpdate := Update{SourceID: 0, 
-		Iteration:iterationCount, 
-		Delta: quantizeWeights(client.globalModel)}
+
+	var returnUpdate Update
+	if QUANTIZATION {
+		returnUpdate = Update{SourceID: 0,
+			Iteration:iterationCount,
+			QDelta: quantizeWeights(client.globalModel)}
+	} else {
+		returnUpdate = Update{SourceID: 0,
+			Iteration:iterationCount,
+			Delta: client.globalModel}
+	}
 
 	*model = returnUpdate
 
@@ -425,8 +432,11 @@ func callRegisterPeerRPC(myAddress net.TCPAddr, peerAddress net.TCPAddr) {
 				peerLock.Lock()
 				peerAddresses[peerLookup[peerAddress.String()]] = peerAddress
 				peerLock.Unlock()
-
-				client.globalModel = dequantizeWeights(model.Delta)
+				if QUANTIZATION {
+					client.globalModel = dequantizeWeights(model.QDelta)
+				} else {
+					client.globalModel = model.Delta
+				}
 
 			}
 
@@ -572,7 +582,12 @@ func processNewModel(data BlockData) {
 		outLog.Printf("Releasing worker on iteration %d", iterationCount)
 	}
 
-	client.globalModel = dequantizeWeights(data.QuantizedW)
+	if QUANTIZATION {
+		client.globalModel = dequantizeWeights(data.QGlobalW)
+	} else {
+		client.globalModel = data.GlobalW
+	}
+
 
 	convergedLock.Lock()
 	converged = client.checkConvergence(iterationCount)

@@ -146,6 +146,7 @@ var (
 	VERIFY      bool = true
 
 	DP_IN_MODEL bool = false
+	QUANTIZATION bool = true
 
 	EPSILON float64 = 2.0
 
@@ -1451,7 +1452,11 @@ func messageSender(ports []string) {
 
 					// The default is if no noise being used, NoisedDelta will just be Delta.
 					client.update.Noise = noise
-					client.update.QNoisedDelta = quantizeWeights(noiseDelta)
+					if QUANTIZATION {
+						client.update.QNoisedDelta = quantizeWeights(noiseDelta)
+					} else {
+						client.update.NoisedDelta = noiseDelta
+					}
 				}
 
 			}

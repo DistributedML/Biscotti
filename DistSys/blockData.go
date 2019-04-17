@@ -9,23 +9,37 @@ import (
 
 type BlockData struct {
 	Iteration int
-	GlobalW   QuantizedWeights
+	GlobalW		[]float64
+	QGlobalW   QuantizedWeights
 	Deltas    []Update
 }
 
 //create nw BlockData
 
-func NewBlockData(iteration int, globalW QuantizedWeights, deltas []Update) *BlockData {
-	blockData := &BlockData{iteration, globalW, deltas}
+func NewQBlockData(iteration int, globalW QuantizedWeights, deltas []Update) *BlockData {
+
+	blockData := &BlockData{Iteration: iteration, QGlobalW: globalW, Deltas: deltas}
+	// block.SetHash()
+	return blockData
+}
+func NewQlockData(iteration int, globalW []float64, deltas []Update) *BlockData {
+	blockData := &BlockData{Iteration: iteration, GlobalW: globalW, Deltas: deltas}
+
 	// block.SetHash()
 	return blockData
 }
 
 func (blockdata BlockData) String() string {
-	return fmt.Sprintf("Iteration: %d, GlobalW: %s, Min: %s, Max: %s, deltas: %s",
-		blockdata.Iteration, arrayToStringUint8(blockdata.GlobalW.Weights, ","), blockdata.GlobalW.Min,
-		blockdata.GlobalW.Max, arrayToStringUpdate(blockdata.Deltas, ","))
+	if QUANTIZATION {
+		return fmt.Sprintf("Iteration: %d, GlobalW: %s, Min: %s, Max: %s, deltas: %s",
+			blockdata.Iteration, arrayToStringUint8(blockdata.QGlobalW.Weights, ","), blockdata.QGlobalW.Min,
+			blockdata.QGlobalW.Max, arrayToStringUpdate(blockdata.Deltas, ","))
+	} else {
+		return fmt.Sprintf("Iteration: %d, GlobalW: %s, deltas: %s",
+			blockdata.Iteration, arrayToString(blockdata.GlobalW, ","), arrayToStringUpdate(blockdata.Deltas, ","))
+	}
 }
+
 
 //converts blockData to an array of bytes
 

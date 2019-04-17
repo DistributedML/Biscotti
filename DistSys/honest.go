@@ -417,8 +417,12 @@ func (honest *Honest) createBlock(iterationCount int, stakeMap map[int]int) (*Bl
 
 	updatesGathered := make([]Update, len(honest.blockUpdates))
 	copy(updatesGathered, honest.blockUpdates)
-
-	bData := BlockData{iterationCount, quantizeWeights(updatedGradient), updatesGathered}
+	var bData BlockData
+	if QUANTIZATION {
+		bData = BlockData{Iteration: iterationCount, QGlobalW: quantizeWeights(updatedGradient), Deltas: updatesGathered}
+	} else {
+		bData = BlockData{Iteration: iterationCount, GlobalW: updatedGradient, Deltas: updatesGathered}
+	}
 	honest.bc.AddBlock(bData, stakeMap)
 	newBlock := honest.bc.Blocks[len(honest.bc.Blocks)-1]
 
@@ -475,8 +479,12 @@ func (honest *Honest) createBlockSecAgg(iteration int, nodeList []int, stakeMap 
 
 	updatesGathered := make([]Update, len(honest.blockUpdates))
 	copy(updatesGathered, honest.blockUpdates)
-
-	bData := BlockData{iteration, quantizeWeights(updatedGradient), updatesGathered}
+	var bData BlockData;
+	if QUANTIZATION {
+		bData = BlockData{Iteration: iteration, QGlobalW: quantizeWeights(updatedGradient), Deltas: updatesGathered}
+	} else {
+		bData = BlockData{Iteration: iteration, GlobalW: updatedGradient, Deltas: updatesGathered}
+	}
 	honest.bc.AddBlock(bData, stakeMap)
 
 	newBlock := honest.bc.Blocks[len(honest.bc.Blocks)-1]
@@ -644,7 +652,12 @@ func (honest *Honest) verifyUpdate(update Update) float64 {
 	_gstate := python.PyGILState_Ensure()
 	outLog.Println("Acquired Python Lock")
 
-	deltas := dequantizeWeights(update.QNoisedDelta)
+	var deltas []float64
+	if QUANTIZATION {
+		deltas = dequantizeWeights(update.QNoisedDelta)
+	} else {
+		deltas = update.NoisedDelta
+	}
 	latestBlock := honest.bc.getLatestBlock()
 	var truthModel []float64
 	if latestBlock.Data.Iteration == honest.LatestModel.Iteration && checkSlicesEqual(latestBlock.Hash, honest.LatestModel.Hash) {

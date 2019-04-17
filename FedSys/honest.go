@@ -44,6 +44,7 @@ const (
 	codePath        = "../ML/code"
 	torchPath       = "../ML/Pytorch"
 	convThreshold   = 0.00
+	QUANTIZATION    = true
 
 	// Crypto constants
 	commitKeyPath = "commitKey.json"
@@ -153,11 +154,18 @@ func (honest *Honest) computeUpdate(iterationCount int, numLocalIterations int) 
 
 	/* outLog.Printf("Global Model: %v", prevModel)
 	outLog.Printf("Deltas: %v", deltas)*/
-	
-	honest.update = Update {
-		SourceID: honest.id,
-		Iteration: iterationCount, 
-		Delta: quantizeWeights(deltas) }
+
+	if QUANTIZATION {
+		honest.update = Update {
+			SourceID: honest.id,
+			Iteration: iterationCount,
+			QDelta: quantizeWeights(deltas) }
+	} else {
+		honest.update = Update {
+			SourceID: honest.id,
+			Iteration: iterationCount,
+			Delta: deltas }
+	}
 
 }
 
@@ -301,7 +309,11 @@ func (honest *Honest) createNewModel(iterationCount int) (BlockData, error) {
 
 	// Update Aggregation
 	for _, update := range honest.blockUpdates {
-		deltaM = mat.NewDense(1, honest.ncol, dequantizeWeights(update.Delta))
+		if QUANTIZATION {
+			deltaM = mat.NewDense(1, honest.ncol, dequantizeWeights(update.QDelta))
+		} else {
+			deltaM = mat.NewDense(1, honest.ncol, update.Delta)
+		}
 		pulledGradientM.Add(pulledGradientM, deltaM)	
 	}
 
@@ -312,7 +324,12 @@ func (honest *Honest) createNewModel(iterationCount int) (BlockData, error) {
 	updatesGathered := make([]Update, len(honest.blockUpdates))
 	copy(updatesGathered, honest.blockUpdates)
 
-	bData := BlockData{iterationCount, updatedGradient, updatesGathered, quantizeWeights(updatedGradient)}
+	var bData BlockData
+	if QUANTIZATION {
+		bData = BlockData{Iteration: iterationCount, QGlobalW: quantizeWeights(updatedGradient), Deltas: updatesGathered}
+	} else {
+		bData = BlockData{Iteration: iterationCount, GlobalW: updatedGradient, Deltas: updatesGathered}
+	}
 
 	return bData, nil
 

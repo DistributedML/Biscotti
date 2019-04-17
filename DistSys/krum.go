@@ -74,11 +74,16 @@ func (krumval *KRUMValidator) computeScores(){
 	runningDeltas := make([][]float64, len(krum.UpdateList))
 
 	for i := 0; i < len(krum.UpdateList); i++ {
-		runningDeltas[i] = dequantizeWeights(krum.UpdateList[i].QNoisedDelta)
+		if QUANTIZATION {
+			runningDeltas[i] = dequantizeWeights(krum.UpdateList[i].QNoisedDelta)
+		} else {
+			runningDeltas[i] = krum.UpdateList[i].NoisedDelta
+		}
+
 	}
 
 	krum.AcceptedList = krumval.getTopKRUMIndex(runningDeltas)
-	// numInBlock = numberOfNodes/8
+	// numInBlock = numberOfNodes
 	// krum.AcceptedList = krum.AcceptedList[:numberOfNodes]
 	outLog.Printf("List of accepted people:%s", krum.AcceptedList)
 
