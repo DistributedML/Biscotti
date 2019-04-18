@@ -308,10 +308,19 @@ func (honest *Honest) createNewModel(iterationCount int) (BlockData, error) {
 	// avgFactor := 1.0/float64(len(honest.blockUpdates))
 
 	// Update Aggregation
+	avgConstant := float64(NUM_LOCAL_ITERS) / float64(len(honest.blockUpdates))
 	for _, update := range honest.blockUpdates {
 		if QUANTIZATION {
-			deltaM = mat.NewDense(1, honest.ncol, dequantizeWeights(update.QDelta))
+			dequantizedDelta := dequantizeWeights(update.QDelta)
+			for j, weight := range dequantizedDelta {
+				dequantizedDelta[j] = weight * avgConstant
+			}
+			deltaM = mat.NewDense(1, honest.ncol, dequantizedDelta)
+
 		} else {
+			for j, weight := range update.Delta {
+				update.Delta[j] = weight * avgConstant
+			}
 			deltaM = mat.NewDense(1, honest.ncol, update.Delta)
 		}
 		pulledGradientM.Add(pulledGradientM, deltaM)	

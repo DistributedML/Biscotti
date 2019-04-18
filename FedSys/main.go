@@ -41,7 +41,7 @@ const (
 
 	SECURE_AGG  	bool 		  = true
 
-	POISONING 	 	float64 	  = 0.3
+	POISONING 	 	float64 	  = 0
 
 )
 
@@ -92,7 +92,7 @@ var (
 	includePoisoned 	bool
 	MAX_ITERATIONS  	int
 	iterationCount 		= -1
-	rndUpdates 			= 35
+	rndUpdates 			= 47
 
 	//Logging
 	errLog *log.Logger = log.New(os.Stderr, "[err] ", log.Lshortfile|log.LUTC|log.Lmicroseconds)
@@ -214,7 +214,7 @@ func main() {
 
     myPortPtr := flag.String("p", "", " If not local, this node's port")
 
-    rndUpdatesPtr := flag.Int("b", 35, "Number of updates to accept each round")
+    rndUpdatesPtr := flag.Int("b", 47, "Number of updates to accept each round")
 
 	flag.Parse()
 
@@ -544,7 +544,7 @@ func processUpdate(update Update) {
 
 		if (numberOfUpdates >= (numberOfNodes - 1)) {			
 		
-			client.sampleUpdates(rndUpdates)
+			// client.sampleUpdates(rndUpdates)
 			outLog.Printf(strconv.Itoa(client.id)+":All updates for iteration %d received. Notifying channel.", iterationCount)	
 			allUpdatesReceived <- true
 
@@ -785,7 +785,7 @@ func startUpdateDeadlineTimer(timerForIteration int){
 			
 		if (len(client.blockUpdates) > 0) {
 
-			client.sampleUpdates(rndUpdates)
+			// client.sampleUpdates(rndUpdates)
 	
 			modelToSend, err := client.createNewModel(iterationCount)
 			
