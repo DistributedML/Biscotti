@@ -7,8 +7,8 @@ from svm_model import SVMModel
 import datasets
 
 def returnModel(D_in, D_out):
-    model = SoftmaxModel(D_in, D_out)
-    # model = MNISTCNNModel()
+    #model = SoftmaxModel(D_in, D_out)
+    model = MNISTCNNModel()
     return model
 
 # Initialize Clients

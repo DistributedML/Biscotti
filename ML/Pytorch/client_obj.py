@@ -18,14 +18,13 @@ expected_iters = 100
 delta = 0.00001
 
 def init(dataset, filename, epsilon, batch_size):
-    
     global myclient
 
     D_in = datasets.get_num_features(dataset)
     D_out = datasets.get_num_classes(dataset)
     nParams = datasets.get_num_params(dataset)
 
-    model = SoftmaxModel(D_in, D_out)
+    model = MNISTCNNModel()
     train_cut = 0.8
     
     myclient = client.Client(dataset, filename, batch_size, model, train_cut)

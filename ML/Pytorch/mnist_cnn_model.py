@@ -45,7 +45,6 @@ class MNISTCNNModel(nn.Module):
         l2 = 16
         l3 = 10*16*32*32
         l4 = 10
-
         layers.append( torch.from_numpy( np.reshape(flat_gradient[0:l1], (16, 1, 5, 5))).type(torch.FloatTensor) )
         layers.append( torch.from_numpy( np.reshape(flat_gradient[l1:l1+l2], (l2, ))).type(torch.FloatTensor) )
         layers.append( torch.from_numpy( np.reshape(flat_gradient[l1+l2: l1+l2+l3], (10, 16*32*32))).type(torch.FloatTensor) )
