@@ -17,7 +17,7 @@ def get_dataset(dataset):
     
 def get_num_params(dataset):
     if dataset == "mnist":
-        return 167936
+        return 7850
     elif dataset == "lfw":
         return 18254
     elif dataset == "cifar":

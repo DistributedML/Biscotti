@@ -57,6 +57,8 @@ var (
 	datasetName   		string
 	numberOfNodes 		int
 	NUM_LOCAL_ITERS     int
+	LOCAL_ITER_RATE     float64
+	LOCAL_ITER_DECAY	float64
 
 	numberOfNodeUpdates int
 	myIP                string
@@ -226,7 +228,9 @@ func main() {
     myPort = *myPortPtr
     rndUpdates = *rndUpdatesPtr
     NUM_LOCAL_ITERS = *localIterPerRoundPtr
-	MAX_ITERATIONS = 100 / NUM_LOCAL_ITERS
+	MAX_ITERATIONS = 30
+	LOCAL_ITER_DECAY = 0.9
+	LOCAL_ITER_RATE = float64(NUM_LOCAL_ITERS)
 
 	if(numberOfNodes <= 0 || nodeNum < 0 || datasetName == ""){
 		flag.PrintDefaults()
@@ -480,6 +484,11 @@ func prepareForNextIteration() {
 	boolLock.Lock()
 	
 	iterationCount++
+	LOCAL_ITER_RATE = LOCAL_ITER_RATE * LOCAL_ITER_DECAY
+	NUM_LOCAL_ITERS = int(math.Round(LOCAL_ITER_RATE))
+	if NUM_LOCAL_ITERS < 1 {
+		NUM_LOCAL_ITERS = 1
+	}
 	outLog.Printf("Moving on to next iteration %d", iterationCount)
 
 	numberOfNodeUpdates = (numberOfNodes)/8
