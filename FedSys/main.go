@@ -632,7 +632,11 @@ func sendModel(data BlockData) {
 
 	outLog.Printf(strconv.Itoa(client.id)+":RPC calls successfully returned. Iteration: %d", iterationCount)
 
-	client.globalModel = data.GlobalW
+	if QUANTIZATION {
+		client.globalModel = dequantizeWeights(data.QGlobalW)
+	} else {
+		client.globalModel = data.GlobalW
+	}
 
 	convergedLock.Lock()
 	converged = client.checkConvergence(iterationCount)
