@@ -26,8 +26,8 @@ class Client():
         D_in = datasets.get_num_features(dataset)
         D_out = datasets.get_num_classes(dataset)
 
-        self.model = SoftmaxModel(D_in, D_out)
-        #self.model = MNISTCNNModel()
+        #self.model = SoftmaxModel(D_in, D_out)
+        self.model = MNISTCNNModel()
         # self.model = LFWCNNModel()
 
         # self.model = SVMModel(D_in, D_out)

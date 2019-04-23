@@ -24,7 +24,7 @@ def init(dataset, filename, epsilon, batch_size):
     D_out = datasets.get_num_classes(dataset)
     nParams = datasets.get_num_params(dataset)
 
-    model = SoftmaxModel(D_in, D_out)
+    model = MNISTCNNModel()
     train_cut = 0.8
     
     myclient = client.Client(dataset, filename, batch_size, model, train_cut)

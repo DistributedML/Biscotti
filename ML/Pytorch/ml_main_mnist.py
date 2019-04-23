@@ -16,8 +16,8 @@ def debug_signal_handler(signal, frame):
 
 
 def returnModel(D_in, D_out):
-    model = SoftmaxModel(D_in, D_out)
-    #model = MNISTCNNModel()
+    #model = SoftmaxModel(D_in, D_out)
+    model = MNISTCNNModel()
     return model
 
 # Initialize Clients
