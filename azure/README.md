@@ -5,8 +5,10 @@ This folder contains all the scripts related to azure for Biscotti
 All scripts related to this are under the folder azure-setup. Inside the folder there is a README.md that contains instructions on how to set up VM's in same/different locations in azure and get all related dependencies installed in each machine. The folder contains an script called azure-install.sh which is copied over to each VM and executed to install all dependencies in step 5. The script will need to be rerwitten if using for a different project. Otherwise the procedure should remain the same. 
 
 ## Deployment:
+
 All scripts related to this are under azure-run. The main script that I execute is runBiscotti.sh which essentially generates bootstrap files that all nodes need (pk/sk/ etc) and copies over these along with the updated Biscotti go binary to all other hosts. Each VM is then ssh'd into and the binary is executed at each host. The log files are copied over to my machine at the end of execution.
-For running federated learning, all scripts under azure-run-FedSys. Deployment procedure is 
+
+For running federated learning, all scripts under azure-run-FedSys. Deployment procedure is similar
 
 ## Utilities:
 A bunch of scripts are located inside azure-util that can be used for managing VM's/deployment.
