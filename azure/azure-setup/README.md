@@ -28,7 +28,7 @@ After that follow the procedure below to setup VM's for Biscotti.
 
 	bash azure-deploy-vms.sh numVMs rgroup user password
 
-	Ex: bash azure-deploy-vms.sh 20 rgroup shayan password 
+	Ex: bash azure-deploy-vms.sh 20 rgroup shayan password diff
 
 	Note: There is some stuff hardcoded in the script that you might want to change.
 	1. List of locations -> VM's evenly spread out in these locations
