@@ -653,7 +653,8 @@ func main() {
     VERIFY = *isVerificationPtr
     EPSILON = *epsilonPtr
     POISONING = *poisoningPtr
-    NUM_SAMPLES = *numSamplesPtr 
+    NUM_SAMPLES = *numSamplesPtr
+    NUM_SAMPLES = numberOfNodes - NUM_VERIFIERS - NUM_MINERS
 
     outLog.Printf("EPSILON IS: %d", EPSILON)
 
