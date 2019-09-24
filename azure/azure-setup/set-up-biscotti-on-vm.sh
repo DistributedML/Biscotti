@@ -15,6 +15,7 @@ ipaddr=$2
 installscript=$3
 
 scp $installscript $uname@$ipaddr:~
+scp requirements.txt $uname@$ipaddr:~
 
 echo $installscript
 

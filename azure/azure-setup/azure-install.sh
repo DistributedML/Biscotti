@@ -58,6 +58,8 @@ go get -t ./... # install 3rd-party dependencies
 
 # source ~/.profile
 
+cd $HOME
+
 # # #Installing python libraries
 echo "Update"
 sudo apt-get update
