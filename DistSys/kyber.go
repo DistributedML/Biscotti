@@ -7,7 +7,7 @@ import (
 	"fmt"	
 	"math"	
 	"sort"
-	"gonum.org/gonum/matrix/mat64"
+	"github.com/gonum/matrix/mat64"
 	"bytes"
     "errors"
     "github.com/dedis/kyber/util/random"
