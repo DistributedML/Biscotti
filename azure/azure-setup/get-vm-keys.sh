@@ -13,7 +13,7 @@ myip=$2
 pass=$3
 ipfile=$4
 
-vmuname='matheus'
+vmuname='shayan'
 hostFile="../azure-conf/${ipfile}"
 
 for line in $(cat $hostFile);do
