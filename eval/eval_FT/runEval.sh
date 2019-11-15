@@ -24,6 +24,7 @@ sleep 15
 while [[ "$converged" -eq 0 ]]; do
 
 # 	#statements
+
 	let failNode=$((( RANDOM % numberOfNodes)))
 	
 	let vmCount=0
@@ -37,7 +38,7 @@ while [[ "$converged" -eq 0 ]]; do
 		continue
 	fi
          
-        echo "killing node"             
+    echo "killing node"             
 	fuser -k $failPort/tcp
 	let failAfter=$(($sleepAfter - 5))
 	echo $failAfter 			

@@ -27,7 +27,7 @@ def init(dataset, filename, epsilon, batch_size):
 
     model = SoftmaxModel(D_in, D_out)
     train_cut = 0.8
-    
+    print "here"
     myclient = client.Client(dataset, filename, batch_size, model, train_cut)
 
     global samples

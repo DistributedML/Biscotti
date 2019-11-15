@@ -57,7 +57,7 @@ class Client():
             outputs = self.model(inputs)
             loss = self.criterion(outputs, labels)
             loss.backward()
-            nn.utils.clip_grad_norm(self.model.parameters(), 100)
+            nn.utils.clip_grad_norm(self.model.parameters(), 1)
             self.loss = loss.item()
 
             # TODO: Find more efficient way to flatten params

@@ -19,6 +19,8 @@ elif [[ "$dataset" = "creditcard" ]]; then
 	dimensions=25
 fi
 
+echo $nodes
+echo $dataset
 
 # Generate keys
 cd ../keyGeneration

@@ -17,7 +17,7 @@ echo $additionalArgs
 let azure=1
 
 localUser=$USER
-azureUser="matheus"
+azureUser="shayan"
 
 #TODO: Take as input dataset name. Figure out dimensions based on name
 if [[ "$dataset" = "mnist" ]]; then
@@ -30,10 +30,9 @@ fi
 if [[ "$hostFileName" = "hosts_sameDC" ]]; then
 	azureUser="shayan"
 elif [[ "$hostFileName" = "hosts_diffDC" ]]; then
-	azureUser="matheus"
+	azureUser="shayan"
 fi
 
-azureUser="matheus"
 currentDir=$PWD
 
 currentDir=$PWD
@@ -58,6 +57,8 @@ firstport=8000
 cd $FedSysPath
 echo "Building"
 go build
+rm -rf ./LogFiles
+mkdir LogFiles
 
 # Come back to current folder
 cd $currentDir
@@ -97,12 +98,6 @@ for line in $(cat $hostPath);do
 	tname=`echo $line | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'`
 
 	echo $tname
-
-	if [[ "$tname" == "198.162.52.157" || "$tname" == "198.162.52.33" ]]; then
-		username="matheus"
-	else
-		username="matheus"
-	fi
 
 	scp peersFileSent $username@$tname:~/gopath/src/Biscotti/FedSys
 	scp $FedSysPath/FedSys $username@$tname:~/gopath/src/Biscotti/FedSys

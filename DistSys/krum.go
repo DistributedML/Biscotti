@@ -230,17 +230,40 @@ func (s *Peer) VerifyUpdateKRUM(update Update, signature *[]byte) error {
 			time.Sleep(2000 * time.Millisecond)
 		}
 
+		// if update.Iteration == iterationCount{
+
+		// 	krumLock.Lock()
+
+		// 	if !collectingUpdates{
+
+		// 		krum.flushCollectedUpdates()
+		// 		collectingUpdates = true
+		// 	}
+
+		// 	krumLock.Unlock()
+
+		// }
+
 		if update.Iteration == iterationCount{
 
-			krumLock.Lock()
+			for !collectingUpdates {
+				
+				outLog.Printf(strconv.Itoa(client.id)+"Collecting Updates not true. Update for %d, I am at %d\n", update.Iteration, iterationCount)				
 
-			if !collectingUpdates{
-
-				krum.flushCollectedUpdates()
-				collectingUpdates = true
+				time.Sleep(100 * time.Millisecond)
+			
 			}
 
-			krumLock.Unlock()
+
+			// krumLock.Lock()
+
+			// if !collectingUpdates{				
+			// 	krum.flushCollectedUpdates()
+			// 	collectingUpdates = true
+			// }
+
+			// krumLock.Unlock()
+		
 		}
 	
 	}	

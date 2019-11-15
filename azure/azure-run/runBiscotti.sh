@@ -14,26 +14,23 @@ dataset=$4
 additionalArgs=$5
 
 echo $additionalArgs
-
 let azure=1
 
 # dataset="mnist"
 
 localUser=$USER
-azureUser="matheus"
+azureUser="shayan"
 
-#TODO: Take as input dataset name. Figure out dimensions based on name
 if [[ "$dataset" = "mnist" ]]; then
 	dimensions=7850
 elif [[ "$dataset" = "creditcard" ]]; then
 	dimensions=25
 fi
 
-#TODO: Take as input dataset name. Figure out dimensions based on name
 if [[ "$hostFileName" = "hosts_sameDC" ]]; then
 	azureUser="shayan"
 elif [[ "$hostFileName" = "hosts_diffDC" ]]; then
-	azureUser="matheus"
+	azureUser="shayan"
 fi
 
 currentDir=$PWD
@@ -51,6 +48,7 @@ firstport=8000
 
 
 
+
 # #Generate files to bootstrap clients with
 # ###############################################################################
 
@@ -61,8 +59,11 @@ $GOPATH/bin/keyGeneration -n=$nodesInEachVM -d=$dimensions -h=$hostFileName
 
 # Build biscotti
 cd $distSysPath
+
 echo "Building"
 go build
+rm -rf ./LogFiles
+mkdir LogFiles
 
 # Come back to current folder
 cd $currentDir

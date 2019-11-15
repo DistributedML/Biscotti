@@ -30,8 +30,8 @@ const (
 	verifierIP   	string        = "127.0.0.1:"
 	timeoutRONI    	time.Duration = 120 * time.Second
 	timeoutKRUM    	time.Duration = 60 * time.Second
-	timeoutKRUMR 	time.Duration = 120 * time.Second
-	timeoutUpdate 	time.Duration = 180 * time.Second 
+	timeoutKRUMR 	time.Duration = 40 * time.Second
+	timeoutUpdate 	time.Duration = 70 * time.Second 
 	timeoutBlock 	time.Duration = 600 * time.Second
 	timeoutPeer 	time.Duration = 5 * time.Second
 
@@ -618,7 +618,7 @@ func main() {
 
     numAggPtr := flag.Int("na", 3, "Number of aggregators")
 
-    numVerPtr := flag.Int("nv", 3, "Number of aggregators")
+    numVerPtr := flag.Int("nv", 3, "Number of verifiers")
 
     numNoisePtr := flag.Int("nn", 2, "Number of noisers")
 
@@ -653,10 +653,16 @@ func main() {
     VERIFY = *isVerificationPtr
     EPSILON = *epsilonPtr
     POISONING = *poisoningPtr
-    NUM_SAMPLES = *numSamplesPtr
-    NUM_SAMPLES = numberOfNodes - NUM_VERIFIERS - NUM_MINERS
+    PERC_SAMPLES := *numSamplesPtr
+    outLog.Printf("PERC_SAMPLES IS: %d", PERC_SAMPLES)
+    NUM_SAMPLES = int(float64(numberOfNodes) * (float64(PERC_SAMPLES)/100.0))
+    outLog.Printf("NUM_SAMPLES IS: %d", NUM_SAMPLES)
+    if (NUM_SAMPLES==numberOfNodes) {
+    	NUM_SAMPLES = numberOfNodes - NUM_VERIFIERS - NUM_MINERS
+    }
 
     outLog.Printf("EPSILON IS: %d", EPSILON)
+    outLog.Printf("NUM_SAMPLES IS: %d", NUM_SAMPLES)
 
 	if(numberOfNodes <= 0 || nodeNum < 0 || datasetName == ""){
 		flag.PrintDefaults()
@@ -827,8 +833,7 @@ func main() {
 	krumLock = sync.Mutex{}
 	sigLock = sync.Mutex{}
 
-	// TODO: Replace with numNodes/4 after test
-	KRUM_UPDATETHRESH = numberOfNodes - NUM_VERIFIERS - NUM_MINERS
+	KRUM_UPDATETHRESH = NUM_SAMPLES
 
 	ensureRPC = sync.WaitGroup{}
 	allUpdatesReceived = make (chan bool)
@@ -1063,13 +1068,17 @@ func prepareForNextIteration() {
 
 
 	// This runs the VRF and sets the verifiers for this iteration
-	roleIDs = getRoles()	
+	roleIDs = getRoles()
+
+	outLog.Printf("Role ID's are %d", roleIDs)	
 
 	verifier = amVerifier(client.id)
 	miner = amMiner(client.id)
 
 	verifierPortsToConnect, minerPortsToConnect, 
 		noiserPortsToConnect, numberOfNodeUpdates = getRoleNames(iterationCount + 1)
+
+	outLog.Printf("Verifier ports inside prepare next iteration %d", verifierPortsToConnect)
 
 	peerLock.Unlock()
 
@@ -1338,7 +1347,7 @@ func addBlockToChain(block Block) {
 
 
 // Miner broadcasts the block of this iteration to all peers
-func 	sendBlock(block Block) {	
+func sendBlock(block Block) {	
 
 	outLog.Printf(strconv.Itoa(client.id)+":Sending block of iteration: %d\n", block.Data.Iteration)
 
@@ -1487,8 +1496,7 @@ func messageSender(ports []string) {
 
 			outLog.Printf("Sending update to verifiers. Iteration:%d", iterationCount)
 			outLog.Printf("Verifier addresses:%s", verifierPortsToConnect)				
-			signatureList, approved = sendUpdateToVerifiers(verifierPortsToConnect)	 			
-			
+			signatureList, approved = sendUpdateToVerifiers(verifierPortsToConnect)	 						
 
 		}
 
@@ -1791,10 +1799,10 @@ func sendUpdateSecretsToMiners(addresses []string) {
 	mined := false
 
 	// generate secrets here
-	// outLog.Printf("My update sent for aggregation is %s", client.update.Delta)
+	outLog.Printf("My update sent for aggregation")
 	minerSecrets := generateMinerSecretShares(client.update.Delta, PRECISION, client.Keys.CommitmentKey, NUM_MINERS, POLY_SIZE, TOTAL_SHARES)
 
-	// outLog.Printf("My secret share:%s", minerSecrets)
+	outLog.Printf("My secret share")
 
 	// for i := 0; i < len(minerSecrets); i++ {
 		// outLog.Printf("My secret share 10:%s", minerSecrets[i].PolyMap[10].Secrets)		

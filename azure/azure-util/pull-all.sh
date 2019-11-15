@@ -19,7 +19,7 @@ for ip in $(cat $hostFile);do
 	ssh -t $uname@$ip "
 
 		cd $bisPath
-		git	stash	
+		git stash	
 		git fetch origin
 		git checkout $branchname	
 		git pull origin $branchname

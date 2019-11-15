@@ -17,6 +17,7 @@ import (
 	"os"
 	"flag"
 	"encoding/gob"
+
 )
 
 // Timeout for block should be more than timeout for update because nodes should be more patients for the block to come through
@@ -42,7 +43,7 @@ const (
 
 	SECURE_AGG  	bool 		  = true
 
-	POISONING 	 	float64 	  = 0.3
+	POISONING 	 	float64 	  = 0.0
 
 )
 
@@ -63,6 +64,7 @@ var (
 	myPrivateIP         string
     myPort				string
     peersFileName       string
+
 
     client 				Honest
 	
@@ -88,10 +90,13 @@ var (
     updateSent     		bool
 	converged      		bool
 	includePoisoned 	bool
+	rndSample  			bool
 
 	iterationCount 		= -1
-	rndUpdates 			= 35
+	numUpdates 			= 35
 
+	NUM_SAMPLES 		= 35
+	RANDOM_SAMPLES 		= 35
 	//Logging
 	errLog *log.Logger = log.New(os.Stderr, "[err] ", log.Lshortfile|log.LUTC|log.Lmicroseconds)
 	outLog *log.Logger = log.New(os.Stderr, "[peer] ", log.Lshortfile|log.LUTC|log.Lmicroseconds)
@@ -203,7 +208,11 @@ func main() {
 
     myPortPtr := flag.String("p", "", " If not local, this node's port")
 
-    rndUpdatesPtr := flag.Int("b", 35, "Number of updates to accept each round")
+    numUpdatesPtr := flag.Int("b", 35, "Number of updates to accept each round")
+
+    rndSampleUpdatesPtr := flag.Int("ru", 35, "Number of random sampling")
+
+    rndSamplePtr := flag.Bool("rs", false, "Random sampling")
 
 	flag.Parse()
 
@@ -215,7 +224,13 @@ func main() {
     myPrivateIP = *myPrivateIPPtr+":"
     myIP = *myIPPtr+":"
     myPort = *myPortPtr
-    rndUpdates = *rndUpdatesPtr
+    numUpdates = *numUpdatesPtr
+    rndSampleUpdates := *rndSampleUpdatesPtr
+    rndSample = *rndSamplePtr
+    
+    NUM_SAMPLES = numUpdates
+    RANDOM_SAMPLES = rndSampleUpdates
+
 
 	if(numberOfNodes <= 0 || nodeNum < 0 || datasetName == ""){
 		flag.PrintDefaults()
@@ -223,8 +238,7 @@ func main() {
 	}
 
     // getports of all other clients in the system
-    peerLookup = make(map[string]int)
-        
+    peerLookup = make(map[string]int)        
     potentialPeerList := make([]net.TCPAddr, 0, numberOfNodes-1)
 
     // Running locally
@@ -519,9 +533,12 @@ func processUpdate(update Update) {
 
 		outLog.Printf("As aggregator, I expect %d updates, I have gotten %d", numberOfNodeUpdates, numberOfUpdates)
 
-		if (numberOfUpdates >= (numberOfNodes - 1)) {			
-		
-			client.sampleUpdates(rndUpdates)
+		if (numberOfUpdates == NUM_SAMPLES) {			
+			
+			if (rndSample) {
+				client.sampleUpdates(RANDOM_SAMPLES)
+			}
+
 			outLog.Printf(strconv.Itoa(client.id)+":All updates for iteration %d received. Notifying channel.", iterationCount)	
 			allUpdatesReceived <- true
 
@@ -755,7 +772,7 @@ func startUpdateDeadlineTimer(timerForIteration int){
 			
 		if (len(client.blockUpdates) > 0) {
 
-			client.sampleUpdates(rndUpdates)
+			client.sampleUpdates(numUpdates)
 	
 			modelToSend, err := client.createNewModel(iterationCount)
 			

@@ -53,14 +53,6 @@ for (( index = $startingIndex ; index < $startingIndex + nodesToRun; index++ ));
 	commandList=($commandToRun)
 	"${commandList[@]}" > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile & 
 
-
-	# timeout 9000 ./DistSys -i=$index -t=$totalnodes \
-	# 	-d=$dataset -f=peersFileSent \
-	# 	-a=$myAddress -p=$thisPort -pa=$myPrivateIp \
-	# 	 > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
-	# # sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard -f=peersfile.txt -a=$myAddress -p=$thisPort -pa=$myAddress > ./LogFiles/$thisLogFile 2> ./LogFiles/$thatLogFile &
-	# sudo $GOPATH/bin/DistSys -i=$index -t=$totalnodes -d=creditcard > $thisLogFile 2> outLog.log &
-
 done	
 
 wait

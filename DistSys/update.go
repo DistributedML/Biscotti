@@ -39,9 +39,3 @@ func arrayToString(a []float64, delim string) string {
 	return str
 
 }
-
-
-
-
-
-

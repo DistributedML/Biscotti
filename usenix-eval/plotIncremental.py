@@ -18,6 +18,8 @@ ticklabels = ['40', '60', '80', '100']
 
 data = data
 
+print(data)
+
 p1 = ax.bar(np.arange(N), data[:, 0], width, hatch='/')
 p2 = ax.bar(np.arange(N) + 1 * width, data[:, 1], width)
 p3 = ax.bar(np.arange(N) + 2 * width, data[:, 2], width, hatch='.')

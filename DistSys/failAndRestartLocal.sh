@@ -13,7 +13,7 @@ while [[ "$converged" -eq 0 ]]; do
 	echo $failPort
 
 	if [[ "$failNode" -eq 0 ]]; then
-		echo I will not kill 0
+		echo "I will not kill 0"
 		continue
 	fi
          
@@ -23,7 +23,7 @@ while [[ "$converged" -eq 0 ]]; do
 			
 	sleep 5
 
-	echo launching node
+	echo "launching node"
 
 	./DistSys -i $failNode -t $numberOfNodes -d creditcard >> /dev/null &
 
