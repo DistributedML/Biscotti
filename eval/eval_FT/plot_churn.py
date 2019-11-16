@@ -61,29 +61,6 @@ def plot(output_file_dir, dirs):
 		i=i+1
 
 
-	# ###########################################
-	# df = pd.read_csv("30s_parsed.csv", header=None)
-	# toplot[1] = df[1].values
-	# ###########################################
-
-	# ###########################################
-	# df = pd.read_csv("60s_parsed.csv", header=None)
-	# toplot[2] = df[1].values
-	# ###########################################
-
-	# l1 = mlines.Line2D(np.arange(102), toplot[0], 
-	# 	color='blue', linestyle='-', linewidth=4, label="4 nodes/minute")
-
-	# l2 = mlines.Line2D(np.arange(102), toplot[1], 
-	# 	color='orange', linestyle='--', linewidth=4, label="2 nodes/minute")
-
-	# l3 = mlines.Line2D(np.arange(102), toplot[2], 
-	# 	color='green', linestyle=':', linewidth=4, label="1 node/minute")
-	
-	# ax.add_line(l1)
-	# ax.add_line(l2)
-	# ax.add_line(l3)
-
 	plt.legend(handles=l, loc='best', fontsize=18)
 
 	plt.xlabel("Iterations", fontsize=18)
