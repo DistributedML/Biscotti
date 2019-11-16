@@ -4,15 +4,20 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
+import sys
+import os
 
 total_nodes = 100
 
-def parse_logs():
+colors = ['blue', 'orange', 'green']
+linestyle = ['-', '--', ':']
 
-	fname = "60s.log"
+def parse_logs(input_log_dir, output_file_dir,fname, directory):
+
+	fname = input_log_dir+"/"+fname
 	lines = [line.rstrip('\n') for line in open(fname)]
 
-	outfile = open("60s_parsed.csv", "w")
+	outfile = open(output_file_dir + "/" + directory + "_parsed.csv", "w")
 	iteration = 0
 
 	for line in lines:
@@ -29,48 +34,60 @@ def parse_logs():
 			outfile.write(",")
 			outfile.write(timestamp)
 			outfile.write("\n")
-
 			iteration = iteration + 1
 
 	outfile.close()
 
-def plot():
+def plot(output_file_dir, dirs):
 
 	fig, ax = plt.subplots(figsize=(10, 2.5))
-	toplot = np.zeros((3, 102))
+	toplot = np.zeros((len(dirs), 102))
 
-	###########################################
-	df = pd.read_csv("15s_parsed.csv", header=None)
-	toplot[0] = df[1].values
-	###########################################
+	i = 0
+	l = []
 
-	###########################################
-	df = pd.read_csv("30s_parsed.csv", header=None)
-	toplot[1] = df[1].values
-	###########################################
+	for directory in dirs:
 
-	###########################################
-	df = pd.read_csv("60s_parsed.csv", header=None)
-	toplot[2] = df[1].values
-	###########################################
+		###########################################		
+		df = pd.read_csv(output_file_dir + "/" + directory+"_parsed.csv" , header=None)
+		toplot[i] = df[1].values
+		
+		###########################################
 
-	l1 = mlines.Line2D(np.arange(102), toplot[0], 
-		color='blue', linestyle='-', linewidth=4, label="4 nodes/minute")
+		line = mlines.Line2D(np.arange(102), toplot[i], 
+		color=colors[i], linestyle=linestyle[i], linewidth=4, label=directory + " nodes per minute")
+		l.append(line)
+		ax.add_line(line)
+		i=i+1
 
-	l2 = mlines.Line2D(np.arange(102), toplot[1], 
-		color='orange', linestyle='--', linewidth=4, label="2 nodes/minute")
 
-	l3 = mlines.Line2D(np.arange(102), toplot[2], 
-		color='green', linestyle=':', linewidth=4, label="1 node/minute")
+	# ###########################################
+	# df = pd.read_csv("30s_parsed.csv", header=None)
+	# toplot[1] = df[1].values
+	# ###########################################
+
+	# ###########################################
+	# df = pd.read_csv("60s_parsed.csv", header=None)
+	# toplot[2] = df[1].values
+	# ###########################################
+
+	# l1 = mlines.Line2D(np.arange(102), toplot[0], 
+	# 	color='blue', linestyle='-', linewidth=4, label="4 nodes/minute")
+
+	# l2 = mlines.Line2D(np.arange(102), toplot[1], 
+	# 	color='orange', linestyle='--', linewidth=4, label="2 nodes/minute")
+
+	# l3 = mlines.Line2D(np.arange(102), toplot[2], 
+	# 	color='green', linestyle=':', linewidth=4, label="1 node/minute")
 	
-	ax.add_line(l1)
-	ax.add_line(l2)
-	ax.add_line(l3)
+	# ax.add_line(l1)
+	# ax.add_line(l2)
+	# ax.add_line(l3)
 
-	plt.legend(handles=[l1, l2, l3], loc='best', fontsize=18)
+	plt.legend(handles=l, loc='best', fontsize=18)
 
 	plt.xlabel("Iterations", fontsize=18)
-	plt.ylabel("Validation Error", fontsize=18)
+	plt.ylabel("Test Error", fontsize=18)
 
 	axes = plt.gca()
 	axes.set_xlim([0, 101])
@@ -88,6 +105,16 @@ def plot():
 
 
 if __name__ == '__main__':
-	
-	# parse_logs()
-	plot()
+
+	input_file_dir = sys.argv[1]
+	output_file_dir = sys.argv[2]
+	fname=sys.argv[3]
+
+	dirs = [x for x in os.listdir(input_file_dir)]
+
+	for directory in dirs:
+		input_log_dir = input_file_dir + "/" + directory
+		print input_log_dir
+		parse_logs(input_log_dir, output_file_dir, fname, directory)
+
+	plot(output_file_dir,dirs)

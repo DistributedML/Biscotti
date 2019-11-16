@@ -50,4 +50,4 @@ while [[ "$converged" -eq 0 ]]; do
 
 done
 
-# After killing the script
+
