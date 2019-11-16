@@ -11,9 +11,10 @@ user=$3      # username whose cmd line password will be changed
 pws=$4       # password to set the user's password to
 location=$5  # deployment in same or different location
 
-sshPath='/home/matheus/.ssh/id_rsa.pub' #location of ssh-keys on ur machine
-imagename='UBUNTULTS' #OS
+sshPath="/home/$user/.ssh/id_rsa.pub" #location of ssh-keys on ur machine
+imagename='Canonical:UbuntuServer:16.04-LTS:16.04.201909091' #OS
 vmprefix='bis' #each vmname is vmprefix+vmid
+vmname='Standard_A4m_v2'
 
 locations=('westus') #locations to deploy
 
@@ -45,6 +46,6 @@ for (( i = 0; i < numVMs; i++ )); do
 	vmlocation=${locations[locIdx]}
 	echo $vmname 
 	echo $vmlocation
-	bash create-vm.sh $rgroup $vmname $imagename $user $pws $vmlocation
+	bash create-vm.sh $rgroup $vmname $imagename $user $pws $vmlocation $vmname
 
 done

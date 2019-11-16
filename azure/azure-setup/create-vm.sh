@@ -1,8 +1,8 @@
 #!/bin/bash -x
 
-if [ "$#" -ne 6 ]; then
+if [ "$#" -ne 7 ]; then
     echo "Illegal number of parameters (expecting 6):"
-    echo "[r-group, vm-name, image-name, user-name, password vmlocation]"
+    echo "[r-group, vm-name, image-name, user-name, password vmlocation, vmsize]"
     exit
 fi
 
@@ -12,15 +12,15 @@ imagename=$3 # imagename from which to create the VM
 user=$4      # username whose cmd line password will be changed
 pws=$5       # password to set the user's password to
 location=$6
-
-echo $location
+vmtype=$7
 
 # Create the VM
 az vm create --resource-group $rgroup --name $vm --image $imagename \
-   --admin-username $user --location $location --size Standard_A4m_v2 \
+   --admin-username $user --location $location --size $vmtype \
    --vnet-name ${location}VNET \
    --subnet Subnet1 \
-   --ssh-key-value  /home/matheus/.ssh/id_rsa.pub
+   --ssh-key-value  /home/$user/.ssh/id_rsa.pub
+
 
 # # Reset the password for the user in the vm
 az vm user update --resource-group $rgroup --name $vm \
