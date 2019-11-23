@@ -3,6 +3,7 @@ from sklearn import svm, linear_model, neural_network
 import pdb
 import numpy as np
 import matplotlib.pyplot as plt
+import sys
 
 #################################################################
 #### IMPORTANT!!!
@@ -147,6 +148,16 @@ def slice_uniform(numSplits):
     numRows = int(Xtrain.shape[0] / numSplits)
     
 
+    # for i in range(numSplits):
+    #     dataslice = np.hstack((Xtrain[(i * numRows):((i + 1) * numRows), :],
+    #                     ytrain[(i * numRows):((i + 1) * numRows)][:, None]))
+        
+    #     print("slice " + str(i) + " is shape " + str
+    #         (dataslice.shape))
+
+    #     for mult in range(10):
+    #         np.save("mnist" + str(i + 10 * mult), dataslice)
+
     for i in range(numSplits):
         dataslice = np.hstack((Xtrain[(i * numRows):((i + 1) * numRows), :],
                         ytrain[(i * numRows):((i + 1) * numRows)][:, None]))
@@ -154,8 +165,8 @@ def slice_uniform(numSplits):
         print("slice " + str(i) + " is shape " + str
             (dataslice.shape))
 
-        for mult in range(10):
-            np.save("mnist" + str(i + 10 * mult), dataslice)
+        # for mult in range(10):
+        np.save("mnist" + str(i), dataslice)
         
     train_slice = np.hstack((Xtrain, np.reshape(ytrain, (len(ytrain), 1))))
     np.save("mnist_train", train_slice)
@@ -249,7 +260,8 @@ def generate_poisoned():
 
 if __name__ == "__main__":
     
-    slice_uniform(10)
+    numNodes = sys.argv[1]
+    slice_uniform(int(numNodes))
 
     slice_for_tm()
     generate_poisoned()
