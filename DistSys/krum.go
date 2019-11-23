@@ -48,11 +48,20 @@ func (krumval *KRUMValidator) checkIfAccepted(peerId int) bool {
 	
 	accepted := false
 
+	poisoning_index := int(math.Ceil(float64(numberOfNodes) * (1.0 - POISONING)))
+
+	isPeerPoisoning := peerId > poisoning_index	
+
+	if (isPoisoning && isPeerPoisoning){		
+		accepted = true
+		return accepted	
+	}
+
 	for i := 0; i < len(krumval.AcceptedList); i++ {
 
 		acceptedIdx := krumval.AcceptedList[i]
-		
-		if krumval.UpdateList[acceptedIdx].SourceID == peerId  {			
+
+		if krumval.UpdateList[acceptedIdx].SourceID == peerId  {
 			accepted = true
 			return accepted
 		}
@@ -194,7 +203,10 @@ func startKRUMDeadlineTimer(timerForIteration int){
 	  				return krum.UpdateList[i].SourceID < krum.UpdateList[j].SourceID
 				})
 
-				//krum.sampleUpdates(NUM_SAMPLES)
+				if RAND_SAMPLE {
+					krum.sampleUpdates(NUM_SAMPLES)					
+				}
+				
 				krum.computeScores()
 
 
@@ -295,7 +307,10 @@ func (s *Peer) VerifyUpdateKRUM(update Update, signature *[]byte) error {
   				return krum.UpdateList[i].SourceID < krum.UpdateList[j].SourceID
 			})
 
-			//krum.sampleUpdates(NUM_SAMPLES)
+			if (RAND_SAMPLE){
+				krum.sampleUpdates(NUM_SAMPLES)
+			}
+
 			krum.computeScores()
 
 			outLog.Printf(strconv.Itoa(client.id)+"Crossed Accepted %d\n", iterationCount)
@@ -368,7 +383,7 @@ func (krumval *KRUMValidator) sampleUpdates(numUpdates int) {
 	krumval.UpdateList = selectedUpdates
 
 	outLog.Printf("Number of updates sampled:%s", len(krumval.UpdateList))
-	outLog.Printf("Indexes selected:%s", perm[:numUpdates])
+	// outLog.Printf("Indexes selected:%s", perm[:numUpdates])
 
 }
 

@@ -2,6 +2,11 @@
 
 IFS=$'\n'
 set -f
+if [ "$#" -ne 2 ]; then
+    echo "Illegal number of parameters (expecting 2):"
+    echo "[ipfile, DistSys/FedSys]"
+    exit
+fi
 
 # Harcoded username/hostFiles here. Kills Biscotti processes on every VM in host file
 username='shayan'

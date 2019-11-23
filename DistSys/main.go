@@ -30,9 +30,9 @@ const (
 	verifierIP   	string        = "127.0.0.1:"
 	timeoutRONI    	time.Duration = 120 * time.Second
 	timeoutKRUM    	time.Duration = 60 * time.Second
-	timeoutKRUMR 	time.Duration = 40 * time.Second
-	timeoutUpdate 	time.Duration = 70 * time.Second 
-	timeoutBlock 	time.Duration = 600 * time.Second
+	timeoutKRUMR 	time.Duration = 60 * time.Second
+	timeoutUpdateC 	time.Duration = 90 * time.Second 
+	timeoutBlock 	time.Duration = 300 * time.Second
 	timeoutPeer 	time.Duration = 5 * time.Second
 
 	// NUM_NOISERS     int 		  = 2
@@ -86,6 +86,7 @@ var (
 	collusionThresh 	int
 	unmaskedUpdates 	int
 	totalUpdates	 	int
+	nodeNum 			int
 	
 	allSharesReceived		chan bool
 	allUpdatesReceived		chan bool
@@ -116,6 +117,7 @@ var (
 	roniLock			sync.Mutex
 	krumLock			sync.Mutex
 	sigLock       		sync.Mutex
+			
 
 	ensureRPC      		sync.WaitGroup
 
@@ -125,6 +127,7 @@ var (
 	verifier       		bool
 	miner 				bool
 	iterationCount 		= -1
+	isPoisoning 		bool
 
 	// these are maps since it optimizes contains()
 	roleIDs				map[int]int
@@ -156,9 +159,11 @@ var (
 	KRUM_UPDATETHRESH	int 	  = 70
 
 	timeoutRPC    	time.Duration = 120 * time.Second
+	timeoutUpdate   time.Duration = timeoutUpdateC
 
 	POISONING 	 	float64 	  = 0.0
 	NUM_SAMPLES     int 		  = 70
+	RAND_SAMPLE 	bool 		  = false
 
 )
 
@@ -632,7 +637,9 @@ func main() {
 
     poisoningPtr := flag.Float64("po", 0.0, "Poisoner threshold")
 
-	numSamplesPtr := flag.Int("ns", 70 , "Number of samples")   
+	numSamplesPtr := flag.Int("ns", 70 , "Number of samples")
+
+	randSamplePtr := flag.Bool("rs", false , "Random sampling")   
 
 	flag.Parse()
 
@@ -654,11 +661,25 @@ func main() {
     EPSILON = *epsilonPtr
     POISONING = *poisoningPtr
     PERC_SAMPLES := *numSamplesPtr
+    RAND_SAMPLE = *randSamplePtr
+
     outLog.Printf("PERC_SAMPLES IS: %d", PERC_SAMPLES)
     NUM_SAMPLES = int(float64(numberOfNodes) * (float64(PERC_SAMPLES)/100.0))
+
+
     outLog.Printf("NUM_SAMPLES IS: %d", NUM_SAMPLES)
-    if (NUM_SAMPLES==numberOfNodes) {
+    if (NUM_SAMPLES > numberOfNodes - NUM_VERIFIERS - NUM_MINERS) {
     	NUM_SAMPLES = numberOfNodes - NUM_VERIFIERS - NUM_MINERS
+    }
+
+    if (RAND_SAMPLE) {
+	    
+	    KRUM_UPDATETHRESH = numberOfNodes - NUM_VERIFIERS - NUM_MINERS   	
+    
+    }else{
+
+    	KRUM_UPDATETHRESH = NUM_SAMPLES 
+
     }
 
     outLog.Printf("EPSILON IS: %d", EPSILON)
@@ -763,6 +784,10 @@ func main() {
 
 	if POISON_DEFENSE == "KRUM" {
 		timeoutRPC = timeoutKRUMR
+		if RAND_SAMPLE{
+			timeoutRPC = 2*timeoutRPC
+			timeoutUpdate = 2*timeoutUpdate
+		}
 	}else{
 		timeoutRPC = timeoutRONI
 	}
@@ -802,7 +827,7 @@ func main() {
 
 		// if collusionThresh > 0 {
 	
-		if (NOISY_VERIF || DP_IN_MODEL	) && (nodeNum < collusionThresh) {
+		if (NOISY_VERIF || DP_IN_MODEL) && (nodeNum < collusionThresh) {
 			client.initializeData(datasetName, numberOfNodes, EPSILON, false)	
 		} else {
 			client.initializeData(datasetName, numberOfNodes, 0, false)	
@@ -831,9 +856,7 @@ func main() {
 	blockChainLock = sync.Mutex{}
 	roniLock = sync.Mutex{}
 	krumLock = sync.Mutex{}
-	sigLock = sync.Mutex{}
-
-	KRUM_UPDATETHRESH = NUM_SAMPLES
+	sigLock = sync.Mutex{}	
 
 	ensureRPC = sync.WaitGroup{}
 	allUpdatesReceived = make (chan bool)
@@ -2191,8 +2214,7 @@ func getNodesList(minerList []string) (map[string][]int, []int) {
 		listOfUpdates[myIP+myPort] = append(listOfUpdates[myIP+myPort], nodeID)
 	}
 
-
-	// popuate list of updates with node list of each online and synchronous miner
+	// populate list of updates with node list of each online and synchronous miner
 
 	for _, address := range minerList {
         
@@ -2203,10 +2225,8 @@ func getNodesList(minerList []string) (map[string][]int, []int) {
         outLog.Printf(strconv.Itoa(client.id)+":Calling %s", address)
 		thisNodesList, err := callGetUpdateListRPC(address)
 		if ((err == nil) && (len(thisNodesList) > 0)) {
-			listOfUpdates[address] = thisNodesList	
-			
+			listOfUpdates[address] = thisNodesList				
 		}
-
 	}
 
 	// find node ids whose updates are available with all online miners.
@@ -2268,7 +2288,6 @@ func callGetUpdateListRPC(address string) ([]int, error){
 		outLog.Printf("Unable to connect to fellow miner")
 		time.Sleep(1000 * time.Millisecond)
 		return nodeList, err
-
 
 	}
 

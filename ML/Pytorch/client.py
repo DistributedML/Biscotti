@@ -8,6 +8,7 @@ import numpy as np
 import pdb
 import datasets
 
+
 class Client():
     def __init__(self, dataset, filename, batch_size, model, train_cut=.80):
         # initializes dataset
