@@ -12,8 +12,7 @@ locale.setlocale(locale.LC_ALL, '')
 
 total_nodes = 0
 DEFAULT_VALUE="3"
-NODE_NUM = ["3", "5", "10"]
-
+NODE_NUM = ["3", "5", "10", "26"]
 
 def get_completion_time(startTime, endTime):
     startTime = datetime.strptime(startTime, "%H:%M:%S.%f")

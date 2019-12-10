@@ -106,11 +106,18 @@ func (honest *Honest) initializeData(datasetName string, numberOfNodes int, epsi
 func (honest *Honest) checkConvergence(iterationCount int) bool {
 
 	trainError := testModel(honest.globalModel)
-	attackRate := testAttackRate(honest.globalModel)
 
-	outLog.Printf(strconv.Itoa(honest.id)+":Train Error is %.5f in Iteration %d", trainError, iterationCount)
-	outLog.Printf(strconv.Itoa(honest.id)+":Attack Rate is %.5f in Iteration %d", 
-		attackRate, iterationCount)
+	if honest.dataset == "creditcard" {
+		trainError := testModel(honest.globalModel)
+		outLog.Printf(strconv.Itoa(honest.id)+":Train Error is %.5f in Iteration %d",
+			trainError, iterationCount)
+	} else {
+		attackRate := testAttackRate(honest.globalModel)
+		outLog.Printf(strconv.Itoa(honest.id)+":Train Error is %.5f in Iteration %d",
+			trainError, iterationCount)
+		outLog.Printf(strconv.Itoa(honest.id)+":Attack Rate is %.5f in Iteration %d",
+			attackRate, iterationCount)
+	}
 
 	if trainError < convThreshold {
 		return true
@@ -122,23 +129,35 @@ func (honest *Honest) checkConvergence(iterationCount int) bool {
 // cSample updates for the poisoning case
 func (honest *Honest) sampleUpdates(numUpdates int) {
 
-	r := rand.New(rand.NewSource(time.Now().Unix()))
+	// s := rand.New(rand.NewSource(time.Now().Unix()))
+	// r := rand.New(s)
+	rand.Seed(time.Now().UnixNano())
 	selectedUpdates := make([]Update, numUpdates)
-	perm := r.Perm(len(honest.blockUpdates))
-	
-	for i, randIndex := range perm {
-		selectedUpdates[i] = honest.blockUpdates[randIndex]
+	selectedIdxs := make([]int, numUpdates)
+	// perm := r.Perm(len(honest.blockUpdates))
 
-		if i == (numUpdates-1) {
-			break
-		}
+
+	for i := 0; i < numUpdates; i++ {
+		randIndex := rand.Intn(len(honest.blockUpdates))
+		selectedIdxs[i] = randIndex
+		selectedUpdates[i] = honest.blockUpdates[randIndex]
+	}
 	
-	}	
+	// for i, randIndex := range perm {
+	// 	selectedUpdates[i] = honest.blockUpdates[randIndex]
+
+	// 	if i == (numUpdates-1) {
+	// 		break
+	// 	}
+	
+	// }	
 
 	honest.blockUpdates = selectedUpdates
 
 	outLog.Printf("Number of updates sampled:%s", len(honest.blockUpdates))
-	outLog.Printf("Indexes selected:%s", perm[:numUpdates])
+	// outLog.Printf("Indexes selected:%s", perm[:numUpdates])
+	outLog.Printf("Indexes selected:%s", selectedIdxs)
+
 
 
 }
@@ -202,7 +221,6 @@ func pyInit(datasetName string, dataFile string, epsilon float64) int {
 		pyTrainFunc = pyTestModule.GetAttrString("train_error")
 		pyTestFunc = pyTestModule.GetAttrString("test_error")
 		pyRoniFunc = pyRoniModule.GetAttrString("roni")
-		pyAttackFunc = pyTorchModule.GetAttrString("test_error")
 
 	}
 	

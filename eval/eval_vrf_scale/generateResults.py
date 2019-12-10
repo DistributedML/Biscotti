@@ -12,21 +12,21 @@ data = df.values
 # plt.plot(data3[0], np.mean(data3[1:3], axis=0), color="orange", label="Amazon", lw=3)
 
 N = 3
-width = 0.30
-fig, ax = plt.subplots(figsize=(10, 4))
+width = 0.20
+fig, ax = plt.subplots(figsize=(10, 5))
 
 ticklabels = ['Noisers', 'Verifiers', 'Aggregators']
-
 
 p1 = ax.bar(np.arange(N), data[:,1], yerr=data[:,2] , width=width, color='purple')
 p2 = ax.bar(np.arange(N) + width, data[:,3], yerr=data[:,4], width=width, color='lightgreen', hatch='/')
 p3 = ax.bar(np.arange(N) + 2 * width, data[:,5], yerr=data[:,6], width=width, color='orange', hatch='.')
+p4 = ax.bar(np.arange(N) + 3 * width, data[:,7], yerr=data[:,8], width=width, color='blue', hatch='.')
 
 ax.set_xticks(np.arange(N) + width)
-ax.set_xticklabels(ticklabels, fontsize=24)
+ax.set_xticklabels(ticklabels, fontsize=22)
 
 # ax.set_yticklabels(np.arange(0, 7, 1))
-plt.setp(ax.get_yticklabels(), fontsize=24)
+plt.setp(ax.get_yticklabels(), fontsize=22)
 
 ax.spines['right'].set_visible(False)
 ax.spines['top'].set_visible(False)
@@ -46,17 +46,17 @@ total = sum(totals)
 for i in ax.patches:
     # get_x pulls left or right; get_height pushes up or down
     height = i.get_height()
-    ax.text(i.get_x(), i.get_height() + 2, " " + str(height)[0:4], fontsize=22, color='black')
+    ax.text(i.get_x(), i.get_height() + 2, " " + str(height)[0:4], fontsize=16, color='black')
 
 # ##############################
 
-plt.yticks((20, 40, 60))
+plt.yticks((20, 40, 60, 80, 100, 120))
 
-plt.ylabel('Time Per Iteration (s)', fontsize=28)
+plt.ylabel('Avg Time Per Iteration (s)', fontsize=28)
 
-ax.legend((p1[0], p2[0], p3[0]),
-          ('N = 3', 'N = 5', 'N = 10'),
-          loc='upper right', ncol=3, fontsize=20)
+ax.legend((p1[0], p2[0], p3[0], p4[0]),
+          ('N = 3', 'N = 5', 'N = 10', 'N=26'),
+          loc='upper center', ncol=3, fontsize=18)
 
 fig.tight_layout(pad=0.1)
 fig.savefig("eval_nva_scale.pdf")

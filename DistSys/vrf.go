@@ -3,6 +3,7 @@ package main
 import (
     "fmt"
     "github.com/coniks-sys/coniks-go/crypto/vrf"
+    "crypto/sha256"
 )
 
 type VRF struct {
@@ -73,12 +74,19 @@ func (myvrf *VRF) getVRFNoisers(stakeMap map[int]int, input []byte, sourceID int
     var winner int
     for len(noisers) < numRequested {
 
+        if (i >= (len(vrfOutput)-1)) {
+            hash := sha256.Sum256(vrfOutput)
+            vrfOutput = hash[:]
+            i = 0
+        }
+
         winnerIdx := (int(vrfOutput[i]) * 256 + int(vrfOutput[i+1])) % len(lottery)
         winner = lottery[winnerIdx]
         
-        outLog.Printf("Verifier lottery winner is %d at %d \n", winner, winnerIdx)
+        outLog.Printf("Noiser lottery winner is %d at %d \n", winner, winnerIdx)
 
         _, exists := nNodesMap[winner]
+
         if !exists && winner != sourceID {
             nNodesMap[winner] = true
             noisers = append(noisers, winner)
@@ -118,8 +126,17 @@ func (myvrf *VRF) getVRFRoles(stakeMap map[int]int, input []byte, numVerifiers i
     var winner int
     for len(verifiers) < numVerifiers {
 
-        /*fmt.Println(input)
-        fmt.Println(lottery)*/
+
+
+        outLog.Printf("Input i is %d \n", len(input))
+        outLog.Printf("Index i is %d \n", i)
+
+        if (i >= (len(input)-1)) {
+            hash := sha256.Sum256(input)
+            input = hash[:]
+            i = 0
+        }
+
         winnerIdx := (int(input[i]) * 256 + int(input[i+1])) % len(lottery)
         winner = lottery[winnerIdx]
         
@@ -136,12 +153,23 @@ func (myvrf *VRF) getVRFRoles(stakeMap map[int]int, input []byte, numVerifiers i
 
     for len(miners) < numMiners {
 
-        winnerIdx := (int(input[i]) * 256 + int(input[i+1])) % len(lottery)
+        outLog.Printf("Input i is %d \n", len(lottery))
+        outLog.Printf("Index i is %d \n", i)
+
+        if (i >= (len(input)-1)) {
+            hash := sha256.Sum256(input)
+            input = hash[:]
+            i = 0
+        }
+
+        winnerIdx := (int(input[i]) * 256 + int(input[i+1])) % len(lottery) 
+
         winner = lottery[winnerIdx]
 
         outLog.Printf("Miner lottery winner is %d at %d \n", winner, winnerIdx)
 
         _, exists := mNodesMap[winner]
+
         if !exists{
             mNodesMap[winner] = true
             miners = append(miners, winner)

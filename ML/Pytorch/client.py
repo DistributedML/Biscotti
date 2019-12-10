@@ -14,7 +14,7 @@ class Client():
         # initializes dataset
         self.batch_size=batch_size
         Dataset = datasets.get_dataset(dataset)
-        transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+        transform = transforms.Compose([transforms.ToTensor(),      transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
         self.trainset = Dataset(filename, "../ML/Pytorch/data/" + dataset, is_train=True, transform=transform)
         self.testset = Dataset("mnist_test", "../ML/Pytorch/data/" + dataset, is_train=False, transform=transform)
         self.trainloader = torch.utils.data.DataLoader(self.trainset, batch_size=self.batch_size, shuffle=True)

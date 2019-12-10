@@ -26,7 +26,7 @@ filename=$numNoisers"_"$numVerifiers"_"$numAggregators"_"$run.log
 echo $filename
 
 cd $azuredeployScript
-timeout 6500 bash runBiscotti.sh 5 100 hosts_diffDC mnist "-nn=$numNoisers -nv=$numVerifiers -na=$numAggregators"
+timeout 8500 bash runBiscotti.sh 5 100 hosts_diffDC mnist "-nn=$numNoisers -nv=$numVerifiers -na=$numAggregators"
 cd $utilDir
 bash killall.sh hosts_diffDC DistSys
 bash get-all-LogFiles.sh shayan $logFiles hosts_diffDC DistSys 

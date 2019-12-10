@@ -43,7 +43,7 @@ const (
 
 	SECURE_AGG  	bool 		  = true
 
-	POISONING 	 	float64 	  = 0.0
+	// POISONING 	 	float64 	  = 0.0
 
 )
 
@@ -97,6 +97,7 @@ var (
 
 	NUM_SAMPLES 		= 35
 	RANDOM_SAMPLES 		= 35
+	POISONING 	 	float64 	  = 0.0
 	//Logging
 	errLog *log.Logger = log.New(os.Stderr, "[err] ", log.Lshortfile|log.LUTC|log.Lmicroseconds)
 	outLog *log.Logger = log.New(os.Stderr, "[peer] ", log.Lshortfile|log.LUTC|log.Lmicroseconds)
@@ -208,11 +209,13 @@ func main() {
 
     myPortPtr := flag.String("p", "", " If not local, this node's port")
 
-    numUpdatesPtr := flag.Int("b", 35, "Number of updates to accept each round")
+    percSamplesPtr := flag.Int("ns", 35, "Percent of updates to sample each round")
 
-    rndSampleUpdatesPtr := flag.Int("ru", 35, "Number of random sampling")
+    // rndSampleUpdatesPtr := flag.Int("ru", 35, "Number of random sampling")
 
     rndSamplePtr := flag.Bool("rs", false, "Random sampling")
+
+    poisoningPtr := flag.Float64("po", 0.0, "Poisoner threshold")  
 
 	flag.Parse()
 
@@ -224,12 +227,21 @@ func main() {
     myPrivateIP = *myPrivateIPPtr+":"
     myIP = *myIPPtr+":"
     myPort = *myPortPtr
-    numUpdates = *numUpdatesPtr
-    rndSampleUpdates := *rndSampleUpdatesPtr
+    // numUpdates = *numUpdatesPtr
+    // rndSampleUpdates := *rndSampleUpdatesPtr
     rndSample = *rndSamplePtr
-    
-    NUM_SAMPLES = numUpdates
-    RANDOM_SAMPLES = rndSampleUpdates
+    PERC_SAMPLES := *percSamplesPtr
+    POISONING = *poisoningPtr
+
+
+    NUM_SAMPLES = int(float64(numberOfNodes) * (float64(PERC_SAMPLES)/100.0))
+
+    numUpdates = NUM_SAMPLES
+    // NUM_SAMPLES = numUpdates
+    if rndSample {
+    	RANDOM_SAMPLES = NUM_SAMPLES
+    	NUM_SAMPLES = numberOfNodes - 1
+    }
 
 
 	if(numberOfNodes <= 0 || nodeNum < 0 || datasetName == ""){

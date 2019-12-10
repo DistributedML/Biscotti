@@ -6,7 +6,7 @@ import matplotlib.lines as mlines
 import sys
 from datetime import datetime, timedelta
 
-total_nodes = 100
+total_nodes = 200
 
 def parse_logs(input_file_directory, output_file_directory):
 
@@ -119,7 +119,7 @@ def plot(fedSysOutput, distSysNoShuffleOutput, numRuns,  time=True):
 
     ###########################################
     across_runs = np.zeros((numRuns, 102))
-    completionTimes = np.zeros(3)
+    completionTimes = np.zeros(numRuns)
     for i in range(0, numRuns):
         df = pd.read_csv(fed_parsed + "/data" + str(i), header=None)
         across_runs[i] = df[1].values
@@ -139,7 +139,7 @@ def plot(fedSysOutput, distSysNoShuffleOutput, numRuns,  time=True):
     print(avgFedSysCompletionTime)
     ###########################################
     across_runs = np.zeros((numRuns, 102))
-    completionTimes = np.zeros(3)
+    completionTimes = np.zeros(numRuns)
     for i in range(0, numRuns):
         df = pd.read_csv((distSysNoShuffleOutput + '/data' + str(i)), header=None)
         across_runs[i] = df[1].values
@@ -161,18 +161,18 @@ def plot(fedSysOutput, distSysNoShuffleOutput, numRuns,  time=True):
     if time:
 
         l1 = mlines.Line2D(avgFedSysCompletionTime * np.arange(102) / 100, toplot[0], color='black',
-                           linewidth=3, linestyle='-', label="Federated Learning 100 nodes")
+                           linewidth=3, linestyle='-', label="Federated Learning " + str(total_nodes) + " nodes")
 
         l2 = mlines.Line2D(avgDistSysCompletionTime * np.arange(102) / 100, toplot[1], color='red',
-                           linewidth=3, linestyle='--', label="Biscotti 100 nodes")
+                           linewidth=3, linestyle='--', label="Biscotti " + str(total_nodes) + " nodes")
 
     else:
 
         l1 = mlines.Line2D(np.arange(102), toplot[0], color='black',
-                           linewidth=3, linestyle='-', label="Federated Learning 100 nodes")
+                           linewidth=3, linestyle='-', label="Federated Learning " + str(total_nodes) + " nodes")
 
         l2 = mlines.Line2D(np.arange(102), toplot[1], color='red',
-                           linewidth=3, linestyle='--', label="Biscotti 100 nodes")
+                           linewidth=3, linestyle='--', label="Biscotti " + str(total_nodes) + " nodes")
 
     ax.add_line(l1)
     ax.add_line(l2)
@@ -185,7 +185,7 @@ def plot(fedSysOutput, distSysNoShuffleOutput, numRuns,  time=True):
 
     if time:
         plt.xlabel("Time (s)", fontsize=22)
-        axes.set_xlim([0, 4000])
+        axes.set_xlim([0, 1000* (int(avgDistSysCompletionTime/1000)+1)])
     else:
         plt.xlabel("Training Iterations", fontsize=22)
         axes.set_xlim([0, 100])

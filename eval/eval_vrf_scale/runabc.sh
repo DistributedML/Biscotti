@@ -1,7 +1,6 @@
-let nodesInEachVM=$1
-let totalNodes=$2
-hostFileName=$3
-dataset=$4
-additionalArgs=$5
-
-echo $additionalArgs
+# bash runEval.sh 3 26 3 0
+# bash runEval.sh 3 26 3 1
+# bash runEval.sh 3 26 3 2
+bash runEval.sh 26 3 3 0
+bash runEval.sh 26 3 3 1
+bash runEval.sh 26 3 3 2

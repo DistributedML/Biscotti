@@ -209,7 +209,6 @@ def getAvgTotalTime(parsed_files_directory,num_runs):
     dev = np.std(completionTimes/100)
     return totalAvg, dev
 
-
 def getAvg(parsed_files_directory,num_runs):
 
     completionTime = np.zeros(num_runs)

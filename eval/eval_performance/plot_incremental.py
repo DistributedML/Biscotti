@@ -66,8 +66,8 @@ for i in ax.patches:
 
 # ##############################
 
-plt.xlabel('Number of Peers', fontsize=32)
-plt.ylabel('Time Per Iteration (s)', fontsize=32)
+plt.xlabel('Number of Peers', fontsize=38)
+plt.ylabel('Average Time Per Iteration (s)', fontsize=38)
 
 ax.legend((p1[0], p2[0], p3[0], p4[0], p5[0]),
           ('Noising', 'Verification', 'Secure Aggregation', "Flooding", 'Total'),

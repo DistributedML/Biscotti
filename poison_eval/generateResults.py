@@ -13,8 +13,8 @@ numIterations = 101
 # ls = ['-',':','--']
 colors = ['black', 'red']
 ls = ['-','--']
-labels = ['Federated Learning - 30% Poison' ,'Biscotti - 30% Poison']
-
+# labels = ['Federated Learning - 30% Poison' ,'Biscotti - 30% Poison']
+labels = ['Federated Learning - No Poison', 'Federated Learning - 30% Poison' ,'Biscotti - 30% Poison']
 
 def parse_logs(input_file_directory, attackRate=False):
 
@@ -125,10 +125,13 @@ def plotResults(outputFile, inputFiles, attackRate=False):
 
 if __name__ == '__main__':
 
-	foldersToParse = ["Fed_NoPoison_mnist_AR","Fed_Poison_100_30_mnist_AR", "Bis_Poison_100_30_mnist_AR"]
+	# foldersToParse = ["Fed_NoPoison_mnist_AR","Fed_Poison_100_30_mnist_AR", "Bis_Poison_100_30_mnist_AR"]
 
 
-	foldersToParse = ["Fed_Poison_100_30_mnist_AR", "Bis_Poison_100_30_mnist_AR"]
+	# foldersToParse = ["Fed_Poison_100_30_mnist_AR", "Bis_Poison_100_30_mnist_AR"]
+
+	foldersToParse = ["FedSys_100_nopoison", "FedSys_100_poison", "Nis_100_poison"]
+
 
 	
 	#creditcard
@@ -138,7 +141,7 @@ if __name__ == '__main__':
 	parsedFolders = []
 	
 	for folder in foldersToParse:
-		parse_logs(folder, True)
+		parse_logs(folder, False)
 		parsedFolders.append(folder+"_parsedResults/data.csv")
 
 	plotResults("posion_mnist_30_100_AR.pdf", parsedFolders, True)

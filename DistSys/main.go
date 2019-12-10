@@ -28,12 +28,12 @@ import (
 const (
 	basePort        int           = 8000
 	verifierIP   	string        = "127.0.0.1:"
-	timeoutRONI    	time.Duration = 120 * time.Second
-	timeoutKRUM    	time.Duration = 60 * time.Second
-	timeoutKRUMR 	time.Duration = 60 * time.Second
+	timeoutRONIC    time.Duration = 120 * time.Second
+	timeoutKRUMC   	time.Duration = 60 * time.Second
+	timeoutKRUMRC 	time.Duration = 60 * time.Second
 	timeoutUpdateC 	time.Duration = 90 * time.Second 
-	timeoutBlock 	time.Duration = 300 * time.Second
-	timeoutPeer 	time.Duration = 5 * time.Second
+	timeoutBlockC 	time.Duration = 300 * time.Second
+	timeoutPeerC 	time.Duration = 5 * time.Second
 
 	// NUM_NOISERS     int 		  = 2
 	DEFAULT_STAKE   int 		  = 10
@@ -144,7 +144,7 @@ var (
 
 	PRIV_PROB 		float64 	  = 0
 
-	NUM_NOISERS 	int 		  = 2
+	NUM_NOISERS 	int 		  = 3
 	NUM_VERIFIERS 	int           = 3
 	NUM_MINERS 		int           = 3
 
@@ -160,6 +160,11 @@ var (
 
 	timeoutRPC    	time.Duration = 120 * time.Second
 	timeoutUpdate   time.Duration = timeoutUpdateC
+	timeoutRONI    	time.Duration = timeoutRONIC
+	timeoutKRUM    	time.Duration = timeoutKRUMC
+	timeoutKRUMR 	time.Duration = timeoutKRUMRC 
+	timeoutBlock 	time.Duration = timeoutBlockC
+	timeoutPeer 	time.Duration = timeoutPeerC
 
 	POISONING 	 	float64 	  = 0.0
 	NUM_SAMPLES     int 		  = 70
@@ -637,7 +642,7 @@ func main() {
 
     poisoningPtr := flag.Float64("po", 0.0, "Poisoner threshold")
 
-	numSamplesPtr := flag.Int("ns", 70 , "Number of samples")
+	percSamplesPtr := flag.Int("ns", 70 , "Percentage of samples")
 
 	randSamplePtr := flag.Bool("rs", false , "Random sampling")   
 
@@ -660,7 +665,7 @@ func main() {
     VERIFY = *isVerificationPtr
     EPSILON = *epsilonPtr
     POISONING = *poisoningPtr
-    PERC_SAMPLES := *numSamplesPtr
+    PERC_SAMPLES := *percSamplesPtr
     RAND_SAMPLE = *randSamplePtr
 
     outLog.Printf("PERC_SAMPLES IS: %d", PERC_SAMPLES)
@@ -672,14 +677,10 @@ func main() {
     	NUM_SAMPLES = numberOfNodes - NUM_VERIFIERS - NUM_MINERS
     }
 
-    if (RAND_SAMPLE) {
-	    
-	    KRUM_UPDATETHRESH = numberOfNodes - NUM_VERIFIERS - NUM_MINERS   	
-    
+    if (RAND_SAMPLE) {	    
+	    KRUM_UPDATETHRESH = numberOfNodes - NUM_VERIFIERS - NUM_MINERS   	    
     }else{
-
     	KRUM_UPDATETHRESH = NUM_SAMPLES 
-
     }
 
     outLog.Printf("EPSILON IS: %d", EPSILON)
@@ -791,6 +792,34 @@ func main() {
 	}else{
 		timeoutRPC = timeoutRONI
 	}
+
+	if (NUM_MINERS > 10 && numberOfNodes == 100) {
+
+		timeoutUpdate = timeoutUpdate * 2
+
+	}
+
+	if (NUM_VERIFIERS > 10 && numberOfNodes == 100) {
+
+		timeoutKRUM = timeoutKRUM * 2
+		timeoutUpdate = timeoutUpdate * 2
+
+	}
+
+	//Because above declared timeouts are for 100 nodes
+	multiplier:= time.Duration((numberOfNodes / 100)) 
+
+	outLog.Printf("Timeout Update is at 1 %d", timeoutUpdate)
+
+	timeoutUpdate= timeoutUpdate * multiplier
+	
+	outLog.Printf("Timeout Update is at %d", timeoutUpdate)
+
+	timeoutKRUM= timeoutKRUM * multiplier
+	timeoutKRUMR= timeoutKRUMR * multiplier
+	timeoutBlock= timeoutBlock * multiplier
+	timeoutPeer= timeoutPeer * multiplier
+	timeoutRPC= timeoutRPC * multiplier
 
 	TOTAL_SHARES = int(math.Ceil(float64(POLY_SIZE*2)/float64(NUM_MINERS)))*NUM_MINERS
 
@@ -1190,7 +1219,7 @@ func processUpdate(update Update) {
 		numberOfUpdates := client.addBlockUpdate(update)
 		updateLock.Unlock()
 
-		outLog.Printf("As miner, I expect %d updates, I have gotten %d", (numberOfNodeUpdates / 8), numberOfUpdates)
+		outLog.Printf("As miner, I expect %d updates, I have gotten %d", (NUM_SAMPLES / 2), numberOfUpdates)
 
 		//send signal to start sending Block if all updates Received. Changed this from numVanilla stuff
 		if numberOfUpdates == (NUM_SAMPLES/2)  {		
@@ -2022,7 +2051,7 @@ func startShareDeadlineTimer(timerForIteration int){
 				timerForIteration, iterationCount)
 
 		case <- time.After(timeoutUpdate):
-			outLog.Printf(strconv.Itoa(client.id)+":Timeout. Didn't receive expected number of shares. Preparing to send block. Iteration: %d..", timerForIteration)
+			outLog.Printf(strconv.Itoa(client.id)+":Timeout. Didn't receive expected number of shares. Preparing to send block. Iteration: %d..", timerForIteration)			
 
 		case <- quitRoutine:
 			outLog.Printf(strconv.Itoa(client.id)+"Already appended block. Quitting routine. Iteration: %d..", timerForIteration)			

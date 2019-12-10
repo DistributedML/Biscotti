@@ -11,6 +11,7 @@ uname=$2
 branchname=$3
 
 bisPath="/home/$uname/gopath/src/Biscotti"
+mnist_path="/home/$uname/gopath/src/Biscotti/ML/Pytorch/data/mnist"
 
 hostFile="../azure-conf/$ipfile"
 
@@ -23,7 +24,8 @@ for ip in $(cat $hostFile);do
 		git fetch origin
 		git checkout $branchname	
 		git pull origin $branchname
-
+		cd $mnist_path
+		python parse_mnist.py 200
 	"
 
 done

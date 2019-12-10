@@ -9,8 +9,6 @@ import matplotlib.lines as mlines
 line_colors = ['blue', 'orange', 'black']
 line_labels = ['Prob of collusion <= 0.001', 'Prob of collusion <= 0.01', 'Prob of collusion <= 0.05']
 
-
-
 def main(): 
 
 	# stake_values = [0.1, 0.2, 0.3, 0.4, 0.5]
@@ -57,8 +55,6 @@ def binomialWithoutReplacement(num_clients, stake_values, prob_thresholds):
 				# print(majority_idxs)
 
 				committee_probability = np.sum([comb(committee_size, idx, exact=True) * (stake_value)**idx * (1-stake_value)**(committee_size - idx) for idx in majority_idxs]) 
-
-				# print(committee_probability)
 
 				if committee_probability < prob_threshold:
 					committee_values.append(committee_size)

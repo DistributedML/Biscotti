@@ -40,7 +40,7 @@ def parse_logs(input_log_dir, output_file_dir,fname, directory):
 
 def plot(output_file_dir, dirs):
 
-	fig, ax = plt.subplots(figsize=(10, 2.5))
+	fig, ax = plt.subplots(figsize=(10, 5))
 	toplot = np.zeros((len(dirs), 102))
 
 	i = 0
