@@ -38,15 +38,15 @@ while [[ "$converged" -eq 0 ]]; do
 		continue
 	fi
          
-    echo "killing node"             
+        echo "killing node"             
 	fuser -k $failPort/tcp
 	let failAfter=$(($sleepAfter - 5))
 	echo $failAfter 			
 	sleep $failAfter
 
-	echo "launching node"
-	./DistSys -i $failNode -t $numberOfNodes -d creditcard >> /dev/null &
-	sleep 5
+	 echo "launching node"
+        ./DistSys -i $failNode -t $numberOfNodes -d $dataset >> /dev/null &
+        sleep 5
 
 done
 
