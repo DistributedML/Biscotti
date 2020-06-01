@@ -1,6 +1,20 @@
 # Biscotti: machine learning on the blockchain
 
-Biscotti is a fully decentralized peer-to-peer system for multi-party machine learning (ML). Peers participate in the learning process by contributing (possibly private) datasets and coordinating in training a global model of the union of their datasets. Biscotti uses blockchain primitives for coordination between peers and relies on differential privacy and cryptography techniques to provide privacy and security guarantees to peers. For more details about Biscotti's design, see our [Arxiv paper](https://arxiv.org/abs/1811.09904).
+Biscotti is a fully decentralized peer-to-peer system for multi-party machine learning (ML). Peers participate in the learning process by contributing (possibly private) datasets and coordinating in training a global model of the union of their datasets. Biscotti uses blockchain primitives for coordination between peers and relies on differential privacy and cryptography techniques to provide privacy and security guarantees to peers.
+
+For more details about Biscotti's design, see our [Arxiv paper](https://arxiv.org/abs/1811.09904).
+```
+@article{Shayan2018,
+  author    = {Muhammad Shayan and Clement Fung and Chris J. M. Yoon and Ivan Beschastnikh},
+  title     = {{Biscotti: {A} Ledger for Private and Secure Peer-to-Peer Machine Learning}},
+  journal   = {CoRR},
+  volume    = {abs/1811.09904},
+  year      = {2018},
+  url       = {http://arxiv.org/abs/1811.09904},
+  archivePrefix = {arXiv},
+  eprint    = {1811.09904},
+}
+```
 
 # Dependencies
 
