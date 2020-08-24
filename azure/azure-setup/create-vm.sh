@@ -1,8 +1,8 @@
 #!/bin/bash -x
 
-if [ "$#" -ne 7 ]; then
-    echo "Illegal number of parameters (expecting 6):"
-    echo "[r-group, vm-name, image-name, user-name, password vmlocation, vmsize]"
+if [ "$#" -ne 8 ]; then
+    echo "Illegal number of parameters (expecting 8):"
+    echo "[r-group, vm-name, image-name, user-name, password vmlocation, vmsize, sshpath]"
     exit
 fi
 
@@ -13,13 +13,14 @@ user=$4      # username whose cmd line password will be changed
 pws=$5       # password to set the user's password to
 location=$6
 vmtype=$7
+sshkeypath=$8
 
 # Create the VM
 az vm create --resource-group $rgroup --name $vm --image $imagename \
    --admin-username $user --location $location --size $vmtype \
    --vnet-name ${location}VNET \
    --subnet Subnet1 \
-   --ssh-key-value  /home/$user/.ssh/id_rsa.pub
+   --ssh-key-value  $sshkeypath
 
 
 # # Reset the password for the user in the vm

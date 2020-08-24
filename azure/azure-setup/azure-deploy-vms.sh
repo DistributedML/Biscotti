@@ -1,4 +1,4 @@
-if [ "$#" -ne 5 ]; then
+    if [ "$#" -ne 5 ]; then
     echo "Illegal number of parameters"
     echo "usage:"
     echo "[numVms, rgroup, user, pass, location]"
@@ -11,10 +11,10 @@ user=$3      # username whose cmd line password will be changed
 pws=$4       # password to set the user's password to
 location=$5  # deployment in same or different location
 
-sshPath="/home/$user/.ssh/id_rsa.pub" #location of ssh-keys on ur machine
+sshPath="/home/mdshayan/.ssh/id_rsa.pub" #location of ssh-keys on ur machine
 imagename='Canonical:UbuntuServer:16.04-LTS:16.04.201909091' #OS
 vmprefix='bis' #each vmname is vmprefix+vmid
-vmname='Standard_A4m_v2'
+vmtype='Standard_A4m_v2'
 
 locations=('westus') #locations to deploy
 
@@ -44,8 +44,8 @@ for (( i = 0; i < numVMs; i++ )); do
 	locIdx=$(($i % $numlocations))
 	echo $locIdx
 	vmlocation=${locations[locIdx]}
-	echo $vmname 
+	echo $vmname
 	echo $vmlocation
-	bash create-vm.sh $rgroup $vmname $imagename $user $pws $vmlocation $vmname
+	bash create-vm.sh $rgroup $vmname $imagename $user $pws $vmlocation $vmtype $sshPath
 
 done

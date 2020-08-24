@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #install golang
-## go to home directory
+# go to home directory
 cd
 
 # #download go binary
@@ -18,7 +18,7 @@ echo "#export go path" >> .profile
 echo "export PATH=$PATH:/usr/local/go/bin" >> .profile
 
 # # #make root directory and set GOPATH
-sudo rm -rf gopath
+sudo rm -rf gopath/
 mkdir -p gopath/src
 export GOPATH=$HOME/gopath
 echo "" >> .profile
@@ -56,7 +56,20 @@ cp -a $HOME/gopath/src/Biscotti/lib/dedis $HOME/gopath/src/github.com
 cd github.com/dedis/kyber
 go get -t ./... # install 3rd-party dependencies
 
-# source ~/.profile
+cd $HOME/gopath/
+sudo chmod -R 777 ./
+
+cd $HOME/gopath/src
+cd gonum.org/v1/gonum
+sudo git stash
+sudo git checkout tags/v0.6.0
+
+cd $HOME/gopath/src
+cd github.com/kniren/gota
+sudo git stash
+sudo git checkout tags/v0.9.0
+
+source ~/.profile
 
 cd $HOME
 
@@ -74,7 +87,7 @@ sudo apt-get install -y python-skimage
 pip install -r requirements.txt
 
 cd $HOME/gopath/src/Biscotti/ML/Pytorch/data/mnist
-python parse_mnist.py
+python parse_mnist.py 200
 
 cd $HOME/gopath/src/Biscotti/DistSys
 mkdir LogFiles
