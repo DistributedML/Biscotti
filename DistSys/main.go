@@ -813,15 +813,14 @@ func main() {
 
     if (multiplier >= 1){
         timeoutUpdate= timeoutUpdate * multiplier
+        timeoutKRUM= timeoutKRUM * multiplier
+        timeoutKRUMR= timeoutKRUMR * multiplier
+        timeoutBlock= timeoutBlock * multiplier
+        timeoutPeer= timeoutPeer * multiplier
+        timeoutRPC= timeoutRPC * multiplier
     }
 	
 	outLog.Printf("Timeout Update is at %d", timeoutUpdate)
-
-	timeoutKRUM= timeoutKRUM * multiplier
-	timeoutKRUMR= timeoutKRUMR * multiplier
-	timeoutBlock= timeoutBlock * multiplier
-	timeoutPeer= timeoutPeer * multiplier
-	timeoutRPC= timeoutRPC * multiplier
 
 	TOTAL_SHARES = int(math.Ceil(float64(POLY_SIZE*2)/float64(NUM_MINERS)))*NUM_MINERS
 
