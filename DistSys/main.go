@@ -811,7 +811,9 @@ func main() {
 
 	outLog.Printf("Timeout Update is at 1 %d", timeoutUpdate)
 
-	timeoutUpdate= timeoutUpdate * multiplier
+    if (multiplier >= 1){
+        timeoutUpdate= timeoutUpdate * multiplier
+    }
 	
 	outLog.Printf("Timeout Update is at %d", timeoutUpdate)
 
