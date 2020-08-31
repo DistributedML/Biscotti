@@ -306,7 +306,7 @@ if __name__ == "__main__":
     scalability = sys.argv[2]
 
     if scalability > 1:
-        slice_scalability(scalability, numNodes)
+        slice_scalability(int(scalability), int(numNodes))
     else:
         slice_uniform(int(numNodes))
 
