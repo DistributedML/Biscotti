@@ -202,8 +202,8 @@ def slice_scalability(scalabilityFactor, numSplits):
     totalRows =  int(Xtrain.shape[0])
 
     for i in range(numSplits):
-        dataslice = np.hstack((Xtrain[((i * numRows) % totalRows):(((i + 1) * numRows)% totalRows), :],
-                               ytrain[((i * numRows) % totalRows):(((i + 1) * numRows)% totalRows)][:, None]))
+        dataslice = np.hstack((Xtrain[((i * numRows) % totalRows):(((i + 1) * numRows - 1)% totalRows), :],
+                               ytrain[((i * numRows) % totalRows):(((i + 1) * numRows -1)% totalRows)][:, None]))
 
         print("slice " + str(i) + " is shape " + str
         (dataslice.shape))
