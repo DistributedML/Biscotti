@@ -199,10 +199,11 @@ def slice_scalability(scalabilityFactor, numSplits):
     ytrain = ytrain[randseed]
 
     numRows = int(Xtrain.shape[0] * scalabilityFactor/ numSplits)
+    totalRows =  int(Xtrain.shape[0])
 
     for i in range(numSplits):
-        dataslice = np.hstack((Xtrain[(i * numRows):((i + 1) * numRows), :],
-                               ytrain[(i * numRows):((i + 1) * numRows)][:, None]))
+        dataslice = np.hstack((Xtrain[((i * numRows) % totalRows):(((i + 1) * numRows)% totalRows), :],
+                               ytrain[((i * numRows) % totalRows):(((i + 1) * numRows)% totalRows)][:, None]))
 
         print("slice " + str(i) + " is shape " + str
         (dataslice.shape))
