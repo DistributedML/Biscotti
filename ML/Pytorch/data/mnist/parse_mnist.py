@@ -108,7 +108,6 @@ def slice_for_tm():
     test_slice = np.hstack((Xtest, np.reshape(ytest, (len(ytest), 1))))
     np.save("mnist_test", test_slice)
     
-# Creates dataset into numSplits*10. Use value 10 to generate 100 datafiles 
 def slice_uniform(numSplits):
 
     mndata = MNIST('.')
@@ -146,17 +145,6 @@ def slice_uniform(numSplits):
 
 
     numRows = int(Xtrain.shape[0] / numSplits)
-    
-
-    # for i in range(numSplits):
-    #     dataslice = np.hstack((Xtrain[(i * numRows):((i + 1) * numRows), :],
-    #                     ytrain[(i * numRows):((i + 1) * numRows)][:, None]))
-        
-    #     print("slice " + str(i) + " is shape " + str
-    #         (dataslice.shape))
-
-    #     for mult in range(10):
-    #         np.save("mnist" + str(i + 10 * mult), dataslice)
 
     for i in range(numSplits):
         dataslice = np.hstack((Xtrain[(i * numRows):((i + 1) * numRows), :],
@@ -168,6 +156,60 @@ def slice_uniform(numSplits):
         # for mult in range(10):
         np.save("mnist" + str(i), dataslice)
         
+    train_slice = np.hstack((Xtrain, np.reshape(ytrain, (len(ytrain), 1))))
+    np.save("mnist_train", train_slice)
+
+    test_slice = np.hstack((Xtest, np.reshape(ytest, (len(ytest), 1))))
+    np.save("mnist_test", test_slice)
+
+
+def slice_scalability(scalabilityFactor, numSplits):
+
+    mndata = MNIST('.')
+
+    images, labels = mndata.load_training()
+    images_test, labels_test = mndata.load_testing()
+
+    n = len(images)
+    d = len(images[0])
+    t = len(images_test)
+
+    Xtrain = np.zeros((n, d))
+    Xtest = np.zeros((t, d))
+
+    ytrain = np.asarray(labels)
+    ytest = np.asarray(labels_test)
+
+    for i in range(n):
+        Xtrain[i, :] = np.asarray(images[i])
+
+    for q in range(t):
+        Xtest[q, :] = np.asarray(images_test[q])
+
+    # standardize each column
+    print("Standardize columns")
+    # Xtrain = Xtrain / 100.0
+    Xtrain, _, _ = standardize_cols(Xtrain)
+    Xtest, _, _ = standardize_cols(Xtest)
+
+    print("Shape of X train:" + str(Xtrain.shape))
+
+    randseed = np.random.permutation(Xtrain.shape[0])
+    Xtrain = Xtrain[randseed, :]
+    ytrain = ytrain[randseed]
+
+    numRows = int(Xtrain.shape[0] * scalabilityFactor/ numSplits)
+
+    for i in range(numSplits):
+        dataslice = np.hstack((Xtrain[(i * numRows):((i + 1) * numRows), :],
+                               ytrain[(i * numRows):((i + 1) * numRows)][:, None]))
+
+        print("slice " + str(i) + " is shape " + str
+        (dataslice.shape))
+
+        # for mult in range(10):
+        np.save("mnist" + str(i), dataslice)
+
     train_slice = np.hstack((Xtrain, np.reshape(ytrain, (len(ytrain), 1))))
     np.save("mnist_train", train_slice)
 
@@ -261,22 +303,12 @@ def generate_poisoned():
 if __name__ == "__main__":
     
     numNodes = sys.argv[1]
-    slice_uniform(int(numNodes))
+    scalability = sys.argv[2]
+
+    if scalability > 1:
+        slice_scalability(scalability, numNodes)
+    else:
+        slice_uniform(int(numNodes))
 
     slice_for_tm()
     generate_poisoned()
-
-    
-
-    # # Set up a 1-7
-    # data = np.load("mnist_digit1.npy")
-    # data[:, -1] = 7
-
-    # np.save("mnist17", data)
-
-    # # Set up a 1-7
-    # data = np.load("mnist17.npy")
-    # data[:, -1] = (data[:, -1] + 1) % 10
-
-    # np.save("mnist_bad_full", data)
-
